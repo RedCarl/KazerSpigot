@@ -109,7 +109,6 @@ public class EntityTracker {
 
 			this.c.add(entitytrackerentry);
 			this.trackedEntities.a(entity.getId(), entitytrackerentry);
-			// entitytrackerentry.scanPlayers(this.world.players);
 			entitytrackerentry.addNearPlayers();
 		} catch (Throwable throwable) {
 			throwable.printStackTrace();

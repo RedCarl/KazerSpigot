@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 // CraftBukkit start
 import java.util.Random;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import ga.windpvp.windspigot.random.FastRandom;
 import org.apache.logging.log4j.LogManager;
@@ -199,7 +201,7 @@ public class ChunkProviderServer implements IChunkProvider {
 		}
 
 		if (chunk == null) {
-			world.timings.syncChunkLoadTimer.startTiming(); // Spigot
+			//world.timings.syncChunkLoadTimer.startTiming(); // Spigot
 			chunk = this.loadChunk(i, j);
 			if (chunk == null) {
 				if (this.chunkProvider == null) {
@@ -252,7 +254,7 @@ public class ChunkProviderServer implements IChunkProvider {
 			}
 			// CraftBukkit end
 			chunk.loadNearby(this, this, i, j);
-			world.timings.syncChunkLoadTimer.stopTiming(); // Spigot
+			//world.timings.syncChunkLoadTimer.stopTiming(); // Spigot
 		}
 
 		return chunk;
@@ -282,13 +284,14 @@ public class ChunkProviderServer implements IChunkProvider {
 		// CraftBukkit end
 	}
 
+	Executor executor = Executors.newCachedThreadPool();
+
 	public Chunk loadChunk(int i, int j) {
 		if (this.chunkLoader == null) {
 			return null;
 		} else {
 			try {
 				Chunk chunk = this.chunkLoader.a(this.world, i, j);
-
 				if (chunk != null) {
 					chunk.setLastSaved(this.world.getTime());
 					if (this.chunkProvider != null) {
@@ -297,10 +300,9 @@ public class ChunkProviderServer implements IChunkProvider {
 						world.timings.syncChunkLoadStructuresTimer.stopTiming(); // Spigot
 					}
 				}
-
 				return chunk;
 			} catch (Exception exception) {
-				ChunkProviderServer.b.error("Couldn\'t load chunk", exception);
+				ChunkProviderServer.b.error("Couldn't load chunk", exception);
 				return null;
 			}
 		}
