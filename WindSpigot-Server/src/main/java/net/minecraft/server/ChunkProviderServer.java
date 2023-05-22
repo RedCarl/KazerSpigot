@@ -201,7 +201,7 @@ public class ChunkProviderServer implements IChunkProvider {
 		}
 
 		if (chunk == null) {
-			//world.timings.syncChunkLoadTimer.startTiming(); // Spigot
+			world.timings.syncChunkLoadTimer.startTiming(); // Spigot
 			chunk = this.loadChunk(i, j);
 			if (chunk == null) {
 				if (this.chunkProvider == null) {
@@ -254,7 +254,7 @@ public class ChunkProviderServer implements IChunkProvider {
 			}
 			// CraftBukkit end
 			chunk.loadNearby(this, this, i, j);
-			//world.timings.syncChunkLoadTimer.stopTiming(); // Spigot
+			world.timings.syncChunkLoadTimer.stopTiming(); // Spigot
 		}
 
 		return chunk;
@@ -283,8 +283,6 @@ public class ChunkProviderServer implements IChunkProvider {
 		return chunk;
 		// CraftBukkit end
 	}
-
-	Executor executor = Executors.newCachedThreadPool();
 
 	public Chunk loadChunk(int i, int j) {
 		if (this.chunkLoader == null) {

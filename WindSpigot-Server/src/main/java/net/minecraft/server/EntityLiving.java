@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.entity.LivingEntity;
@@ -35,7 +37,7 @@ public abstract class EntityLiving extends Entity {
 			0.30000001192092896D, 2)).a(false);
 	private AttributeMapBase c;
 	public CombatTracker combatTracker = new CombatTracker(this);
-	public final Map<Integer, MobEffect> effects = Maps.newHashMap();
+	public final Map<Integer, MobEffect> effects = new Int2ObjectArrayMap<>(); // WindSpigot - more fastutil collections
 	private final ItemStack[] h = new ItemStack[5];
 	public boolean ar;
 	public int as;
@@ -504,7 +506,7 @@ public abstract class EntityLiving extends Entity {
 
 	// CraftBukkit start
 	private boolean isTickingEffects = false;
-	private List<Object> effectsToProcess = Lists.newArrayList();
+	private List<Object> effectsToProcess = new ObjectArrayList<>(); // WindSpigot - more fastutil collections
 	// CraftBukkit end
 
 	protected void bi() {

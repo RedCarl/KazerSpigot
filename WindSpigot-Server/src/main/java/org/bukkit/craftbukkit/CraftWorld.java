@@ -362,28 +362,25 @@ public class CraftWorld implements World {
 		return world.getPlayerChunkMap().isChunkInUse(x, z);
 	}
 
-	Executor executor = Executors.newCachedThreadPool();
-
 	@Override
-	public CompletableFuture<Boolean> loadChunk(int x, int z, boolean generate) {
-		CompletableFuture<Boolean> completableFuture = new CompletableFuture<>();
-		CompletableFuture.supplyAsync(() -> {
-			chunkLoadCount++;
-			if (generate) {
-				return completableFuture.complete(world.chunkProviderServer.getChunkAt(x, z) != null);
-			}
+	public boolean loadChunk(int x, int z, boolean generate) {
+		chunkLoadCount++;
+		if (generate) {
+			// Use the default variant of loadChunk when generate == true.
+			return world.chunkProviderServer.getChunkAt(x, z) != null;
+		}
 
-			world.chunkProviderServer.unloadQueue.remove(LongHash.toLong(x, z));
-			net.minecraft.server.Chunk chunk = world.chunkProviderServer.chunks.get(LongHash.toLong(x, z));
+		world.chunkProviderServer.unloadQueue.remove(LongHash.toLong(x, z)); // TacoSpigot - invoke LongHash directly
+		net.minecraft.server.Chunk chunk = world.chunkProviderServer.chunks.get(LongHash.toLong(x, z));
 
-			if (chunk == null) {
-				chunk = world.chunkProviderServer.loadChunk(x, z);
+		if (chunk == null) {
+			world.timings.syncChunkLoadTimer.startTiming(); // Spigot
+			chunk = world.chunkProviderServer.loadChunk(x, z);
 
-				chunkLoadPostProcess(chunk, x, z);
-			}
-			return completableFuture.complete(chunk != null);
-		});
-		return completableFuture;
+			chunkLoadPostProcess(chunk, x, z);
+			world.timings.syncChunkLoadTimer.stopTiming(); // Spigot
+		}
+		return chunk != null;
 	}
 
 

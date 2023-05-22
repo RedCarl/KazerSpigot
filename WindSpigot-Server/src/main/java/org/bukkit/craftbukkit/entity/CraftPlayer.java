@@ -123,7 +123,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
 	private long lastPlayed = 0;
 	private boolean hasPlayedBefore = false;
 	private final ConversationTracker conversationTracker = new ConversationTracker();
-	private final Set<String> channels = new HashSet<String>();
+	private final Set<String> channels = Sets.newConcurrentHashSet();
 	private final Set<UUID> hiddenPlayers = Sets.newConcurrentHashSet(); // WindSpigot - concurrent collection
 	private int hash = 0;
 	private double health = 20;

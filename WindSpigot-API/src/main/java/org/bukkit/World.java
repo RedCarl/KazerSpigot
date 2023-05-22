@@ -214,7 +214,7 @@ public interface World extends PluginMessageRecipient, Metadatable {
 	 *                 exist
 	 * @return true if the chunk has loaded successfully, otherwise false
 	 */
-	public CompletableFuture<Boolean> loadChunk(int x, int z, boolean generate);
+	public boolean loadChunk(int x, int z, boolean generate);
 
 	/**
 	 * Safely unloads and saves the {@link Chunk} at the specified coordinates
@@ -248,7 +248,7 @@ public interface World extends PluginMessageRecipient, Metadatable {
 	 *
 	 * @param x    X-coordinate of the chunk
 	 * @param z    Z-coordinate of the chunk
-	 * @param save Whether or not to save the chunk
+	 * @param save Whether to save the chunk
 	 * @return true if the chunk has unloaded successfully, otherwise false
 	 */
 	public boolean unloadChunk(int x, int z, boolean save);

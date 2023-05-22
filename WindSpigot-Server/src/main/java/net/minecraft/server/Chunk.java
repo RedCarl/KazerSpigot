@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger; // PaperSpigot
 
 import ga.windpvp.windspigot.random.FastRandom;
+import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.Bukkit; // CraftBukkit
@@ -142,7 +143,7 @@ public class Chunk {
 		this.e = new byte[256];
 		this.f = new int[256];
 		this.g = new boolean[256];
-		this.tileEntities = Maps.newHashMap();
+		this.tileEntities =new Object2ObjectArrayMap<>(); // WindSpigot - more fastutil collections
 		this.v = 4096;
 		this.w = Queues.newConcurrentLinkedQueue();
 		this.entitySlices = new List[16]; // Spigot

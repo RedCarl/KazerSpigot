@@ -25,6 +25,7 @@ import java.util.function.Function;
 import javax.imageio.ImageIO;
 
 import ga.windpvp.windspigot.random.FastRandom;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -74,7 +75,7 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 	public Convertable convertable;
 	private final MojangStatisticsGenerator n = new MojangStatisticsGenerator("server", this, az());
 	public File universe;
-	private final List<IUpdatePlayerListBox> p = Lists.newArrayList();
+	private final List<IUpdatePlayerListBox> p = new ObjectArrayList<>(); // WindSpigot - more fastutil collections
 	protected final ICommandHandler b;
 	public final MethodProfiler methodProfiler = new MethodProfiler();
 	private ServerConnection q; // Spigot

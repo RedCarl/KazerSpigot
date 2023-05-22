@@ -7,6 +7,7 @@ import java.util.List;
 // CraftBukkit start
 import java.util.Queue;
 
+import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.craftbukkit.chunkio.ChunkIOExecutor;
@@ -19,7 +20,7 @@ public class PlayerChunkMap {
 	private static final Logger a = LogManager.getLogger();
 	private final WorldServer world;
 	private final List<EntityPlayer> managedPlayers = Lists.newArrayList();
-	private final LongHashMap<PlayerChunkMap.PlayerChunk> d = new LongHashMap<>();
+	private final Long2ObjectArrayMap<PlayerChunkMap.PlayerChunk> d = new Long2ObjectArrayMap<>(); // WindSpigot - more fastutil collections
 	private final Queue<PlayerChunkMap.PlayerChunk> e = new java.util.concurrent.ConcurrentLinkedQueue<>(); // updatingChunks
 																											// //
 																											// CraftBukkit
@@ -92,12 +93,12 @@ public class PlayerChunkMap {
 	public boolean a(int i, int j) {
 		long k = i + 2147483647L | j + 2147483647L << 32;
 
-		return this.d.getEntry(k) != null;
+		return this.d.get(k) != null; // WindSpigot - more fastutil collections
 	}
 
 	private PlayerChunkMap.PlayerChunk a(int i, int j, boolean flag) {
 		long k = i + 2147483647L | j + 2147483647L << 32;
-		PlayerChunkMap.PlayerChunk chunk = this.d.getEntry(k);
+		PlayerChunkMap.PlayerChunk chunk = this.d.get(k); // WindSpigot - more fastutil collections
 
 		if (chunk == null && flag) {
 			chunk = new PlayerChunkMap.PlayerChunk(i, j);
