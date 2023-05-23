@@ -446,7 +446,7 @@ public abstract class EntityHuman extends EntityLiving {
 		this.bo += (f - this.bo) * 0.4F;
 		this.aF += (f1 - this.aF) * 0.8F;
 		if (this.getHealth() > 0.0F && !this.isSpectator()) {
-			AxisAlignedBB axisalignedbb = null;
+			AxisAlignedBB axisalignedbb;
 
 			if (this.vehicle != null && !this.vehicle.dead) {
 				axisalignedbb = this.getBoundingBox().a(this.vehicle.getBoundingBox()).grow(1.0D, 0.0D, 1.0D);
@@ -458,8 +458,8 @@ public abstract class EntityHuman extends EntityLiving {
 
 			if (this.ae()) { // Spigot: Add this.ae() condition (second !this.isDead near bottom of
 								// EntityLiving)
-				for (Object o : list) {
-					Entity entity = (Entity) o;
+				for (Entity o : list) {
+					Entity entity = o;
 
 					if (!entity.dead) {
 						this.d(entity);
@@ -502,12 +502,8 @@ public abstract class EntityHuman extends EntityLiving {
 			this.inventory.n();
 		}
 
-		if (damagesource != null) {
-			this.motX = -MathHelper.cos((this.aw + this.yaw) * 3.1415927F / 180.0F) * 0.1F;
-			this.motZ = -MathHelper.sin((this.aw + this.yaw) * 3.1415927F / 180.0F) * 0.1F;
-		} else {
-			this.motX = this.motZ = 0.0D;
-		}
+		this.motX = -MathHelper.cos((this.aw + this.yaw) * 3.1415927F / 180.0F) * 0.1F;
+		this.motZ = -MathHelper.sin((this.aw + this.yaw) * 3.1415927F / 180.0F) * 0.1F;
 
 		this.b(StatisticList.y);
 		this.a(StatisticList.h);
@@ -686,7 +682,7 @@ public abstract class EntityHuman extends EntityLiving {
 		}
 
 		if (this.hasEffect(MobEffectList.SLOWER_DIG)) {
-			float f1 = 1.0F;
+			float f1;
 
 			switch (this.getEffect(MobEffectList.SLOWER_DIG).getAmplifier()) {
 			case 0:
@@ -839,7 +835,6 @@ public abstract class EntityHuman extends EntityLiving {
 					Entity entity = damagesource.getEntity();
 
 					if (entity instanceof EntityArrow && ((EntityArrow) entity).shooter != null) {
-						entity = ((EntityArrow) entity).shooter;
 					}
 
 					return super.damageEntity(damagesource, f);
@@ -1705,7 +1700,7 @@ public abstract class EntityHuman extends EntityLiving {
 		} else {
 			int i = this.expLevel * 7;
 
-			return i > 100 ? 100 : i;
+			return Math.min(i, 100);
 		}
 	}
 
@@ -1945,11 +1940,9 @@ public abstract class EntityHuman extends EntityLiving {
 
 		private static final EntityHuman.EnumChatVisibility[] d = new EntityHuman.EnumChatVisibility[values().length];
 		private final int e;
-		private final String f;
 
 		EnumChatVisibility(int i, String s) {
 			this.e = i;
-			this.f = s;
 		}
 
 		public int a() {

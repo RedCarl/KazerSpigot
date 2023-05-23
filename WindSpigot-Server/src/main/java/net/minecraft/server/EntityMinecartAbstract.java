@@ -485,7 +485,6 @@ public abstract class EntityMinecartAbstract extends Entity implements INamableT
 			}
 		}
 
-		d6 = 0.0D;
 		d7 = blockposition.getX() + 0.5D + aint[0][0] * 0.5D;
 		d8 = blockposition.getZ() + 0.5D + aint[0][2] * 0.5D;
 		d9 = blockposition.getX() + 0.5D + aint[1][0] * 0.5D;
@@ -497,10 +496,8 @@ public abstract class EntityMinecartAbstract extends Entity implements INamableT
 		double d12;
 
 		if (d1 == 0.0D) {
-			this.locX = blockposition.getX() + 0.5D;
 			d6 = this.locZ - blockposition.getZ();
 		} else if (d2 == 0.0D) {
-			this.locZ = blockposition.getZ() + 0.5D;
 			d6 = this.locX - blockposition.getX();
 		} else {
 			d11 = this.locX - d7;
@@ -619,7 +616,7 @@ public abstract class EntityMinecartAbstract extends Entity implements INamableT
 			BlockMinecartTrackAbstract.EnumTrackPosition blockminecarttrackabstract_enumtrackposition = iblockdata
 					.get(((BlockMinecartTrackAbstract) iblockdata.getBlock()).n());
 			int[][] aint = EntityMinecartAbstract.matrix[blockminecarttrackabstract_enumtrackposition.a()];
-			double d3 = 0.0D;
+			double d3;
 			double d4 = i + 0.5D + aint[0][0] * 0.5D;
 			double d5 = j + 0.0625D + aint[0][1] * 0.5D;
 			double d6 = k + 0.5D + aint[0][2] * 0.5D;
@@ -631,10 +628,8 @@ public abstract class EntityMinecartAbstract extends Entity implements INamableT
 			double d12 = d9 - d6;
 
 			if (d10 == 0.0D) {
-				d0 = i + 0.5D;
 				d3 = d2 - k;
 			} else if (d12 == 0.0D) {
-				d2 = k + 0.5D;
 				d3 = d0 - i;
 			} else {
 				double d13 = d0 - d4;
@@ -716,7 +711,7 @@ public abstract class EntityMinecartAbstract extends Entity implements INamableT
 				if (entity != this.passenger) {
 					// CraftBukkit start
 					Vehicle vehicle = (Vehicle) this.getBukkitEntity();
-					org.bukkit.entity.Entity hitEntity = (entity == null) ? null : entity.getBukkitEntity();
+					org.bukkit.entity.Entity hitEntity = entity.getBukkitEntity();
 
 					VehicleEntityCollisionEvent collisionEvent = new VehicleEntityCollisionEvent(vehicle, hitEntity);
 					this.world.getServer().getPluginManager().callEvent(collisionEvent);

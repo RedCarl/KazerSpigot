@@ -267,8 +267,8 @@ public class EntityArmorStand extends EntityLiving {
 		List<Entity> list = this.world.getEntities(this, this.getBoundingBox());
 
 		if (list != null && !list.isEmpty()) {
-			for (Object o : list) {
-				Entity entity = (Entity) o;
+			for (Entity o : list) {
+				Entity entity = o;
 
 				if (entity instanceof EntityMinecartAbstract
 						&& ((EntityMinecartAbstract) entity).s() == EntityMinecartAbstract.EnumMinecartType.RIDEABLE

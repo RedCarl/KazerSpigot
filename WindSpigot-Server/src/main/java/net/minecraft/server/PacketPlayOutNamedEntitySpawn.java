@@ -64,7 +64,6 @@ public class PacketPlayOutNamedEntitySpawn implements Packet<PacketListenerPlayO
 	}
 
 	private DataWatcher i;
-	private List<WatchableObject> j;
 
 	public PacketPlayOutNamedEntitySpawn() {
 	}
@@ -104,7 +103,7 @@ public class PacketPlayOutNamedEntitySpawn implements Packet<PacketListenerPlayO
 		this.f = var1.readByte();
 		this.g = var1.readByte();
 		this.h = var1.readShort();
-		this.j = DataWatcher.b(var1);
+		List<WatchableObject> j = DataWatcher.b(var1);
 	}
 
 	@Override

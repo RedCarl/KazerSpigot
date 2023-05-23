@@ -14,13 +14,13 @@ public class EntitySkeleton extends EntityMonster implements IRangedEntity {
 		this.goalSelector.a(1, new PathfinderGoalFloat(this));
 		this.goalSelector.a(2, new PathfinderGoalRestrictSun(this));
 		this.goalSelector.a(3, new PathfinderGoalFleeSun(this, 1.0D));
-		this.goalSelector.a(3, new PathfinderGoalAvoidTarget(this, EntityWolf.class, 6.0F, 1.0D, 1.2D));
+		this.goalSelector.a(3, new PathfinderGoalAvoidTarget<>(this, EntityWolf.class, 6.0F, 1.0D, 1.2D));
 		this.goalSelector.a(4, new PathfinderGoalRandomStroll(this, 1.0D));
 		this.goalSelector.a(6, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 8.0F));
 		this.goalSelector.a(6, new PathfinderGoalRandomLookaround(this));
 		this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, false));
-		this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget(this, EntityHuman.class, true));
-		this.targetSelector.a(3, new PathfinderGoalNearestAttackableTarget(this, EntityIronGolem.class, true));
+		this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityHuman.class, true));
+		this.targetSelector.a(3, new PathfinderGoalNearestAttackableTarget<>(this, EntityIronGolem.class, true));
 		if (world != null && !world.isClientSide) {
 			this.n();
 		}
@@ -222,7 +222,7 @@ public class EntitySkeleton extends EntityMonster implements IRangedEntity {
 		if (this.getEquipment(4) == null) {
 			Calendar calendar = this.world.Y();
 
-			if (calendar.get(2) + 1 == 10 && calendar.get(5) == 31 && this.random.nextFloat() < 0.25F) {
+			if (calendar.get(Calendar.MONTH) + 1 == 10 && calendar.get(Calendar.DATE) == 31 && this.random.nextFloat() < 0.25F) {
 				this.setEquipment(4,
 						new ItemStack(this.random.nextFloat() < 0.1F ? Blocks.LIT_PUMPKIN : Blocks.PUMPKIN));
 				this.dropChances[4] = 0.0F;

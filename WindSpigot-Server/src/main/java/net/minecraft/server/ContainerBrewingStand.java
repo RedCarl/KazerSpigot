@@ -74,7 +74,7 @@ public class ContainerBrewingStand extends Container {
 			ItemStack itemstack1 = slot.getItem();
 
 			itemstack = itemstack1.cloneItemStack();
-			if ((i < 0 || i > 2) && i != 3) {
+			if (i > 2 && i != 3) {
 				if (!this.f.hasItem() && this.f.isAllowed(itemstack1)) {
 					if (!this.a(itemstack1, 3, 4, false)) {
 						return null;
@@ -83,11 +83,11 @@ public class ContainerBrewingStand extends Container {
 					if (!this.a(itemstack1, 0, 3, false)) {
 						return null;
 					}
-				} else if (i >= 4 && i < 31) {
+				} else if (i < 31) {
 					if (!this.a(itemstack1, 31, 40, false)) {
 						return null;
 					}
-				} else if (i >= 31 && i < 40) {
+				} else if (i < 40) {
 					if (!this.a(itemstack1, 4, 31, false)) {
 						return null;
 					}

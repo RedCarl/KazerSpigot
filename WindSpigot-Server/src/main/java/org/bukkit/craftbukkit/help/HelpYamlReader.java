@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
@@ -30,7 +31,7 @@ public class HelpYamlReader {
 
 		File helpYamlFile = new File("help.yml");
 		YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(
-				getClass().getClassLoader().getResourceAsStream("configurations/help.yml"), Charsets.UTF_8));
+				Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("configurations/help.yml")), Charsets.UTF_8));
 
 		try {
 			helpYaml = YamlConfiguration.loadConfiguration(helpYamlFile);

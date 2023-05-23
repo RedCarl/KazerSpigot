@@ -192,7 +192,7 @@ public class BlockTripwire extends Block {
 			boolean allowed = false;
 
 			// If all of the events are cancelled block the tripwire trigger, else allow
-			for (Object object : list) {
+			for (Entity object : list) {
 				if (object != null) {
 					org.bukkit.event.Cancellable cancellable;
 
@@ -201,7 +201,7 @@ public class BlockTripwire extends Block {
 								(EntityHuman) object, org.bukkit.event.block.Action.PHYSICAL, blockposition, null,
 								null);
 					} else if (object instanceof Entity) {
-						cancellable = new EntityInteractEvent(((Entity) object).getBukkitEntity(), block);
+						cancellable = new EntityInteractEvent(object.getBukkitEntity(), block);
 						manager.callEvent((EntityInteractEvent) cancellable);
 					} else {
 						continue;

@@ -1,12 +1,6 @@
 package net.minecraft.server;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -165,7 +159,7 @@ public class EnchantmentManager {
 		}
 
 		if (entity instanceof EntityHuman) {
-			a(EnchantmentManager.d, entityliving.bA());
+			a(EnchantmentManager.d, Objects.requireNonNull(entityliving).bA());
 		}
 
 		// KigPaper start
@@ -241,9 +235,7 @@ public class EnchantmentManager {
 		ItemStack[] aitemstack = entityliving.getEquipment();
 		int i = aitemstack.length;
 
-		for (int j = 0; j < i; ++j) {
-			ItemStack itemstack = aitemstack[j];
-
+		for (ItemStack itemstack : aitemstack) {
 			if (itemstack != null && getEnchantmentLevel(enchantment.id, itemstack) > 0) {
 				return itemstack;
 			}
@@ -270,7 +262,7 @@ public class EnchantmentManager {
 	}
 
 	public static ItemStack a(Random random, ItemStack itemstack, int i) {
-		List list = b(random, itemstack, i);
+		List<WeightedRandomEnchant> list = b(random, itemstack, i);
 		boolean flag = itemstack.getItem() == Items.BOOK;
 
 		if (flag) {
@@ -278,11 +270,8 @@ public class EnchantmentManager {
 		}
 
 		if (list != null) {
-			Iterator iterator = list.iterator();
 
-			while (iterator.hasNext()) {
-				WeightedRandomEnchant weightedrandomenchant = (WeightedRandomEnchant) iterator.next();
-
+			for (WeightedRandomEnchant weightedrandomenchant : list) {
 				if (flag) {
 					Items.ENCHANTED_BOOK.a(itemstack, weightedrandomenchant);
 				} else {
@@ -312,7 +301,7 @@ public class EnchantmentManager {
 			}
 
 			ArrayList arraylist = null;
-			Map map = b(l, itemstack);
+			Map<Integer, WeightedRandomEnchant> map = b(l, itemstack);
 
 			if (map != null && !map.isEmpty()) {
 				WeightedRandomEnchant weightedrandomenchant = (WeightedRandomEnchant) WeightedRandom.a(random,
@@ -335,7 +324,7 @@ public class EnchantmentManager {
 									WeightedRandomEnchant weightedrandomenchant1 = (WeightedRandomEnchant) iterator1
 											.next();
 
-									if (weightedrandomenchant1.enchantment.a(Enchantment.getById(integer.intValue()))) {
+									if (weightedrandomenchant1.enchantment.a(Enchantment.getById(integer))) {
 										continue;
 									}
 
@@ -370,9 +359,7 @@ public class EnchantmentManager {
 		Enchantment[] aenchantment = Enchantment.b;
 		int j = aenchantment.length;
 
-		for (int k = 0; k < j; ++k) {
-			Enchantment enchantment = aenchantment[k];
-
+		for (Enchantment enchantment : aenchantment) {
 			if (enchantment != null && (enchantment.slot.canEnchant(item) || flag)) {
 				for (int l = enchantment.getStartLevel(); l <= enchantment.getMaxLevel(); ++l) {
 					if (i >= enchantment.a(l) && i <= enchantment.b(l)) {
@@ -380,7 +367,7 @@ public class EnchantmentManager {
 							hashmap = Maps.newHashMap();
 						}
 
-						hashmap.put(Integer.valueOf(enchantment.id), new WeightedRandomEnchant(enchantment, l));
+						hashmap.put(enchantment.id, new WeightedRandomEnchant(enchantment, l));
 					}
 				}
 			}

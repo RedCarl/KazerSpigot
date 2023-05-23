@@ -14,7 +14,7 @@ public class EntitySilverfish extends EntityMonster {
 		this.goalSelector.a(4, new PathfinderGoalMeleeAttack(this, EntityHuman.class, 1.0D, false));
 		this.goalSelector.a(5, new EntitySilverfish.PathfinderGoalSilverfishHideInBlock(this));
 		this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, true));
-		this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget(this, EntityHuman.class, true));
+		this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityHuman.class, true));
 	}
 
 	@Override

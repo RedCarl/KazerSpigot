@@ -13,7 +13,6 @@ public class ChunkProviderFlat implements IChunkProvider {
 	private final World a;
 	private final Random b;
 	private final IBlockData[] c = new IBlockData[256];
-	private final WorldGenFlatInfo d;
 	private final List<StructureGenerator> e = Lists.newArrayList();
 	private final boolean f;
 	private final boolean g;
@@ -23,12 +22,12 @@ public class ChunkProviderFlat implements IChunkProvider {
 	public ChunkProviderFlat(World world, long i, boolean flag, String s) {
 		this.a = world;
 		this.b = new FastRandom(i);
-		this.d = WorldGenFlatInfo.a(s);
+		WorldGenFlatInfo d = WorldGenFlatInfo.a(s);
 		if (flag) {
-			Map<String, Map<String, String>> map = this.d.b();
+			Map<String, Map<String, String>> map = d.b();
 
 			if (map.containsKey("village") && world.paperSpigotConfig.generateVillage) { // PaperSpigot
-				Map map1 = (Map) map.get("village");
+				Map map1 = map.get("village");
 
 				if (!map1.containsKey("size")) {
 					map1.put("size", "1");
@@ -38,36 +37,36 @@ public class ChunkProviderFlat implements IChunkProvider {
 			}
 
 			if (map.containsKey("biome_1") && world.paperSpigotConfig.generateTemple) { // PaperSpigot
-				this.e.add(new WorldGenLargeFeature((Map) map.get("biome_1")));
+				this.e.add(new WorldGenLargeFeature(map.get("biome_1")));
 			}
 
 			if (map.containsKey("mineshaft") && world.paperSpigotConfig.generateMineshaft) { // PaperSpigot
-				this.e.add(new WorldGenMineshaft((Map) map.get("mineshaft")));
+				this.e.add(new WorldGenMineshaft(map.get("mineshaft")));
 			}
 
 			if (map.containsKey("stronghold") && world.paperSpigotConfig.generateStronghold) { // PaperSpigot
-				this.e.add(new WorldGenStronghold((Map) map.get("stronghold")));
+				this.e.add(new WorldGenStronghold(map.get("stronghold")));
 			}
 
 			if (map.containsKey("oceanmonument") && world.paperSpigotConfig.generateMonument) { // PaperSpigot
-				this.e.add(new WorldGenMonument((Map) map.get("oceanmonument")));
+				this.e.add(new WorldGenMonument(map.get("oceanmonument")));
 			}
 		}
 
-		if (this.d.b().containsKey("lake")) {
+		if (d.b().containsKey("lake")) {
 			this.h = new WorldGenLakes(Blocks.WATER);
 		}
 
-		if (this.d.b().containsKey("lava_lake")) {
+		if (d.b().containsKey("lava_lake")) {
 			this.i = new WorldGenLakes(Blocks.LAVA);
 		}
 
-		this.g = world.paperSpigotConfig.generateDungeon && this.d.b().containsKey("dungeon"); // PaperSpigot
+		this.g = world.paperSpigotConfig.generateDungeon && d.b().containsKey("dungeon"); // PaperSpigot
 		int j = 0;
 		int k = 0;
 		boolean flag1 = true;
 
-		for (WorldGenFlatLayerInfo worldgenflatlayerinfo : this.d.c()) {
+		for (WorldGenFlatLayerInfo worldgenflatlayerinfo : d.c()) {
 			for (int l = worldgenflatlayerinfo.d(); l < worldgenflatlayerinfo.d() + worldgenflatlayerinfo.b(); ++l) {
 				IBlockData iblockdata = worldgenflatlayerinfo.c();
 
@@ -86,7 +85,7 @@ public class ChunkProviderFlat implements IChunkProvider {
 		}
 
 		world.b(j);
-		this.f = !flag1 && this.d.b().containsKey("decoration");
+		this.f = !flag1 && d.b().containsKey("decoration");
 	}
 
 	@Override
@@ -108,7 +107,7 @@ public class ChunkProviderFlat implements IChunkProvider {
 		}
 
 		for (StructureGenerator structureGenerator : this.e) {
-			WorldGenBase worldgenbase = (WorldGenBase) structureGenerator;
+			WorldGenBase worldgenbase = structureGenerator;
 
 			worldgenbase.a(this, this.a, i, j, chunksnapshot);
 		}

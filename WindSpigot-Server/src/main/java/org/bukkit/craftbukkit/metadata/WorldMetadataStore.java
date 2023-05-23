@@ -12,7 +12,6 @@ public class WorldMetadataStore extends MetadataStoreBase<World> implements Meta
 	 * Generates a unique metadata key for a {@link World} object based on the world
 	 * UID.
 	 * 
-	 * @see WorldMetadataStore#disambiguate(Object, String)
 	 * @param world       the world
 	 * @param metadataKey The name identifying the metadata value
 	 * @return a unique metadata key

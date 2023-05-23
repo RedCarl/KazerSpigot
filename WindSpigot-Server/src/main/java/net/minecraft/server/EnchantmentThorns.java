@@ -35,12 +35,10 @@ public class EnchantmentThorns extends Enchantment {
 		ItemStack itemstack = EnchantmentManager.a(Enchantment.THORNS, entityliving);
 
 		if (entity != null && a(i, random)) { // CraftBukkit
-			if (entity != null) {
-				entity.damageEntity(DamageSource.a(entityliving), b(i, random));
-				entity.makeSound("damage.thorns", 0.5F, 1.0F);
-			}
+            entity.damageEntity(DamageSource.a(entityliving), b(i, random));
+            entity.makeSound("damage.thorns", 0.5F, 1.0F);
 
-			if (itemstack != null) {
+            if (itemstack != null) {
 				itemstack.damage(3, entityliving);
 			}
 		} else if (itemstack != null) {

@@ -4,6 +4,7 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
 import java.util.List;
+import java.util.Objects;
 
 public class PathfinderGoalAvoidTarget<T extends Entity> extends PathfinderGoal {
 
@@ -11,7 +12,7 @@ public class PathfinderGoalAvoidTarget<T extends Entity> extends PathfinderGoal 
 
 		@Override
 		public boolean apply(Entity param1Entity) {
-			return (param1Entity.isAlive() && a.getEntitySenses().a(param1Entity));
+			return (Objects.requireNonNull(param1Entity).isAlive() && a.getEntitySenses().a(param1Entity));
 		}
 	};
 

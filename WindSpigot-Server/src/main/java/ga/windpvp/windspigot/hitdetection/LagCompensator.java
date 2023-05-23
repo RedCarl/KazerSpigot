@@ -19,9 +19,6 @@ public class LagCompensator {
      */
 
     private final ListMultimap<UUID, Pair<Location, Long>> locationTimes = ArrayListMultimap.create();
-    private final int historySize = 40;
-    private final int pingOffset = 92;
-    private final int timeResolution = 30;
 
     // Gets an estimate location of the player at "rewindMillisecs" ago
     public Location getHistoryLocation(Player player, int rewindMillisecs) {
@@ -31,6 +28,7 @@ public class LagCompensator {
         List<Pair<Location, Long>> previousLocations = locationTimes.get(player.getUniqueId());
         long currentTime = System.currentTimeMillis();
 
+        int pingOffset = 92;
         int rewindTime = rewindMillisecs + pingOffset;
         int timesSize = previousLocations.size() - 1;
 
@@ -69,11 +67,13 @@ public class LagCompensator {
         int timesSize = locationTimes.get(p.getUniqueId()).size();
         long currTime = System.currentTimeMillis();
 
+        int timeResolution = 30;
         if (timesSize > 0 && currTime - locationTimes.get(p.getUniqueId()).get(timesSize - 1).getValue() < timeResolution)
             return;
 
         locationTimes.put(p.getUniqueId(), Pair.of(loc, currTime));
 
+        int historySize = 40;
         if (timesSize > historySize)
             locationTimes.get(p.getUniqueId()).remove(0);
     }

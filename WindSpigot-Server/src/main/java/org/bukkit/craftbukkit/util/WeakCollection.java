@@ -75,7 +75,6 @@ public final class WeakCollection<T> implements Collection<T> {
 				}
 
 				Iterator<WeakReference<T>> it = this.it;
-				value = null;
 
 				while (it.hasNext()) {
 					WeakReference<T> ref = it.next();
@@ -176,8 +175,7 @@ public final class WeakCollection<T> implements Collection<T> {
 	}
 
 	private Collection<T> toCollection() {
-		ArrayList<T> collection = new ArrayList<T>();
-		collection.addAll(this);
+		ArrayList<T> collection = new ArrayList<T>(this);
 		return collection;
 	}
 }

@@ -113,7 +113,7 @@ public class ServerStatisticManager extends StatisticManager {
 			HashMap hashmap = Maps.newHashMap();
 
 			for (Entry<String, JsonElement> stringJsonElementEntry : jsonobject.entrySet()) {
-				Entry entry = (Entry) stringJsonElementEntry;
+				Entry entry = stringJsonElementEntry;
 				Statistic statistic = StatisticList.getStatistic((String) entry.getKey());
 
 				if (statistic != null) {
@@ -133,7 +133,7 @@ public class ServerStatisticManager extends StatisticManager {
 						if (jsonobject1.has("progress") && statistic.l() != null) {
 							try {
 								Constructor<? extends IJsonStatistic> constructor = statistic.l().getConstructor();
-								IJsonStatistic ijsonstatistic = (IJsonStatistic) constructor.newInstance(new Object[0]);
+								IJsonStatistic ijsonstatistic = constructor.newInstance(new Object[0]);
 
 								ijsonstatistic.a(jsonobject1.get("progress"));
 								statisticwrapper.a(ijsonstatistic);
@@ -158,7 +158,7 @@ public class ServerStatisticManager extends StatisticManager {
 		JsonObject jsonobject = new JsonObject();
 
 		for (Entry<Statistic, StatisticWrapper> statisticStatisticWrapperEntry : map.entrySet()) {
-			Entry entry = (Entry) statisticStatisticWrapperEntry;
+			Entry entry = statisticStatisticWrapperEntry;
 
 			if (((StatisticWrapper) entry.getValue()).b() != null) {
 				JsonObject jsonobject1 = new JsonObject();
@@ -184,9 +184,7 @@ public class ServerStatisticManager extends StatisticManager {
 
 	public void d() {
 
-		for (Statistic statistic : this.a.keySet()) {
-			this.e.add(statistic);
-		}
+		this.e.addAll(this.a.keySet());
 
 	}
 

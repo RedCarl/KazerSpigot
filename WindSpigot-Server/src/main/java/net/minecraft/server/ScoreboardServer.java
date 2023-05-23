@@ -165,7 +165,7 @@ public class ScoreboardServer extends Scoreboard {
 			}
 
 			for (Packet<PacketListenerPlayOut> packetListenerPlayOutPacket : list) {
-				Packet packet = (Packet) packetListenerPlayOutPacket;
+				Packet packet = packetListenerPlayOutPacket;
 
 				entityplayer.playerConnection.sendPacket(packet);
 			}

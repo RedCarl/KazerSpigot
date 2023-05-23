@@ -125,7 +125,7 @@ public class CraftBlockProjectileSource implements BlockProjectileSource {
 			// Values from DispenseBehaviorProjectile
 			float a = 6.0F;
 			float b = 1.1F;
-			if (launch instanceof EntityPotion || launch instanceof ThrownExpBottle) {
+			if (launch instanceof EntityPotion) {
 				// Values from respective DispenseBehavior classes
 				a *= 0.5F;
 				b *= 1.25F;

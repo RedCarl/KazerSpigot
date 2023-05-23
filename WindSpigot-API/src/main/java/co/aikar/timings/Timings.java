@@ -84,7 +84,7 @@ public final class Timings {
 	/**
 	 * Returns a Timing object after starting it, useful for Java7
 	 * try-with-resources.
-	 *
+	 * <p>
 	 * try (Timing ignored = Timings.ofStart(plugin, someName)) { // timed section }
 	 *
 	 * @param plugin Plugin to own the Timing
@@ -98,7 +98,7 @@ public final class Timings {
 	/**
 	 * Returns a Timing object after starting it, useful for Java7
 	 * try-with-resources.
-	 *
+	 * <p>
 	 * try (Timing ignored = Timings.ofStart(plugin, someName, groupHandler)) { //
 	 * timed section }
 	 *
@@ -201,7 +201,7 @@ public final class Timings {
 
 	/**
 	 * Gets how long in ticks Timings history is kept for the server.
-	 *
+	 * <p>
 	 * Defaults to 1 hour (72000 ticks)
 	 *
 	 * @return Duration in Ticks
@@ -212,12 +212,12 @@ public final class Timings {
 
 	/**
 	 * Sets how long Timing History reports are kept for the server.
-	 *
+	 * <p>
 	 * Defaults to 1 hours(72000 ticks)
-	 *
+	 * <p>
 	 * This value is capped at a maximum of getHistoryInterval() *
 	 * MAX_HISTORY_FRAMES (12)
-	 *
+	 * <p>
 	 * Will not reset Timing Data but may truncate old history if the new length is
 	 * less than old length.
 	 *
@@ -241,7 +241,7 @@ public final class Timings {
 			Bukkit.getLogger().log(Level.WARNING,
 					"Timings Length too high. Requested " + length + ", max is " + maxLength
 							+ ". To get longer history, you must increase your interval. Set Interval to "
-							+ Math.ceil(length / MAX_HISTORY_FRAMES) + " to achieve this length.");
+							+ (double) ((double) length / MAX_HISTORY_FRAMES) + " to achieve this length.");
 		}
 		TimingsManager.HISTORY = EvictingQueue.create(frames);
 		TimingsManager.HISTORY.addAll(oldQueue);
@@ -256,7 +256,7 @@ public final class Timings {
 
 	/**
 	 * Generates a report and sends it to the specified command sender.
-	 *
+	 * <p>
 	 * If sender is null, ConsoleCommandSender will be used.
 	 * 
 	 * @param sender The sender to send to, or null to use the ConsoleCommandSender

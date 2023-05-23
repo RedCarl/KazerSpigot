@@ -26,14 +26,14 @@ public class Village {
 	public Village() {
 		this.c = BlockPosition.ZERO;
 		this.d = BlockPosition.ZERO;
-		this.j = new TreeMap();
+		this.j = new TreeMap<>();
 		this.k = Lists.newArrayList();
 	}
 
 	public Village(World world) {
 		this.c = BlockPosition.ZERO;
 		this.d = BlockPosition.ZERO;
-		this.j = new TreeMap();
+		this.j = new TreeMap<>();
 		this.k = Lists.newArrayList();
 		this.a = world;
 	}
@@ -202,7 +202,7 @@ public class Village {
 					return null;
 				}
 
-				villagedoor = (VillageDoor) iterator.next();
+				villagedoor = iterator.next();
 			} while (villagedoor.d().getX() != blockposition.getX() || villagedoor.d().getZ() != blockposition.getZ()
 					|| Math.abs(villagedoor.d().getY() - blockposition.getY()) > 1);
 
@@ -232,7 +232,7 @@ public class Village {
 				return;
 			}
 
-			village_aggressor = (Village.Aggressor) iterator.next();
+			village_aggressor = iterator.next();
 		} while (village_aggressor.a != entityliving);
 
 		village_aggressor.b = this.g;
@@ -280,7 +280,7 @@ public class Village {
 		Iterator<Aggressor> iterator = this.k.iterator();
 
 		while (iterator.hasNext()) {
-			Village.Aggressor village_aggressor = (Village.Aggressor) iterator.next();
+			Village.Aggressor village_aggressor = iterator.next();
 
 			if (!village_aggressor.a.isAlive() || Math.abs(this.g - village_aggressor.b) > 300) {
 				iterator.remove();
@@ -295,7 +295,7 @@ public class Village {
 		Iterator<VillageDoor> iterator = this.b.iterator();
 
 		while (iterator.hasNext()) {
-			VillageDoor villagedoor = (VillageDoor) iterator.next();
+			VillageDoor villagedoor = iterator.next();
 
 			if (flag1) {
 				villagedoor.a();
@@ -340,7 +340,7 @@ public class Village {
 			VillageDoor villagedoor;
 
 			for (Iterator<VillageDoor> iterator = this.b.iterator(); iterator.hasNext(); j = Math.max(villagedoor.a(this.d), j)) {
-				villagedoor = (VillageDoor) iterator.next();
+				villagedoor = iterator.next();
 			}
 
 			this.e = Math.max(32, (int) Math.sqrt(j) + 1);

@@ -394,9 +394,6 @@ public class ChunkProviderServer implements IChunkProvider {
 				this.saveChunk(chunk);
 				chunk.f(false);
 				++i;
-				if (false) { // Spigot
-					return false;
-				}
 			}
 		}
 
@@ -430,14 +427,12 @@ public class ChunkProviderServer implements IChunkProvider {
 			server.getPluginManager().callEvent(event);
 			if (!event.isCancelled()) {
 
-				if (chunk != null) {
-					chunk.removeEntities();
-					if (!this.world.savingDisabled) {
-						this.saveChunk(chunk);
-						this.saveChunkNOP(chunk);
-					}
-					this.chunks.remove(chunkcoordinates); // CraftBukkit
+				chunk.removeEntities();
+				if (!this.world.savingDisabled) {
+					this.saveChunk(chunk);
+					this.saveChunkNOP(chunk);
 				}
+				this.chunks.remove(chunkcoordinates); // CraftBukkit
 
 				// this.unloadQueue.remove(olong);
 

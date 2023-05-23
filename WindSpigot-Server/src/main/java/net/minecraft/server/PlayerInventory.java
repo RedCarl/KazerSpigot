@@ -101,11 +101,7 @@ public class PlayerInventory implements IInventory {
 			}
 
 			// Taken from firstPartial(ItemStack)
-			if (item != null && item.getItem() == itemstack.getItem() && item.isStackable()
-					&& item.count < item.getMaxStackSize()
-					&& item.count < this.getMaxStackSize()
-					&& (!item.usesData() || item.getData() == itemstack.getData())
-					&& ItemStack.equals(item, itemstack)) {
+			if (item.getItem() == itemstack.getItem() && item.isStackable() && item.count < item.getMaxStackSize() && item.count < this.getMaxStackSize() && (!item.usesData() || item.getData() == itemstack.getData()) && ItemStack.equals(item, itemstack)) {
 				remains -= (item.getMaxStackSize() < this.getMaxStackSize() ? item.getMaxStackSize()
 						: this.getMaxStackSize()) - item.count;
 			}
@@ -223,11 +219,7 @@ public class PlayerInventory implements IInventory {
 				}
 			}
 
-			int k = i;
-
-			if (i > this.items[j].getMaxStackSize() - this.items[j].count) {
-				k = this.items[j].getMaxStackSize() - this.items[j].count;
-			}
+			int k = Math.min(i, this.items[j].getMaxStackSize() - this.items[j].count);
 
 			if (k > this.getMaxStackSize() - this.items[j].count) {
 				k = this.getMaxStackSize() - this.items[j].count;
@@ -432,7 +424,7 @@ public class PlayerInventory implements IInventory {
 			ItemStack itemstack = ItemStack.createStack(nbttagcompound);
 
 			if (itemstack != null) {
-				if (j >= 0 && j < this.items.length) {
+				if (j < this.items.length) {
 					this.items[j] = itemstack;
 				}
 

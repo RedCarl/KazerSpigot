@@ -57,8 +57,6 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
             () -> new DefaultEventLoopGroup(0,
                     (new ThreadFactoryBuilder()).setNameFormat("Netty Local Client IO #%d").setDaemon(true).build()));
     private static final Logger LOGGER = LogManager.getLogger();
-    // Nacho end
-    private final EnumProtocolDirection h;
     private final Queue<NetworkManager.QueuedPacket> i = Queues.newConcurrentLinkedQueue();
     private final ReentrantReadWriteLock j = new ReentrantReadWriteLock();
     private final java.util.concurrent.atomic.AtomicInteger packetWrites = new java.util.concurrent.atomic.AtomicInteger();
@@ -80,7 +78,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     private boolean p;
     private int flushPacketsStart;
     public NetworkManager(EnumProtocolDirection enumprotocoldirection) {
-        this.h = enumprotocoldirection;
+        // Nacho end
     }
 
     public boolean isEncrypted() {
@@ -220,7 +218,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
                 }
             } else {
                 // Check if the packet is a knockback packet
-                if (WindSpigotConfig.asyncKnockback && (packet instanceof PacketPlayOutEntityVelocity || packet instanceof PacketPlayOutPosition || packet instanceof PacketPlayInFlying.PacketPlayInPosition || packet instanceof PacketPlayInFlying)) {
+                if (WindSpigotConfig.asyncKnockback && (packet instanceof PacketPlayOutEntityVelocity || packet instanceof PacketPlayOutPosition || packet instanceof PacketPlayInFlying)) {
                     // Send it with high priority
                     WindSpigot.getInstance().getKnockbackThread().addPacket(packet, this, null);
                     return;
@@ -302,8 +300,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
                         this.setProtocol(enumprotocol);
                     }
                     try {
-                        ChannelFuture channelfuture1 = (flush) ? this.channel.writeAndFlush(packet)
-                                : this.channel.write(packet); // Tuinity - add flush parameter
+                        ChannelFuture channelfuture1 = this.channel.writeAndFlush(packet); // Tuinity - add flush parameter
                         if (listeners != null) {
                             channelfuture1.addListeners(listeners);
                         }

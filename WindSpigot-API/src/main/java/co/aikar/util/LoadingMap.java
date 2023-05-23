@@ -37,14 +37,14 @@ import com.google.common.base.Function;
  * Allows you to pass a Loader function that when a key is accessed that doesn't
  * exists, automatically loads the entry into the map by calling the loader
  * Function.
- *
+ * <p>
  * .get() Will only return null if the Loader can return null.
- *
+ * <p>
  * You may pass any backing Map to use.
- *
+ * <p>
  * This class is not thread safe and should be wrapped with
  * Collections.synchronizedMap on the OUTSIDE of the LoadingMap if needed.
- *
+ * <p>
  * Do not wrap the backing map with Collections.synchronizedMap.
  *
  * @param <K> Key
@@ -56,9 +56,7 @@ public class LoadingMap<K, V> extends AbstractMap<K, V> {
 
 	/**
 	 * Initializes an auto loading map using specified loader and backing map
-	 * 
-	 * @param backingMap
-	 * @param loader
+	 *
 	 */
 	public LoadingMap(Map<K, V> backingMap, Function<K, V> loader) {
 		this.backingMap = backingMap;
@@ -67,12 +65,7 @@ public class LoadingMap<K, V> extends AbstractMap<K, V> {
 
 	/**
 	 * Creates a new LoadingMap with the specified map and loader
-	 * 
-	 * @param backingMap
-	 * @param loader
-	 * @param <K>
-	 * @param <V>
-	 * @return
+	 *
 	 */
 	public static <K, V> Map<K, V> of(Map<K, V> backingMap, Function<K, V> loader) {
 		return new LoadingMap<K, V>(backingMap, loader);
@@ -80,9 +73,9 @@ public class LoadingMap<K, V> extends AbstractMap<K, V> {
 
 	/**
 	 * Creates a LoadingMap with an auto instantiating loader.
-	 *
+	 * <p>
 	 * Will auto construct class of of Value when not found
-	 *
+	 * <p>
 	 * Since this uses Reflection, It is more effecient to define your own static
 	 * loader than using this helper, but if performance is not critical, this is
 	 * easier.
@@ -101,9 +94,9 @@ public class LoadingMap<K, V> extends AbstractMap<K, V> {
 
 	/**
 	 * Creates a LoadingMap with an auto instantiating loader.
-	 *
+	 * <p>
 	 * Will auto construct class of of Value when not found
-	 *
+	 * <p>
 	 * Since this uses Reflection, It is more effecient to define your own static
 	 * loader than using this helper, but if performance is not critical, this is
 	 * easier.
@@ -122,11 +115,6 @@ public class LoadingMap<K, V> extends AbstractMap<K, V> {
 	 * @see #newAutoMap
 	 *
 	 *      new Auto initializing map using a HashMap.
-	 * @param keyClass
-	 * @param valueClass
-	 * @param <K>
-	 * @param <V>
-	 * @return
 	 */
 	public static <K, V> Map<K, V> newHashAutoMap(final Class<? extends K> keyClass,
 			final Class<? extends V> valueClass) {
@@ -137,10 +125,6 @@ public class LoadingMap<K, V> extends AbstractMap<K, V> {
 	 * @see #newAutoMap
 	 *
 	 *      new Auto initializing map using a HashMap.
-	 * @param valueClass
-	 * @param <K>
-	 * @param <V>
-	 * @return
 	 */
 	public static <K, V> Map<K, V> newHashAutoMap(final Class<? extends V> valueClass) {
 		return newHashAutoMap(null, valueClass);
@@ -151,13 +135,6 @@ public class LoadingMap<K, V> extends AbstractMap<K, V> {
 	 *
 	 *      new Auto initializing map using a HashMap.
 	 *
-	 * @param keyClass
-	 * @param valueClass
-	 * @param initialCapacity
-	 * @param loadFactor
-	 * @param <K>
-	 * @param <V>
-	 * @return
 	 */
 	public static <K, V> Map<K, V> newHashAutoMap(final Class<? extends K> keyClass,
 			final Class<? extends V> valueClass, int initialCapacity, float loadFactor) {
@@ -169,12 +146,6 @@ public class LoadingMap<K, V> extends AbstractMap<K, V> {
 	 *
 	 *      new Auto initializing map using a HashMap.
 	 *
-	 * @param valueClass
-	 * @param initialCapacity
-	 * @param loadFactor
-	 * @param <K>
-	 * @param <V>
-	 * @return
 	 */
 	public static <K, V> Map<K, V> newHashAutoMap(final Class<? extends V> valueClass, int initialCapacity,
 			float loadFactor) {
@@ -183,11 +154,7 @@ public class LoadingMap<K, V> extends AbstractMap<K, V> {
 
 	/**
 	 * Initializes an auto loading map using a HashMap
-	 * 
-	 * @param loader
-	 * @param <K>
-	 * @param <V>
-	 * @return
+	 *
 	 */
 	public static <K, V> Map<K, V> newHashMap(Function<K, V> loader) {
 		return new LoadingMap<K, V>(new HashMap<K, V>(), loader);
@@ -195,13 +162,7 @@ public class LoadingMap<K, V> extends AbstractMap<K, V> {
 
 	/**
 	 * Initializes an auto loading map using a HashMap
-	 * 
-	 * @param loader
-	 * @param initialCapacity
-	 * @param loadFactor
-	 * @param <K>
-	 * @param <V>
-	 * @return
+	 *
 	 */
 	public static <K, V> Map<K, V> newHashMap(Function<K, V> loader, int initialCapacity, float loadFactor) {
 		return new LoadingMap<K, V>(new HashMap<K, V>(initialCapacity, loadFactor), loader);
@@ -209,11 +170,7 @@ public class LoadingMap<K, V> extends AbstractMap<K, V> {
 
 	/**
 	 * Initializes an auto loading map using an Identity HashMap
-	 * 
-	 * @param loader
-	 * @param <K>
-	 * @param <V>
-	 * @return
+	 *
 	 */
 	public static <K, V> Map<K, V> newIdentityHashMap(Function<K, V> loader) {
 		return new LoadingMap<K, V>(new IdentityHashMap<K, V>(), loader);
@@ -221,12 +178,7 @@ public class LoadingMap<K, V> extends AbstractMap<K, V> {
 
 	/**
 	 * Initializes an auto loading map using an Identity HashMap
-	 * 
-	 * @param loader
-	 * @param initialCapacity
-	 * @param <K>
-	 * @param <V>
-	 * @return
+	 *
 	 */
 	public static <K, V> Map<K, V> newIdentityHashMap(Function<K, V> loader, int initialCapacity) {
 		return new LoadingMap<K, V>(new IdentityHashMap<K, V>(initialCapacity), loader);
@@ -325,7 +277,7 @@ public class LoadingMap<K, V> extends AbstractMap<K, V> {
 				}
 			} catch (NoSuchMethodException e) {
 				throw new IllegalStateException(valueClass.getName() + " does not have a constructor for "
-						+ (keyClass != null ? keyClass.getName() : null));
+						+ keyClass.getName());
 			}
 		}
 

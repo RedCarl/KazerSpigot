@@ -53,9 +53,7 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
 
 	CraftMetaSkull(Map<String, Object> map) {
 		super(map);
-		if (profile == null) {
-			setOwner(SerializableMeta.getString(map, SKULL_OWNER.BUKKIT, true));
-		}
+		setOwner(SerializableMeta.getString(map, SKULL_OWNER.BUKKIT, true));
 	}
 
 	@Override

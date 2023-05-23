@@ -52,7 +52,7 @@ public class WorldNBTStorage implements IDataManager, IPlayerFileData {
 		try {
 			File file = new File(this.baseDir, "session.lock");
 
-			try (DataOutputStream dataoutputstream = new DataOutputStream(new FileOutputStream(file))) {
+			try (DataOutputStream dataoutputstream = new DataOutputStream(Files.newOutputStream(file.toPath()))) {
 				dataoutputstream.writeLong(this.sessionId);
 			}
 
@@ -327,7 +327,7 @@ public class WorldNBTStorage implements IDataManager, IPlayerFileData {
 		}
 		File file1 = new File(this.baseDir, "uid.dat");
 		if (file1.exists()) {
-			try (DataInputStream dis = new DataInputStream(new FileInputStream(file1))) {
+			try (DataInputStream dis = new DataInputStream(Files.newInputStream(file1.toPath()))) {
 				return uuid = new UUID(dis.readLong(), dis.readLong());
 			} catch (IOException ex) {
 				a.warn("Failed to read " + file1 + ", generating new FastRandom UUID", ex);
@@ -335,7 +335,7 @@ public class WorldNBTStorage implements IDataManager, IPlayerFileData {
 			// NOOP
 		}
 		uuid = UUID.randomUUID();
-		try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(file1))) {
+		try (DataOutputStream dos = new DataOutputStream(Files.newOutputStream(file1.toPath()))) {
 			dos.writeLong(uuid.getMostSignificantBits());
 			dos.writeLong(uuid.getLeastSignificantBits());
 		} catch (IOException ex) {

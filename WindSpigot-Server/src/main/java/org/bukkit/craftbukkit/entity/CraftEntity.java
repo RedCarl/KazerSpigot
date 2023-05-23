@@ -131,8 +131,8 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
 	}
 
 	public static CraftEntity getEntity(CraftServer server, Entity entity) {
-		/**
-		 * Order is *EXTREMELY* important -- keep it right! =D
+		/*
+		  Order is *EXTREMELY* important -- keep it right! =D
 		 */
 		if (entity instanceof EntityLiving) {
 			// Players

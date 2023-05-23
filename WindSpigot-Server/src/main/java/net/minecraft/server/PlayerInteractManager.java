@@ -258,7 +258,7 @@ public class PlayerInteractManager {
 		// CraftBukkit start - fire BlockBreakEvent
 		BlockBreakEvent event = null;
 
-		if (this.player instanceof EntityPlayer) {
+		if (this.player != null) {
 			org.bukkit.block.Block block = this.world.getWorld().getBlockAt(blockposition.getX(), blockposition.getY(),
 					blockposition.getZ());
 
@@ -310,70 +310,66 @@ public class PlayerInteractManager {
 				return false;
 			}
 		}
-		if (false) {
-			return false;
-		} else {
-			IBlockData iblockdata = this.world.getType(blockposition);
-			if (iblockdata.getBlock() == Blocks.AIR) {
-				return false; // CraftBukkit - A plugin set block to air without cancelling
-			}
-			TileEntity tileentity = this.world.getTileEntity(blockposition);
+		IBlockData iblockdata = this.world.getType(blockposition);
+		if (iblockdata.getBlock() == Blocks.AIR) {
+			return false; // CraftBukkit - A plugin set block to air without cancelling
+		}
+		TileEntity tileentity = this.world.getTileEntity(blockposition);
 
-			// CraftBukkit start - Special case skulls, their item data comes from a tile
-			// entity
-			if (iblockdata.getBlock() == Blocks.SKULL && !this.isCreative()) {
-				iblockdata.getBlock().dropNaturally(world, blockposition, iblockdata, 1.0F, 0);
-				return this.c(blockposition);
-			}
-			// CraftBukkit end
+		// CraftBukkit start - Special case skulls, their item data comes from a tile
+		// entity
+		if (iblockdata.getBlock() == Blocks.SKULL && !this.isCreative()) {
+			iblockdata.getBlock().dropNaturally(world, blockposition, iblockdata, 1.0F, 0);
+			return this.c(blockposition);
+		}
+		// CraftBukkit end
 
-			if (this.gamemode.c()) {
-				if (this.gamemode == WorldSettings.EnumGamemode.SPECTATOR) {
+		if (this.gamemode.c()) {
+			if (this.gamemode == WorldSettings.EnumGamemode.SPECTATOR) {
+				return false;
+			}
+
+			if (!this.player.cn()) {
+				ItemStack itemstack = this.player.bZ();
+
+				if (itemstack == null) {
 					return false;
 				}
 
-				if (!this.player.cn()) {
-					ItemStack itemstack = this.player.bZ();
-
-					if (itemstack == null) {
-						return false;
-					}
-
-					if (!itemstack.c(iblockdata.getBlock())) {
-						return false;
-					}
+				if (!itemstack.c(iblockdata.getBlock())) {
+					return false;
 				}
 			}
-
-			this.world.a(this.player, 2001, blockposition, Block.getCombinedId(iblockdata));
-			boolean flag = this.c(blockposition);
-
-			if (this.isCreative()) {
-				this.player.playerConnection.sendPacket(new PacketPlayOutBlockChange(this.world, blockposition));
-			} else {
-				ItemStack itemstack1 = this.player.bZ();
-				boolean flag1 = this.player.b(iblockdata.getBlock());
-
-				if (itemstack1 != null) {
-					itemstack1.a(this.world, iblockdata.getBlock(), blockposition, this.player);
-					if (itemstack1.count == 0) {
-						this.player.ca();
-					}
-				}
-
-				if (flag && flag1) {
-					iblockdata.getBlock().a(this.world, this.player, blockposition, iblockdata, tileentity);
-				}
-			}
-
-			// CraftBukkit start - Drop event experience
-			if (flag && event != null) {
-				iblockdata.getBlock().dropExperience(this.world, blockposition, event.getExpToDrop());
-			}
-			// CraftBukkit end
-
-			return flag;
 		}
+
+		this.world.a(this.player, 2001, blockposition, Block.getCombinedId(iblockdata));
+		boolean flag = this.c(blockposition);
+
+		if (this.isCreative()) {
+			this.player.playerConnection.sendPacket(new PacketPlayOutBlockChange(this.world, blockposition));
+		} else {
+			ItemStack itemstack1 = this.player.bZ();
+			boolean flag1 = this.player.b(iblockdata.getBlock());
+
+			if (itemstack1 != null) {
+				itemstack1.a(this.world, iblockdata.getBlock(), blockposition, this.player);
+				if (itemstack1.count == 0) {
+					this.player.ca();
+				}
+			}
+
+			if (flag && flag1) {
+				iblockdata.getBlock().a(this.world, this.player, blockposition, iblockdata, tileentity);
+			}
+		}
+
+		// CraftBukkit start - Drop event experience
+		if (flag && event != null) {
+			iblockdata.getBlock().dropExperience(this.world, blockposition, event.getExpToDrop());
+		}
+		// CraftBukkit end
+
+		return flag;
 	}
 
 	public boolean useItem(EntityHuman entityhuman, World world, ItemStack itemstack) {
@@ -384,8 +380,7 @@ public class PlayerInteractManager {
 			int j = itemstack.getData();
 			ItemStack itemstack1 = itemstack.a(world, entityhuman);
 
-			if (itemstack1 == itemstack && (itemstack1 == null
-					|| itemstack1.count == i && itemstack1.l() <= 0 && itemstack1.getData() == j)) {
+			if (itemstack1 == itemstack && itemstack1.count == i && itemstack1.l() <= 0 && itemstack1.getData() == j) {
 				return false;
 			} else {
 				entityhuman.inventory.items[entityhuman.inventory.itemInHandIndex] = itemstack1;

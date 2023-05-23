@@ -35,10 +35,10 @@ public class ServerTickEndEvent extends Event {
 
 	/**
 	 * Amount of nanoseconds remaining before the next tick should start.
-	 *
+	 * <p>
 	 * If this value is negative, then that means the server has exceeded the tick
 	 * time limit and TPS has been lost.
-	 *
+	 * <p>
 	 * Method will continously return the updated time remaining value. (return
 	 * value is not static)
 	 *

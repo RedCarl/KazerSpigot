@@ -3,6 +3,7 @@ package net.minecraft.server;
 import ga.windpvp.windspigot.random.FastRandom;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Random;
 
 public class BiomeMesa extends BiomeBase {
@@ -142,7 +143,7 @@ public class BiomeMesa extends BiomeBase {
 										iblockdata3 = this.a(i, l1, j);
 									}
 								} else {
-									iblockdata3 = Blocks.STAINED_HARDENED_CLAY.getBlockData().set(BlockCloth.COLOR,
+									iblockdata3 = Objects.requireNonNull(Blocks.STAINED_HARDENED_CLAY.getBlockData()).set(BlockCloth.COLOR,
 											EnumColor.ORANGE);
 								}
 

@@ -49,7 +49,7 @@ public class BlockFlowing extends BlockFluids {
 
 			for (Iterator<EnumDirection> iterator = EnumDirection.EnumDirectionLimit.HORIZONTAL.iterator(); iterator
 					.hasNext(); l = this.a(world, blockposition.shift(enumdirection), l)) {
-				enumdirection = (EnumDirection) iterator.next();
+				enumdirection = iterator.next();
 			}
 
 			int i1 = l + b0;

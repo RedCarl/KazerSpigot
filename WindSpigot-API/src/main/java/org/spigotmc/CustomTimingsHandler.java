@@ -37,7 +37,7 @@ import co.aikar.timings.TimingsManager;
 
 /**
  * This is here for legacy purposes incase any plugin used it.
- *
+ * <p>
  * If you use this, migrate ASAP as this will be removed in the future!
  *
  * @deprecated

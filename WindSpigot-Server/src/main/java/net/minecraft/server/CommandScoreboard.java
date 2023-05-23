@@ -521,11 +521,11 @@ public class CommandScoreboard extends CommandAbstract {
 
 		if (!hashset.isEmpty()) {
 			icommandlistener.a(CommandObjectiveExecutor.EnumCommandResult.AFFECTED_ENTITIES, hashset.size());
-			a(icommandlistener, this, "commands.scoreboard.teams.join.success", hashset.size(), s, a(hashset.toArray(new String[0])));
+			a(icommandlistener, this, "commands.scoreboard.teams.join.success", hashset.size(), s, a(hashset.toArray(new Object[0])));
 		}
 
 		if (!hashset1.isEmpty()) {
-			throw new CommandException("commands.scoreboard.teams.join.failure", hashset1.size(), s, a(hashset1.toArray(new String[0])));
+			throw new CommandException("commands.scoreboard.teams.join.failure", hashset1.size(), s, a(hashset1.toArray(new Object[0])));
 		}
 	}
 
@@ -572,11 +572,11 @@ public class CommandScoreboard extends CommandAbstract {
 		if (!hashset.isEmpty()) {
 			icommandlistener.a(CommandObjectiveExecutor.EnumCommandResult.AFFECTED_ENTITIES, hashset.size());
 			a(icommandlistener, this, "commands.scoreboard.teams.leave.success",
-					hashset.size(), a(hashset.toArray(new String[0])));
+					hashset.size(), a(hashset.toArray(new Object[0])));
 		}
 
 		if (!hashset1.isEmpty()) {
-			throw new CommandException("commands.scoreboard.teams.leave.failure", hashset1.size(), a(hashset1.toArray(new String[0])));
+			throw new CommandException("commands.scoreboard.teams.leave.failure", hashset1.size(), a(hashset1.toArray(new Object[0])));
 		}
 	}
 
@@ -964,10 +964,8 @@ public class CommandScoreboard extends CommandAbstract {
 						return a(astring, this.d().getTeamNames());
 					}
 
-					if (astring.length >= 4) {
-						return a(astring, MinecraftServer.getServer().getPlayers());
-					}
-				} else {
+                    return a(astring, MinecraftServer.getServer().getPlayers());
+                } else {
 					if ("leave".equalsIgnoreCase(astring[1])) {
 						return a(astring, MinecraftServer.getServer().getPlayers());
 					}

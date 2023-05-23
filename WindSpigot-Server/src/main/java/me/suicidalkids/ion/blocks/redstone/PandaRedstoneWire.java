@@ -2,6 +2,7 @@ package me.suicidalkids.ion.blocks.redstone;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -74,7 +75,7 @@ public class PandaRedstoneWire extends BlockRedstoneWire {
 
 			for (EnumDirection facing2 : facings) {
 				BaseBlockPosition v2 = ReflectUtil.getOfT(facing2, BaseBlockPosition.class);
-				set.add(new BlockPosition(v1.getX() + v2.getX(), v1.getY() + v2.getY(), v1.getZ() + v2.getZ()));
+				set.add(new BlockPosition(Objects.requireNonNull(v1).getX() + Objects.requireNonNull(v2).getX(), v1.getY() + v2.getY(), v1.getZ() + v2.getZ()));
 			}
 		}
 
@@ -341,7 +342,7 @@ public class PandaRedstoneWire extends BlockRedstoneWire {
 	 * blocks, lamps, dropper, hopper, TNT, rails, possibly more) - implement own
 	 * logic for pistons, repeaters, comparators and redstone torches The current
 	 * implementation was chosen to keep everything in one class.
-	 *
+	 * <p>
 	 * Why is this extra check needed? 1. It makes sure that many old behaviors
 	 * still work (QC + Pistons). 2. It prevents updates from "jumping". Or rather
 	 * it prevents this wire to update a block that would get powered by the next
@@ -430,8 +431,6 @@ public class PandaRedstoneWire extends BlockRedstoneWire {
 	 * Adds all surrounding positions to a set. This is the neighbor blocks, as well
 	 * as their neighbors
 	 *
-	 * @param pos
-	 * @param set
 	 */
 	private void addAllSurroundingBlocks(BlockPosition pos, Set<BlockPosition> set) {
 		for (BaseBlockPosition vect : surroundingBlocksOffset) {

@@ -90,14 +90,12 @@ public class Pumpkin extends MaterialData implements Directional {
 		case 0x0:
 			return BlockFace.NORTH;
 
-		case 0x1:
-			return BlockFace.EAST;
-
-		case 0x2:
+			case 0x2:
 			return BlockFace.SOUTH;
 
 		case 0x3:
-		default:
+			case 0x1:
+			default:
 			return BlockFace.EAST;
 		}
 	}

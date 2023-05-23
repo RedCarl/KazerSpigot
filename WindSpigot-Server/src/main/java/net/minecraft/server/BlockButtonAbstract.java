@@ -267,9 +267,9 @@ public abstract class BlockButtonAbstract extends Block {
 			boolean allowed = false;
 
 			// If all of the events are cancelled block the button press, else allow
-			for (Object object : list) {
+			for (Entity object : list) {
 				if (object != null) {
-					EntityInteractEvent event = new EntityInteractEvent(((Entity) object).getBukkitEntity(), block);
+					EntityInteractEvent event = new EntityInteractEvent(object.getBukkitEntity(), block);
 					world.getServer().getPluginManager().callEvent(event);
 
 					if (!event.isCancelled()) {

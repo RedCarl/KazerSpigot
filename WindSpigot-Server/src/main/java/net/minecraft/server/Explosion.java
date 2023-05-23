@@ -233,8 +233,8 @@ public class Explosion {
 				}
 			}
 
-            boolean cancelled = false;
-            List<org.bukkit.block.Block> bukkitBlocks = blockList;
+            boolean cancelled;
+            List<org.bukkit.block.Block> bukkitBlocks;
             float yield = 0.3F; // default
 
 			if (explode != null) {

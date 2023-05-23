@@ -39,7 +39,7 @@ public class EntityPig extends EntityAnimal {
 	@Override
 	protected void h() {
 		super.h();
-		this.datawatcher.a(16, Byte.valueOf((byte) 0));
+		this.datawatcher.a(16, (byte) 0);
 	}
 
 	@Override
@@ -116,9 +116,9 @@ public class EntityPig extends EntityAnimal {
 
 	public void setSaddle(boolean flag) {
 		if (flag) {
-			this.datawatcher.watch(16, Byte.valueOf((byte) 1));
+			this.datawatcher.watch(16, (byte) 1);
 		} else {
-			this.datawatcher.watch(16, Byte.valueOf((byte) 0));
+			this.datawatcher.watch(16, (byte) 0);
 		}
 
 	}

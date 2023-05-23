@@ -178,7 +178,7 @@ public class HelpCommand extends VanillaCommand {
 		if (s1 != null && s2 == null) {
 			return s1.length();
 		}
-		if (s1 == null && s2 != null) {
+		if (s1 == null) {
 			return s2.length();
 		}
 

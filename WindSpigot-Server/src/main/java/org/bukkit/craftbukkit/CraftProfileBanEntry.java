@@ -1,6 +1,7 @@
 package org.bukkit.craftbukkit;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 
@@ -60,7 +61,7 @@ public final class CraftProfileBanEntry implements org.bukkit.BanEntry {
 
 	@Override
 	public void setExpiration(Date expiration) {
-		if (expiration != null && expiration.getTime() == new Date(0, 0, 0, 0, 0, 0).getTime()) {
+		if (expiration != null && expiration.getTime() == new Date(0, Calendar.JANUARY, 0, 0, 0, 0).getTime()) {
 			expiration = null; // Forces "forever"
 		}
 

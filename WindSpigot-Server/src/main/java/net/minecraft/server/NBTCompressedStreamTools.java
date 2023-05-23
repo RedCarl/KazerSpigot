@@ -9,6 +9,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Objects;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -82,14 +83,14 @@ public class NBTCompressedStreamTools {
 			NBTBase nbtbase = NBTBase.createTag(b0);
 
 			try {
-				nbtbase.load(datainput, i, nbtreadlimiter);
+				Objects.requireNonNull(nbtbase).load(datainput, i, nbtreadlimiter);
 				return nbtbase;
 			} catch (IOException ioexception) {
 				CrashReport crashreport = CrashReport.a(ioexception, "Loading NBT data");
 				CrashReportSystemDetails crashreportsystemdetails = crashreport.a("NBT Tag");
 
 				crashreportsystemdetails.a("Tag name", "[UNNAMED TAG]");
-				crashreportsystemdetails.a("Tag type", Byte.valueOf(b0));
+				crashreportsystemdetails.a("Tag type", b0);
 				throw new ReportedException(crashreport);
 			}
 		}

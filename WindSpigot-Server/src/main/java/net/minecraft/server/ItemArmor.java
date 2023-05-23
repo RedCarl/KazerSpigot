@@ -27,7 +27,7 @@ public class ItemArmor extends Item {
 					Predicates.and(IEntitySelector.d, new IEntitySelector.EntitySelectorEquipable(itemstack)));
 
 			if (list.size() > 0) {
-				EntityLiving entityliving = (EntityLiving) list.get(0);
+				EntityLiving entityliving = list.get(0);
 				int l = entityliving instanceof EntityHuman ? 1 : 0;
 				int i1 = EntityInsentient.c(itemstack);
 
@@ -181,13 +181,11 @@ public class ItemArmor extends Item {
 		IRON("iron", 15, new int[] { 2, 6, 5, 2 }, 9), GOLD("gold", 7, new int[] { 2, 5, 3, 1 }, 25),
 		DIAMOND("diamond", 33, new int[] { 3, 8, 6, 3 }, 10);
 
-		private final String f;
 		private final int g;
 		private final int[] h;
 		private final int i;
 
 		EnumArmorMaterial(String s, int i, int[] aint, int j) {
-			this.f = s;
 			this.g = i;
 			this.h = aint;
 			this.i = j;

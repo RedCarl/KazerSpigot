@@ -119,7 +119,7 @@ public class RecipesFurnace {
 				return 0.0F;
 			}
 
-			entry = (Entry) iterator.next();
+			entry = iterator.next();
 		} while (!this.a(itemstack, (ItemStack) entry.getKey()));
 
 		return (Float) entry.getValue();

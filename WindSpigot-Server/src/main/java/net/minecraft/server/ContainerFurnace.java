@@ -116,11 +116,11 @@ public class ContainerFurnace extends Container {
 					if (!this.a(itemstack1, 1, 2, false)) {
 						return null;
 					}
-				} else if (i >= 3 && i < 30) {
+				} else if (i < 30) {
 					if (!this.a(itemstack1, 30, 39, false)) {
 						return null;
 					}
-				} else if (i >= 30 && i < 39 && !this.a(itemstack1, 3, 30, false)) {
+				} else if (i < 39 && !this.a(itemstack1, 3, 30, false)) {
 					return null;
 				}
 			} else if (!this.a(itemstack1, 3, 39, false)) {

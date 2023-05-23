@@ -150,7 +150,7 @@ public class EntityLeash extends EntityHanging {
 		int i = blockposition.getX();
 		int j = blockposition.getY();
 		int k = blockposition.getZ();
-		List list = world.a(EntityLeash.class,
+		List<EntityLeash> list = world.a(EntityLeash.class,
 				new AxisAlignedBB(i - 1.0D, j - 1.0D, k - 1.0D, i + 1.0D, j + 1.0D, k + 1.0D));
 		Iterator iterator = list.iterator();
 

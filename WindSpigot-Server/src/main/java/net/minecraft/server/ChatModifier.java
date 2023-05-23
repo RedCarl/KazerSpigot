@@ -275,12 +275,12 @@ public class ChatModifier {
 					}
 
 					flag = true;
-					return flag;
+					return true;
 				}
 			}
 
 			flag = false;
-			return flag;
+			return false;
 		}
 	}
 

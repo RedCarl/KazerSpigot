@@ -10,15 +10,12 @@ import ga.windpvp.windspigot.cache.Constants;
 
 public class BlockRedstoneOre extends Block {
 
-	private final boolean a;
-
 	public BlockRedstoneOre(boolean flag) {
 		super(Material.STONE);
 		if (flag) {
 			this.a(true);
 		}
 
-		this.a = flag;
 	}
 
 	@Override

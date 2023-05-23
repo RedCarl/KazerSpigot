@@ -1,6 +1,7 @@
 package org.bukkit.material;
 
 import java.util.EnumSet;
+import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.lang.Validate;
@@ -190,7 +191,7 @@ public class Mushroom extends MaterialData {
 
 	@Override
 	public String toString() {
-		return Material.getMaterial(getItemTypeId()).toString() + (isStem() ? "{STEM}" : getPaintedFaces());
+		return Objects.requireNonNull(Material.getMaterial(getItemTypeId())).toString() + (isStem() ? "{STEM}" : getPaintedFaces());
 	}
 
 	@Override

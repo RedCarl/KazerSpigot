@@ -2,6 +2,7 @@ package net.minecraft.server;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import org.bukkit.event.hanging.HangingPlaceEvent; // CraftBukkit
 
@@ -35,12 +36,9 @@ public class ItemLeash extends Item {
 		int i = blockposition.getX();
 		int j = blockposition.getY();
 		int k = blockposition.getZ();
-		List list = world.a(EntityInsentient.class, new AxisAlignedBB(i - d0, j - d0, k - d0, i + d0, j + d0, k + d0));
-		Iterator iterator = list.iterator();
+		List<EntityInsentient> list = world.a(EntityInsentient.class, new AxisAlignedBB(i - d0, j - d0, k - d0, i + d0, j + d0, k + d0));
 
-		while (iterator.hasNext()) {
-			EntityInsentient entityinsentient = (EntityInsentient) iterator.next();
-
+		for (EntityInsentient entityinsentient : list) {
 			if (entityinsentient.cc() && entityinsentient.getLeashHolder() == entityhuman) {
 				if (entityleash == null) {
 					entityleash = EntityLeash.a(world, blockposition);
@@ -61,7 +59,7 @@ public class ItemLeash extends Item {
 
 				// CraftBukkit start
 				if (org.bukkit.craftbukkit.event.CraftEventFactory
-						.callPlayerLeashEntityEvent(entityinsentient, entityleash, entityhuman).isCancelled()) {
+						.callPlayerLeashEntityEvent(entityinsentient, entityleash, Objects.requireNonNull(entityhuman)).isCancelled()) {
 					continue;
 				}
 				// CraftBukkit end

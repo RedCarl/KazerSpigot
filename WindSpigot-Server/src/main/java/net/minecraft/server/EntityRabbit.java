@@ -10,13 +10,12 @@ public class EntityRabbit extends EntityAnimal {
 	private int bs = 0;
 	private EntityRabbit.EnumRabbitState bt;
 	private int bu;
-	private final EntityHuman bv;
 
 	public EntityRabbit(World world) {
 		super(world);
 		this.bt = EntityRabbit.EnumRabbitState.HOP;
 		this.bu = 0;
-		this.bv = null;
+		EntityHuman bv = null;
 		this.setSize(0.6F, 0.7F);
 		this.g = new ControllerJumpRabbit(this);
 		this.moveController = new EntityRabbit.ControllerMoveRabbit(this);
@@ -37,7 +36,7 @@ public class EntityRabbit extends EntityAnimal {
 		this.goalSelector.a(5, new EntityRabbit.PathfinderGoalEatCarrots(this));
 		this.goalSelector.a(5, new PathfinderGoalRandomStroll(this, 0.6D));
 		this.goalSelector.a(11, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 10.0F));
-		this.bm = new EntityRabbit.PathfinderGoalRabbitAvoidTarget(this, EntityWolf.class, 16.0F, 1.33D, 1.33D);
+		this.bm = new EntityRabbit.PathfinderGoalRabbitAvoidTarget<>(this, EntityWolf.class, 16.0F, 1.33D, 1.33D);
 		this.goalSelector.a(4, this.bm);
 	}
 	// CraftBukkit end
@@ -303,8 +302,8 @@ public class EntityRabbit extends EntityAnimal {
 			this.goalSelector.a(this.bm);
 			this.goalSelector.a(4, new EntityRabbit.PathfinderGoalKillerRabbitMeleeAttack(this));
 			this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, false));
-			this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget(this, EntityHuman.class, true));
-			this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget(this, EntityWolf.class, true));
+			this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityHuman.class, true));
+			this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityWolf.class, true));
 			if (!this.hasCustomName()) {
 				this.setCustomName(LocaleI18n.get("entity.KillerBunny.name"));
 			}
@@ -503,12 +502,9 @@ public class EntityRabbit extends EntityAnimal {
 
 	static class PathfinderGoalRabbitAvoidTarget<T extends Entity> extends PathfinderGoalAvoidTarget<T> {
 
-		private final EntityRabbit c;
-
 		public PathfinderGoalRabbitAvoidTarget(EntityRabbit entityrabbit, Class<T> oclass, float f, double d0,
 				double d1) {
 			super(entityrabbit, oclass, f, d0, d1);
-			this.c = entityrabbit;
 		}
 
 		@Override

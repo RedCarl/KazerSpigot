@@ -413,7 +413,7 @@ public abstract class EntityInsentient extends EntityLiving {
 				if (i == 0) {
 					if (itemstack.getItem() instanceof ItemSword && !(itemstack1.getItem() instanceof ItemSword)) {
 						flag = true;
-					} else if (itemstack.getItem() instanceof ItemSword && itemstack1.getItem() instanceof ItemSword) {
+					} else if (itemstack.getItem() instanceof ItemSword) {
 						ItemSword itemsword = (ItemSword) itemstack.getItem();
 						ItemSword itemsword1 = (ItemSword) itemstack1.getItem();
 
@@ -430,7 +430,7 @@ public abstract class EntityInsentient extends EntityLiving {
 					}
 				} else if (itemstack.getItem() instanceof ItemArmor && !(itemstack1.getItem() instanceof ItemArmor)) {
 					flag = true;
-				} else if (itemstack.getItem() instanceof ItemArmor && itemstack1.getItem() instanceof ItemArmor) {
+				} else if (itemstack.getItem() instanceof ItemArmor) {
 					ItemArmor itemarmor = (ItemArmor) itemstack.getItem();
 					ItemArmor itemarmor1 = (ItemArmor) itemstack1.getItem();
 

@@ -45,7 +45,7 @@ public class ContainerBeacon extends Container {
 	@Override
 	public void b(EntityHuman entityhuman) {
 		super.b(entityhuman);
-		if (entityhuman != null && !entityhuman.world.isClientSide) {
+		if (!entityhuman.world.isClientSide) {
 			ItemStack itemstack = this.f.a(this.f.getMaxStackSize());
 
 			if (itemstack != null) {
@@ -82,11 +82,11 @@ public class ContainerBeacon extends Container {
 				if (!this.a(itemstack1, 0, 1, false)) {
 					return null;
 				}
-			} else if (i >= 1 && i < 28) {
+			} else if (i < 28) {
 				if (!this.a(itemstack1, 28, 37, false)) {
 					return null;
 				}
-			} else if (i >= 28 && i < 37) {
+			} else if (i < 37) {
 				if (!this.a(itemstack1, 1, 28, false)) {
 					return null;
 				}

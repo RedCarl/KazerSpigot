@@ -38,11 +38,8 @@ public final class SpigotTimings {
 
 	/**
 	 * Gets a timer associated with a plugins tasks.
-	 * 
-	 * @param bukkitTask
-	 * @param period
-	 * @return
-	 */
+	 *
+     */
 	public static Timing getPluginTaskTimings(BukkitTask bukkitTask, long period) {
 		if (!bukkitTask.isSync()) {
 			return null;
@@ -82,10 +79,8 @@ public final class SpigotTimings {
 	/**
 	 * Get a named timer for the specified entity type to track type specific
 	 * timings.
-	 * 
-	 * @param entity
-	 * @return
-	 */
+	 *
+     */
 	public static Timing getEntityTimings(Entity entity) {
 		String entityType = entity.getClass().getName();
 		return Timings.ofSafe("Minecraft", "## tickEntity - " + entityType, tickEntityTimer);
@@ -94,10 +89,8 @@ public final class SpigotTimings {
 	/**
 	 * Get a named timer for the specified tile entity type to track type specific
 	 * timings.
-	 * 
-	 * @param entity
-	 * @return
-	 */
+	 *
+     */
 	public static Timing getTileEntityTimings(TileEntity entity) {
 		String entityType = entity.getClass().getName();
 		return Timings.ofSafe("Minecraft", "## tickTileEntity - " + entityType, tickTileEntityTimer);

@@ -93,7 +93,7 @@ public abstract class BlockFluids extends Block {
 		BlockPosition blockposition1;
 
 		while (iterator.hasNext()) {
-			enumdirection = (EnumDirection) iterator.next();
+			enumdirection = iterator.next();
 			blockposition1 = blockposition.shift(enumdirection);
 			int j = this.f(iblockaccess, blockposition1);
 			int k;
@@ -108,7 +108,7 @@ public abstract class BlockFluids extends Block {
 								(blockposition1.getZ() - blockposition.getZ()) * k);
 					}
 				}
-			} else if (j >= 0) {
+			} else {
 				k = j - i;
 				vec3d = vec3d.add((blockposition1.getX() - blockposition.getX()) * k,
 						(blockposition1.getY() - blockposition.getY()) * k,
@@ -120,7 +120,7 @@ public abstract class BlockFluids extends Block {
 			iterator = EnumDirection.EnumDirectionLimit.HORIZONTAL.iterator();
 
 			while (iterator.hasNext()) {
-				enumdirection = (EnumDirection) iterator.next();
+				enumdirection = iterator.next();
 				blockposition1 = blockposition.shift(enumdirection);
 				if (this.b(iblockaccess, blockposition1, enumdirection)
 						|| this.b(iblockaccess, blockposition1.up(), enumdirection)) {

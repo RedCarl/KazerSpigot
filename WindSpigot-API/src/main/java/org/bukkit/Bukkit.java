@@ -1151,7 +1151,7 @@ public final class Bukkit {
 
 	/**
 	 * Create a ChunkData for use in a generator.
-	 * 
+	 * <p>
 	 * See
 	 * {@link ChunkGenerator#generateChunkData(org.bukkit.World, java.util.Random, int, int, org.bukkit.generator.ChunkGenerator.BiomeGrid)}
 	 * 

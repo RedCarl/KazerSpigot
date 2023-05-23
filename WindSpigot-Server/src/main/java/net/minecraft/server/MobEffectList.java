@@ -79,7 +79,6 @@ public class MobEffectList {
 	public static final MobEffectList G = null;
 	public final int id;
 	private final Map<IAttribute, AttributeModifier> J = Maps.newHashMap();
-	private final boolean K;
 	private final int L;
 	private String M = "";
 	private double O;
@@ -89,7 +88,6 @@ public class MobEffectList {
 		this.id = i;
 		MobEffectList.byId[i] = this;
 		MobEffectList.I.put(minecraftkey, this);
-		this.K = flag;
 		if (flag) {
 			this.O = 0.5D;
 		} else {
@@ -240,7 +238,7 @@ public class MobEffectList {
 	public void a(EntityLiving entityliving, AttributeMapBase attributemapbase, int i) {
 
 		for (Entry<IAttribute, AttributeModifier> iAttributeAttributeModifierEntry : this.J.entrySet()) {
-			Entry entry = (Entry) iAttributeAttributeModifierEntry;
+			Entry entry = iAttributeAttributeModifierEntry;
 			AttributeInstance attributeinstance = attributemapbase.a((IAttribute) entry.getKey());
 
 			if (attributeinstance != null) {
@@ -253,7 +251,7 @@ public class MobEffectList {
 	public void b(EntityLiving entityliving, AttributeMapBase attributemapbase, int i) {
 
 		for (Entry<IAttribute, AttributeModifier> iAttributeAttributeModifierEntry : this.J.entrySet()) {
-			Entry entry = (Entry) iAttributeAttributeModifierEntry;
+			Entry entry = iAttributeAttributeModifierEntry;
 			AttributeInstance attributeinstance = attributemapbase.a((IAttribute) entry.getKey());
 
 			if (attributeinstance != null) {

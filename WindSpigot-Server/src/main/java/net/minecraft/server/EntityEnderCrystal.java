@@ -25,7 +25,7 @@ public class EntityEnderCrystal extends Entity {
 
 	@Override
 	protected void h() {
-		this.datawatcher.a(8, Integer.valueOf(this.b));
+		this.datawatcher.a(8, this.b);
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class EntityEnderCrystal extends Entity {
 		this.lastY = this.locY;
 		this.lastZ = this.locZ;
 		++this.a;
-		this.datawatcher.watch(8, Integer.valueOf(this.b));
+		this.datawatcher.watch(8, this.b);
 		int i = MathHelper.floor(this.locX);
 		int j = MathHelper.floor(this.locY);
 		int k = MathHelper.floor(this.locZ);
@@ -75,20 +75,18 @@ public class EntityEnderCrystal extends Entity {
 				}
 				// CraftBukkit end
 				this.b = 0;
-				if (this.b <= 0) {
-					this.die();
-					if (!this.world.isClientSide) {
-						// CraftBukkit start
-						ExplosionPrimeEvent event = new ExplosionPrimeEvent(this.getBukkitEntity(), 6.0F, false);
-						this.world.getServer().getPluginManager().callEvent(event);
-						if (event.isCancelled()) {
-							this.dead = false;
-							return false;
-						}
-						this.world.createExplosion(this, this.locX, this.locY, this.locZ, event.getRadius(),
-								event.getFire(), true);
-						// CraftBukkit end
+				this.die();
+				if (!this.world.isClientSide) {
+					// CraftBukkit start
+					ExplosionPrimeEvent event = new ExplosionPrimeEvent(this.getBukkitEntity(), 6.0F, false);
+					this.world.getServer().getPluginManager().callEvent(event);
+					if (event.isCancelled()) {
+						this.dead = false;
+						return false;
 					}
+					this.world.createExplosion(this, this.locX, this.locY, this.locZ, event.getRadius(),
+							event.getFire(), true);
+					// CraftBukkit end
 				}
 			}
 

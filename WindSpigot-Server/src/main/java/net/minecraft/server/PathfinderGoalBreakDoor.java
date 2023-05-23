@@ -38,12 +38,12 @@ public class PathfinderGoalBreakDoor extends PathfinderGoalDoorInteract {
 
 			if (!BlockDoor.f(this.a.world, this.b) && d0 < 4.0D) {
 				flag = true;
-				return flag;
+				return true;
 			}
 		}
 
 		flag = false;
-		return flag;
+		return false;
 	}
 
 	@Override

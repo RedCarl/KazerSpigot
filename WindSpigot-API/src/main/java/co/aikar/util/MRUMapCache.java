@@ -104,11 +104,7 @@ public class MRUMapCache<K, V> extends AbstractMap<K, V> {
 
 	/**
 	 * Wraps the specified map with a most recently used cache
-	 * 
-	 * @param map
-	 * @param <K>
-	 * @param <V>
-	 * @return
+	 *
 	 */
 	public static <K, V> Map<K, V> of(Map<K, V> map) {
 		return new MRUMapCache<K, V>(map);

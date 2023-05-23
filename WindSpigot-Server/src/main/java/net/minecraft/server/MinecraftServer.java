@@ -7,13 +7,7 @@ import java.io.IOException;
 import java.net.Proxy;
 import java.security.KeyPair;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Queue;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
@@ -115,10 +109,8 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 	private String P = "";
 	private boolean Q;
 	private long R;
-	private String S;
 	private boolean T;
 	private boolean U;
-	private final YggdrasilAuthenticationService V;
 	private final MinecraftSessionService W;
 	private long X = 0L;
 	private final GameProfileRepository Y;
@@ -188,9 +180,9 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 		this.b = this.h();
 		// this.convertable = new WorldLoaderServer(file); // CraftBukkit - moved to
 		// DedicatedServer.init
-		this.V = new YggdrasilAuthenticationService(proxy, UUID.randomUUID().toString());
-		this.W = this.V.createMinecraftSessionService();
-		this.Y = this.V.createProfileRepository();
+		YggdrasilAuthenticationService v1 = new YggdrasilAuthenticationService(proxy, UUID.randomUUID().toString());
+		this.W = v1.createMinecraftSessionService();
+		this.Y = v1.createProfileRepository();
 		
 		// WindSpigot start - backport modern tick loop
 		this.nextTickTime = getMillis();
@@ -263,7 +255,6 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 	}
 
 	protected synchronized void b(String s) {
-		this.S = s;
 	}
 
 	protected void a(String s, String s1, long i, WorldType worldtype, String s2) {
@@ -595,7 +586,6 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 	private static final long MAX_CATCHUP_BUFFER = TICK_TIME * TPS * 60L;
 	// WindSpigot start - backport modern tick loop
 	private long lastTick = 0;
-	private final long catchupTime = 0;
 	// WindSpigot end
 	private static final int SAMPLE_INTERVAL = 20;
 	public final RollingAverage tps1 = new RollingAverage(60);
@@ -746,7 +736,7 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 				MinecraftServer.LOGGER.error("\tCause of unexpected exception was", throwable.getCause());
 			}
 			// Spigot End
-			CrashReport crashreport = null;
+			CrashReport crashreport;
 
 			if (throwable instanceof ReportedException) {
 				crashreport = this.b(((ReportedException) throwable).a());
@@ -810,7 +800,7 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 			// WindSpigot - wait for statistics to finish stopping
 			try {
 				if (this.getWindSpigot().getClient().isConnected) {
-					statisticsThread.join(1500);
+					Objects.requireNonNull(statisticsThread).join(1500);
 				}
 			} catch (Throwable ignored) {
 			}
@@ -872,16 +862,13 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
         if (super.drawRunnable()) {
             return true;
         } else {
-            if (this.haveTime()) {
-
-//                for (WorldServer worldserver : this.worldServer) {
+			this.haveTime();//                for (WorldServer worldserver : this.worldServer) {
 //                    if (worldserver.chunkProviderServer.pollTask()) {
 //                        return true;
 //                    }
 //                }
-            }
 
-            return false;
+			return false;
         }
     }
 
@@ -994,7 +981,8 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 		// WindSpigot start - backport modern tick loop
         // Paper start
         long endTime = System.nanoTime();
-        long remaining = (TICK_TIME - (endTime - lastTick)) - catchupTime;
+		long catchupTime = 0;
+		long remaining = (TICK_TIME - (endTime - lastTick)) - catchupTime;
         this.lastMspt = ((double) (endTime - lastTick) / 1000000D);
         this.server.getPluginManager().callEvent(new com.destroystokyo.paper.event.server.ServerTickEndEvent(this.ticks, this.lastMspt, remaining));
         // Paper end

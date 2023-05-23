@@ -158,7 +158,7 @@ public abstract class EntityHanging extends Entity {
 			}
 
 			List<Entity> list = this.world.getEntities(this, this.getBoundingBox());
-			Iterator iterator = list.iterator();
+			Iterator<Entity> iterator = list.iterator();
 
 			Entity entity;
 
@@ -238,9 +238,6 @@ public abstract class EntityHanging extends Entity {
 	@Override
 	public void move(double d0, double d1, double d2) {
 		if (!this.world.isClientSide && !this.dead && d0 * d0 + d1 * d1 + d2 * d2 > 0.0D) {
-			if (this.dead) {
-				return; // CraftBukkit
-			}
 
 			// CraftBukkit start - fire break events
 			// TODO - Does this need its own cause? Seems to only be triggered by pistons
@@ -261,11 +258,6 @@ public abstract class EntityHanging extends Entity {
 
 	@Override
 	public void g(double d0, double d1, double d2) {
-		if (false) { // CraftBukkit -
-																										// not needed
-			this.die();
-			this.b((Entity) null);
-		}
 
 	}
 

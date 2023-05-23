@@ -137,7 +137,7 @@ public class ContainerAnvil extends Container {
 			ItemStack itemstack1 = itemstack.cloneItemStack();
 			ItemStack itemstack2 = this.h.getItem(1);
 			Map<Integer, Integer> map = EnchantmentManager.a(itemstack1);
-			boolean flag7 = false;
+			boolean flag7;
 			int j = b0 + itemstack.getRepairCost() + (itemstack2 == null ? 0 : itemstack2.getRepairCost());
 
 			this.k = 0;
@@ -198,9 +198,9 @@ public class ContainerAnvil extends Container {
 
 						if (enchantment != null) {
 							j1 = map.containsKey(i1)
-									? (Integer) map.get(i1)
+									? map.get(i1)
 									: 0;
-							int l1 = (Integer) map1.get(i1);
+							int l1 = map1.get(i1);
 							int i2;
 
 							if (j1 == l1) {
@@ -356,7 +356,7 @@ public class ContainerAnvil extends Container {
 
 				slot.a(itemstack1, itemstack);
 			} else if (i != 0 && i != 1) {
-				if (i >= 3 && i < 39 && !this.a(itemstack1, 0, 2, false)) {
+				if (i < 39 && !this.a(itemstack1, 0, 2, false)) {
 					return null;
 				}
 			} else if (!this.a(itemstack1, 3, 39, false)) {

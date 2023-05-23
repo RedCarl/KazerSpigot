@@ -1,6 +1,7 @@
 // From https://github.com/MaxWgamer/AW-Spigot/blob/71d7e988e006b527af2604062122169f475007cb/PaperSpigot-Server/src/main/java/fr/MaxWgamer/custom/utils/FastRandom.java
 package ga.windpvp.windspigot.random;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import javax.annotation.concurrent.ThreadSafe;
@@ -8,7 +9,7 @@ import javax.annotation.concurrent.ThreadSafe;
 /**
  * Implementation of George Marsaglia's elegant Xorshift random generator which is 
  * 30% faster and better quality than the built-in java.util.random see also see
- * http://www.javamex.com/tutorials/random_numbers/xorshift.shtml
+ * <a href="http://www.javamex.com/tutorials/random_numbers/xorshift.shtml">...</a>
  */
 @ThreadSafe // The fast random can be used with multiple threads
 public strictfp class FastRandom extends Random implements Cloneable {
@@ -66,7 +67,7 @@ public strictfp class FastRandom extends Random implements Cloneable {
 	/**
 	 * Implementation of George Marsaglia's elegant Xorshift random generator 30%
 	 * faster and better quality than the built-in java.util.random see also see
-	 * http://www.javamex.com/tutorials/random_numbers/xorshift.shtml
+	 * <a href="http://www.javamex.com/tutorials/random_numbers/xorshift.shtml">...</a>
 	 */
 	@Override
 	protected int next(int nbits) {
@@ -82,12 +83,11 @@ public strictfp class FastRandom extends Random implements Cloneable {
 
 	/**
 	 * Sets the specified seed value from the specified int[]
-	 * 
-	 * @param array
+	 *
 	 */
 	synchronized public void setSeed(int[] array) {
 		if (array.length == 0)
 			throw new IllegalArgumentException("Array length must be greater than zero");
-		setSeed(array.hashCode());
+		setSeed(Arrays.hashCode(array));
 	}
 }

@@ -40,11 +40,7 @@ public class TimedEventExecutor implements EventExecutor {
 	/**
 	 * Wraps an event executor and associates a timing handler to it.
 	 *
-	 * @param executor
-	 * @param plugin
-	 * @param method
-	 * @param eventClass
-	 */
+     */
 	public TimedEventExecutor(EventExecutor executor, Plugin plugin, Method method, Class<? extends Event> eventClass) {
 		this.executor = executor;
 		String id;

@@ -227,7 +227,7 @@ public class EntityVillager extends EntityAgeable implements IMerchant, NPC {
 		((Navigation) this.getNavigation()).b(true);
 		((Navigation) this.getNavigation()).a(true);
 		this.goalSelector.a(0, new PathfinderGoalFloat(this));
-		this.goalSelector.a(1, new PathfinderGoalAvoidTarget(this, EntityZombie.class, 8.0F, 0.6D, 0.6D));
+		this.goalSelector.a(1, new PathfinderGoalAvoidTarget<>(this, EntityZombie.class, 8.0F, 0.6D, 0.6D));
 		this.goalSelector.a(1, new PathfinderGoalTradeWithPlayer(this));
 		this.goalSelector.a(1, new PathfinderGoalLookAtTradingPlayer(this));
 		this.goalSelector.a(2, new PathfinderGoalMoveIndoors(this));

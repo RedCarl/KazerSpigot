@@ -3,15 +3,7 @@ package net.minecraft.server;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -344,7 +336,7 @@ public class NameReferencingFileConverter {
 			File[] afile = file.listFiles();
 			ArrayList<Object> arraylist = Lists.newArrayList();
 			File[] afile1 = afile;
-			int i = afile.length;
+			int i = Objects.requireNonNull(afile).length;
 
 			for (int j = 0; j < i; ++j) {
 				File file3 = afile1[j];
@@ -360,7 +352,7 @@ public class NameReferencingFileConverter {
 			}
 
 			try {
-				final String[] astring = (String[]) arraylist.toArray(new String[0]);
+				final String[] astring = arraylist.toArray(new String[0]);
 				ProfileLookupCallback profilelookupcallback = new ProfileLookupCallback() {
 					@Override
 					public void onProfileLookupSucceeded(GameProfile gameprofile) {
@@ -512,7 +504,7 @@ public class NameReferencingFileConverter {
 	private static boolean c(PropertyManager propertymanager) {
 		File file = d(propertymanager);
 
-		if (file.exists() && file.isDirectory() && (file.list().length > 0 || !file.delete())) {
+		if (file.exists() && file.isDirectory() && (Objects.requireNonNull(file.list()).length > 0 || !file.delete())) {
 			NameReferencingFileConverter.e.warn("**** DETECTED OLD PLAYER DIRECTORY IN THE WORLD SAVE");
 			NameReferencingFileConverter.e
 					.warn("**** THIS USUALLY HAPPENS WHEN THE AUTOMATIC CONVERSION FAILED IN SOME WAY");

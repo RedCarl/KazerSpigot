@@ -141,7 +141,7 @@ public class TileEntityChest extends TileEntityContainer implements IInventory {
 			NBTTagCompound nbttagcompound1 = nbttaglist.get(i);
 			int j = nbttagcompound1.getByte("Slot") & 255;
 
-			if (j >= 0 && j < this.items.length) {
+			if (j < this.items.length) {
 				this.items[j] = ItemStack.createStack(nbttagcompound1);
 			}
 		}

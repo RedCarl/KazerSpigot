@@ -6,17 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -192,20 +182,20 @@ public final class CraftServer implements Server {
 	private final EntityMetadataStore entityMetadata = new EntityMetadataStore();
 	private final PlayerMetadataStore playerMetadata = new PlayerMetadataStore();
 	private final WorldMetadataStore worldMetadata = new WorldMetadataStore();
-	private int monsterSpawn = -1;
-	private int animalSpawn = -1;
-	private int waterAnimalSpawn = -1;
-	private int ambientSpawn = -1;
-	public int chunkGCPeriod = -1;
-	public int chunkGCLoadThresh = 0;
+	private int monsterSpawn;
+	private int animalSpawn;
+	private int waterAnimalSpawn;
+	private int ambientSpawn;
+	public int chunkGCPeriod;
+	public int chunkGCLoadThresh;
 	private File container;
-	private WarningState warningState = WarningState.DEFAULT;
+	private WarningState warningState;
 	private final BooleanWrapper online = new org.bukkit.craftbukkit.CraftServer.BooleanWrapper();
 	public CraftScoreboardManager scoreboardManager;
 	public boolean playerCommandState;
 	private boolean printSaveWarning;
 	private CraftIconCache icon;
-	private boolean overrideAllCommandBlockCommands = false;
+	private boolean overrideAllCommandBlockCommands;
 	private final Pattern validUserPattern = Pattern.compile("^[a-zA-Z0-9_]{2,16}$");
 	private final UUID invalidUserUUID = UUID.nameUUIDFromBytes("InvalidUsername".getBytes(Charsets.UTF_8));
 	private final List<CraftPlayer> playerView;
@@ -254,7 +244,7 @@ public final class CraftServer implements Server {
 		configuration = YamlConfiguration.loadConfiguration(getConfigFile());
 		configuration.options().copyDefaults(true);
 		configuration.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(
-				getClass().getClassLoader().getResourceAsStream("configurations/bukkit.yml"), Charsets.UTF_8)));
+				Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("configurations/bukkit.yml")), Charsets.UTF_8)));
 		ConfigurationSection legacyAlias = null;
 		if (!configuration.isString("aliases")) {
 			legacyAlias = configuration.getConfigurationSection("aliases");
@@ -267,7 +257,7 @@ public final class CraftServer implements Server {
 		commandsConfiguration = YamlConfiguration.loadConfiguration(getCommandsConfigFile());
 		commandsConfiguration.options().copyDefaults(true);
 		commandsConfiguration.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(
-				getClass().getClassLoader().getResourceAsStream("configurations/commands.yml"), Charsets.UTF_8)));
+				Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("configurations/commands.yml")), Charsets.UTF_8)));
 		saveCommandsConfig();
 
 		// Migrate aliases from old file and add previously implicit $1- to pass all
@@ -484,7 +474,6 @@ public final class CraftServer implements Server {
 
 	@Override
 	@Deprecated
-	@SuppressWarnings("unchecked")
 	public Player[] _INVALID_getOnlinePlayers() {
 		return getOnlinePlayers().toArray(EMPTY_PLAYER_ARRAY);
 	}
@@ -1571,7 +1560,6 @@ public final class CraftServer implements Server {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public Set<String> getIPBans() {
 		return new HashSet<String>(Arrays.asList(playerList.getIPBans().getEntries()));
 	}
@@ -1712,7 +1700,7 @@ public final class CraftServer implements Server {
 		String[] files = storage.getPlayerDir().list(new DatFileFilter());
 		Set<OfflinePlayer> players = new HashSet<OfflinePlayer>();
 
-		for (String file : files) {
+		for (String file : Objects.requireNonNull(files)) {
 			try {
 				players.add(getOfflinePlayer(FastUUID.parseUUID(file.substring(0, file.length() - 4))));
 			} catch (IllegalArgumentException ex) {

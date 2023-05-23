@@ -222,30 +222,27 @@ public class AntiXray {
 
 	private void updateBlock(World world, BlockPosition position) {
 		// If the block in question is loaded
-		if (true) // TacoSpigot - caller checked
+		// Get block id
+		Block block = getType(world, position); // TacoSpigot - directly access the underlying data
+
+		// See if it needs update
+		if (obfuscateBlocks[Block.getId(block)]) // TacoSpigot - always update
 		{
-			// Get block id
-			Block block = getType(world, position); // TacoSpigot - directly access the underlying data
-
-			// See if it needs update
-			if (obfuscateBlocks[Block.getId(block)]) // TacoSpigot - always update
-			{
-				// Send the update
-				world.notify(position);
-			}
-
-			// TacoSpigot start
-			/*
-			 * // Check other blocks for updates if ( radius > 0 ) { updateNearbyBlocks(
-			 * world, position.east(), radius - 1, true ); updateNearbyBlocks( world,
-			 * position.west(), radius - 1, true ); updateNearbyBlocks( world,
-			 * position.up(), radius - 1, true ); updateNearbyBlocks( world,
-			 * position.down(), radius - 1, true ); updateNearbyBlocks( world,
-			 * position.south(), radius - 1, true ); updateNearbyBlocks( world,
-			 * position.north(), radius - 1, true ); }
-			 */
-			// TacoSpigot end
+			// Send the update
+			world.notify(position);
 		}
+
+		// TacoSpigot start
+		/*
+		 * // Check other blocks for updates if ( radius > 0 ) { updateNearbyBlocks(
+		 * world, position.east(), radius - 1, true ); updateNearbyBlocks( world,
+		 * position.west(), radius - 1, true ); updateNearbyBlocks( world,
+		 * position.up(), radius - 1, true ); updateNearbyBlocks( world,
+		 * position.down(), radius - 1, true ); updateNearbyBlocks( world,
+		 * position.south(), radius - 1, true ); updateNearbyBlocks( world,
+		 * position.north(), radius - 1, true ); }
+		 */
+		// TacoSpigot end
 	}
 
 	private static boolean isLoaded(World world, BlockPosition position, int radius) {

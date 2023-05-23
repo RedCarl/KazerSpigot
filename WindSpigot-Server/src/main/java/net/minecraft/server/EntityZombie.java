@@ -45,11 +45,11 @@ public class EntityZombie extends EntityMonster {
 		this.goalSelector.a(4, new PathfinderGoalMeleeAttack(this, EntityIronGolem.class, 1.0D, true));
 		this.goalSelector.a(6, new PathfinderGoalMoveThroughVillage(this, 1.0D, false));
 		this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, true, EntityPigZombie.class));
-		this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget(this, EntityHuman.class, true));
+		this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityHuman.class, true));
 		if (world.spigotConfig.zombieAggressiveTowardsVillager) {
-			this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget(this, EntityVillager.class, false)); // Spigot
+			this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityVillager.class, false)); // Spigot
 		}
-		this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget(this, EntityIronGolem.class, true));
+		this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityIronGolem.class, true));
 	}
 
 	@Override
@@ -435,7 +435,7 @@ public class EntityZombie extends EntityMonster {
 							IEntitySelector.b);
 
 					if (!list.isEmpty()) {
-						EntityChicken entitychicken = (EntityChicken) list.get(0);
+						EntityChicken entitychicken = list.get(0);
 
 						entitychicken.l(true);
 						this.mount(entitychicken);
@@ -458,7 +458,7 @@ public class EntityZombie extends EntityMonster {
 		if (this.getEquipment(4) == null) {
 			Calendar calendar = this.world.Y();
 
-			if (calendar.get(2) + 1 == 10 && calendar.get(5) == 31 && this.random.nextFloat() < 0.25F) {
+			if (calendar.get(Calendar.MONTH) + 1 == 10 && calendar.get(Calendar.DATE) == 31 && this.random.nextFloat() < 0.25F) {
 				this.setEquipment(4,
 						new ItemStack(this.random.nextFloat() < 0.1F ? Blocks.LIT_PUMPKIN : Blocks.PUMPKIN));
 				this.dropChances[4] = 0.0F;
@@ -626,8 +626,6 @@ public class EntityZombie extends EntityMonster {
 		public boolean b;
 
 		private GroupDataZombie(boolean flag, boolean flag1) {
-			this.a = false;
-			this.b = false;
 			this.a = flag;
 			this.b = flag1;
 		}

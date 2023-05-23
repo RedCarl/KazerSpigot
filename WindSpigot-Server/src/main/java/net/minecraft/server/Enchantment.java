@@ -139,18 +139,16 @@ public abstract class Enchantment {
 	}
 
 	static {
-		ArrayList arraylist = Lists.newArrayList();
+		ArrayList<Object> arraylist = Lists.newArrayList();
 		Enchantment[] aenchantment = Enchantment.byId;
 		int i = aenchantment.length;
 
-		for (int j = 0; j < i; ++j) {
-			Enchantment enchantment = aenchantment[j];
-
+		for (Enchantment enchantment : aenchantment) {
 			if (enchantment != null) {
 				arraylist.add(enchantment);
 			}
 		}
 
-		b = (Enchantment[]) arraylist.toArray(new Enchantment[arraylist.size()]);
+		b = (Enchantment[]) arraylist.toArray(new Enchantment[0]);
 	}
 }

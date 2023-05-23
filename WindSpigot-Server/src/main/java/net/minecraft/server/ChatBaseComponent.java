@@ -35,11 +35,8 @@ public abstract class ChatBaseComponent implements IChatBaseComponent {
 	@Override
 	public IChatBaseComponent setChatModifier(ChatModifier chatmodifier) {
 		this.b = chatmodifier;
-		Iterator iterator = this.a.iterator();
 
-		while (iterator.hasNext()) {
-			IChatBaseComponent ichatbasecomponent = (IChatBaseComponent) iterator.next();
-
+		for (IChatBaseComponent ichatbasecomponent : this.a) {
 			ichatbasecomponent.getChatModifier().setChatModifier(this.getChatModifier());
 		}
 

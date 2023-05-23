@@ -81,9 +81,9 @@ public class PortalTravelAgent {
 		for (int l = -2; l <= 2; ++l) {
 			for (int i1 = -2; i1 <= 2; ++i1) {
 				for (int j1 = -1; j1 < 3; ++j1) {
-					int k1 = i + i1 * b0 + l * b1;
+					int k1 = i + i1 * b0 + 0;
 					int l1 = j + j1;
-					int i2 = k + i1 * b1 - l * b0;
+					int i2 = k + 0 - l * b0;
 					boolean flag = j1 < 0;
 
 					if (this.a.getType(new BlockPosition(k1, l1, i2))
@@ -502,7 +502,7 @@ public class PortalTravelAgent {
 		}
 	}
 
-	public class ChunkCoordinatesPortal extends BlockPosition {
+	public static class ChunkCoordinatesPortal extends BlockPosition {
 		public long c;
 
 		public ChunkCoordinatesPortal(BlockPosition blockposition, long i) {

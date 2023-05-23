@@ -1,10 +1,7 @@
 package org.bukkit.craftbukkit.event;
 
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -181,14 +178,14 @@ public class CraftEventFactory {
 		Block blockClicked = craftWorld.getBlockAt(clickedX, clickedY, clickedZ);
 
 		boolean canBuild = true;
-		for (int i = 0; i < blockStates.size(); i++) {
-			if (!canBuild(craftWorld, player, blockStates.get(i).getX(), blockStates.get(i).getZ())) {
+		for (BlockState blockState : blockStates) {
+			if (!canBuild(craftWorld, player, blockState.getX(), blockState.getZ())) {
 				canBuild = false;
 				break;
 			}
 		}
 
-		BlockMultiPlaceEvent event = new BlockMultiPlaceEvent(blockStates, blockClicked, player.getItemInHand(), player,
+		BlockMultiPlaceEvent event = new BlockMultiPlaceEvent(blockStates, blockClicked, Objects.requireNonNull(player).getItemInHand(), player,
 				canBuild);
 		craftServer.getPluginManager().callEvent(event);
 
@@ -208,7 +205,7 @@ public class CraftEventFactory {
 		boolean canBuild = canBuild(craftWorld, player, placedBlock.getX(), placedBlock.getZ());
 
 		BlockPlaceEvent event = new BlockPlaceEvent(placedBlock, replacedBlockState, blockClicked,
-				player.getItemInHand(), player, canBuild);
+				Objects.requireNonNull(player).getItemInHand(), player, canBuild);
 		craftServer.getPluginManager().callEvent(event);
 
 		return event;
@@ -251,13 +248,13 @@ public class CraftEventFactory {
 		CraftItemStack itemInHand = CraftItemStack.asNewCraftStack(item);
 		Material bucket = CraftMagicNumbers.getMaterial(itemstack.getItem());
 
-		CraftWorld craftWorld = (CraftWorld) player.getWorld();
+		CraftWorld craftWorld = (CraftWorld) Objects.requireNonNull(player).getWorld();
 		CraftServer craftServer = (CraftServer) player.getServer();
 
 		Block blockClicked = craftWorld.getBlockAt(clickedX, clickedY, clickedZ);
 		BlockFace blockFace = CraftBlock.notchToBlockFace(clickedFace);
 
-		PlayerEvent event = null;
+		PlayerEvent event;
 		if (isFilling) {
 			event = new PlayerBucketFillEvent(player, blockClicked, blockFace, bucket, itemInHand);
 			((PlayerBucketFillEvent) event).setCancelled(!canBuild(craftWorld, player, clickedX, clickedZ));
@@ -291,7 +288,7 @@ public class CraftEventFactory {
 		Player player = (who == null) ? null : (Player) who.getBukkitEntity();
 		CraftItemStack itemInHand = CraftItemStack.asCraftMirror(itemstack);
 
-		CraftWorld craftWorld = (CraftWorld) player.getWorld();
+		CraftWorld craftWorld = (CraftWorld) Objects.requireNonNull(player).getWorld();
 		CraftServer craftServer = (CraftServer) player.getServer();
 
 		Block blockClicked = null;
@@ -332,7 +329,7 @@ public class CraftEventFactory {
 		CraftItemStack itemInHand = CraftItemStack.asCraftMirror(itemstack);
 		Arrow arrow = (Arrow) entityArrow.getBukkitEntity();
 
-		if (itemInHand != null && (itemInHand.getType() == Material.AIR || itemInHand.getAmount() == 0)) {
+		if (itemInHand.getType() == Material.AIR || itemInHand.getAmount() == 0) {
 			itemInHand = null;
 		}
 
@@ -350,7 +347,7 @@ public class CraftEventFactory {
 		Player player = (who == null) ? null : (Player) who.getBukkitEntity();
 		CraftItemStack itemInHand = CraftItemStack.asCraftMirror(itemstack);
 
-		CraftWorld craftWorld = (CraftWorld) player.getWorld();
+		CraftWorld craftWorld = (CraftWorld) Objects.requireNonNull(player).getWorld();
 		CraftServer craftServer = (CraftServer) player.getServer();
 
 		Block blockClicked = craftWorld.getBlockAt(x, y, z);
@@ -587,7 +584,7 @@ public class CraftEventFactory {
 			}
 			return event;
 		} else if (blockDamage != null) {
-			DamageCause cause = null;
+			DamageCause cause;
 			Block damager = blockDamage;
 			blockDamage = null;
 			if (source == DamageSource.CACTUS) {
@@ -603,7 +600,7 @@ public class CraftEventFactory {
 			}
 			return event;
 		} else if (entityDamage != null) {
-			DamageCause cause = null;
+			DamageCause cause;
 			CraftEntity damager = entityDamage.getBukkitEntity();
 			entityDamage = null;
 			if (source == DamageSource.ANVIL || source == DamageSource.FALLING_BLOCK) {
@@ -624,7 +621,7 @@ public class CraftEventFactory {
 			return event;
 		}
 
-		DamageCause cause = null;
+		DamageCause cause;
 		final CraftDamageSource.DAMAGE_SOURCE damageSource = CraftDamageSource.getSource(source.p());
 		switch (damageSource) {
 			case FIRE:
@@ -663,11 +660,8 @@ public class CraftEventFactory {
 				throw new IllegalStateException("Unexpected value: " + damageSource);
 		}
 
-		if (cause != null) {
-			return callEntityDamageEvent(null, entity, cause, modifiers, modifierFunctions);
-		}
+		return callEntityDamageEvent(null, entity, cause, modifiers, modifierFunctions);
 
-		throw new RuntimeException(String.format("Unhandled damage of %s from %s", entity, source.translationIndex)); // Spigot
 	}
 
 	private static EntityDamageEvent callEntityDamageEvent(Entity damager, Entity damagee, DamageCause cause,
@@ -734,15 +728,12 @@ public class CraftEventFactory {
 		}
 
 		final EnumMap<DamageModifier, Double> modifiers = new EnumMap<DamageModifier, Double>(DamageModifier.class);
-		final EnumMap<DamageModifier, Function<? super Double, Double>> functions = new EnumMap(DamageModifier.class);
+		final EnumMap<DamageModifier, Function<? super Double, Double>> functions = new EnumMap<>(DamageModifier.class);
 
 		modifiers.put(DamageModifier.BASE, damage);
 		functions.put(DamageModifier.BASE, ZERO);
 
 		final EntityDamageEvent event = handleEntityDamageEvent(entity, source, modifiers, functions);
-		if (event == null) {
-			return false;
-		}
 		return event.isCancelled() || (cancelOnZeroDamage && event.getDamage() == 0);
 	}
 

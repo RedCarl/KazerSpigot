@@ -133,7 +133,7 @@ public final class SpawnerCreature {
 				if (limit == 0) {
 					continue;
 				}
-				int mobcnt = 0; // Spigot
+				int mobcnt; // Spigot
 				// CraftBukkit end
 
 				if ((!enumcreaturetype.d() || flag1) && (enumcreaturetype.d() || flag)
@@ -182,7 +182,7 @@ public final class SpawnerCreature {
 										if (i4 < 4) {
 											label108: {
 												j3 += worldserver.random.nextInt(b1) - worldserver.random.nextInt(b1);
-												k3 += worldserver.random.nextInt(1) - worldserver.random.nextInt(1);
+												k3 += 0;
 												l3 += worldserver.random.nextInt(b1) - worldserver.random.nextInt(b1);
 												BlockPosition blockposition2 = new BlockPosition(j3, k3, l3);
 												float f = j3 + 0.5F;
@@ -305,7 +305,7 @@ public final class SpawnerCreature {
 
 		if (!list.isEmpty()) {
 			while (random.nextFloat() < biomebase.g()) {
-				BiomeBase.BiomeMeta biomebase_biomemeta = (BiomeBase.BiomeMeta) WeightedRandom.a(world.random, list);
+				BiomeBase.BiomeMeta biomebase_biomemeta = WeightedRandom.a(world.random, list);
 				int i1 = biomebase_biomemeta.c + random.nextInt(1 + biomebase_biomemeta.d - biomebase_biomemeta.c);
 				GroupDataEntity groupdataentity = null;
 				int j1 = i + random.nextInt(k);

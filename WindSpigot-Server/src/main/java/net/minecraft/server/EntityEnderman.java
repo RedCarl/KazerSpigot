@@ -1,10 +1,6 @@
 package net.minecraft.server;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import org.bukkit.Location;
 import org.bukkit.event.entity.EntityTeleportEvent;
@@ -36,7 +32,7 @@ public class EntityEnderman extends EntityMonster {
 		this.goalSelector.a(11, new EntityEnderman.PathfinderGoalEndermanPickupBlock(this));
 		this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, false));
 		this.targetSelector.a(2, new EntityEnderman.PathfinderGoalPlayerWhoLookedAtTarget(this));
-		this.targetSelector.a(3, new PathfinderGoalNearestAttackableTarget(this, EntityEndermite.class, 10, true, false,
+		this.targetSelector.a(3, new PathfinderGoalNearestAttackableTarget<>(this, EntityEndermite.class, 10, true, false,
 				new Predicate() {
 					public boolean a(EntityEndermite entityendermite) {
 						return entityendermite.n();
@@ -81,7 +77,7 @@ public class EntityEnderman extends EntityMonster {
 		IBlockData iblockdata;
 
 		if (nbttagcompound.hasKeyOfType("carried", 8)) {
-			iblockdata = Block.getByName(nbttagcompound.getString("carried"))
+			iblockdata = Objects.requireNonNull(Block.getByName(nbttagcompound.getString("carried")))
 					.fromLegacyData(nbttagcompound.getShort("carriedData") & '\uffff');
 		} else {
 			iblockdata = Block.getById(nbttagcompound.getShort("carried"))

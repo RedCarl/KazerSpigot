@@ -69,7 +69,7 @@ public class BlockReed extends Block {
 					return false;
 				}
 
-				enumdirection = (EnumDirection) iterator.next();
+				enumdirection = iterator.next();
 			} while (world.getType(blockposition.shift(enumdirection).down()).getBlock()
 					.getMaterial() != Material.WATER);
 

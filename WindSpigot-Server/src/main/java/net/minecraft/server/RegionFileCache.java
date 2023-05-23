@@ -46,11 +46,8 @@ public class RegionFileCache {
 	}
 
 	public static synchronized void a() {
-		Iterator iterator = RegionFileCache.a.values().iterator();
 
-		while (iterator.hasNext()) {
-			RegionFile regionfile = (RegionFile) iterator.next();
-
+		for (RegionFile regionfile : RegionFileCache.a.values()) {
 			try {
 				if (regionfile != null) {
 					regionfile.c();

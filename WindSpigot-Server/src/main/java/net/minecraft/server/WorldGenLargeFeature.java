@@ -28,7 +28,7 @@ public class WorldGenLargeFeature extends StructureGenerator {
 		this();
 
 		for (Entry<String, String> stringStringEntry : map.entrySet()) {
-			Entry entry = (Entry) stringStringEntry;
+			Entry entry = stringStringEntry;
 
 			if ("distance".equals(entry.getKey())) {
 				this.g = MathHelper.a((String) entry.getValue(), this.g, this.h + 1);

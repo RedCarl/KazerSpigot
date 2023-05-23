@@ -3,17 +3,7 @@ package org.bukkit.plugin;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.WeakHashMap;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -123,7 +113,7 @@ public final class SimplePluginManager implements PluginManager {
 		Map<String, Collection<String>> softDependencies = new HashMap<>();
 
 		// This is where it figures out all possible plugins
-		for (File file : directory.listFiles()) {
+		for (File file : Objects.requireNonNull(directory.listFiles())) {
 			PluginLoader loader = null;
 			for (Pattern filter : filters) {
 				Matcher match = filter.matcher(file.getName());
@@ -135,7 +125,7 @@ public final class SimplePluginManager implements PluginManager {
 			if (loader == null)
 				continue;
 
-			PluginDescriptionFile description = null;
+			PluginDescriptionFile description;
 			try {
 				description = loader.getPluginDescription(file);
 				String name = description.getName();

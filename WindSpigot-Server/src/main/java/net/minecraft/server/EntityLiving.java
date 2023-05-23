@@ -509,7 +509,7 @@ public abstract class EntityLiving extends Entity {
 
 		isTickingEffects = true; // CraftBukkit
 		while (iterator.hasNext()) {
-			Integer integer = (Integer) iterator.next();
+			Integer integer = iterator.next();
 			MobEffect mobeffect = this.effects.get(integer);
 
 			if (!mobeffect.tick(this)) {
@@ -544,7 +544,7 @@ public abstract class EntityLiving extends Entity {
 		boolean flag = this.datawatcher.getByte(8) > 0;
 
 		if (i > 0) {
-			boolean flag1 = false;
+			boolean flag1;
 
 			if (!this.isInvisible()) {
 				flag1 = this.random.nextBoolean();
@@ -556,7 +556,7 @@ public abstract class EntityLiving extends Entity {
 				flag1 &= this.random.nextInt(5) == 0;
 			}
 
-			if (flag1 && i > 0) {
+			if (flag1) {
 				double d0 = (i >> 16 & 255) / 255.0D;
 				double d1 = (i >> 8 & 255) / 255.0D;
 				double d2 = (i >> 0 & 255) / 255.0D;
@@ -593,7 +593,7 @@ public abstract class EntityLiving extends Entity {
 		Iterator<Integer> iterator = this.effects.keySet().iterator();
 
 		while (iterator.hasNext()) {
-			Integer integer = (Integer) iterator.next();
+			Integer integer = iterator.next();
 			MobEffect mobeffect = this.effects.get(integer);
 
 			if (!this.world.isClientSide) {
@@ -949,8 +949,8 @@ public abstract class EntityLiving extends Entity {
 			this.ai = true;
 
 			double magnitude = Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2));
-			double horizontal = 0.4D;
-			double vertical = 0.4D;
+			double horizontal;
+			double vertical;
 
 			KnockbackProfile kb = (this.getKnockbackProfile() == null) ? KnockbackConfig.getCurrentKb()
 					: this.getKnockbackProfile();
@@ -1144,7 +1144,7 @@ public abstract class EntityLiving extends Entity {
 					i = 20;
 				}
 
-				if (i > 0 && i <= 20) {
+				if (i > 0) {
 					j = 25 - i;
 					f1 = f * j;
 					f = f1 / 25.0F;
@@ -1849,11 +1849,11 @@ public abstract class EntityLiving extends Entity {
 
 		if (this.ad() && !list.isEmpty()) { // Spigot: Add this.ad() condition
 			numCollisions -= world.spigotConfig.maxCollisionsPerEntity; // Spigot
-			for (Object o : list) {
+			for (Entity o : list) {
 				if (numCollisions > world.spigotConfig.maxCollisionsPerEntity) {
 					break;
 				} // Spigot
-				Entity entity = (Entity) o;
+				Entity entity = o;
 
 				// TODO better check now?
 				// CraftBukkit start - Only handle mob (non-player) collisions every other tick

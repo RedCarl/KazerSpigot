@@ -24,7 +24,7 @@ public class WorldGenVillage extends StructureGenerator {
 		this();
 
 		for (Entry<String, String> stringStringEntry : map.entrySet()) {
-			Entry entry = (Entry) stringStringEntry;
+			Entry entry = stringStringEntry;
 
 			if ("size".equals(entry.getKey())) {
 				this.f = MathHelper.a((String) entry.getValue(), this.f, 0);
@@ -101,11 +101,11 @@ public class WorldGenVillage extends StructureGenerator {
 
 				if (list1.isEmpty()) {
 					l = random.nextInt(list2.size());
-					structurepiece = (StructurePiece) list2.remove(l);
+					structurepiece = list2.remove(l);
 					structurepiece.a(worldgenvillagepieces_worldgenvillagestartpiece, this.a, random);
 				} else {
 					l = random.nextInt(list1.size());
-					structurepiece = (StructurePiece) list1.remove(l);
+					structurepiece = list1.remove(l);
 					structurepiece.a(worldgenvillagepieces_worldgenvillagestartpiece, this.a, random);
 				}
 			}

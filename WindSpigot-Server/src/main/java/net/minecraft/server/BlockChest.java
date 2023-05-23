@@ -50,20 +50,18 @@ public class BlockChest extends BlockContainer {
 	@Override
 	public void onPlace(World world, BlockPosition blockposition, IBlockData iblockdata) {
 		this.e(world, blockposition, iblockdata);
-		Iterator iterator = EnumDirection.EnumDirectionLimit.HORIZONTAL.iterator();
 
-		while (iterator.hasNext()) {
-			EnumDirection enumdirection = (EnumDirection) iterator.next();
+		for (EnumDirection enumdirection : EnumDirection.EnumDirectionLimit.HORIZONTAL) {
 			BlockPosition blockposition1 = blockposition.shift(enumdirection);
 			//IBlockData iblockdata1 = world.getType(blockposition1);
-			
+
 			// FlamePaper start - Dont load chunks for chests
 			final IBlockData iblockdata1 = world.isLoaded(blockposition1) ? world.getType(blockposition1) : null;
 			if (iblockdata1 == null) {
 				continue;
 			}
 			// FlamePaper end
-			
+
 			if (iblockdata1.getBlock() == this) {
 				this.e(world, blockposition1, iblockdata1);
 			}
@@ -212,10 +210,8 @@ public class BlockChest extends BlockContainer {
 
 	public IBlockData f(World world, BlockPosition blockposition, IBlockData iblockdata, boolean flag) {
 		EnumDirection enumdirection = null;
-		Iterator iterator = EnumDirection.EnumDirectionLimit.HORIZONTAL.iterator();
 
-		while (iterator.hasNext()) {
-			EnumDirection enumdirection1 = (EnumDirection) iterator.next();
+		for (EnumDirection enumdirection1 : EnumDirection.EnumDirectionLimit.HORIZONTAL) {
 			IBlockData iblockdata1 = world.getType(blockposition.shift(enumdirection1));
 
 			if (iblockdata1.getBlock() == this) {
@@ -300,7 +296,7 @@ public class BlockChest extends BlockContainer {
 		if (world.getType(blockposition).getBlock() != this) {
 			return false;
 		} else {
-			Iterator iterator = EnumDirection.EnumDirectionLimit.HORIZONTAL.iterator();
+			Iterator<EnumDirection> iterator = EnumDirection.EnumDirectionLimit.HORIZONTAL.iterator();
 
 			EnumDirection enumdirection;
 
@@ -461,7 +457,7 @@ public class BlockChest extends BlockContainer {
 			return false;
 		}
 		// PaperSpigot end
-		Iterator iterator = world
+		Iterator<EntityOcelot> iterator = world
 				.a(EntityOcelot.class,
 						new AxisAlignedBB(blockposition.getX(), blockposition.getY() + 1, blockposition.getZ(),
 								blockposition.getX() + 1, blockposition.getY() + 2, blockposition.getZ() + 1))

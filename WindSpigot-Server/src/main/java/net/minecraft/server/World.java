@@ -81,7 +81,7 @@ public abstract class World implements IBlockAccess {
 
 	public final List<EntityHuman> players = new ObjectArrayList<>(); // WindSpigot - more fastutil collections
 	public final List<Entity> k = new ObjectArrayList<>(); // WindSpigot - more fastutil collections
-	protected final IntHashMap<Entity> entitiesById = new IntHashMap();
+	protected final IntHashMap<Entity> entitiesById = new IntHashMap<>();
 	private final long d = 16777215L;
 	private int I;
 	protected int m = (new FastRandom()).nextInt();
@@ -117,7 +117,7 @@ public abstract class World implements IBlockAccess {
 	// CraftBukkit start Added the following
 	private final CraftWorld world;
 	public boolean pvpMode;
-	public boolean keepSpawnInMemory = true;
+	public boolean keepSpawnInMemory;
 	public ChunkGenerator generator;
 
 	public boolean captureBlockStates = false;
@@ -148,7 +148,6 @@ public abstract class World implements IBlockAccess {
 	public static boolean haveWeSilencedAPhysicsCrash;
 	public static String blockLocation;
 	private final org.spigotmc.TickLimiter entityLimiter;
-	private final org.spigotmc.TickLimiter tileLimiter;
 	private int tileTickPosition;
 	public final PlayerMap playerMap = new PlayerMap();
 
@@ -293,7 +292,7 @@ public abstract class World implements IBlockAccess {
 																	// access timings
 		// WindSpigot - re-implement Spigot's entity max tick time, but only for certain entities
 		this.entityLimiter = new ga.windpvp.windspigot.entity.EntityTickLimiter(WindSpigotConfig.entityMaxTickTime); //new org.spigotmc.TickLimiter(spigotConfig.entityMaxTickTime);
-		this.tileLimiter = new org.spigotmc.TickLimiter(WindSpigotConfig.tileMaxTickTime);
+		org.spigotmc.TickLimiter tileLimiter = new org.spigotmc.TickLimiter(WindSpigotConfig.tileMaxTickTime);
 	}
 
 	public World b() {
@@ -1373,6 +1372,7 @@ public abstract class World implements IBlockAccess {
 				EntityHuman entityhuman = (EntityHuman) entity;
 
 				this.players.add(entityhuman);
+				assert entityhuman instanceof EntityPlayer;
 				this.playerMap.add((EntityPlayer) entityhuman);
 				this.everyoneSleeping();
 			}
@@ -1590,13 +1590,13 @@ public abstract class World implements IBlockAccess {
 
 		for (int j2 = 0; j2 < list.size(); ++j2) {
 			if (entity.passenger != list && entity.vehicle != list) {
-				AxisAlignedBB axisalignedbb1 = ((Entity) list.get(j2)).S();
+				AxisAlignedBB axisalignedbb1 = list.get(j2).S();
 
 				if (axisalignedbb1 != null && axisalignedbb1.b(axisalignedbb)) {
 					arraylist.add(axisalignedbb1);
 				}
 
-				axisalignedbb1 = entity.j((Entity) list.get(j2));
+				axisalignedbb1 = entity.j(list.get(j2));
 				if (axisalignedbb1 != null && axisalignedbb1.b(axisalignedbb)) {
 					arraylist.add(axisalignedbb1);
 				}
@@ -1742,11 +1742,7 @@ public abstract class World implements IBlockAccess {
 			} catch (Throwable throwable) {
 				crashreport = CrashReport.a(throwable, "Ticking entity");
 				crashreportsystemdetails = crashreport.a("Entity being ticked");
-				if (entity == null) {
-					crashreportsystemdetails.a("Entity", "~~NULL~~");
-				} else {
-					entity.appendEntityCrashDetails(crashreportsystemdetails);
-				}
+				entity.appendEntityCrashDetails(crashreportsystemdetails);
 
 				throw new ReportedException(crashreport);
 			}
@@ -1792,7 +1788,7 @@ public abstract class World implements IBlockAccess {
 		entityLimiter.initTick(); // WindSpigot - re-implement Spigot's entity max tick time, but only for certain entities
 		for (tickPosition = 0; tickPosition < entityList.size(); tickPosition++) {
 			// PaperSpigot end
-			tickPosition = (tickPosition < entityList.size()) ? tickPosition : 0;
+			tickPosition = tickPosition;
 			entity = this.entityList.get(this.tickPosition);
 			// CraftBukkit end
 			
@@ -1971,7 +1967,7 @@ public abstract class World implements IBlockAccess {
 	public boolean a(TileEntity tileentity) {
 		boolean flag = true; // PaperSpigot - Remove unused list
 
-		if (flag && tileentity instanceof IUpdatePlayerListBox) {
+		if (tileentity instanceof IUpdatePlayerListBox) {
 			this.tileEntityList.add(tileentity);
 		}
 
@@ -2093,8 +2089,8 @@ public abstract class World implements IBlockAccess {
 	public boolean a(AxisAlignedBB axisalignedbb, Entity entity) {
 		List<Entity> list = this.getEntities(null, axisalignedbb);
 
-		for (Object value : list) {
-			Entity entity1 = (Entity) value;
+		for (Entity value : list) {
+			Entity entity1 = value;
 
 			// PaperSpigot start - Allow block placement if the placer cannot see the
 			// vanished blocker
@@ -2414,7 +2410,7 @@ public abstract class World implements IBlockAccess {
 				Iterator<TileEntity> iterator = this.b.iterator();
 
 				while (iterator.hasNext()) {
-					TileEntity tileentity1 = (TileEntity) iterator.next();
+					TileEntity tileentity1 = iterator.next();
 
 					if (tileentity1.getPosition().equals(blockposition)) {
 						tileentity1.y();
@@ -3105,7 +3101,7 @@ public abstract class World implements IBlockAccess {
 		ArrayList arraylist = Lists.newArrayList();
 
 		for (EntityHuman player : this.players) {
-			Entity entity = (Entity) player;
+			Entity entity = player;
 
 			if (oclass.isAssignableFrom(entity.getClass()) && predicate.apply((T) entity)) { // CraftBukkit - fix
 				// decompile error
@@ -3144,8 +3140,8 @@ public abstract class World implements IBlockAccess {
 		Entity entity = null;
 		double d0 = Double.MAX_VALUE;
 
-		for (Object value : list) {
-			Entity entity1 = (Entity) value;
+		for (Entity value : list) {
+			Entity entity1 = value;
 
 			if (entity1 != t0 && IEntitySelector.d.apply(entity1)) {
 				double d1 = t0.h(entity1);

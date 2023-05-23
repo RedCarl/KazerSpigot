@@ -3,14 +3,7 @@ package net.minecraft.server;
 import java.io.File;
 import java.net.SocketAddress;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.apache.logging.log4j.LogManager;
@@ -1093,7 +1086,7 @@ public abstract class PlayerList {
 	// CraftBukkit start - add a world/entity limited version
 	public void sendAll(Packet packet, EntityHuman entityhuman) {
 		for (EntityPlayer entityplayer : this.players) {
-			if (entityhuman != null && entityhuman instanceof EntityPlayer
+			if (entityhuman instanceof EntityPlayer
 					&& !entityplayer.getBukkitEntity().canSee(((EntityPlayer) entityhuman).getBukkitEntity())) {
 				continue;
 			}
@@ -1159,9 +1152,9 @@ public abstract class PlayerList {
 				s.append(", ");
 			}
 
-			s.append(((EntityPlayer) arraylist.get(i)).getName());
+			s.append(arraylist.get(i).getName());
 			if (flag) {
-				s.append(" (").append(((EntityPlayer) arraylist.get(i)).getUniqueID().toString()).append(")");
+				s.append(" (").append(arraylist.get(i).getUniqueID().toString()).append(")");
 			}
 		}
 
@@ -1475,7 +1468,7 @@ public abstract class PlayerList {
 
 		if (serverstatisticmanager == null) {
 			File file = new File(this.server.getWorldServer(0).getDataManager().getDirectory(), "stats");
-			File file1 = new File(file, FastUUID.toString(uuid) + ".json");
+			File file1 = new File(file, FastUUID.toString(Objects.requireNonNull(uuid)) + ".json");
 
 			if (!file1.exists()) {
 				File file2 = new File(file, entityhuman.getName() + ".json");

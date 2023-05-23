@@ -65,7 +65,7 @@ public class WorldGenVillagePieces {
 
 		for (Iterator<WorldGenVillagePieceWeight> iterator = list.iterator(); iterator
 				.hasNext(); i += worldgenvillagepieces_worldgenvillagepieceweight.b) {
-			worldgenvillagepieces_worldgenvillagepieceweight = (WorldGenVillagePieces.WorldGenVillagePieceWeight) iterator
+			worldgenvillagepieces_worldgenvillagepieceweight = iterator
 					.next();
 			if (worldgenvillagepieces_worldgenvillagepieceweight.d > 0
 					&& worldgenvillagepieces_worldgenvillagepieceweight.c < worldgenvillagepieces_worldgenvillagepieceweight.d) {
@@ -188,7 +188,7 @@ public class WorldGenVillagePieces {
 						- worldgenvillagepieces_worldgenvillagepiece.l.a;
 				int l1 = worldgenvillagepieces_worldgenvillagepiece.l.f
 						- worldgenvillagepieces_worldgenvillagepiece.l.c;
-				int i2 = k1 > l1 ? k1 : l1;
+				int i2 = Math.max(k1, l1);
 
 				if (worldgenvillagepieces_worldgenvillagestartpiece.e().a(i1, j1, i2 / 2 + 4, WorldGenVillage.d)) {
 					list.add(worldgenvillagepieces_worldgenvillagepiece);
@@ -223,7 +223,7 @@ public class WorldGenVillagePieces {
 						/ 2;
 				int k1 = worldgenvillagepieces_worldgenvillageroad.l.d - worldgenvillagepieces_worldgenvillageroad.l.a;
 				int l1 = worldgenvillagepieces_worldgenvillageroad.l.f - worldgenvillagepieces_worldgenvillageroad.l.c;
-				int i2 = k1 > l1 ? k1 : l1;
+				int i2 = Math.max(k1, l1);
 
 				if (worldgenvillagepieces_worldgenvillagestartpiece.e().a(i1, j1, i2 / 2 + 4, WorldGenVillage.d)) {
 					list.add(worldgenvillagepieces_worldgenvillageroad);
@@ -1760,12 +1760,10 @@ public class WorldGenVillagePieces {
 			super(worldgenvillagepieces_worldgenvillagestartpiece, i);
 			this.m = EnumDirection.EnumDirectionLimit.HORIZONTAL.a(random);
 			switch (WorldGenVillagePieces.SyntheticClass_1.a[this.m.ordinal()]) {
-			case 1:
-			case 2:
-				this.l = new StructureBoundingBox(j, 64, k, j + 6 - 1, 78, k + 6 - 1);
-				break;
+				case 1:
+				case 2:
 
-			default:
+				default:
 				this.l = new StructureBoundingBox(j, 64, k, j + 6 - 1, 78, k + 6 - 1);
 			}
 

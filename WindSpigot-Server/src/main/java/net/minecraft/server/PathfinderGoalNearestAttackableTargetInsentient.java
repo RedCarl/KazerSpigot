@@ -55,7 +55,7 @@ public class PathfinderGoalNearestAttackableTargetInsentient extends PathfinderG
 		if (list.isEmpty()) {
 			return false;
 		} else {
-			this.e = (EntityLiving) list.get(0);
+			this.e = list.get(0);
 			return true;
 		}
 	}

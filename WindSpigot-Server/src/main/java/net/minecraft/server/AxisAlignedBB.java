@@ -289,7 +289,7 @@ public class AxisAlignedBB {
 		if (var9 == null) {
 			return null;
 		} else {
-			EnumDirection var10 = null;
+			EnumDirection var10;
 			if (var9 == var3) {
 				var10 = EnumDirection.WEST;
 			} else if (var9 == var4) {

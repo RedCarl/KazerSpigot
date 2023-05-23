@@ -2,13 +2,7 @@ package net.minecraft.server;
 
 // CraftBukkit start
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 
 import ga.windpvp.windspigot.random.FastRandom;
@@ -25,7 +19,6 @@ import org.bukkit.event.weather.LightningStrikeEvent;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import ga.windpvp.windspigot.async.entitytracker.AsyncEntityTracker;
@@ -210,7 +203,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
                 "Block at {0},{1},{2} is {3} but has {4}" + ". "
                         + "Bukkit will attempt to fix this, but there may be additional damage that we cannot recover.",
                 new Object[]{pos.getX(), pos.getY(), pos.getZ(),
-                        org.bukkit.Material.getMaterial(Block.getId(type)).toString(), found});
+                        Objects.requireNonNull(org.bukkit.Material.getMaterial(Block.getId(type))).toString(), found});
 
         if (type instanceof IContainer) {
             TileEntity replacement = ((IContainer) type).a(this, type.toLegacyData(this.getType(pos)));
@@ -325,7 +318,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
     }
 
     public BiomeBase.BiomeMeta a(EnumCreatureType enumcreaturetype, BlockPosition blockposition) {
-        List list = this.N().getMobsFor(enumcreaturetype, blockposition);
+        List<BiomeBase.BiomeMeta> list = this.N().getMobsFor(enumcreaturetype, blockposition);
 
         return list != null && !list.isEmpty() ? (BiomeBase.BiomeMeta) WeightedRandom.a(this.random, list) : null;
     }
@@ -669,14 +662,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
 
     @Override
     public void tickEntities() {
-        if (false) { // CraftBukkit - this prevents entity cleanup, other issues on servers
-            // with no players
-            if (this.emptyTime++ >= 1200) {
-                return;
-            }
-        } else {
-            this.j();
-        }
+        this.j();
 
         super.tickEntities();
         spigotConfig.currentPrimedTnt = 0; // Spigot
@@ -736,7 +722,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
             this.methodProfiler.b();
             this.methodProfiler.a("ticking");
             timings.scheduledBlocksTicking.startTiming(); // Spigot
-            Iterator iterator = this.V.iterator();
+            Iterator<NextTickListEntry> iterator = this.V.iterator();
 
             while (iterator.hasNext()) {
                 nextticklistentry = (NextTickListEntry) iterator.next();
@@ -950,7 +936,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
         } else {
             this.isLoading = true;
             WorldChunkManager worldchunkmanager = this.worldProvider.m();
-            List list = worldchunkmanager.a();
+            List<BiomeBase> list = worldchunkmanager.a();
             Random random = new FastRandom(this.getSeed());
             BlockPosition blockposition = worldchunkmanager.a(0, 0, 256, list, random);
             int i = 0;
@@ -1080,8 +1066,8 @@ public class WorldServer extends World implements IAsyncTaskHandler {
         Entity[] aentity = entity.aB();
 
         if (aentity != null) {
-            for (int i = 0; i < aentity.length; ++i) {
-                this.entitiesById.a(aentity[i].getId(), aentity[i]);
+            for (Entity value : aentity) {
+                this.entitiesById.a(value.getId(), value);
             }
         }
 
@@ -1095,8 +1081,8 @@ public class WorldServer extends World implements IAsyncTaskHandler {
         Entity[] aentity = entity.aB();
 
         if (aentity != null) {
-            for (int i = 0; i < aentity.length; ++i) {
-                this.entitiesById.d(aentity[i].getId());
+            for (Entity value : aentity) {
+                this.entitiesById.d(value.getId());
             }
         }
 
@@ -1148,11 +1134,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
             explosion.clearBlocks();
         }
 
-        Iterator iterator = this.players.iterator();
-
-        while (iterator.hasNext()) {
-            EntityHuman entityhuman = (EntityHuman) iterator.next();
-
+        for (EntityHuman entityhuman : this.players) {
             if (entityhuman.e(d0, d1, d2) < 4096.0D) {
                 ((EntityPlayer) entityhuman).playerConnection.sendPacket(new PacketPlayOutExplosion(d0, d1, d2, f,
                         explosion.getBlocks(), explosion.b().get(entityhuman)));
@@ -1165,7 +1147,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
     @Override
     public void playBlockAction(BlockPosition blockposition, Block block, int i, int j) {
         BlockActionData blockactiondata = new BlockActionData(blockposition, block, i, j);
-        Iterator iterator = this.S[this.T].iterator();
+        Iterator<BlockActionData> iterator = this.S[this.T].iterator();
 
         BlockActionData blockactiondata1;
 
@@ -1185,11 +1167,8 @@ public class WorldServer extends World implements IAsyncTaskHandler {
             int i = this.T;
 
             this.T ^= 1;
-            Iterator iterator = this.S[i].iterator();
 
-            while (iterator.hasNext()) {
-                BlockActionData blockactiondata = (BlockActionData) iterator.next();
-
+            for (BlockActionData blockactiondata : this.S[i]) {
                 if (this.a(blockactiondata)) {
                     // CraftBukkit - this.worldProvider.dimension -> this.dimension
                     this.server.getPlayerList().sendPacketNearby(null, blockactiondata.a().getX(),
@@ -1292,8 +1271,8 @@ public class WorldServer extends World implements IAsyncTaskHandler {
         PacketPlayOutWorldParticles packetplayoutworldparticles = new PacketPlayOutWorldParticles(enumparticle, flag,
                 (float) d0, (float) d1, (float) d2, (float) d3, (float) d4, (float) d5, (float) d6, i, aint);
 
-        for (int j = 0; j < this.players.size(); ++j) {
-            EntityPlayer entityplayer = (EntityPlayer) this.players.get(j);
+        for (EntityHuman player : this.players) {
+            EntityPlayer entityplayer = (EntityPlayer) player;
             if (sender != null && !entityplayer.getBukkitEntity().canSee(sender.getBukkitEntity())) {
                 continue; // CraftBukkit
             }

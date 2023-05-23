@@ -23,7 +23,7 @@ public class EntityIronGolem extends EntityGolem {
 		this.goalSelector.a(8, new PathfinderGoalRandomLookaround(this));
 		this.targetSelector.a(1, new PathfinderGoalDefendVillage(this));
 		this.targetSelector.a(2, new PathfinderGoalHurtByTarget(this, false));
-		this.targetSelector.a(3, new EntityIronGolem.PathfinderGoalNearestGolemTarget(this, EntityInsentient.class, 10,
+		this.targetSelector.a(3, new EntityIronGolem.PathfinderGoalNearestGolemTarget<>(this, EntityInsentient.class, 10,
 				false, true, IMonster.e));
 	}
 

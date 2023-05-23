@@ -398,7 +398,7 @@ public class EntityEnderDragon extends EntityInsentient implements IComplex, IMo
 	private void cf() {
 		this.bw = false;
 		ArrayList<EntityHuman> arraylist = Lists.newArrayList(this.world.players);
-		Iterator iterator = arraylist.iterator();
+		Iterator<EntityHuman> iterator = arraylist.iterator();
 
 		while (iterator.hasNext()) {
 			if (((EntityHuman) iterator.next()).isSpectator()) {

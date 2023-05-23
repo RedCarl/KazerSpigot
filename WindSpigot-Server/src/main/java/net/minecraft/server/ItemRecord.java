@@ -21,7 +21,7 @@ public class ItemRecord extends Item {
 			EnumDirection enumdirection, float f, float f1, float f2) {
 		IBlockData iblockdata = world.getType(blockposition);
 
-		if (iblockdata.getBlock() == Blocks.JUKEBOX && !iblockdata.get(BlockJukeBox.HAS_RECORD).booleanValue()) {
+		if (iblockdata.getBlock() == Blocks.JUKEBOX && !iblockdata.get(BlockJukeBox.HAS_RECORD)) {
 			if (world.isClientSide) {
 				return true;
 			} else {

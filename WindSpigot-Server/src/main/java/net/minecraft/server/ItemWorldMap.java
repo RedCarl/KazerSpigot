@@ -9,6 +9,8 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multisets;
 
+import java.util.Objects;
+
 public class ItemWorldMap extends ItemWorldMapBase {
 
 	protected ItemWorldMap() {
@@ -156,7 +158,7 @@ public class ItemWorldMap extends ItemWorldMapBase {
 								d0 = d1;
 								if (l1 >= 0 && i2 * i2 + j2 * j2 < j1 * j1 && (!flag1 || (k1 + l1 & 1) != 0)) {
 									byte b1 = worldmap.colors[k1 + l1 * 128];
-									byte b2 = (byte) (materialmapcolor.M * 4 + b0);
+									byte b2 = (byte) (Objects.requireNonNull(materialmapcolor).M * 4 + b0);
 
 									if (b1 != b2) {
 										worldmap.colors[k1 + l1 * 128] = b2;

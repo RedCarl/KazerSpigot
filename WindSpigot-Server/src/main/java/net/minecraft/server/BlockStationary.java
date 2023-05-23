@@ -90,13 +90,11 @@ public class BlockStationary extends BlockFluids {
 	protected boolean f(World world, BlockPosition blockposition) {
 		int i = aenumdirection.length;
 
-		for (int j = 0; j < i; ++j) {
-			EnumDirection enumdirection = aenumdirection[j];
-
-			if (this.m(world, blockposition.shift(enumdirection))) {
-				return true;
-			}
-		}
+        for (EnumDirection enumdirection : aenumdirection) {
+            if (this.m(world, blockposition.shift(enumdirection))) {
+                return true;
+            }
+        }
 
 		return false;
 	}

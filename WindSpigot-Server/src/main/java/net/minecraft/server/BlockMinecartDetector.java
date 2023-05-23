@@ -142,7 +142,7 @@ public class BlockMinecartDetector extends BlockMinecartTrackAbstract {
 			List<EntityMinecartCommandBlock> list = this.a(world, blockposition, EntityMinecartCommandBlock.class);
 
 			if (!list.isEmpty()) {
-				return ((EntityMinecartCommandBlock) list.get(0)).getCommandBlock().j();
+				return list.get(0).getCommandBlock().j();
 			}
 
 			List<EntityMinecartAbstract> list1 = this.a(world, blockposition, EntityMinecartAbstract.class,

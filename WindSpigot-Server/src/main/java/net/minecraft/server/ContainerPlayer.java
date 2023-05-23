@@ -120,11 +120,11 @@ public class ContainerPlayer extends Container {
 				}
 
 				slot.a(itemstack1, itemstack);
-			} else if (i >= 1 && i < 5) {
+			} else if (i < 5) {
 				if (!this.a(itemstack1, 9, 45, false)) {
 					return null;
 				}
-			} else if (i >= 5 && i < 9) {
+			} else if (i < 9) {
 				if (!this.a(itemstack1, 9, 45, false)) {
 					return null;
 				}
@@ -135,11 +135,11 @@ public class ContainerPlayer extends Container {
 				if (!this.a(itemstack1, j, j + 1, false)) {
 					return null;
 				}
-			} else if (i >= 9 && i < 36) {
+			} else if (i < 36) {
 				if (!this.a(itemstack1, 36, 45, false)) {
 					return null;
 				}
-			} else if (i >= 36 && i < 45) {
+			} else if (i < 45) {
 				if (!this.a(itemstack1, 9, 36, false)) {
 					return null;
 				}

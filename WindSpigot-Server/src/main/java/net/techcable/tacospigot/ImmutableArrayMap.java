@@ -112,7 +112,6 @@ public class ImmutableArrayMap<K, V> extends AbstractMap<K, V> implements Map<K,
 	@Override
 	public Set<Entry<K, V>> entrySet() {
 		return new AbstractSet<Entry<K, V>>() {
-			@SuppressWarnings("unchecked")
 			@Override
 			public Iterator<Entry<K, V>> iterator() {
 				return Arrays.asList(entries).iterator();

@@ -1,6 +1,7 @@
 package net.minecraft.server;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Arrow;
@@ -196,7 +197,7 @@ public class EntityArrow extends Entity implements IProjectile {
 			float f1;
 
 			for (j = 0; j < list.size(); ++j) {
-				Entity entity1 = (Entity) list.get(j);
+				Entity entity1 = list.get(j);
 
 				if (entity1.ad() && (entity1 != this.shooter || this.as >= 5)) {
 					f1 = 0.3F;
@@ -283,7 +284,7 @@ public class EntityArrow extends Entity implements IProjectile {
 																												// is a
 																												// player
 							EntityCombustByEntityEvent combustEvent = new EntityCombustByEntityEvent(
-									this.getBukkitEntity(), entity.getBukkitEntity(), 5);
+									this.getBukkitEntity(), Objects.requireNonNull(entity).getBukkitEntity(), 5);
 							org.bukkit.Bukkit.getPluginManager().callEvent(combustEvent);
 							if (!combustEvent.isCancelled()) {
 								movingobjectposition.entity.setOnFire(combustEvent.getDuration());

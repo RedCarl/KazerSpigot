@@ -5,11 +5,7 @@ import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.logging.log4j.LogManager;
@@ -179,7 +175,7 @@ public class ChunkRegionLoader implements IChunkLoader, IAsyncChunkSaver {
 				this.c.remove(chunkcoordintpair);
 			}
 
-			return flag;
+			return true;
 		}
 	}
 
@@ -204,8 +200,7 @@ public class ChunkRegionLoader implements IChunkLoader, IAsyncChunkSaver {
 			this.e = true;
 
 			while (true) {
-				if (this.c()) {
-				}
+				this.c();
 			}
 		} finally {
 			this.e = false;
@@ -429,7 +424,7 @@ public class ChunkRegionLoader implements IChunkLoader, IAsyncChunkSaver {
 
 						if (entity2 != null) {
 							chunk.a(entity2);
-							entity1.mount(entity2);
+							Objects.requireNonNull(entity1).mount(entity2);
 						}
 
 						entity1 = entity2;

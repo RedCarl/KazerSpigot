@@ -104,14 +104,12 @@ public class ConfigurationSerialization {
 		Validate.notNull(args, "Args must not be null");
 
 		ConfigurationSerializable result = null;
-		Method method = null;
+		Method method;
 
-		if (result == null) {
-			method = getMethod("deserialize", true);
+		method = getMethod("deserialize", true);
 
-			if (method != null) {
-				result = deserializeViaMethod(method, args);
-			}
+		if (method != null) {
+			result = deserializeViaMethod(method, args);
 		}
 
 		if (result == null) {
@@ -166,7 +164,7 @@ public class ConfigurationSerialization {
 	 * @return New instance of the specified class
 	 */
 	public static ConfigurationSerializable deserializeObject(Map<String, ?> args) {
-		Class<? extends ConfigurationSerializable> clazz = null;
+		Class<? extends ConfigurationSerializable> clazz;
 
 		if (args.containsKey(SERIALIZED_TYPE_KEY)) {
 			try {
@@ -264,12 +262,10 @@ public class ConfigurationSerialization {
 			}
 		}
 
-		if (delegate == null) {
-			SerializableAs alias = clazz.getAnnotation(SerializableAs.class);
+		SerializableAs alias = clazz.getAnnotation(SerializableAs.class);
 
-			if ((alias != null) && (alias.value() != null)) {
-				return alias.value();
-			}
+		if ((alias != null) && (alias.value() != null)) {
+			return alias.value();
 		}
 
 		return clazz.getName();

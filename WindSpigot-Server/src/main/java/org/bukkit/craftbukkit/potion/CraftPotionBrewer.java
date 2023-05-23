@@ -29,7 +29,7 @@ public class CraftPotionBrewer implements PotionBrewer {
 		}
 
 		for (Object raw : mcEffects) {
-			if (raw == null || !(raw instanceof MobEffect)) {
+			if (!(raw instanceof MobEffect)) {
 				continue;
 			}
 			MobEffect mcEffect = (MobEffect) raw;

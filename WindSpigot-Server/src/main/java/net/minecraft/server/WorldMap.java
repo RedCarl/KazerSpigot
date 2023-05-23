@@ -103,14 +103,10 @@ public class WorldMap extends PersistentBase {
 			for (int k = 0; k < short1; ++k) {
 				int l = k + j;
 
-				if (l >= 0 || l < 128) {
-					for (int i1 = 0; i1 < short0; ++i1) {
-						int j1 = i1 + i;
+				for (int i1 = 0; i1 < short0; ++i1) {
+					int j1 = i1 + i;
 
-						if (j1 >= 0 || j1 < 128) {
-							this.colors[j1 + l * 128] = abyte[i1 + k * short0];
-						}
-					}
+					this.colors[j1 + l * 128] = abyte[i1 + k * short0];
 				}
 			}
 		}

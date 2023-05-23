@@ -25,7 +25,7 @@ public class EntitySlice<T> extends AbstractSet<T> {
 		this.b.put(oclass, this.e);
 
 		for (Class<?> aClass : EntitySlice.a) {
-			Class oclass1 = (Class) aClass;
+			Class oclass1 = aClass;
 
 			this.a(oclass1);
 		}
@@ -35,9 +35,9 @@ public class EntitySlice<T> extends AbstractSet<T> {
 	protected void a(Class<?> oclass) {
 		EntitySlice.a.add(oclass);
 
-		for (Object object : this.e) {
+		for (T object : this.e) {
 			if (oclass.isAssignableFrom(object.getClass())) {
-				this.a((T) object, oclass);
+				this.a(object, oclass);
 			}
 		}
 
@@ -60,7 +60,7 @@ public class EntitySlice<T> extends AbstractSet<T> {
 	public boolean add(T t0) {
 
 		for (Class<?> aClass : this.c) {
-			Class oclass = (Class) aClass;
+			Class oclass = aClass;
 
 			if (oclass.isAssignableFrom(t0.getClass())) {
 				this.a(t0, oclass);
@@ -87,7 +87,7 @@ public class EntitySlice<T> extends AbstractSet<T> {
 		boolean flag = false;
 
 		for (Class<?> aClass : this.c) {
-			Class oclass = (Class) aClass;
+			Class oclass = aClass;
 
 			if (oclass.isAssignableFrom(object1.getClass())) {
 				List<T> list = this.b.get(oclass);
@@ -115,7 +115,7 @@ public class EntitySlice<T> extends AbstractSet<T> {
 				if (list == null) {
 					return Iterators.emptyIterator();
 				} else {
-					Iterator iterator = list.iterator();
+					Iterator<T> iterator = list.iterator();
 
 					return Iterators.filter(iterator, oclass);
 				}

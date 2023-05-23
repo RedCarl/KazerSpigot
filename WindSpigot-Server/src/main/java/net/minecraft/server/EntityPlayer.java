@@ -1,11 +1,6 @@
 package net.minecraft.server;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 // CraftBukkit start
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -221,10 +216,8 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
 		}
 
 		// PaperSpigot start - Configurable container update tick rate
-		if (/*--containerUpdateDelay <= 0*/ true) {
-			this.activeContainer.b();
-			/* containerUpdateDelay = world.paperSpigotConfig.containerUpdateTickRate; */
-		}
+		this.activeContainer.b();
+		/* containerUpdateDelay = world.paperSpigotConfig.containerUpdateTickRate; */
 		// PaperSpigot end
 		if (!this.world.isClientSide && !this.activeContainer.a(this)) {
 			this.closeInventory();
@@ -247,7 +240,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
 			Iterator<ChunkCoordIntPair> chunksToLoad = this.chunkCoordIntPairQueue.iterator();
 			ArrayList<TileEntity> tileEntities = Lists.newArrayList();
 
-			Chunk chunk = null;
+			Chunk chunk;
 
 			while (chunksToLoad.hasNext() && chunkList.size() < this.world.spigotConfig.maxBulkChunk) { // Spigot
 				ChunkCoordIntPair chunkcoordintpair = chunksToLoad.next();
@@ -429,7 +422,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
 			HashSet<BiomeBase> hashset = Sets.newHashSet(BiomeBase.n);
 
 			for (String s1 : achievementset) {
-				Iterator iterator1 = hashset.iterator();
+				Iterator<BiomeBase> iterator1 = hashset.iterator();
 
 				while (iterator1.hasNext()) {
 					BiomeBase biomebase1 = (BiomeBase) iterator1.next();
@@ -788,7 +781,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
 			this.activeContainer = container; // CraftBukkit
 		}
 
-		this.activeContainer.windowId = this.containerCounter;
+		Objects.requireNonNull(this.activeContainer).windowId = this.containerCounter;
 		this.activeContainer.addSlotListener(this);
 	}
 

@@ -190,7 +190,7 @@ public class ContainerEnchantTable extends Container {
 							List<WeightedRandomEnchant> list = this.a(itemstack, j, this.costs[j]);
 
 							if (list != null && !list.isEmpty()) {
-								WeightedRandomEnchant weightedrandomenchant = (WeightedRandomEnchant) list
+								WeightedRandomEnchant weightedrandomenchant = list
 										.get(this.k.nextInt(list.size()));
 
 								this.h[j] = weightedrandomenchant.enchantment.id | weightedrandomenchant.level << 8;
@@ -230,68 +230,66 @@ public class ContainerEnchantTable extends Container {
 				// CraftBukkit end
 				boolean flag = itemstack.getItem() == Items.BOOK;
 
-				if (list != null) {
-					// CraftBukkit start
-					Map<org.bukkit.enchantments.Enchantment, Integer> enchants = new java.util.HashMap<org.bukkit.enchantments.Enchantment, Integer>();
-					for (Object obj : list) {
-						WeightedRandomEnchant instance = (WeightedRandomEnchant) obj;
-						enchants.put(org.bukkit.enchantments.Enchantment.getById(instance.enchantment.id),
-								instance.level);
-					}
-					CraftItemStack item = CraftItemStack.asCraftMirror(itemstack);
-
-					EnchantItemEvent event = new EnchantItemEvent((Player) entityhuman.getBukkitEntity(),
-							this.getBukkitView(),
-							this.world.getWorld().getBlockAt(position.getX(), position.getY(), position.getZ()), item,
-							this.costs[i], enchants, i);
-					this.world.getServer().getPluginManager().callEvent(event);
-
-					int level = event.getExpLevelCost();
-					if (event.isCancelled()
-							|| (level > entityhuman.expLevel && !entityhuman.abilities.canInstantlyBuild)
-							|| event.getEnchantsToAdd().isEmpty()) {
-						return false;
-					}
-					if (flag) {
-						itemstack.setItem(Items.ENCHANTED_BOOK);
-					}
-
-					for (Map.Entry<org.bukkit.enchantments.Enchantment, Integer> entry : event.getEnchantsToAdd()
-							.entrySet()) {
-						try {
-							if (flag) {
-								int enchantId = entry.getKey().getId();
-								if (Enchantment.getById(enchantId) == null) {
-									continue;
-								}
-
-								WeightedRandomEnchant enchantment = new WeightedRandomEnchant(
-										Enchantment.getById(enchantId), entry.getValue());
-								Items.ENCHANTED_BOOK.a(itemstack, enchantment);
-							} else {
-								item.addUnsafeEnchantment(entry.getKey(), entry.getValue());
-							}
-						} catch (IllegalArgumentException e) {
-							/* Just swallow invalid enchantments */
-						}
-					}
-
-					entityhuman.enchantDone(j);
-					// CraftBukkit end
-
-					// CraftBukkit - TODO: let plugins change this
-					if (!entityhuman.abilities.canInstantlyBuild) {
-						itemstack1.count -= j;
-						if (itemstack1.count <= 0) {
-							this.enchantSlots.setItem(1, null);
-						}
-					}
-
-					entityhuman.b(StatisticList.W);
-					this.enchantSlots.update();
-					this.f = entityhuman.cj();
-					this.a(this.enchantSlots);
+				// CraftBukkit start
+				Map<org.bukkit.enchantments.Enchantment, Integer> enchants = new java.util.HashMap<org.bukkit.enchantments.Enchantment, Integer>();
+				for (WeightedRandomEnchant obj : list) {
+					WeightedRandomEnchant instance = obj;
+					enchants.put(org.bukkit.enchantments.Enchantment.getById(instance.enchantment.id),
+							instance.level);
 				}
+				CraftItemStack item = CraftItemStack.asCraftMirror(itemstack);
+
+				EnchantItemEvent event = new EnchantItemEvent((Player) entityhuman.getBukkitEntity(),
+						this.getBukkitView(),
+						this.world.getWorld().getBlockAt(position.getX(), position.getY(), position.getZ()), item,
+						this.costs[i], enchants, i);
+				this.world.getServer().getPluginManager().callEvent(event);
+
+				int level = event.getExpLevelCost();
+				if (event.isCancelled()
+						|| (level > entityhuman.expLevel && !entityhuman.abilities.canInstantlyBuild)
+						|| event.getEnchantsToAdd().isEmpty()) {
+					return false;
+				}
+				if (flag) {
+					itemstack.setItem(Items.ENCHANTED_BOOK);
+				}
+
+				for (Map.Entry<org.bukkit.enchantments.Enchantment, Integer> entry : event.getEnchantsToAdd()
+						.entrySet()) {
+					try {
+						if (flag) {
+							int enchantId = entry.getKey().getId();
+							if (Enchantment.getById(enchantId) == null) {
+								continue;
+							}
+
+							WeightedRandomEnchant enchantment = new WeightedRandomEnchant(
+									Enchantment.getById(enchantId), entry.getValue());
+							Items.ENCHANTED_BOOK.a(itemstack, enchantment);
+						} else {
+							item.addUnsafeEnchantment(entry.getKey(), entry.getValue());
+						}
+					} catch (IllegalArgumentException e) {
+						/* Just swallow invalid enchantments */
+					}
+				}
+
+				entityhuman.enchantDone(j);
+				// CraftBukkit end
+
+				// CraftBukkit - TODO: let plugins change this
+				if (!entityhuman.abilities.canInstantlyBuild) {
+					itemstack1.count -= j;
+					if (itemstack1.count <= 0) {
+						this.enchantSlots.setItem(1, null);
+					}
+				}
+
+				entityhuman.b(StatisticList.W);
+				this.enchantSlots.update();
+				this.f = entityhuman.cj();
+				this.a(this.enchantSlots);
 			}
 
 			return true;

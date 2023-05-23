@@ -276,7 +276,7 @@ public class EntityTrackerEntry {
 				// CraftBukkit
 
 				for (EntityPlayer trackedPlayer : this.trackedPlayers) {
-					EntityHuman entityhuman = (EntityHuman) trackedPlayer;
+					EntityHuman entityhuman = trackedPlayer;
 					EntityPlayer entityplayer = (EntityPlayer) entityhuman;
 
 					worldmap.a(entityplayer, itemstack);
@@ -732,7 +732,6 @@ public class EntityTrackerEntry {
 			if (this.tracker instanceof EntityFireball) {
 				EntityFireball entityfireball = (EntityFireball) this.tracker;
 
-				packetplayoutspawnentity = null;
 				byte b0 = 63;
 
 				if (this.tracker instanceof EntitySmallFireball) {

@@ -9,14 +9,11 @@ import io.netty.handler.codec.MessageToByteEncoder;
 
 public class PacketEncoder extends MessageToByteEncoder<Packet<?>> {
 
-	// private static final Logger a = LogManager.getLogger();
-	// private static final Marker b = MarkerManager.getMarker("PACKET_SENT",
-	// NetworkManager.PACKET_MARKER);
-	private final EnumProtocolDirection c;
-
-	public PacketEncoder(EnumProtocolDirection enumprotocoldirection) {
-		this.c = enumprotocoldirection;
-	}
+    public PacketEncoder(EnumProtocolDirection enumprotocoldirection) {
+        // private static final Logger a = LogManager.getLogger();
+        // private static final Marker b = MarkerManager.getMarker("PACKET_SENT",
+        // NetworkManager.PACKET_MARKER);
+    }
 
 	protected void a(ChannelHandlerContext ctx, Packet<?> packet, ByteBuf bytebuf) throws Exception {
 		Integer packetId = ctx.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get().getPacketIdForPacket(packet);

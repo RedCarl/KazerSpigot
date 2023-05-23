@@ -156,9 +156,7 @@ public class LongHashSet {
 
 	public void clear() {
 		elements = 0;
-		for (int ix = 0; ix < values.length; ix++) {
-			values[ix] = FREE;
-		}
+		Arrays.fill(values, FREE);
 
 		freeEntries = values.length;
 		modCount++;

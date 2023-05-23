@@ -95,7 +95,8 @@ public class CraftInventoryView extends InventoryView {
 				}
 				break;
 			case ENCHANTING:
-				type = SlotType.CRAFTING;
+				case BEACON:
+					type = SlotType.CRAFTING;
 				break;
 			case WORKBENCH:
 			case CRAFTING:
@@ -106,23 +107,14 @@ public class CraftInventoryView extends InventoryView {
 				}
 				break;
 			case MERCHANT:
-				if (slot == 2) {
+				case ANVIL:
+					if (slot == 2) {
 					type = SlotType.RESULT;
 				} else {
 					type = SlotType.CRAFTING;
 				}
 				break;
-			case BEACON:
-				type = SlotType.CRAFTING;
-				break;
-			case ANVIL:
-				if (slot == 2) {
-					type = SlotType.RESULT;
-				} else {
-					type = SlotType.CRAFTING;
-				}
-				break;
-			default:
+				default:
 				// Nothing to do, it's a CONTAINER slot
 			}
 		} else if (slot == -999) {

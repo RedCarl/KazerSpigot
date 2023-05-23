@@ -18,11 +18,8 @@ public final class JSONUtil {
 
 	/**
 	 * Creates a key/value "JSONPair" object
-	 * 
-	 * @param key
-	 * @param obj
-	 * @return
-	 */
+	 *
+     */
 	public static JSONPair pair(String key, Object obj) {
 		return new JSONPair(key, obj);
 	}
@@ -33,21 +30,16 @@ public final class JSONUtil {
 
 	/**
 	 * Creates a new JSON object from multiple JsonPair key/value pairs
-	 * 
-	 * @param data
-	 * @return
-	 */
+	 *
+     */
 	public static Map createObject(JSONPair... data) {
 		return appendObjectData(new LinkedHashMap(), data);
 	}
 
 	/**
 	 * This appends multiple key/value Obj pairs into a JSON Object
-	 * 
-	 * @param parent
-	 * @param data
-	 * @return
-	 */
+	 *
+     */
 	public static Map appendObjectData(Map parent, JSONPair... data) {
 		for (JSONPair JSONPair : data) {
 			parent.put(JSONPair.key, JSONPair.val);
@@ -57,22 +49,16 @@ public final class JSONUtil {
 
 	/**
 	 * This builds a JSON array from a set of data
-	 * 
-	 * @param data
-	 * @return
-	 */
+	 *
+     */
 	public static List toArray(Object... data) {
 		return Lists.newArrayList(data);
 	}
 
 	/**
 	 * These help build a single JSON array using a mapper function
-	 * 
-	 * @param collection
-	 * @param mapper
-	 * @param <E>
-	 * @return
-	 */
+	 *
+     */
 	public static <E> List toArrayMapper(E[] collection, Function<E, Object> mapper) {
 		return toArrayMapper(Lists.newArrayList(collection), mapper);
 	}
@@ -91,12 +77,8 @@ public final class JSONUtil {
 	/**
 	 * These help build a single JSON Object from a collection, using a mapper
 	 * function
-	 * 
-	 * @param collection
-	 * @param mapper
-	 * @param <E>
-	 * @return
-	 */
+	 *
+     */
 	public static <E> Map toObjectMapper(E[] collection, Function<E, JSONPair> mapper) {
 		return toObjectMapper(Lists.newArrayList(collection), mapper);
 	}

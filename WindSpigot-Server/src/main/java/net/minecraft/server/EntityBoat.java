@@ -1,6 +1,7 @@
 package net.minecraft.server;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
@@ -42,7 +43,7 @@ public class EntityBoat extends Entity {
 			return;
 		}
 
-		super.collide(entity);
+		super.collide(Objects.requireNonNull(entity));
 	}
 	// CraftBukkit end
 
@@ -411,8 +412,8 @@ public class EntityBoat extends Entity {
 						this.getBoundingBox().grow(0.20000000298023224D, 0.0D, 0.20000000298023224D));
 
 				if (list != null && !list.isEmpty()) {
-					for (Object o : list) {
-						Entity entity = (Entity) o;
+					for (Entity o : list) {
+						Entity entity = o;
 
 						if (entity != this.passenger && entity.ae() && entity instanceof EntityBoat) {
 							entity.collide(this);

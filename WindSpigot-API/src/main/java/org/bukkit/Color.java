@@ -316,7 +316,6 @@ public final class Color implements ConfigurationSerializable {
 		return ImmutableMap.of("RED", getRed(), "BLUE", getBlue(), "GREEN", getGreen());
 	}
 
-	@SuppressWarnings("javadoc")
 	public static Color deserialize(Map<String, Object> map) {
 		return fromRGB(asInt("RED", map), asInt("GREEN", map), asInt("BLUE", map));
 	}

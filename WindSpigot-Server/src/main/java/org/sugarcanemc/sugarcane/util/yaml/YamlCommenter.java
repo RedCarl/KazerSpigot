@@ -38,7 +38,6 @@ public class YamlCommenter {
 	 * Saves comments to config file
 	 *
 	 * @param file File to save to
-	 * @throws IOException
 	 */
 	public void saveComments(File file) throws IOException {
 		ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(file.toPath());

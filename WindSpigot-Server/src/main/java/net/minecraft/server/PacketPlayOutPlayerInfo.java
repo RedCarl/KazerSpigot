@@ -117,7 +117,7 @@ public class PacketPlayOutPlayerInfo implements Packet<PacketListenerPlayOut> {
 
 		while (true) {
 			while (var2.hasNext()) {
-				PacketPlayOutPlayerInfo.PlayerInfoData var3 = (PacketPlayOutPlayerInfo.PlayerInfoData) var2.next();
+				PacketPlayOutPlayerInfo.PlayerInfoData var3 = var2.next();
 				switch (this.a) {
 				case ADD_PLAYER:
 					var1.a(var3.a().getId());

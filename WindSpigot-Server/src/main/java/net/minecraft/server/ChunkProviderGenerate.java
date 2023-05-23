@@ -402,7 +402,7 @@ public class ChunkProviderGenerate implements IChunkProvider {
 		boolean flag = false;
 
 		if (this.r.y && this.n && chunk.w() < 3600L) {
-			flag |= this.A.a(this.m, this.h, new ChunkCoordIntPair(i, j));
+			flag = this.A.a(this.m, this.h, new ChunkCoordIntPair(i, j));
 		}
 
 		return flag;

@@ -41,7 +41,7 @@ public class EntityWitherSkull extends EntityFireball {
 		if (!this.world.isClientSide) {
 			if (movingobjectposition.entity != null) {
 				// Spigot start
-				boolean didDamage = false;
+				boolean didDamage;
 				if (this.shooter != null) {
 					didDamage = movingobjectposition.entity.damageEntity(DamageSource.projectile(this, shooter), 8.0F);
 					if (didDamage) {
@@ -101,7 +101,7 @@ public class EntityWitherSkull extends EntityFireball {
 
 	@Override
 	protected void h() {
-		this.datawatcher.a(10, Byte.valueOf((byte) 0));
+		this.datawatcher.a(10, (byte) 0);
 	}
 
 	public boolean isCharged() {
@@ -109,6 +109,6 @@ public class EntityWitherSkull extends EntityFireball {
 	}
 
 	public void setCharged(boolean flag) {
-		this.datawatcher.watch(10, Byte.valueOf((byte) (flag ? 1 : 0)));
+		this.datawatcher.watch(10, (byte) (flag ? 1 : 0));
 	}
 }

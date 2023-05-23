@@ -11,7 +11,7 @@ public class EntityLightning extends EntityWeather {
 	private int c;
 
 	// CraftBukkit start
-	public boolean isEffect = false;
+	public boolean isEffect;
 
 	public boolean isSilent = false; // Spigot
 
@@ -130,11 +130,11 @@ public class EntityLightning extends EntityWeather {
 				this.world.d(2);
 			} else {
 				double d0 = 3.0D;
-				List list = this.world.getEntities(this, new AxisAlignedBB(this.locX - d0, this.locY - d0,
+				List<Entity> list = this.world.getEntities(this, new AxisAlignedBB(this.locX - d0, this.locY - d0,
 						this.locZ - d0, this.locX + d0, this.locY + 6.0D + d0, this.locZ + d0));
 
-				for (int i = 0; i < list.size(); ++i) {
-					Entity entity = (Entity) list.get(i);
+				for (Object o : list) {
+					Entity entity = (Entity) o;
 
 					entity.onLightningStrike(this);
 				}

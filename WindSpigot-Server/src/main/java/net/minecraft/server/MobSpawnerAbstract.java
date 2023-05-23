@@ -3,6 +3,7 @@ package net.minecraft.server;
 import com.google.common.collect.Lists;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import ga.windpvp.windspigot.cache.Constants;
 import ga.windpvp.windspigot.config.WindSpigotConfig;
@@ -216,7 +217,7 @@ public abstract class MobSpawnerAbstract {
 					}
 
 					entity2.f(nbttagcompound2);
-					entity2.setPositionRotation(entity1.locX, entity1.locY, entity1.locZ, entity1.yaw, entity1.pitch);
+					entity2.setPositionRotation(Objects.requireNonNull(entity1).locX, entity1.locY, entity1.locZ, entity1.yaw, entity1.pitch);
 					// CraftBukkit start - call SpawnerSpawnEvent, skip if cancelled
 					SpawnerSpawnEvent event = CraftEventFactory.callSpawnerSpawnEvent(entity2, this.b().getX(),
 							this.b().getY(), this.b().getZ());

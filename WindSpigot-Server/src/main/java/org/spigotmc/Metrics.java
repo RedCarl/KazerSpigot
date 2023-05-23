@@ -292,7 +292,6 @@ public class Metrics {
 	 * Enables metrics for the server by setting "opt-out" to false in the config
 	 * file and starting the metrics task.
 	 *
-	 * @throws java.io.IOException
 	 */
 	public void enable() throws IOException {
 		// This has to be synchronized or it can collide with the check in the task.
@@ -314,7 +313,6 @@ public class Metrics {
 	 * Disables metrics for the server by setting "opt-out" to true in the config
 	 * file and canceling the metrics task.
 	 *
-	 * @throws java.io.IOException
 	 */
 	public void disable() throws IOException {
 		// This has to be synchronized or it can collide with the check in the task.
@@ -408,11 +406,8 @@ public class Metrics {
 		// everything
 		// inside of the graph (e.g plotters)
 		synchronized (graphs) {
-			final Iterator<Graph> iter = graphs.iterator();
 
-			while (iter.hasNext()) {
-				final Graph graph = iter.next();
-
+			for (Graph graph : graphs) {
 				for (Plotter plotter : graph.getPlotters()) {
 					// The key name to send to the metrics server
 					// The format is C-GRAPHNAME-PLOTTERNAME where separator - is defined at the top
@@ -464,11 +459,8 @@ public class Metrics {
 		} else // Is this the first update this hour?
 		if (response.contains("OK This is your first update this hour")) {
 			synchronized (graphs) {
-				final Iterator<Graph> iter = graphs.iterator();
 
-				while (iter.hasNext()) {
-					final Graph graph = iter.next();
-
+				for (Graph graph : graphs) {
 					for (Plotter plotter : graph.getPlotters()) {
 						plotter.reset();
 					}

@@ -274,7 +274,7 @@ public class CrashReport {
 						"Negative index in crash report handler (" + astacktraceelement.length + "/" + j + ")");
 			}
 
-			if (astacktraceelement != null && 0 <= k && k < astacktraceelement.length) {
+			if (0 <= k && k < astacktraceelement.length) {
 				stacktraceelement = astacktraceelement[k];
 				if (astacktraceelement.length + 1 - j < astacktraceelement.length) {
 					stacktraceelement1 = astacktraceelement[astacktraceelement.length + 1 - j];
@@ -286,8 +286,7 @@ public class CrashReport {
 				CrashReportSystemDetails crashreportsystemdetails1 = this.e.get(this.e.size() - 1);
 
 				crashreportsystemdetails1.b(j);
-			} else if (astacktraceelement != null && astacktraceelement.length >= j && 0 <= k
-					&& k < astacktraceelement.length) {
+			} else if (astacktraceelement.length >= j && 0 <= k && k < astacktraceelement.length) {
 				this.h = new StackTraceElement[k];
 				System.arraycopy(astacktraceelement, 0, this.h, 0, this.h.length);
 			} else {

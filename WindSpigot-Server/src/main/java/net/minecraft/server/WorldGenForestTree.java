@@ -8,7 +8,7 @@ public class WorldGenForestTree extends WorldGenTreeAbstract {
 			BlockWood.EnumLogVariant.DARK_OAK);
 	private static final IBlockData b = Blocks.LEAVES2.getBlockData()
 			.set(BlockLeaves2.VARIANT, BlockWood.EnumLogVariant.DARK_OAK)
-			.set(BlockLeaves.CHECK_DECAY, Boolean.valueOf(false));
+			.set(BlockLeaves.CHECK_DECAY, Boolean.FALSE);
 
 	public WorldGenForestTree(boolean flag) {
 		super(flag);
@@ -100,7 +100,7 @@ public class WorldGenForestTree extends WorldGenTreeAbstract {
 
 				for (j2 = -1; j2 <= 2; ++j2) {
 					for (k2 = -1; k2 <= 2; ++k2) {
-						if ((j2 < 0 || j2 > 1 || k2 < 0 || k2 > 1) && random.nextInt(3) <= 0) {
+						if ((j2 < 0 || j2 > 1 || k2 < 0 || k2 > 1) && random.nextInt(3) == 0) {
 							int l2 = random.nextInt(3) + 2;
 
 							int i3;

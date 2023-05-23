@@ -75,25 +75,22 @@ public class Rails extends MaterialData {
 
 		switch (d) {
 		case 0x0:
-		default:
+			case 0x5:
+			default:
 			return BlockFace.SOUTH;
 
 		case 0x1:
-			return BlockFace.EAST;
 
-		case 0x2:
-			return BlockFace.EAST;
+			case 0x2:
+				return BlockFace.EAST;
 
-		case 0x3:
+			case 0x3:
 			return BlockFace.WEST;
 
 		case 0x4:
 			return BlockFace.NORTH;
 
-		case 0x5:
-			return BlockFace.SOUTH;
-
-		case 0x6:
+			case 0x6:
 			return BlockFace.NORTH_WEST;
 
 		case 0x7:

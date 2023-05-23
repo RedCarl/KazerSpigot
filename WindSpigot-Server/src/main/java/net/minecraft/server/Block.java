@@ -10,9 +10,8 @@ import me.suicidalkids.ion.blocks.redstone.PandaRedstoneWire;
 public class Block {
 
 	private static final MinecraftKey a = new MinecraftKey("air");
-	public static final RegistryBlocks<MinecraftKey, Block> REGISTRY = new RegistryBlocks(Block.a);
-	public static final RegistryID<IBlockData> d = new RegistryID();
-	private CreativeModeTab creativeTab;
+	public static final RegistryBlocks<MinecraftKey, Block> REGISTRY = new RegistryBlocks<>(Block.a);
+	public static final RegistryID<IBlockData> d = new RegistryID<>();
 	public static final Block.StepSound e = new Block.StepSound("stone", 1.0F, 1.0F);
 	public static final Block.StepSound f = new Block.StepSound("wood", 1.0F, 1.0F);
 	public static final Block.StepSound g = new Block.StepSound("gravel", 1.0F, 1.0F);
@@ -466,7 +465,11 @@ public class Block {
 
 		Vec3D vec3d8 = null;
 
-		if (vec3d2 != null && (vec3d8 == null || vec3d.distanceSquared(vec3d2) < vec3d.distanceSquared(vec3d8))) {
+		if (vec3d2 != null) {
+			if (vec3d8 != null) {
+				vec3d.distanceSquared(vec3d2);
+				vec3d.distanceSquared(vec3d8);
+			}
 			vec3d8 = vec3d2;
 		}
 
@@ -713,7 +716,6 @@ public class Block {
 	}
 
 	public Block a(CreativeModeTab creativemodetab) {
-		this.creativeTab = creativemodetab;
 		return this;
 	}
 
@@ -1059,7 +1061,7 @@ public class Block {
 		Block block13;
 
 		while (iterator.hasNext()) {
-			block13 = (Block) iterator.next();
+			block13 = iterator.next();
 			if (block13.material == Material.AIR) {
 				block13.v = false;
 			} else {
@@ -1081,7 +1083,7 @@ public class Block {
 		iterator = Block.REGISTRY.iterator();
 
 		while (iterator.hasNext()) {
-			block13 = (Block) iterator.next();
+			block13 = iterator.next();
 
 			for (IBlockData iblockdata : block13.P().a()) {
 				int i = Block.REGISTRY.b(block13) << 4 | block13.toLegacyData(iblockdata);
@@ -1145,10 +1147,7 @@ public class Block {
 		if (value < min) {
 			return min;
 		}
-		if (value > max) {
-			return max;
-		}
-		return value;
+		return Math.min(value, max);
 	}
 	// Spigot end
 }

@@ -382,7 +382,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
 			// Spigot end
 
 			for (int i = 0; i < nbttaglist.size(); ++i) {
-				if (!(nbttaglist.get(i) instanceof NBTTagCompound)) {
+				if (nbttaglist.get(i) == null) {
 					continue;
 				}
 				NBTTagCompound nbttagcompound = nbttaglist.get(i);

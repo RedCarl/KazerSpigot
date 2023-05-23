@@ -182,10 +182,8 @@ public abstract class StructureGenerator extends WorldGenBase {
 				world.a(this.a(), this.d);
 			} else {
 				NBTTagCompound nbttagcompound = this.d.a();
-				Iterator iterator = nbttagcompound.c().iterator();
 
-				while (iterator.hasNext()) {
-					String s = (String) iterator.next();
+				for (String s : nbttagcompound.c()) {
 					NBTBase nbtbase = nbttagcompound.get(s);
 
 					if (nbtbase.getTypeId() == 10) {

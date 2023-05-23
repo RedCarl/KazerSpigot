@@ -63,7 +63,7 @@ public class BlockTripwireHook extends Block {
 				return false;
 			}
 
-			enumdirection = (EnumDirection) iterator.next();
+			enumdirection = iterator.next();
 		} while (!world.getType(blockposition.shift(enumdirection)).getBlock().isOccluding());
 
 		return true;

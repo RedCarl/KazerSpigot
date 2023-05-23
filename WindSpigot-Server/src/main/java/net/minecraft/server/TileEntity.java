@@ -76,7 +76,7 @@ public abstract class TileEntity {
 			Class<? extends TileEntity> oclass = TileEntity.f.get(nbttagcompound.getString("id"));
 
 			if (oclass != null) {
-				tileentity = (TileEntity) oclass.newInstance();
+				tileentity = oclass.newInstance();
 			}
 		} catch (Exception exception) {
 			exception.printStackTrace();

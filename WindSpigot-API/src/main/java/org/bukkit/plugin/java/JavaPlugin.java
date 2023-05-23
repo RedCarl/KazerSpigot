@@ -10,6 +10,7 @@ import java.io.Reader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -258,7 +259,7 @@ public abstract class JavaPlugin extends PluginBase {
 
 		File outFile = new File(dataFolder, resourcePath);
 		int lastIndex = resourcePath.lastIndexOf('/');
-		File outDir = new File(dataFolder, resourcePath.substring(0, lastIndex >= 0 ? lastIndex : 0));
+		File outDir = new File(dataFolder, resourcePath.substring(0, Math.max(lastIndex, 0)));
 
 		if (!outDir.exists()) {
 			outDir.mkdirs();
@@ -266,7 +267,7 @@ public abstract class JavaPlugin extends PluginBase {
 
 		try {
 			if (!outFile.exists() || replace) {
-				OutputStream out = new FileOutputStream(outFile);
+				OutputStream out = Files.newOutputStream(outFile.toPath());
 				byte[] buf = new byte[1024];
 				int len;
 				while ((len = in.read(buf)) > 0) {

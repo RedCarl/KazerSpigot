@@ -130,9 +130,7 @@ public class UnsafeList<E> extends AbstractList<E> implements List<E>, RandomAcc
 		if (data.length > initialCapacity << 3) {
 			data = new Object[initialCapacity];
 		} else {
-			for (int i = 0; i < data.length; i++) {
-				data[i] = null;
-			}
+			Arrays.fill(data, null);
 		}
 	}
 

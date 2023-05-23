@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
@@ -125,8 +126,6 @@ public class NBTTagCompound extends NBTBase {
 		if (var3 == var2) {
 			return true;
 		} else if (var2 != 99) {
-			if (var3 > 0) {
-			}
 
 			return false;
 		} else {
@@ -242,7 +241,7 @@ public class NBTTagCompound extends NBTBase {
 		Entry var3;
 		for (Iterator<Entry<String, NBTBase>> var2 = this.map.entrySet().iterator(); var2.hasNext(); var1.append((String) var3.getKey())
 				.append(':').append(var3.getValue())) {
-			var3 = (Entry) var2.next();
+			var3 = var2.next();
 			if (var1.length() != 1) {
 				var1.append(',');
 			}
@@ -279,10 +278,8 @@ public class NBTTagCompound extends NBTBase {
 	public NBTBase clone() {
 		it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap<String, NBTBase> ret = new it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap<>(
 				this.map.size(), 0.8f);
-		Iterator<Map.Entry<String, NBTBase>> iterator = (this.map instanceof it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap)
-				? ((it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap) this.map).object2ObjectEntrySet()
-						.fastIterator()
-				: this.map.entrySet().iterator();
+		Iterator<Map.Entry<String, NBTBase>> iterator = ((it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap) this.map).object2ObjectEntrySet()
+				.fastIterator();
 		while (iterator.hasNext()) {
 			Map.Entry<String, NBTBase> entry = iterator.next();
 			ret.put(entry.getKey(), entry.getValue().clone());
@@ -325,7 +322,7 @@ public class NBTTagCompound extends NBTBase {
 		NBTBase var5 = NBTBase.createTag(var0);
 
 		try {
-			var5.load(var2, var3, var4);
+			Objects.requireNonNull(var5).load(var2, var3, var4);
 			return var5;
 		} catch (IOException var9) {
 			CrashReport var7 = CrashReport.a(var9, "Loading NBT data");

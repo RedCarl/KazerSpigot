@@ -39,19 +39,17 @@ public class CommandTp extends CommandAbstract {
 			}
 
 			if (astring.length != 1 && astring.length != 2) {
-				if (astring.length < b0 + 3) {
-					throw new ExceptionUsage("commands.tp.usage");
-				} else if (object.world != null) {
+				if (object.world != null) {
 					int i = b0 + 1;
-					CommandAbstract.CommandNumber commandabstract_commandnumber = a(object.locX, astring[b0],
+					CommandNumber commandabstract_commandnumber = a(object.locX, astring[b0],
 							true);
-					CommandAbstract.CommandNumber commandabstract_commandnumber1 = a(object.locY,
+					CommandNumber commandabstract_commandnumber1 = a(object.locY,
 							astring[i++], 0, 0, false);
-					CommandAbstract.CommandNumber commandabstract_commandnumber2 = a(object.locZ,
+					CommandNumber commandabstract_commandnumber2 = a(object.locZ,
 							astring[i++], true);
-					CommandAbstract.CommandNumber commandabstract_commandnumber3 = a(object.yaw,
+					CommandNumber commandabstract_commandnumber3 = a(object.yaw,
 							astring.length > i ? astring[i++] : "~", false);
-					CommandAbstract.CommandNumber commandabstract_commandnumber4 = a(object.pitch,
+					CommandNumber commandabstract_commandnumber4 = a(object.pitch,
 							astring.length > i ? astring[i] : "~", false);
 					float f;
 

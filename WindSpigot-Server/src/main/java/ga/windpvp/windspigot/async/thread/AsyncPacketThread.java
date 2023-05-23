@@ -14,8 +14,7 @@ import net.minecraft.server.NetworkManager;
 import net.minecraft.server.Packet;
 
 public abstract class AsyncPacketThread {
-    private final boolean running = true;
-	private static final long SEC_IN_NANO = 1000000000;
+    private static final long SEC_IN_NANO = 1000000000;
 	private static final int TPS = WindSpigotConfig.combatThreadTPS;
 	private static final long TICK_TIME = SEC_IN_NANO / TPS;
 	private static final long MAX_CATCHUP_BUFFER = TICK_TIME * TPS * 60L;
@@ -40,7 +39,8 @@ public abstract class AsyncPacketThread {
 		long lastTick = System.nanoTime();
 		long catchupTime = 0L;
 
-		while (this.running) {
+        boolean running = true;
+        while (running) {
 			long curTime = System.nanoTime();
 			long wait = TICK_TIME - (curTime - lastTick);
 

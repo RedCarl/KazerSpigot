@@ -78,7 +78,7 @@ public class BlockLever extends Block {
 					return iblockdata;
 				}
 
-				enumdirection1 = (EnumDirection) iterator.next();
+				enumdirection1 = iterator.next();
 			} while (enumdirection1 == enumdirection || !a(world, blockposition, enumdirection1.opposite()));
 
 			return iblockdata.set(BlockLever.FACING,

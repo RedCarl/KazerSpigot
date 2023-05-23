@@ -6,7 +6,7 @@ import org.bukkit.block.BlockFace;
 
 /**
  * Represents a door.
- *
+ * <p>
  * This class was previously deprecated, but has been retrofitted to work with
  * modern doors. Some methods are undefined dependant on
  * <code>isTopHalf()</code> due to Minecraft's internal representation of doors.
@@ -275,7 +275,7 @@ public class Door extends MaterialData implements Directional, Openable {
 
 	/**
 	 * Set the direction that this door should is facing.
-	 *
+	 * <p>
 	 * Undefined if <code>isTopHalf()</code> is true.
 	 *
 	 * @param face the direction
@@ -301,7 +301,7 @@ public class Door extends MaterialData implements Directional, Openable {
 
 	/**
 	 * Get the direction that this door is facing.
-	 *
+	 * <p>
 	 * Undefined if <code>isTopHalf()</code> is true.
 	 *
 	 * @return the direction
@@ -324,7 +324,7 @@ public class Door extends MaterialData implements Directional, Openable {
 
 	/**
 	 * Returns the side of the door the hinge is on.
-	 *
+	 * <p>
 	 * Undefined if <code>isTopHalf()</code> is false.
 	 *
 	 * @return false for left hinge, true for right hinge
@@ -336,7 +336,7 @@ public class Door extends MaterialData implements Directional, Openable {
 	/**
 	 * Set whether the hinge is on the left or right side. Left is false, right is
 	 * true.
-	 *
+	 * <p>
 	 * Undefined if <code>isTopHalf()</code> is false.
 	 *
 	 * @param isHingeRight True if the hinge is on the right hand side, false if the

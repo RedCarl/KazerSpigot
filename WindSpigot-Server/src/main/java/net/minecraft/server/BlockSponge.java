@@ -52,10 +52,10 @@ public class BlockSponge extends Block {
 	}
 
 	private boolean e(World world, BlockPosition blockposition) {
-		LinkedList linkedlist = Lists.newLinkedList();
-		ArrayList arraylist = Lists.newArrayList();
+		LinkedList<Object> linkedlist = Lists.newLinkedList();
+		ArrayList<Object> arraylist = Lists.newArrayList();
 
-		linkedlist.add(new Tuple(blockposition, Integer.valueOf(0)));
+		linkedlist.add(new Tuple<>(blockposition, 0));
 		int i = 0;
 
 		BlockPosition blockposition1;
@@ -64,12 +64,11 @@ public class BlockSponge extends Block {
 			Tuple tuple = (Tuple) linkedlist.poll();
 
 			blockposition1 = (BlockPosition) tuple.a();
-			int j = ((Integer) tuple.b()).intValue();
+			int j = (Integer) tuple.b();
 			EnumDirection[] aenumdirection = EnumDirection.values();
 			int k = aenumdirection.length;
 
-			for (int l = 0; l < k; ++l) {
-				EnumDirection enumdirection = aenumdirection[l];
+			for (EnumDirection enumdirection : aenumdirection) {
 				BlockPosition blockposition2 = blockposition1.shift(enumdirection);
 
 				if (world.getType(blockposition2).getBlock().getMaterial() == Material.WATER) {
@@ -77,7 +76,7 @@ public class BlockSponge extends Block {
 					arraylist.add(blockposition2);
 					++i;
 					if (j < 6) {
-						linkedlist.add(new Tuple(blockposition2, Integer.valueOf(j + 1)));
+						linkedlist.add(new Tuple<>(blockposition2, j + 1));
 					}
 				}
 			}
@@ -87,10 +86,8 @@ public class BlockSponge extends Block {
 			}
 		}
 
-		Iterator iterator = arraylist.iterator();
-
-		while (iterator.hasNext()) {
-			blockposition1 = (BlockPosition) iterator.next();
+		for (Object value : arraylist) {
+			blockposition1 = (BlockPosition) value;
 			world.applyPhysics(blockposition1, Blocks.AIR);
 		}
 
@@ -99,12 +96,12 @@ public class BlockSponge extends Block {
 
 	@Override
 	public IBlockData fromLegacyData(int i) {
-		return this.getBlockData().set(BlockSponge.WET, Boolean.valueOf((i & 1) == 1));
+		return this.getBlockData().set(BlockSponge.WET, (i & 1) == 1);
 	}
 
 	@Override
 	public int toLegacyData(IBlockData iblockdata) {
-		return iblockdata.get(BlockSponge.WET).booleanValue() ? 1 : 0;
+		return iblockdata.get(BlockSponge.WET) ? 1 : 0;
 	}
 
 	@Override

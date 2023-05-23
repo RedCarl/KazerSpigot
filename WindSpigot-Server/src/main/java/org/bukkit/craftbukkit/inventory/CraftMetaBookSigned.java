@@ -110,7 +110,7 @@ class CraftMetaBookSigned extends CraftMetaBook implements BookMeta {
 	int applyHash() {
 		final int original;
 		int hash = original = super.applyHash();
-		return original != hash ? CraftMetaBookSigned.class.hashCode() ^ hash : hash;
+		return hash;
 	}
 
 	@Override

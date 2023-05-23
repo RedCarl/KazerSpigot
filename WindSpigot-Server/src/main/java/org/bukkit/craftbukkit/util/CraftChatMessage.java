@@ -57,7 +57,7 @@ public final class CraftChatMessage {
 			list.add(currentChatComponent);
 
 			Matcher matcher = INCREMENTAL_PATTERN.matcher(message);
-			String match = null;
+			String match;
 			while (matcher.find()) {
 				int groupId = 0;
 				while ((match = matcher.group(++groupId)) == null) {
@@ -239,7 +239,7 @@ public final class CraftChatMessage {
 
 		List<IChatBaseComponent> extras = component.a();
 		for (int i = 0; i < extras.size(); i++) {
-			IChatBaseComponent comp = (IChatBaseComponent) extras.get(i);
+			IChatBaseComponent comp = extras.get(i);
 			if (comp.getChatModifier() != null && comp.getChatModifier().h() == null) {
 				extras.set(i, fixComponent(comp, matcher));
 			}

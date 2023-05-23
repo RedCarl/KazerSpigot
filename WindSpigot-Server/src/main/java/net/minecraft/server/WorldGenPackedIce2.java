@@ -60,11 +60,9 @@ public class WorldGenPackedIce2 extends WorldGenerator {
 			}
 
 			k = j - 1;
-			if (k < 0) {
-				k = 0;
-			} else if (k > 1) {
-				k = 1;
-			}
+            if (k > 1) {
+                k = 1;
+            }
 
 			for (int k1 = -k; k1 <= k; ++k1) {
 				l = -k;

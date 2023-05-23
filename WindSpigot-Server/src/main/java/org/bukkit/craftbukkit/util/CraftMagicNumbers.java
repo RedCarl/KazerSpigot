@@ -3,6 +3,7 @@ package org.bukkit.craftbukkit.util;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,7 +40,7 @@ public final class CraftMagicNumbers implements UnsafeValues {
 	@Deprecated
 	// A bad method for bad magic.
 	public static Block getBlock(int id) {
-		return getBlock(Material.getMaterial(id));
+		return getBlock(Objects.requireNonNull(Material.getMaterial(id)));
 	}
 
 	@Deprecated
@@ -133,9 +134,8 @@ public final class CraftMagicNumbers implements UnsafeValues {
 	@Override
 	public List<String> tabCompleteInternalStatisticOrAchievementName(String token, List<String> completions) {
 		List<String> matches = new ArrayList<String>();
-		Iterator iterator = StatisticList.stats.iterator();
-		while (iterator.hasNext()) {
-			String statistic = ((net.minecraft.server.Statistic) iterator.next()).name;
+		for (net.minecraft.server.Statistic value : StatisticList.stats) {
+			String statistic = value.name;
 			if (statistic.startsWith(token)) {
 				matches.add(statistic);
 			}

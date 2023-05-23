@@ -17,7 +17,7 @@ public class EntitySnowman extends EntityGolem implements IRangedEntity {
 		this.goalSelector.a(3, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 6.0F));
 		this.goalSelector.a(4, new PathfinderGoalRandomLookaround(this));
 		this.targetSelector.a(1,
-				new PathfinderGoalNearestAttackableTarget(this, EntityInsentient.class, 10, true, false, IMonster.d));
+				new PathfinderGoalNearestAttackableTarget<>(this, EntityInsentient.class, 10, true, false, IMonster.d));
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class EntitySnowman extends EntityGolem implements IRangedEntity {
 			for (int l = 0; l < 4; ++l) {
 				i = MathHelper.floor(this.locX + (l % 2 * 2 - 1) * 0.25F);
 				j = MathHelper.floor(this.locY);
-				k = MathHelper.floor(this.locZ + (l / 2 % 2 * 2 - 1) * 0.25F);
+				k = MathHelper.floor(this.locZ + ((double) l / 2 % 2 * 2 - 1) * 0.25F);
 				BlockPosition blockposition = new BlockPosition(i, j, k);
 
 				if (this.world.getType(blockposition).getBlock().getMaterial() == Material.AIR

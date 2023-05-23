@@ -78,21 +78,8 @@ public class ItemBucket extends Item {
 																										// stack
 					}
 				} else {
-					if (this.a == Blocks.AIR) {
-						// CraftBukkit start
-						PlayerBucketEmptyEvent event = CraftEventFactory.callPlayerBucketEmptyEvent(entityhuman,
-								blockposition.getX(), blockposition.getY(), blockposition.getZ(),
-								movingobjectposition.direction, itemstack);
 
-						if (event.isCancelled()) {
-							return itemstack;
-						}
-
-						return CraftItemStack.asNMSCopy(event.getItemStack());
-						// CraftBukkit end
-					}
-
-					BlockPosition blockposition1 = blockposition.shift(movingobjectposition.direction);
+                    BlockPosition blockposition1 = blockposition.shift(movingobjectposition.direction);
 
 					if (!entityhuman.a(blockposition1, movingobjectposition.direction, itemstack)) {
 						return itemstack;

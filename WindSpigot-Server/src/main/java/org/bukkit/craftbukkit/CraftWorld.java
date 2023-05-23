@@ -1,15 +1,7 @@
 package org.bukkit.craftbukkit;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.BlockChangeDelegate;
@@ -316,7 +308,7 @@ public class CraftWorld implements World {
 
 		world.chunkProviderServer.unloadQueue.remove(LongHash.toLong(x, z)); // TacoSpigot - invoke LongHash directly
 
-		net.minecraft.server.Chunk chunk = null;
+		net.minecraft.server.Chunk chunk;
 
 		if (world.chunkProviderServer.chunkProvider == null) {
 			chunk = world.chunkProviderServer.emptyChunk;
@@ -796,7 +788,7 @@ public class CraftWorld implements World {
 		List<Entity> list = new ArrayList<Entity>();
 
 		for (net.minecraft.server.Entity o : world.entityList) {
-			if (o instanceof net.minecraft.server.Entity) {
+			if (o != null) {
 				net.minecraft.server.Entity mcEnt = o;
 				Entity bukkitEntity = mcEnt.getBukkitEntity();
 
@@ -842,7 +834,7 @@ public class CraftWorld implements World {
 		Collection<T> list = new ArrayList<T>();
 
 		for (net.minecraft.server.Entity entity : world.entityList) {
-			if (entity instanceof net.minecraft.server.Entity) {
+			if (entity != null) {
 				Entity bukkitEntity = entity.getBukkitEntity();
 
 				if (bukkitEntity == null) {
@@ -1090,7 +1082,6 @@ public class CraftWorld implements World {
 		return spawnFallingBlock(location, org.bukkit.Material.getMaterial(blockId), blockData);
 	}
 
-	@SuppressWarnings("unchecked")
 	public net.minecraft.server.Entity createEntity(Location location, Class<? extends Entity> clazz)
 			throws IllegalArgumentException {
 		if (location == null || clazz == null) {
@@ -1278,7 +1269,7 @@ public class CraftWorld implements World {
 				if (nmsBlock.getMaterial().isBuildable() || BlockDiodeAbstract.d(nmsBlock)) {
 					boolean taken = false;
 					AxisAlignedBB bb = EntityHanging.calculateBoundingBox(pos,
-							CraftBlock.blockFaceToNotch(dir).opposite(), width, height);
+							Objects.requireNonNull(CraftBlock.blockFaceToNotch(dir)).opposite(), width, height);
 					List<net.minecraft.server.Entity> list = world.getEntities(null, bb);
 					for (Iterator<net.minecraft.server.Entity> it = list.iterator(); !taken && it.hasNext();) {
 						net.minecraft.server.Entity e = it.next();
@@ -1294,7 +1285,7 @@ public class CraftWorld implements World {
 				}
 			}
 
-			EnumDirection dir = CraftBlock.blockFaceToNotch(face).opposite();
+			EnumDirection dir = Objects.requireNonNull(CraftBlock.blockFaceToNotch(face)).opposite();
 
 			if (Painting.class.isAssignableFrom(clazz)) {
 				entity = new EntityPainting(world, new BlockPosition((int) x, (int) y, (int) z), dir);

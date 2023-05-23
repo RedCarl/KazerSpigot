@@ -391,7 +391,7 @@ public class BlockPiston extends Block {
 			BlockPosition blockposition1;
 
 			for (j = list1.size() - 1; j >= 0; --j) {
-				blockposition1 = (BlockPosition) list1.get(j);
+				blockposition1 = list1.get(j);
 				Block block = world.getType(blockposition1).getBlock();
 
 				block.b(world, blockposition1, world.getType(blockposition1), 0);
@@ -403,7 +403,7 @@ public class BlockPiston extends Block {
 			IBlockData iblockdata;
 
 			for (j = list.size() - 1; j >= 0; --j) {
-				blockposition1 = (BlockPosition) list.get(j);
+				blockposition1 = list.get(j);
 				iblockdata = world.getType(blockposition1);
 				Block block1 = iblockdata.getBlock();
 
@@ -438,11 +438,11 @@ public class BlockPiston extends Block {
 			int k;
 
 			for (k = list1.size() - 1; k >= 0; --k) {
-				world.applyPhysics((BlockPosition) list1.get(k), ablock[i++]);
+				world.applyPhysics(list1.get(k), ablock[i++]);
 			}
 
 			for (k = list.size() - 1; k >= 0; --k) {
-				world.applyPhysics((BlockPosition) list.get(k), ablock[i++]);
+				world.applyPhysics(list.get(k), ablock[i++]);
 			}
 
 			if (flag) {

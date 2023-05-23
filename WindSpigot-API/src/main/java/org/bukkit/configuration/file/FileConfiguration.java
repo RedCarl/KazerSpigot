@@ -103,7 +103,7 @@ public abstract class FileConfiguration extends MemoryConfiguration {
 
 		String data = saveToString();
 
-		try (Writer writer = new OutputStreamWriter(new FileOutputStream(file),
+		try (Writer writer = new OutputStreamWriter(java.nio.file.Files.newOutputStream(file.toPath()),
 				UTF8_OVERRIDE && !UTF_BIG ? Charsets.UTF_8 : Charset.defaultCharset())) {
 			writer.write(data);
 		}

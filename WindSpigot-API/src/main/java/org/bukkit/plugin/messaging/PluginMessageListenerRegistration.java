@@ -95,10 +95,10 @@ public final class PluginMessageListenerRegistration {
 	@Override
 	public int hashCode() {
 		int hash = 7;
-		hash = 53 * hash + (this.messenger != null ? this.messenger.hashCode() : 0);
-		hash = 53 * hash + (this.plugin != null ? this.plugin.hashCode() : 0);
-		hash = 53 * hash + (this.channel != null ? this.channel.hashCode() : 0);
-		hash = 53 * hash + (this.listener != null ? this.listener.hashCode() : 0);
+		hash = 53 * hash + this.messenger.hashCode();
+		hash = 53 * hash + this.plugin.hashCode();
+		hash = 53 * hash + this.channel.hashCode();
+		hash = 53 * hash + this.listener.hashCode();
 		return hash;
 	}
 }

@@ -165,7 +165,7 @@ public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializa
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null || !(obj instanceof OfflinePlayer)) {
+		if (!(obj instanceof OfflinePlayer)) {
 			return false;
 		}
 

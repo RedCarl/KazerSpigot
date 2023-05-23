@@ -440,7 +440,7 @@ public abstract class Entity implements ICommandListener {
 					// TODO: shouldn't be sending null for the block
 					org.bukkit.block.Block damager = null; // ((WorldServer) this.l).getWorld().getBlockAt(i, j, k);
 					org.bukkit.entity.Entity damagee = this.getBukkitEntity();
-					EntityCombustEvent combustEvent = new org.bukkit.event.entity.EntityCombustByBlockEvent(damager,
+					EntityCombustEvent combustEvent = new org.bukkit.event.entity.EntityCombustByBlockEvent(null,
 							damagee, 15);
 					this.world.getServer().getPluginManager().callEvent(combustEvent);
 
@@ -724,7 +724,7 @@ public abstract class Entity implements ICommandListener {
 
 				AxisAlignedBB axisalignedbb6;
 
-				for (Iterator iterator2 = list1.iterator(); iterator2
+				for (Iterator<AxisAlignedBB> iterator2 = list1.iterator(); iterator2
 						.hasNext(); d13 = axisalignedbb6.b(axisalignedbb5, d13)) {
 					axisalignedbb6 = (AxisAlignedBB) iterator2.next();
 				}
@@ -734,7 +734,7 @@ public abstract class Entity implements ICommandListener {
 
 				AxisAlignedBB axisalignedbb7;
 
-				for (Iterator iterator3 = list1.iterator(); iterator3
+				for (Iterator<AxisAlignedBB> iterator3 = list1.iterator(); iterator3
 						.hasNext(); d14 = axisalignedbb7.a(axisalignedbb4, d14)) {
 					axisalignedbb7 = (AxisAlignedBB) iterator3.next();
 				}
@@ -744,7 +744,7 @@ public abstract class Entity implements ICommandListener {
 
 				AxisAlignedBB axisalignedbb8;
 
-				for (Iterator iterator4 = list1.iterator(); iterator4
+				for (Iterator<AxisAlignedBB> iterator4 = list1.iterator(); iterator4
 						.hasNext(); d15 = axisalignedbb8.c(axisalignedbb4, d15)) {
 					axisalignedbb8 = (AxisAlignedBB) iterator4.next();
 				}
@@ -755,7 +755,7 @@ public abstract class Entity implements ICommandListener {
 
 				AxisAlignedBB axisalignedbb10;
 
-				for (Iterator iterator5 = list1.iterator(); iterator5
+				for (Iterator<AxisAlignedBB> iterator5 = list1.iterator(); iterator5
 						.hasNext(); d16 = axisalignedbb10.b(axisalignedbb9, d16)) {
 					axisalignedbb10 = (AxisAlignedBB) iterator5.next();
 				}
@@ -765,7 +765,7 @@ public abstract class Entity implements ICommandListener {
 
 				AxisAlignedBB axisalignedbb11;
 
-				for (Iterator iterator6 = list1.iterator(); iterator6
+				for (Iterator<AxisAlignedBB> iterator6 = list1.iterator(); iterator6
 						.hasNext(); d17 = axisalignedbb11.a(axisalignedbb9, d17)) {
 					axisalignedbb11 = (AxisAlignedBB) iterator6.next();
 				}
@@ -775,7 +775,7 @@ public abstract class Entity implements ICommandListener {
 
 				AxisAlignedBB axisalignedbb12;
 
-				for (Iterator iterator7 = list1.iterator(); iterator7
+				for (Iterator<AxisAlignedBB> iterator7 = list1.iterator(); iterator7
 						.hasNext(); d18 = axisalignedbb12.c(axisalignedbb9, d18)) {
 					axisalignedbb12 = (AxisAlignedBB) iterator7.next();
 				}
@@ -798,7 +798,7 @@ public abstract class Entity implements ICommandListener {
 
 				AxisAlignedBB axisalignedbb13;
 
-				for (Iterator iterator8 = list1.iterator(); iterator8
+				for (Iterator<AxisAlignedBB> iterator8 = list1.iterator(); iterator8
 						.hasNext(); d1 = axisalignedbb13.b(this.getBoundingBox(), d1)) {
 					axisalignedbb13 = (AxisAlignedBB) iterator8.next();
 				}
@@ -879,7 +879,7 @@ public abstract class Entity implements ICommandListener {
 					d22 = 0.0D;
 				}
 
-				if (block != null && this.onGround) {
+				if (this.onGround) {
 					// block.a(this.world, blockposition, this); // CraftBukkit moved down
 				}
 
@@ -1597,7 +1597,7 @@ public abstract class Entity implements ICommandListener {
 			// CraftBukkit start - Reset world
 			if (this instanceof EntityPlayer) {
 				Server server = Bukkit.getServer();
-				org.bukkit.World bworld = null;
+				org.bukkit.World bworld;
 
 				// TODO: Remove World related checks, replaced with WorldUID
 				String worldName = nbttagcompound.getString("world");
@@ -1906,11 +1906,9 @@ public abstract class Entity implements ICommandListener {
 				this.vehicle.passenger = null;
 			}
 
-			if (entity != null) {
-				for (Entity entity1 = entity.vehicle; entity1 != null; entity1 = entity1.vehicle) {
-					if (entity1 == this) {
-						return;
-					}
+			for (Entity entity1 = entity.vehicle; entity1 != null; entity1 = entity1.vehicle) {
+				if (entity1 == this) {
+					return;
 				}
 			}
 
@@ -2125,7 +2123,6 @@ public abstract class Entity implements ICommandListener {
 			}
 
 			if (!this.world.u(blockposition.south()) && 1.0D - d5 < d6) {
-				d6 = 1.0D - d5;
 				b0 = 5;
 			}
 

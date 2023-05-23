@@ -356,11 +356,8 @@ public class Chunk {
 
 	private void d(int i, int j, int k) {
 		int l = this.heightMap[k << 4 | i] & 255;
-		int i1 = l;
 
-		if (j > l) {
-			i1 = j;
-		}
+		int i1 = Math.max(j, l);
 
 		while (i1 > 0 && this.e(i, i1 - 1, k) == 0) {
 			--i1;

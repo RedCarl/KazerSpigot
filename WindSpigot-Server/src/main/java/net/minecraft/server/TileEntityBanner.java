@@ -158,14 +158,12 @@ public class TileEntityBanner extends TileEntity {
 		FLOWER("flower", "flo", new ItemStack(Blocks.RED_FLOWER, 1, BlockFlowers.EnumFlowerVarient.OXEYE_DAISY.b())),
 		MOJANG("mojang", "moj", new ItemStack(Items.GOLDEN_APPLE, 1, 1));
 
-		private final String N;
 		private final String O;
 		private final String[] P;
 		private ItemStack Q;
 
 		EnumBannerPatternType(String s, String s1) {
 			this.P = new String[3];
-			this.N = s;
 			this.O = s1;
 		}
 

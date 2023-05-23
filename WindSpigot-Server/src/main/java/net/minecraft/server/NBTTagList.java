@@ -5,6 +5,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -58,7 +59,7 @@ public class NBTTagList extends NBTBase {
 				for (int k = 0; k < j; ++k) {
 					NBTBase nbtbase = NBTBase.createTag(this.type);
 
-					nbtbase.load(datainput, i + 1, nbtreadlimiter);
+					Objects.requireNonNull(nbtbase).load(datainput, i + 1, nbtreadlimiter);
 					this.list.add(nbtbase);
 				}
 

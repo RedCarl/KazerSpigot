@@ -71,7 +71,7 @@ public class UserCache {
 		GsonBuilder gsonbuilder = new GsonBuilder();
 
 		gsonbuilder.registerTypeHierarchyAdapter(UserCache.UserCacheEntry.class,
-				new UserCache.BanEntrySerializer(null));
+				new BanEntrySerializer(null));
 		this.b = gsonbuilder.create();
 		this.b();
 	}
@@ -113,7 +113,7 @@ public class UserCache {
 			Calendar calendar = Calendar.getInstance();
 
 			calendar.setTime(new Date());
-			calendar.add(2, 1);
+			calendar.add(Calendar.MONTH, 1);
 			date = calendar.getTime();
 		}
 
@@ -167,7 +167,7 @@ public class UserCache {
 	public String[] a() {
 		ArrayList<String> arraylist = Lists.newArrayList(this.c.keySet());
 
-		return (String[]) arraylist.toArray(new String[0]);
+		return arraylist.toArray(new String[0]);
 	}
 
 	public GameProfile a(UUID uuid) {
@@ -270,7 +270,7 @@ public class UserCache {
 		}
 	}
 
-	class BanEntrySerializer
+	static class BanEntrySerializer
 			implements JsonDeserializer<UserCache.UserCacheEntry>, JsonSerializer<UserCache.UserCacheEntry> {
 
 		private BanEntrySerializer() {

@@ -30,12 +30,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 
 	private static final Logger LOGGER = LogManager.getLogger();
 	private final java.util.Queue<ServerCommand> l = new java.util.concurrent.ConcurrentLinkedQueue<>(); // Paper - use
-																											// a proper
-																											// queue
-	private RemoteStatusListener m;
-	private RemoteControlListener n;
 	public PropertyManager propertyManager;
-	private EULA p;
 	private boolean generateStructures;
 	private WorldSettings.EnumGamemode r;
 	private boolean s;
@@ -130,7 +125,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 
 		DedicatedServer.LOGGER.info("Loading properties");
 		this.propertyManager = new PropertyManager(this.options); // CraftBukkit - CLI argument support
-		this.p = new EULA(new File("eula.txt"));
+		EULA p = new EULA(new File("eula.txt"));
 		// Spigot Start
 		boolean eulaAgreed = Boolean.getBoolean("com.mojang.eula.agree");
 		if (eulaAgreed) {
@@ -141,10 +136,10 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 					"If you do not agree to the above EULA please stop your server and remove this flag immediately.");
 		}
 		// Spigot End
-		if (!this.p.a() && !eulaAgreed) { // Spigot
+		if (!p.a() && !eulaAgreed) { // Spigot
 			DedicatedServer.LOGGER
 					.info("You need to agree to the EULA in order to run the server. Go to eula.txt for more info.");
-			this.p.b();
+			p.b();
 			return false;
 		} else {
 			if (this.T()) {
@@ -326,14 +321,16 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 				DedicatedServer.LOGGER.info("Done (" + s3 + ")! For help, type \"help\" or \"?\"");
 				if (this.propertyManager.getBoolean("enable-query", false)) {
 					DedicatedServer.LOGGER.info("Starting GS4 status listener");
-					this.m = new RemoteStatusListener(this);
-					this.m.a();
+					// a proper
+					// queue
+					RemoteStatusListener m = new RemoteStatusListener(this);
+					m.a();
 				}
 
 				if (this.propertyManager.getBoolean("enable-rcon", false)) {
 					DedicatedServer.LOGGER.info("Starting remote control listener");
-					this.n = new RemoteControlListener(this);
-					this.n.a();
+					RemoteControlListener n = new RemoteControlListener(this);
+					n.a();
 					this.remoteConsole = new org.bukkit.craftbukkit.command.CraftRemoteConsoleCommandSender(); // CraftBukkit
 				}
 

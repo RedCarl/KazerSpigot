@@ -33,15 +33,13 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot
 	static {
 		try {
 			java.lang.reflect.Method method = ClassLoader.class.getDeclaredMethod("registerAsParallelCapable");
-			if (method != null) {
-				boolean oldAccessible = method.isAccessible();
-				method.setAccessible(true);
-				method.invoke(null);
-				method.setAccessible(oldAccessible);
-				org.bukkit.Bukkit.getLogger().log(java.util.logging.Level.INFO,
-						"Set PluginClassLoader as parallel capable");
-			}
-		} catch (NoSuchMethodException ex) {
+            boolean oldAccessible = method.isAccessible();
+            method.setAccessible(true);
+            method.invoke(null);
+            method.setAccessible(oldAccessible);
+            org.bukkit.Bukkit.getLogger().log(java.util.logging.Level.INFO,
+                    "Set PluginClassLoader as parallel capable");
+        } catch (NoSuchMethodException ex) {
 			// Ignore
 		} catch (Exception ex) {
 			org.bukkit.Bukkit.getLogger().log(java.util.logging.Level.WARNING,

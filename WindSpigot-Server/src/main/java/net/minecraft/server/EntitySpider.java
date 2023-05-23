@@ -15,9 +15,9 @@ public class EntitySpider extends EntityMonster {
 		this.goalSelector.a(6, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 8.0F));
 		this.goalSelector.a(6, new PathfinderGoalRandomLookaround(this));
 		this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, false));
-		this.targetSelector.a(2, new EntitySpider.PathfinderGoalSpiderNearestAttackableTarget(this, EntityHuman.class));
+		this.targetSelector.a(2, new EntitySpider.PathfinderGoalSpiderNearestAttackableTarget<>(this, EntityHuman.class));
 		this.targetSelector.a(3,
-				new EntitySpider.PathfinderGoalSpiderNearestAttackableTarget(this, EntityIronGolem.class));
+				new EntitySpider.PathfinderGoalSpiderNearestAttackableTarget<>(this, EntityIronGolem.class));
 	}
 
 	@Override
@@ -216,7 +216,7 @@ public class EntitySpider extends EntityMonster {
 				this.a = MobEffectList.INCREASE_DAMAGE.id;
 			} else if (i == 3) {
 				this.a = MobEffectList.REGENERATION.id;
-			} else if (i <= 4) {
+			} else {
 				this.a = MobEffectList.INVISIBILITY.id;
 			}
 

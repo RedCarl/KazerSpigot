@@ -179,13 +179,9 @@ public class EntityItem extends Entity implements HopperPusher {
 	private void w() {
 		// Spigot start
 		double radius = world.spigotConfig.itemMerge;
-		Iterator iterator = this.world.a(EntityItem.class, this.getBoundingBox().grow(radius, radius, radius))
-				.iterator();
 		// Spigot end
 
-		while (iterator.hasNext()) {
-			EntityItem entityitem = (EntityItem) iterator.next();
-
+		for (EntityItem entityitem : this.world.a(EntityItem.class, this.getBoundingBox().grow(radius, radius, radius))) {
 			this.a(entityitem);
 		}
 

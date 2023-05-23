@@ -87,12 +87,12 @@ public class EntityPotion extends EntityProjectile {
 	@Override
 	protected void a(MovingObjectPosition movingobjectposition) {
 		if (!this.world.isClientSide) {
-			List list = Items.POTION.h(this.item);
+			List<MobEffect> list = Items.POTION.h(this.item);
 
 			// WindSpigot - remove dead code
 			// if (true) { // CraftBukkit - Call event even if no effects to apply
 			AxisAlignedBB axisalignedbb = this.getBoundingBox().grow(4.0D, 2.0D, 4.0D);
-			List list1 = this.world.a(EntityLiving.class, axisalignedbb);
+			List<EntityLiving> list1 = this.world.a(EntityLiving.class, axisalignedbb);
 
 			// WindSpigot - remove dead code
 			// if (true) { // CraftBukkit - Run code even if there are no entities around
@@ -137,10 +137,7 @@ public class EntityPotion extends EntityProjectile {
 					double d1 = event.getIntensity(victim);
 					// CraftBukkit end
 
-					Iterator iterator1 = list.iterator();
-
-					while (iterator1.hasNext()) {
-						MobEffect mobeffect = (MobEffect) iterator1.next();
+					for (MobEffect mobeffect : list) {
 						int i = mobeffect.getEffectId();
 
 						// CraftBukkit start - Abide by PVP settings - for players only!

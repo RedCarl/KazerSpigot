@@ -207,7 +207,7 @@ public abstract class NavigationAbstract {
 
 					AxisAlignedBB axisalignedbb1;
 
-					for (Iterator iterator = list.iterator(); iterator
+					for (Iterator<AxisAlignedBB> iterator = list.iterator(); iterator
 							.hasNext(); d0 = axisalignedbb1.b(axisalignedbb, d0)) {
 						axisalignedbb1 = (AxisAlignedBB) iterator.next();
 					}

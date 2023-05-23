@@ -60,7 +60,7 @@ public class BlockStateList {
 		LinkedHashMap linkedhashmap = Maps.newLinkedHashMap();
 		ArrayList arraylist = Lists.newArrayList();
 		Iterable<List<Comparable>> iterable = IteratorUtils.a(this.e());
-		Iterator iterator = iterable.iterator();
+		Iterator<List<Comparable>> iterator = iterable.iterator();
 
 		while (iterator.hasNext()) {
 			List list = (List) iterator.next();

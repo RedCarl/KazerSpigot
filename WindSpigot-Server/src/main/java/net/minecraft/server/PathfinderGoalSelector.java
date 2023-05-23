@@ -14,7 +14,6 @@ public class PathfinderGoalSelector {
 	private final List<PathfinderGoalSelector.PathfinderGoalSelectorItem> c = new UnsafeList<PathfinderGoalSelector.PathfinderGoalSelectorItem>();
 	private final MethodProfiler d;
 	private int e;
-	private final int f = 3;
 
 	public PathfinderGoalSelector(MethodProfiler methodprofiler) {
 		this.d = methodprofiler;
@@ -28,7 +27,7 @@ public class PathfinderGoalSelector {
 		Iterator<PathfinderGoalSelectorItem> iterator = this.b.iterator();
 
 		while (iterator.hasNext()) {
-			PathfinderGoalSelector.PathfinderGoalSelectorItem pathfindergoalselector_pathfindergoalselectoritem = (PathfinderGoalSelector.PathfinderGoalSelectorItem) iterator
+			PathfinderGoalSelector.PathfinderGoalSelectorItem pathfindergoalselector_pathfindergoalselectoritem = iterator
 					.next();
 			PathfinderGoal pathfindergoal1 = pathfindergoalselector_pathfindergoalselectoritem.a;
 
@@ -49,7 +48,8 @@ public class PathfinderGoalSelector {
 		Iterator iterator;
 		PathfinderGoalSelector.PathfinderGoalSelectorItem pathfindergoalselector_pathfindergoalselectoritem;
 
-		if (this.e++ % this.f == 0) {
+		int f = 3;
+		if (this.e++ % f == 0) {
 			iterator = this.b.iterator();
 
 			while (iterator.hasNext()) {
@@ -111,7 +111,7 @@ public class PathfinderGoalSelector {
 		Iterator<PathfinderGoalSelectorItem> iterator = this.b.iterator();
 
 		while (iterator.hasNext()) {
-			PathfinderGoalSelector.PathfinderGoalSelectorItem pathfindergoalselector_pathfindergoalselectoritem1 = (PathfinderGoalSelector.PathfinderGoalSelectorItem) iterator
+			PathfinderGoalSelector.PathfinderGoalSelectorItem pathfindergoalselector_pathfindergoalselectoritem1 = iterator
 					.next();
 
 			if (pathfindergoalselector_pathfindergoalselectoritem1 != pathfindergoalselector_pathfindergoalselectoritem) {

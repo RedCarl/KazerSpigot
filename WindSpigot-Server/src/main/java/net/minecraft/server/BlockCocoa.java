@@ -150,7 +150,7 @@ public class BlockCocoa extends BlockDirectional implements IBlockFragilePlantEl
 	@Override
 	public void b(World world, Random random, BlockPosition blockposition, IBlockData iblockdata) {
 		// CraftBukkit start
-		IBlockData data = iblockdata.set(AGE, iblockdata.get(AGE).intValue() + 1);
+		IBlockData data = iblockdata.set(AGE, iblockdata.get(AGE) + 1);
 		CraftEventFactory.handleBlockGrowEvent(world, blockposition.getX(), blockposition.getY(), blockposition.getZ(),
 				this, toLegacyData(data));
 		// CraftBukkit end

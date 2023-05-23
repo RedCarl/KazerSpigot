@@ -71,7 +71,7 @@ public class InventoryEnderChest extends InventorySubcontainer {
 			NBTTagCompound nbttagcompound = nbttaglist.get(i);
 			int j = nbttagcompound.getByte("Slot") & 255;
 
-			if (j >= 0 && j < this.getSize()) {
+			if (j < this.getSize()) {
 				this.setItem(j, ItemStack.createStack(nbttagcompound));
 			}
 		}

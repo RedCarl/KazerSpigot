@@ -131,7 +131,7 @@ public class JsonList<K, V extends JsonListEntry<K>> {
 		Iterator<V> iterator = this.d.values().iterator();
 
 		while (iterator.hasNext()) {
-			JsonListEntry jsonlistentry = (JsonListEntry) iterator.next();
+			JsonListEntry jsonlistentry = iterator.next();
 
 			if (jsonlistentry.hasExpired()) {
 				arraylist.add(jsonlistentry.getKey());
@@ -149,7 +149,7 @@ public class JsonList<K, V extends JsonListEntry<K>> {
 	}
 
 	protected JsonListEntry<K> a(JsonObject jsonobject) {
-		return new JsonListEntry(null, jsonobject);
+		return new JsonListEntry<>(null, jsonobject);
 	}
 
 	protected Map<String, V> e() {

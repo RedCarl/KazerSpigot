@@ -116,7 +116,7 @@ public class CommandExecute extends CommandAbstract {
 
 			try {
 				// CraftBukkit start
-				org.bukkit.command.CommandSender sender = null;
+				org.bukkit.command.CommandSender sender;
 				if (icommandlistener instanceof DedicatedServer) {
 					sender = MinecraftServer.getServer().server.getConsoleSender();
 				} else if (icommandlistener instanceof CommandBlockListenerAbstract) {

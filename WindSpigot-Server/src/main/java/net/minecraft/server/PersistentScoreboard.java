@@ -166,11 +166,9 @@ public class PersistentScoreboard extends PersistentBase {
 
 	protected NBTTagList a() {
 		NBTTagList var1 = new NBTTagList();
-		Collection var2 = this.c.getTeams();
-		Iterator var3 = var2.iterator();
+		Collection<ScoreboardTeam> var2 = this.c.getTeams();
 
-		while (var3.hasNext()) {
-			ScoreboardTeam scoreboardteam = (ScoreboardTeam) var3.next();
+		for (ScoreboardTeam scoreboardteam : var2) {
 			if (!WindSpigotConfig.saveEmptyScoreboardTeams && scoreboardteam.getPlayerNameSet().isEmpty()) {
 				continue; // Paper
 			}
@@ -188,10 +186,8 @@ public class PersistentScoreboard extends PersistentBase {
 			nbttagcompound.setString("NameTagVisibility", scoreboardteam.getNameTagVisibility().e);
 			nbttagcompound.setString("DeathMessageVisibility", scoreboardteam.j().e);
 			NBTTagList var6 = new NBTTagList();
-			Iterator var7 = scoreboardteam.getPlayerNameSet().iterator();
 
-			while (var7.hasNext()) {
-				String var8 = (String) var7.next();
+			for (String var8 : scoreboardteam.getPlayerNameSet()) {
 				var6.add(new NBTTagString(var8));
 			}
 
@@ -222,11 +218,9 @@ public class PersistentScoreboard extends PersistentBase {
 
 	protected NBTTagList b() {
 		NBTTagList var1 = new NBTTagList();
-		Collection var2 = this.c.getObjectives();
-		Iterator var3 = var2.iterator();
+		Collection<ScoreboardObjective> var2 = this.c.getObjectives();
 
-		while (var3.hasNext()) {
-			ScoreboardObjective var4 = (ScoreboardObjective) var3.next();
+		for (ScoreboardObjective var4 : var2) {
 			if (var4.getCriteria() != null) {
 				NBTTagCompound var5 = new NBTTagCompound();
 				var5.setString("Name", var4.getName());
@@ -242,11 +236,9 @@ public class PersistentScoreboard extends PersistentBase {
 
 	protected NBTTagList e() {
 		NBTTagList var1 = new NBTTagList();
-		Collection var2 = this.c.getScores();
-		Iterator var3 = var2.iterator();
+		Collection<ScoreboardScore> var2 = this.c.getScores();
 
-		while (var3.hasNext()) {
-			ScoreboardScore var4 = (ScoreboardScore) var3.next();
+		for (ScoreboardScore var4 : var2) {
 			if (var4.getObjective() != null) {
 				NBTTagCompound var5 = new NBTTagCompound();
 				var5.setString("Name", var4.getPlayerName());

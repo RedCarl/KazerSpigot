@@ -132,11 +132,8 @@ public class WorldBorder {
 	public void setCenter(double d0, double d1) {
 		this.b = d0;
 		this.c = d1;
-		Iterator iterator = this.k().iterator();
 
-		while (iterator.hasNext()) {
-			IWorldBorderListener iworldborderlistener = (IWorldBorderListener) iterator.next();
-
+		for (IWorldBorderListener iworldborderlistener : this.k()) {
 			iworldborderlistener.a(this, d0, d1);
 		}
 
@@ -169,11 +166,8 @@ public class WorldBorder {
 		this.e = d0;
 		this.f = System.currentTimeMillis();
 		this.g = this.f;
-		Iterator iterator = this.k().iterator();
 
-		while (iterator.hasNext()) {
-			IWorldBorderListener iworldborderlistener = (IWorldBorderListener) iterator.next();
-
+		for (IWorldBorderListener iworldborderlistener : this.k()) {
 			iworldborderlistener.a(this, d0);
 		}
 
@@ -184,11 +178,8 @@ public class WorldBorder {
 		this.e = d1;
 		this.g = System.currentTimeMillis();
 		this.f = this.g + i;
-		Iterator iterator = this.k().iterator();
 
-		while (iterator.hasNext()) {
-			IWorldBorderListener iworldborderlistener = (IWorldBorderListener) iterator.next();
-
+		for (IWorldBorderListener iworldborderlistener : this.k()) {
 			iworldborderlistener.a(this, d0, d1, i);
 		}
 
@@ -219,11 +210,8 @@ public class WorldBorder {
 
 	public void setDamageBuffer(double d0) {
 		this.j = d0;
-		Iterator iterator = this.k().iterator();
 
-		while (iterator.hasNext()) {
-			IWorldBorderListener iworldborderlistener = (IWorldBorderListener) iterator.next();
-
+		for (IWorldBorderListener iworldborderlistener : this.k()) {
 			iworldborderlistener.c(this, d0);
 		}
 
@@ -235,11 +223,8 @@ public class WorldBorder {
 
 	public void setDamageAmount(double d0) {
 		this.i = d0;
-		Iterator iterator = this.k().iterator();
 
-		while (iterator.hasNext()) {
-			IWorldBorderListener iworldborderlistener = (IWorldBorderListener) iterator.next();
-
+		for (IWorldBorderListener iworldborderlistener : this.k()) {
 			iworldborderlistener.b(this, d0);
 		}
 
@@ -251,11 +236,8 @@ public class WorldBorder {
 
 	public void setWarningTime(int i) {
 		this.k = i;
-		Iterator iterator = this.k().iterator();
 
-		while (iterator.hasNext()) {
-			IWorldBorderListener iworldborderlistener = (IWorldBorderListener) iterator.next();
-
+		for (IWorldBorderListener iworldborderlistener : this.k()) {
 			iworldborderlistener.a(this, i);
 		}
 
@@ -267,11 +249,8 @@ public class WorldBorder {
 
 	public void setWarningDistance(int i) {
 		this.l = i;
-		Iterator iterator = this.k().iterator();
 
-		while (iterator.hasNext()) {
-			IWorldBorderListener iworldborderlistener = (IWorldBorderListener) iterator.next();
-
+		for (IWorldBorderListener iworldborderlistener : this.k()) {
 			iworldborderlistener.b(this, i);
 		}
 

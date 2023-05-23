@@ -92,7 +92,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 	private double q;
 	private boolean checkMovement = true;
 	private boolean processedDisconnect; // CraftBukkit - added
-	private int lastBookTick = 0;
+	private int lastBookTick;
 	private int creativeSlotCount = 0;
 	private long lastCustomPayloadPacketTS = -1L;
 	private boolean isExploiter = false;
@@ -913,7 +913,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 				Vec3D vec3d1 = vec3d.add(f7 * d3, f6 * d3, f8 * d3);
 				MovingObjectPosition movingobjectposition = this.player.world.rayTrace(vec3d, vec3d1, false);
 
-				boolean cancelled = false;
+				boolean cancelled;
 				if (movingobjectposition == null
 						|| movingobjectposition.type != MovingObjectPosition.EnumMovingObjectType.BLOCK) {
 					org.bukkit.event.player.PlayerInteractEvent event = CraftEventFactory
@@ -1313,14 +1313,9 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 
 				chatmessage.getChatModifier().setColor(EnumChatFormat.RED);
 				this.sendPacket(new PacketPlayOutChat(chatmessage));
-			} else if (true) {
+			} else {
 				this.chat(s, true);
 				// CraftBukkit end - the below is for reference. :)
-			} else {
-				ChatMessage chatmessage1 = new ChatMessage("chat.type.text",
-						this.player.getScoreboardDisplayName(), s);
-
-				this.minecraftServer.getPlayerList().sendMessage(chatmessage1, false);
 			}
 
 			// Spigot start - spam exclusions
@@ -1823,7 +1818,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 				InventoryView inventory = this.player.activeContainer.getBukkitView();
 				SlotType type = CraftInventoryView.getSlotType(inventory, packetplayinwindowclick.b());
 
-				InventoryClickEvent event = null;
+				InventoryClickEvent event;
 				ClickType click = ClickType.UNKNOWN;
 				InventoryAction action = InventoryAction.UNKNOWN;
 
@@ -2397,13 +2392,11 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 		// CraftBukkit end
 		ArrayList<Object> arraylist = Lists.newArrayList();
 
-		for (String s : this.minecraftServer
-				.tabCompleteCommand(this.player, packetplayintabcomplete.a(), packetplayintabcomplete.b())) {
-			arraylist.add(s);
-		}
+		arraylist.addAll(this.minecraftServer
+				.tabCompleteCommand(this.player, packetplayintabcomplete.a(), packetplayintabcomplete.b()));
 
 		this.player.playerConnection
-				.sendPacket(new PacketPlayOutTabComplete((String[]) arraylist.toArray(new String[0])));
+				.sendPacket(new PacketPlayOutTabComplete(arraylist.toArray(new String[0])));
 	}
 
 	@Override

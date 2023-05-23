@@ -218,21 +218,21 @@ public class BlockRedstoneWire extends Block {
 			EnumDirection enumdirection;
 
 			while (iterator.hasNext()) {
-				enumdirection = (EnumDirection) iterator.next();
+				enumdirection = iterator.next();
 				world.applyPhysics(blockposition.shift(enumdirection), this);
 			}
 
 			iterator = EnumDirection.EnumDirectionLimit.HORIZONTAL.iterator();
 
 			while (iterator.hasNext()) {
-				enumdirection = (EnumDirection) iterator.next();
+				enumdirection = iterator.next();
 				this.e(world, blockposition.shift(enumdirection));
 			}
 
 			iterator = EnumDirection.EnumDirectionLimit.HORIZONTAL.iterator();
 
 			while (iterator.hasNext()) {
-				enumdirection = (EnumDirection) iterator.next();
+				enumdirection = iterator.next();
 				BlockPosition blockposition1 = blockposition.shift(enumdirection);
 
 				if (world.getType(blockposition1).getBlock().isOccluding()) {
@@ -262,14 +262,14 @@ public class BlockRedstoneWire extends Block {
 			EnumDirection enumdirection1;
 
 			while (iterator.hasNext()) {
-				enumdirection1 = (EnumDirection) iterator.next();
+				enumdirection1 = iterator.next();
 				this.e(world, blockposition.shift(enumdirection1));
 			}
 
 			iterator = EnumDirection.EnumDirectionLimit.HORIZONTAL.iterator();
 
 			while (iterator.hasNext()) {
-				enumdirection1 = (EnumDirection) iterator.next();
+				enumdirection1 = iterator.next();
 				BlockPosition blockposition1 = blockposition.shift(enumdirection1);
 
 				if (world.getType(blockposition1).getBlock().isOccluding()) {
@@ -288,7 +288,7 @@ public class BlockRedstoneWire extends Block {
 		} else {
 			int j = world.getType(blockposition).get(BlockRedstoneWire.POWER);
 
-			return j > i ? j : i;
+			return Math.max(j, i);
 		}
 	}
 

@@ -27,13 +27,12 @@ public enum PermissionDefault {
 		switch (this) {
 		case TRUE:
 			return true;
-		case FALSE:
-			return false;
-		case OP:
+			case OP:
 			return op;
 		case NOT_OP:
 			return !op;
-		default:
+			case FALSE:
+			default:
 			return false;
 		}
 	}

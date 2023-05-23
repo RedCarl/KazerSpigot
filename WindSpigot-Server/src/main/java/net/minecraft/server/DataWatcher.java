@@ -23,7 +23,7 @@ public class DataWatcher {
 	private boolean b = true;
 	// Spigot Start
 	// TacoSpigot start - use fastutil instead of trove
-	private static final Object2IntMap<Class<?>> classToId = new Object2IntOpenHashMap(10, 0.5f);
+	private static final Object2IntMap<Class<?>> classToId = new Object2IntOpenHashMap<>(10, 0.5f);
 	private final Int2ObjectMap dataValues = new Int2ObjectOpenHashMap(10, 0.5f);
 	// These exist as an attempt at backwards compatability for (broken) NMS plugins
 	private static final Map<Class<?>, Integer> c = classToId;

@@ -14,7 +14,6 @@ import com.google.common.collect.Maps;
 public class BlockStateEnum<T extends Enum<T> & INamable> extends BlockState<T> {
 
 	private final ImmutableSet<T> a;
-	private final Map<String, T> b = Maps.newHashMap();
 
 	protected BlockStateEnum(String s, Class<T> oclass, Collection<T> collection) {
 		super(s, oclass);
@@ -25,11 +24,12 @@ public class BlockStateEnum<T extends Enum<T> & INamable> extends BlockState<T> 
 		for (T oenum : collection) {
 			String s1 = oenum.getName();
 
-			if (this.b.containsKey(s1)) {
+			Map<String, T> b = Maps.newHashMap();
+			if (b.containsKey(s1)) {
 				throw new IllegalArgumentException("Multiple values have the same name '" + s1 + "'");
 			}
 
-			this.b.put(s1, oenum);
+			b.put(s1, oenum);
 		}
 
 	}
@@ -77,7 +77,7 @@ public class BlockStateEnum<T extends Enum<T> & INamable> extends BlockState<T> 
 
 	public static <T extends Enum<T> & INamable> BlockStateEnum<T> a(String s, Class<T> oclass,
 			Collection<T> collection) {
-		return new BlockStateEnum(s, oclass, collection);
+		return new BlockStateEnum<>(s, oclass, collection);
 	}
 
 	// TacoSpigot start - fix stupid generic thingies

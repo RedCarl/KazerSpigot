@@ -18,15 +18,13 @@ import com.google.common.collect.Table;
 import com.google.common.collect.Tables;
 
 public class ImmutableArrayTable<R, C, V> implements Table<R, C, V> {
-	private final Indexer<R> rowIndexer;
-	private final ToIntBiFunction<R, C> columnGetId;
 	private final ImmutableArrayMap<R, Map<C, V>> rowMap;
 	private final ImmutableMap<C, Map<R, V>> columnMap;
 	private final int size;
 
 	public ImmutableArrayTable(Indexer<R> rowIndexer, ToIntBiFunction<R, C> columnGetId, Table<R, C, V> table) {
-		this.rowIndexer = Preconditions.checkNotNull(rowIndexer, "Null indexer for row");
-		this.columnGetId = Preconditions.checkNotNull(columnGetId, "Null getId function for column");
+		Indexer<R> rowIndexer1 = Preconditions.checkNotNull(rowIndexer, "Null indexer for row");
+		ToIntBiFunction<R, C> columnGetId1 = Preconditions.checkNotNull(columnGetId, "Null getId function for column");
 		Preconditions.checkNotNull(table, "Null table");
 		ImmutableMap.Builder<R, Map<C, V>> rowMapBuilder = ImmutableMap.builder();
 		for (Map.Entry<R, Map<C, V>> rowEntry : table.rowMap().entrySet()) {

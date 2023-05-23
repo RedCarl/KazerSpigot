@@ -140,25 +140,6 @@ public class BlockSkull extends BlockContainer {
 		if (!world.isClientSide) {
 			// CraftBukkit start - Drop item in code above, not here
 			// if (!((Boolean) iblockdata.get(BlockSkull.NODROP)).booleanValue()) {
-			if (false) {
-				// CraftBukkit end
-				TileEntity tileentity = world.getTileEntity(blockposition);
-
-				if (tileentity instanceof TileEntitySkull) {
-					TileEntitySkull tileentityskull = (TileEntitySkull) tileentity;
-					ItemStack itemstack = new ItemStack(Items.SKULL, 1, this.getDropData(world, blockposition));
-
-					if (tileentityskull.getSkullType() == 3 && tileentityskull.getGameProfile() != null) {
-						itemstack.setTag(new NBTTagCompound());
-						NBTTagCompound nbttagcompound = new NBTTagCompound();
-
-						GameProfileSerializer.serialize(nbttagcompound, tileentityskull.getGameProfile());
-						itemstack.getTag().set("SkullOwner", nbttagcompound);
-					}
-
-					a(world, blockposition, itemstack);
-				}
-			}
 
 			super.remove(world, blockposition, iblockdata);
 		}
@@ -233,7 +214,7 @@ public class BlockSkull extends BlockContainer {
 					blockList.updateList();
 
 					while (iterator.hasNext()) {
-						EntityHuman entityhuman = (EntityHuman) iterator.next();
+						EntityHuman entityhuman = iterator.next();
 
 						entityhuman.b(AchievementList.I);
 					}

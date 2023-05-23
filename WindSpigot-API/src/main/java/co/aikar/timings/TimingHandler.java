@@ -151,7 +151,6 @@ class TimingHandler implements Timing {
 	/**
 	 * Reset this timer, setting all values to zero.
 	 *
-	 * @param full
 	 */
 	void reset(boolean full) {
 		record.reset();

@@ -120,7 +120,7 @@ import net.minecraft.server.WorldSettings;
 
 @DelegateDeserialization(CraftOfflinePlayer.class)
 public class CraftPlayer extends CraftHumanEntity implements Player {
-	private long firstPlayed = 0;
+	private long firstPlayed;
 	private long lastPlayed = 0;
 	private boolean hasPlayedBefore = false;
 	private final ConversationTracker conversationTracker = new ConversationTracker();
@@ -1487,11 +1487,9 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
 		if (playerConnection == null) {
 			throw new IllegalStateException("Cannot set scoreboard yet");
 		}
-		if (playerConnection.isDisconnected()) {
-			// throw new IllegalStateException("Cannot set scoreboard for invalid
-			// CraftPlayer"); // Spigot - remove this as Mojang's semi asynchronous Netty
-			// implementation can lead to races
-		}
+		playerConnection.isDisconnected();// throw new IllegalStateException("Cannot set scoreboard for invalid
+// CraftPlayer"); // Spigot - remove this as Mojang's semi asynchronous Netty
+// implementation can lead to races
 
 		this.server.getScoreboardManager().setPlayerBoard(this, scoreboard);
 	}

@@ -1,12 +1,6 @@
 package org.bukkit.command.defaults;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -559,9 +553,7 @@ public class ScoreboardCommand extends VanillaCommand {
 					if (args.length == 3) {
 						return StringUtil.copyPartialMatches(args[2], this.getCurrentTeams(), new ArrayList<String>());
 					}
-					if (args.length >= 4) {
-						return super.tabComplete(sender, alias, args);
-					}
+					return super.tabComplete(sender, alias, args);
 				} else if (args[1].equalsIgnoreCase("leave")) {
 					return super.tabComplete(sender, alias, args);
 				} else if (args[1].equalsIgnoreCase("option")) {
@@ -597,7 +589,7 @@ public class ScoreboardCommand extends VanillaCommand {
 			string.append(lastValue = value.getName()).append(", ");
 		}
 		string.delete(string.length() - 2, Integer.MAX_VALUE);
-		if (string.length() != lastValue.length()) {
+		if (string.length() != Objects.requireNonNull(lastValue).length()) {
 			string.insert(string.length() - lastValue.length(), "and ");
 		}
 		return string.toString();
@@ -611,7 +603,7 @@ public class ScoreboardCommand extends VanillaCommand {
 			string.append(lastValue = value).append(", ");
 		}
 		string.delete(string.length() - 2, Integer.MAX_VALUE);
-		if (string.length() != lastValue.length()) {
+		if (string.length() != Objects.requireNonNull(lastValue).length()) {
 			string.insert(string.length() - lastValue.length(), "and ");
 		}
 		return string.toString();
@@ -628,9 +620,7 @@ public class ScoreboardCommand extends VanillaCommand {
 
 	private List<String> getCurrentEntries() {
 		List<String> list = new ArrayList<String>();
-		for (String entry : Bukkit.getScoreboardManager().getMainScoreboard().getEntries()) {
-			list.add(entry);
-		}
+		list.addAll(Bukkit.getScoreboardManager().getMainScoreboard().getEntries());
 		Collections.sort(list, String.CASE_INSENSITIVE_ORDER);
 		return list;
 	}

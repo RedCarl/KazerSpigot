@@ -24,10 +24,8 @@ public class PersistentVillage extends PersistentBase {
 
 	public void a(World var1) {
 		this.world = var1;
-		Iterator var2 = this.villages.iterator();
 
-		while (var2.hasNext()) {
-			Village var3 = (Village) var2.next();
+		for (Village var3 : this.villages) {
 			var3.a(var1);
 		}
 
@@ -44,10 +42,8 @@ public class PersistentVillage extends PersistentBase {
 
 	public void tick() {
 		++this.time;
-		Iterator var1 = this.villages.iterator();
 
-		while (var1.hasNext()) {
-			Village var2 = (Village) var1.next();
+		for (Village var2 : this.villages) {
 			var2.a(this.time);
 		}
 
@@ -61,7 +57,7 @@ public class PersistentVillage extends PersistentBase {
 	}
 
 	private void e() {
-		Iterator var1 = this.villages.iterator();
+		Iterator<Village> var1 = this.villages.iterator();
 
 		while (var1.hasNext()) {
 			Village var2 = (Village) var1.next();
@@ -80,10 +76,8 @@ public class PersistentVillage extends PersistentBase {
 	public Village getClosestVillage(BlockPosition var1, int var2) {
 		Village var3 = null;
 		double var4 = 3.4028234663852886E38D;
-		Iterator var6 = this.villages.iterator();
 
-		while (var6.hasNext()) {
-			Village var7 = (Village) var6.next();
+		for (Village var7 : this.villages) {
 			double var8 = var7.a().i(var1);
 			if (var8 < var4) {
 				float var10 = var2 + var7.b();
@@ -104,8 +98,7 @@ public class PersistentVillage extends PersistentBase {
 	}
 
 	private void g() {
-		for (int var1 = 0; var1 < this.d.size(); ++var1) {
-			VillageDoor var2 = this.d.get(var1);
+		for (VillageDoor var2 : this.d) {
 			Village var3 = this.getClosestVillage(var2.d(), 32);
 			if (var3 == null) {
 				var3 = new Village(this.world);
@@ -197,7 +190,7 @@ public class PersistentVillage extends PersistentBase {
 	}
 
 	private boolean e(BlockPosition var1) {
-		Iterator var2 = this.c.iterator();
+		Iterator<BlockPosition> var2 = this.c.iterator();
 
 		BlockPosition var3;
 		do {
@@ -244,10 +237,8 @@ public class PersistentVillage extends PersistentBase {
 	public void b(NBTTagCompound var1) {
 		var1.setInt("Tick", this.time);
 		NBTTagList var2 = new NBTTagList();
-		Iterator var3 = this.villages.iterator();
 
-		while (var3.hasNext()) {
-			Village var4 = (Village) var3.next();
+		for (Village var4 : this.villages) {
 			NBTTagCompound var5 = new NBTTagCompound();
 			var4.b(var5);
 			var2.add(var5);

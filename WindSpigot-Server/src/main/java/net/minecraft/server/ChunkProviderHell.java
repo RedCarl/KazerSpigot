@@ -262,7 +262,7 @@ public class ChunkProviderHell implements IChunkProvider {
 				double d3 = 0.0D;
 
 				for (int j2 = 0; j2 < i1; ++j2) {
-					double d4 = 0.0D;
+					double d4;
 					double d5 = adouble1[j2];
 					double d6 = this.d[k1] / 512.0D;
 					double d7 = this.e[k1] / 512.0D;
@@ -281,12 +281,6 @@ public class ChunkProviderHell implements IChunkProvider {
 
 					if (j2 > i1 - 4) {
 						d9 = (j2 - (i1 - 4)) / 3.0F;
-						d4 = d4 * (1.0D - d9) + -10.0D * d9;
-					}
-
-					if (j2 < d3) {
-						d9 = (d3 - j2) / 4.0D;
-						d9 = MathHelper.a(d9, 0.0D, 1.0D);
 						d4 = d4 * (1.0D - d9) + -10.0D * d9;
 					}
 

@@ -49,9 +49,7 @@ public class EntityHorse extends EntityAnimal implements IInventoryListener {
 	private float bJ;
 	private float bK;
 	private float bL;
-	private float bM;
 	private int bN;
-	private String bO;
 	private final String[] bP = new String[3];
 	private final boolean bQ = false;
 	public int maxDomestication = 100; // CraftBukkit - store max domestication value
@@ -549,7 +547,7 @@ public class EntityHorse extends EntityAnimal implements IInventoryListener {
 	}
 
 	private void dc() {
-		this.bO = null;
+		String bO = null;
 	}
 
 	public void g(EntityHuman entityhuman) {
@@ -599,7 +597,7 @@ public class EntityHorse extends EntityAnimal implements IInventoryListener {
 					}
 				}
 
-				if (!flag && !this.cR()) {
+				if (!this.cR()) {
 					float f = 0.0F;
 					short short0 = 0;
 					byte b1 = 0;
@@ -658,7 +656,7 @@ public class EntityHorse extends EntityAnimal implements IInventoryListener {
 				}
 
 				if (!this.isTame() && !flag) {
-					if (itemstack != null && itemstack.a(entityhuman, this)) {
+					if (itemstack.a(entityhuman, this)) {
 						return true;
 					}
 
@@ -858,7 +856,7 @@ public class EntityHorse extends EntityAnimal implements IInventoryListener {
 			}
 		}
 
-		this.bM = this.bL;
+		float bM = this.bL;
 		if (this.w(128)) {
 			this.bL += (1.0F - this.bL) * 0.7F + 0.05F;
 			if (this.bL > 1.0F) {
@@ -1066,7 +1064,7 @@ public class EntityHorse extends EntityAnimal implements IInventoryListener {
 		this.setVariant(nbttagcompound.getInt("Variant"));
 		this.setTemper(nbttagcompound.getInt("Temper"));
 		this.setTame(nbttagcompound.getBoolean("Tame"));
-		String s = "";
+		String s;
 
 		if (nbttagcompound.hasKeyOfType("OwnerUUID", 8)) {
 			s = nbttagcompound.getString("OwnerUUID");

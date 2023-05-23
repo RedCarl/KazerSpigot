@@ -10,6 +10,6 @@ public class LongHash {
 	}
 
 	public static int lsw(long l) {
-		return (int) (l & 0xFFFFFFFF) + Integer.MIN_VALUE;
+		return (int) (l & 0xffff_ffff_ffff_ffffL) + Integer.MIN_VALUE;
 	}
 }

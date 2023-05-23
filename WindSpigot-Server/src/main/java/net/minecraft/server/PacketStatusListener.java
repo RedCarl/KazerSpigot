@@ -132,7 +132,7 @@ public class PacketStatusListener implements PacketStatusInListener {
 																												// behaviour
 		}
 		// Spigot End
-		playerSample.a(profiles.toArray(new GameProfile[profiles.size()]));
+		playerSample.a(profiles.toArray(new GameProfile[0]));
 
 		ServerPing ping = new ServerPing();
 		ping.setFavicon(event.icon.value);

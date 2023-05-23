@@ -113,7 +113,7 @@ public class BlockSoil extends Block {
 				return false;
 			}
 
-			blockposition_mutableblockposition = (BlockPosition.MutableBlockPosition) iterator.next();
+			blockposition_mutableblockposition = iterator.next();
 		} while (world.getType(blockposition_mutableblockposition).getBlock().getMaterial() != Material.WATER);
 
 		return true;

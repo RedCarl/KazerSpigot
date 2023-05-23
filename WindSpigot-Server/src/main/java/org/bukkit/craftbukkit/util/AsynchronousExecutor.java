@@ -113,9 +113,8 @@ public final class AsynchronousExecutor<P, T, C, E extends Throwable> {
 							if (state != STAGE_1_SYNC) {
 								// They beat us to the synchronized block
 								this.notifyAll();
-							} else {
-								// We beat them to the synchronized block
-							}
+							}  // We beat them to the synchronized block
+
 							state = STAGE_1_COMPLETE; // They're already synchronized, atomic locks are not needed
 						}
 						// We want to return false, because we know a synchronous task already handled
@@ -148,13 +147,11 @@ public final class AsynchronousExecutor<P, T, C, E extends Throwable> {
 								throw new RuntimeException("Unable to handle interruption on " + parameter, e);
 							}
 						}
-					} else {
-						// They beat us to the synchronized block
-					}
+					}  // They beat us to the synchronized block
+
 				}
-			} else {
-				// Async thread is not pending, the more likely situation for a task not pending
-			}
+			}  // Async thread is not pending, the more likely situation for a task not pending
+
 		}
 
 		@SuppressWarnings("unchecked")

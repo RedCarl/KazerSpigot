@@ -85,7 +85,7 @@ public class EntityFireworks extends Entity {
 		}
 
 		++this.ticksFlown;
-		if (this.world.isClientSide && this.ticksFlown % 2 < 2) {
+		if (this.world.isClientSide) {
 			this.world.addParticle(EnumParticle.FIREWORKS_SPARK, this.locX, this.locY - 0.3D, this.locZ,
 					this.random.nextGaussian() * 0.05D, -this.motY * 0.5D, this.random.nextGaussian() * 0.05D,
 					Constants.EMPTY_ARRAY);

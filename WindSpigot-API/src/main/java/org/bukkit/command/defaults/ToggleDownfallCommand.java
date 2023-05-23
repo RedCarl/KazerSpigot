@@ -26,7 +26,7 @@ public class ToggleDownfallCommand extends VanillaCommand {
 		if (!testPermission(sender))
 			return true;
 
-		World world = null;
+		World world;
 
 		if (args.length == 1) {
 			world = Bukkit.getWorld(args[0]);

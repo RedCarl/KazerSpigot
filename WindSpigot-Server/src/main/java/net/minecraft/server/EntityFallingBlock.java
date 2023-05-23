@@ -2,6 +2,7 @@ package net.minecraft.server;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Objects;
 
 import org.bukkit.craftbukkit.event.CraftEventFactory; // CraftBukkit
 
@@ -251,7 +252,7 @@ public class EntityFallingBlock extends Entity {
 		int i = nbttagcompound.getByte("Data") & 255;
 
 		if (nbttagcompound.hasKeyOfType("Block", 8)) {
-			this.block = Block.getByName(nbttagcompound.getString("Block")).fromLegacyData(i);
+			this.block = Objects.requireNonNull(Block.getByName(nbttagcompound.getString("Block"))).fromLegacyData(i);
 		} else if (nbttagcompound.hasKeyOfType("TileID", 99)) {
 			this.block = Block.getById(nbttagcompound.getInt("TileID")).fromLegacyData(i);
 		} else {

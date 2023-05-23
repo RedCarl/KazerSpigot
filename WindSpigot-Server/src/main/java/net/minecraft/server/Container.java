@@ -168,7 +168,7 @@ public abstract class Container {
 																									// ->
 																									// new stack)
 						while (iterator.hasNext()) {
-							Slot slot1 = (Slot) iterator.next();
+							Slot slot1 = iterator.next();
 
 							if (slot1 != null && a(slot1, playerinventory.getCarried(), true)
 									&& slot1.isAllowed(playerinventory.getCarried())
@@ -407,7 +407,7 @@ public abstract class Container {
 					k1 = -1;
 					if (!flag) {
 						k1 = playerinventory.getFirstEmptySlotIndex();
-						flag |= k1 > -1;
+						flag = k1 > -1;
 					}
 
 					if (slot2.hasItem() && flag) {

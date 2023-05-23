@@ -38,7 +38,7 @@ public class EntityEgg extends EntityProjectile {
 
 		Entity shooter = this.getShooter();
 		if (shooter instanceof EntityPlayer) {
-			Player player = (shooter == null) ? null : (Player) shooter.getBukkitEntity();
+			Player player = (Player) shooter.getBukkitEntity();
 
 			PlayerEggThrowEvent event = new PlayerEggThrowEvent(player, (org.bukkit.entity.Egg) this.getBukkitEntity(),
 					hatching, (byte) numHatching, hatchingType);

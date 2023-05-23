@@ -33,7 +33,7 @@ public class ItemHanging extends Item {
 				if (entityhanging != null && entityhanging.survives()) {
 					if (!world.isClientSide) {
 						// CraftBukkit start - fire HangingPlaceEvent
-						Player who = (entityhuman == null) ? null : (Player) entityhuman.getBukkitEntity();
+						Player who = (Player) entityhuman.getBukkitEntity();
 						org.bukkit.block.Block blockClicked = world.getWorld().getBlockAt(blockposition.getX(),
 								blockposition.getY(), blockposition.getZ());
 						org.bukkit.block.BlockFace blockFace = org.bukkit.craftbukkit.block.CraftBlock

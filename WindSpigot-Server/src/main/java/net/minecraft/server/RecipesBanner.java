@@ -1,6 +1,7 @@
 package net.minecraft.server;
 
 import java.util.Collections;
+import java.util.Objects;
 
 public class RecipesBanner {
 
@@ -89,12 +90,11 @@ public class RecipesBanner {
 					}
 				}
 
-				NBTTagCompound nbttagcompound = itemstack.a("BlockEntityTag", true);
+				NBTTagCompound nbttagcompound = Objects.requireNonNull(itemstack).a("BlockEntityTag", true);
 
-				itemstack2 = null;
 				NBTTagList nbttaglist;
 
-				if (nbttagcompound.hasKeyOfType("Patterns", 9)) {
+				if (Objects.requireNonNull(nbttagcompound).hasKeyOfType("Patterns", 9)) {
 					nbttaglist = nbttagcompound.getList("Patterns", 10);
 				} else {
 					nbttaglist = new NBTTagList();
@@ -150,7 +150,7 @@ public class RecipesBanner {
 						boolean flag1 = false;
 						boolean flag2 = false;
 
-						for (k = 0; k < inventorycrafting.getSize() && flag; ++k) {
+						for (k = 0; k < inventorycrafting.getSize(); ++k) {
 							ItemStack itemstack = inventorycrafting.getItem(k);
 
 							if (itemstack != null && itemstack.getItem() != Items.BANNER) {
@@ -182,7 +182,7 @@ public class RecipesBanner {
 					} else {
 						int l = -1;
 
-						for (int i1 = 0; i1 < inventorycrafting.getSize() && flag; ++i1) {
+						for (int i1 = 0; i1 < inventorycrafting.getSize(); ++i1) {
 							k = i1 / 3;
 							int j1 = i1 % 3;
 							ItemStack itemstack1 = inventorycrafting.getItem(i1);

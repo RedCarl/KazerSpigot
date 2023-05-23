@@ -195,8 +195,8 @@ public class EntityFishingHook extends Entity {
 
 			double d6;
 
-			for (Object o : list) {
-				Entity entity1 = (Entity) o;
+			for (Entity o : list) {
+				Entity entity1 = o;
 
 				if (entity1.ad() && (entity1 != this.owner || this.au >= 5)) {
 					float f = 0.3F;

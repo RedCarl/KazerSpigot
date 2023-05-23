@@ -34,7 +34,7 @@ public class IntCache {
 			IntCache.d.clear();
 			IntCache.e.clear();
 			aint = new int[IntCache.a];
-			if (e.size() < org.spigotmc.SpigotConfig.intCacheLimit) {
+			if (0 < org.spigotmc.SpigotConfig.intCacheLimit) {
 				IntCache.e.add(aint);
 			}
 			return aint;
