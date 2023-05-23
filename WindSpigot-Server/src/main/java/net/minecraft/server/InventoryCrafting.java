@@ -1,6 +1,7 @@
 package net.minecraft.server;
 
 // CraftBukkit start
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.craftbukkit.entity.CraftHumanEntity;
@@ -98,7 +99,7 @@ public class InventoryCrafting implements IInventory {
 	@Override
 	public IChatBaseComponent getScoreboardDisplayName() {
 		return this.hasCustomName() ? new ChatComponentText(this.getName())
-				: new ChatMessage(this.getName(), new Object[0]);
+				: new ChatMessage(this.getName());
 	}
 
 	@Override
@@ -186,9 +187,7 @@ public class InventoryCrafting implements IInventory {
 
 	@Override
 	public void l() {
-		for (int i = 0; i < this.items.length; ++i) {
-			this.items[i] = null;
-		}
+		Arrays.fill(this.items, null);
 
 	}
 

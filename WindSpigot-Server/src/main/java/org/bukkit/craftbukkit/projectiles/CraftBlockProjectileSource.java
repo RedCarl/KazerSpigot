@@ -83,7 +83,7 @@ public class CraftBlockProjectileSource implements BlockProjectileSource {
 		} else if (Arrow.class.isAssignableFrom(projectile)) {
 			launch = new EntityArrow(world, iposition.getX(), iposition.getY(), iposition.getZ());
 			((EntityArrow) launch).fromPlayer = 1;
-			((EntityArrow) launch).projectileSource = this;
+			launch.projectileSource = this;
 		} else if (Fireball.class.isAssignableFrom(projectile)) {
 			double d0 = iposition.getX() + enumdirection.getAdjacentX() * 0.3F;
 			double d1 = iposition.getY() + enumdirection.getAdjacentY() * 0.3F;
@@ -113,14 +113,14 @@ public class CraftBlockProjectileSource implements BlockProjectileSource {
 				((EntityFireball) launch).dirZ = d5 / d6 * 0.1D;
 			}
 
-			((EntityFireball) launch).projectileSource = this;
+			launch.projectileSource = this;
 		}
 
 		Validate.notNull(launch, "Projectile not supported");
 
 		if (launch instanceof IProjectile) {
 			if (launch instanceof EntityProjectile) {
-				((EntityProjectile) launch).projectileSource = this;
+				launch.projectileSource = this;
 			}
 			// Values from DispenseBehaviorProjectile
 			float a = 6.0F;

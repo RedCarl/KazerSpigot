@@ -11,25 +11,22 @@ public class GenericAttributes {
 
 	private static final Logger f = LogManager.getLogger();
 	// Spigot start
-	public static final IAttribute maxHealth = (new AttributeRanged((IAttribute) null, "generic.maxHealth", 20.0D, 0.1D,
+	public static final IAttribute maxHealth = (new AttributeRanged(null, "generic.maxHealth", 20.0D, 0.1D,
 			org.spigotmc.SpigotConfig.maxHealth)).a("Max Health").a(true);
-	public static final IAttribute FOLLOW_RANGE = (new AttributeRanged((IAttribute) null, "generic.followRange", 32.0D,
+	public static final IAttribute FOLLOW_RANGE = (new AttributeRanged(null, "generic.followRange", 32.0D,
 			0.0D, 2048.0D)).a("Follow Range");
-	public static final IAttribute c = (new AttributeRanged((IAttribute) null, "generic.knockbackResistance", 0.0D,
+	public static final IAttribute c = (new AttributeRanged(null, "generic.knockbackResistance", 0.0D,
 			0.0D, 1.0D)).a("Knockback Resistance");
-	public static final IAttribute MOVEMENT_SPEED = (new AttributeRanged((IAttribute) null, "generic.movementSpeed",
+	public static final IAttribute MOVEMENT_SPEED = (new AttributeRanged(null, "generic.movementSpeed",
 			0.699999988079071D, 0.0D, org.spigotmc.SpigotConfig.movementSpeed)).a("Movement Speed").a(true);
-	public static final IAttribute ATTACK_DAMAGE = new AttributeRanged((IAttribute) null, "generic.attackDamage", 2.0D,
+	public static final IAttribute ATTACK_DAMAGE = new AttributeRanged(null, "generic.attackDamage", 2.0D,
 			0.0D, org.spigotmc.SpigotConfig.attackDamage);
 	// Spigot end
 
 	public static NBTTagList a(AttributeMapBase attributemapbase) {
 		NBTTagList nbttaglist = new NBTTagList();
-		Iterator iterator = attributemapbase.a().iterator();
 
-		while (iterator.hasNext()) {
-			AttributeInstance attributeinstance = (AttributeInstance) iterator.next();
-
+		for (AttributeInstance attributeinstance : attributemapbase.a()) {
 			nbttaglist.add(a(attributeinstance));
 		}
 
@@ -42,15 +39,12 @@ public class GenericAttributes {
 
 		nbttagcompound.setString("Name", iattribute.getName());
 		nbttagcompound.setDouble("Base", attributeinstance.b());
-		Collection collection = attributeinstance.c();
+		Collection<AttributeModifier> collection = attributeinstance.c();
 
 		if (collection != null && !collection.isEmpty()) {
 			NBTTagList nbttaglist = new NBTTagList();
-			Iterator iterator = collection.iterator();
 
-			while (iterator.hasNext()) {
-				AttributeModifier attributemodifier = (AttributeModifier) iterator.next();
-
+			for (AttributeModifier attributemodifier : collection) {
 				if (attributemodifier.e()) {
 					nbttaglist.add(a(attributemodifier));
 				}
@@ -81,7 +75,7 @@ public class GenericAttributes {
 			if (attributeinstance != null) {
 				a(attributeinstance, nbttagcompound);
 			} else {
-				GenericAttributes.f.warn("Ignoring unknown attribute \'" + nbttagcompound.getString("Name") + "\'");
+				GenericAttributes.f.warn("Ignoring unknown attribute '" + nbttagcompound.getString("Name") + "'");
 			}
 		}
 

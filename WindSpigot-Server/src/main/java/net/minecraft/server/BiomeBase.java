@@ -261,7 +261,7 @@ public abstract class BiomeBase {
 	}
 
 	public boolean e() {
-		return this.j() ? false : this.ay;
+		return !this.j() && this.ay;
 	}
 
 	public boolean f() {
@@ -386,7 +386,7 @@ public abstract class BiomeBase {
 	}
 
 	public boolean a(BiomeBase biomebase) {
-		return biomebase == this ? true : (biomebase == null ? false : this.l() == biomebase.l());
+		return biomebase == this || (biomebase != null && this.l() == biomebase.l());
 	}
 
 	public EnumTemperature m() {
@@ -399,7 +399,7 @@ public abstract class BiomeBase {
 	}
 
 	public static BiomeBase getBiome(int i) {
-		return getBiome(i, (BiomeBase) null);
+		return getBiome(i, null);
 	}
 
 	public static BiomeBase getBiome(int i, BiomeBase biomebase) {
@@ -438,9 +438,7 @@ public abstract class BiomeBase {
 		BiomeBase[] abiomebase = BiomeBase.biomes;
 		int i = abiomebase.length;
 
-		for (int j = 0; j < i; ++j) {
-			BiomeBase biomebase = abiomebase[j];
-
+		for (BiomeBase biomebase : abiomebase) {
 			if (biomebase != null) {
 				if (BiomeBase.o.containsKey(biomebase.ah)) {
 					throw new Error("Biome \"" + biomebase.ah + "\" is defined as both ID "
@@ -471,25 +469,21 @@ public abstract class BiomeBase {
 			try {
 				SyntheticClass_1.switchMap[EnumCreatureType.MONSTER.ordinal()] = 1;
 			} catch (NoSuchFieldError nosuchfielderror) {
-				;
 			}
 
 			try {
 				SyntheticClass_1.switchMap[EnumCreatureType.CREATURE.ordinal()] = 2;
 			} catch (NoSuchFieldError nosuchfielderror1) {
-				;
 			}
 
 			try {
 				SyntheticClass_1.switchMap[EnumCreatureType.WATER_CREATURE.ordinal()] = 3;
 			} catch (NoSuchFieldError nosuchfielderror2) {
-				;
 			}
 
 			try {
 				SyntheticClass_1.switchMap[EnumCreatureType.AMBIENT.ordinal()] = 4;
 			} catch (NoSuchFieldError nosuchfielderror3) {
-				;
 			}
 
 		}
@@ -528,10 +522,10 @@ public abstract class BiomeBase {
 		}
 	}
 
-	public static enum EnumTemperature {
+	public enum EnumTemperature {
 		OCEAN, COLD, MEDIUM, WARM;
 
-		private EnumTemperature() {
+		EnumTemperature() {
 		}
 	}
 }

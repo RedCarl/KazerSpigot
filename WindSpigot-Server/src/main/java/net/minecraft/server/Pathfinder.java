@@ -1,9 +1,9 @@
 package net.minecraft.server;
 
 public class Pathfinder {
-	private Path a = new Path();
-	private PathPoint[] b = new PathPoint[32];
-	private PathfinderAbstract c;
+	private final Path a = new Path();
+	private final PathPoint[] b = new PathPoint[32];
+	private final PathfinderAbstract c;
 
 	public Pathfinder(PathfinderAbstract var1) {
 		this.c = var1;
@@ -14,13 +14,13 @@ public class Pathfinder {
 	}
 
 	public PathEntity a(IBlockAccess var1, Entity var2, BlockPosition var3, float var4) {
-		return this.a(var1, var2, (double) ((float) var3.getX() + 0.5F), (double) ((float) var3.getY() + 0.5F),
-				(double) ((float) var3.getZ() + 0.5F), var4);
+		return this.a(var1, var2, (float) var3.getX() + 0.5F, (float) var3.getY() + 0.5F,
+				(float) var3.getZ() + 0.5F, var4);
 	}
 	
 	// WindSpigot start
 	public PathEntity a(IBlockAccess var1, Entity var2, int x, int y, int z, float var4) {
-		return this.a(var1, var2, (double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), var4);
+		return this.a(var1, var2, (float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, var4);
 	}
 	// WindSpigot end
 

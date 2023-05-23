@@ -41,6 +41,7 @@ import java.lang.management.RuntimeMXBean;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -298,7 +299,7 @@ class TimingsExport extends Thread {
 				}
 			};
 
-			request.write(JSONValue.toJSONString(out).getBytes("UTF-8"));
+			request.write(JSONValue.toJSONString(out).getBytes(StandardCharsets.UTF_8));
 			request.close();
 
 			response = getResponse(con);
@@ -332,9 +333,7 @@ class TimingsExport extends Thread {
 	}
 
 	private String getResponse(HttpURLConnection con) throws IOException {
-		InputStream is = null;
-		try {
-			is = con.getInputStream();
+		try (InputStream is = con.getInputStream()) {
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
 			byte[] b = new byte[1024];
@@ -348,10 +347,6 @@ class TimingsExport extends Thread {
 			sender.sendMessage(ChatColor.RED + "Error uploading timings, check your logs for more information");
 			Bukkit.getLogger().log(Level.WARNING, con.getResponseMessage(), ex);
 			return null;
-		} finally {
-			if (is != null) {
-				is.close();
-			}
 		}
 	}
 }

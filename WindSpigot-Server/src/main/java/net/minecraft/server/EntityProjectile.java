@@ -137,9 +137,7 @@ public abstract class EntityProjectile extends Entity implements IProjectile {
 			double d0 = 0.0D;
 			EntityLiving entityliving = this.getShooter();
 
-			for (int i = 0; i < list.size(); ++i) {
-				Entity entity1 = list.get(i);
-
+			for (Entity entity1 : list) {
 				if (entity1.ad() && (entity1 != entityliving || this.ar >= 5)) {
 					float f = 0.3F;
 					AxisAlignedBB axisalignedbb = entity1.getBoundingBox().grow(f, f, f);
@@ -202,7 +200,6 @@ public abstract class EntityProjectile extends Entity implements IProjectile {
 
 		for (this.pitch = (float) (MathHelper.b(this.motY, f1) * 180.0D / 3.1415927410125732D); this.pitch
 				- this.lastPitch < -180.0F; this.lastPitch -= 360.0F) {
-			;
 		}
 
 		while (this.pitch - this.lastPitch >= 180.0F) {

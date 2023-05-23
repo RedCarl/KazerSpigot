@@ -1,6 +1,7 @@
 package org.bukkit.craftbukkit.block;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -226,7 +227,7 @@ public class CraftBlockState implements BlockState {
 			return false;
 		}
 		final CraftBlockState other = (CraftBlockState) obj;
-		if (this.world != other.world && (this.world == null || !this.world.equals(other.world))) {
+		if (!Objects.equals(this.world, other.world)) {
 			return false;
 		}
 		if (this.x != other.x) {
@@ -241,10 +242,7 @@ public class CraftBlockState implements BlockState {
 		if (this.type != other.type) {
 			return false;
 		}
-		if (this.data != other.data && (this.data == null || !this.data.equals(other.data))) {
-			return false;
-		}
-		return true;
+		return Objects.equals(this.data, other.data);
 	}
 
 	@Override

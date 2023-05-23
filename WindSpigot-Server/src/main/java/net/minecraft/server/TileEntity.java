@@ -16,8 +16,8 @@ public abstract class TileEntity {
 
 	public Timing tickTimer = SpigotTimings.getTileEntityTimings(this); // Spigot
 	private static final Logger a = LogManager.getLogger();
-	private static Map<String, Class<? extends TileEntity>> f = Maps.newHashMap();
-	private static Map<Class<? extends TileEntity>, String> g = Maps.newHashMap();
+	private static final Map<String, Class<? extends TileEntity>> f = Maps.newHashMap();
+	private static final Map<Class<? extends TileEntity>, String> g = Maps.newHashMap();
 	protected World world;
 	protected BlockPosition position;
 	protected boolean d;
@@ -73,7 +73,7 @@ public abstract class TileEntity {
 		TileEntity tileentity = null;
 
 		try {
-			Class oclass = TileEntity.f.get(nbttagcompound.getString("id"));
+			Class<? extends TileEntity> oclass = TileEntity.f.get(nbttagcompound.getString("id"));
 
 			if (oclass != null) {
 				tileentity = (TileEntity) oclass.newInstance();
@@ -178,8 +178,8 @@ public abstract class TileEntity {
 					int i = Block.getId(TileEntity.this.world.getType(TileEntity.this.position).getBlock());
 
 					try {
-						return String.format("ID #%d (%s // %s)", new Object[] { Integer.valueOf(i),
-								Block.getById(i).a(), Block.getById(i).getClass().getCanonicalName() });
+						return String.format("ID #%d (%s // %s)", i,
+								Block.getById(i).a(), Block.getById(i).getClass().getCanonicalName());
 					} catch (Throwable throwable) {
 						return "ID #" + i;
 					}
@@ -198,9 +198,9 @@ public abstract class TileEntity {
 					if (i < 0) {
 						return "Unknown? (Got " + i + ")";
 					} else {
-						String s = String.format("%4s", new Object[] { Integer.toBinaryString(i) }).replace(" ", "0");
+						String s = String.format("%4s", Integer.toBinaryString(i)).replace(" ", "0");
 
-						return String.format("%1$d / 0x%1$X / 0b%2$s", new Object[] { Integer.valueOf(i), s });
+						return String.format("%1$d / 0x%1$X / 0b%2$s", i, s);
 					}
 				}
 

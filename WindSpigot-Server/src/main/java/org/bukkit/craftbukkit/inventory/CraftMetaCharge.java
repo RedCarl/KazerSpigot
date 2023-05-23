@@ -1,6 +1,7 @@
 package org.bukkit.craftbukkit.inventory;
 
 import java.util.Map;
+import java.util.Objects;
 
 import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
@@ -66,12 +67,10 @@ class CraftMetaCharge extends CraftMetaItem implements FireworkEffectMeta {
 
 	@Override
 	boolean applicableTo(Material type) {
-		switch (type) {
-		case FIREWORK_CHARGE:
+		if (Objects.requireNonNull(type) == Material.FIREWORK_CHARGE) {
 			return true;
-		default:
-			return false;
 		}
+		return false;
 	}
 
 	@Override

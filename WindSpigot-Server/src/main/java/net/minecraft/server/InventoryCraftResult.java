@@ -3,11 +3,13 @@ package net.minecraft.server;
 // CraftBukkit start
 import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 import org.bukkit.entity.HumanEntity;
+
+import java.util.Arrays;
 // CraftBukkit end
 
 public class InventoryCraftResult implements IInventory {
 
-	private ItemStack[] items = new ItemStack[1];
+	private final ItemStack[] items = new ItemStack[1];
 
 	// CraftBukkit start
 	private int maxStack = MAX_STACK;
@@ -68,7 +70,7 @@ public class InventoryCraftResult implements IInventory {
 	@Override
 	public IChatBaseComponent getScoreboardDisplayName() {
 		return this.hasCustomName() ? new ChatComponentText(this.getName())
-				: new ChatMessage(this.getName(), new Object[0]);
+				: new ChatMessage(this.getName());
 	}
 
 	@Override
@@ -143,9 +145,7 @@ public class InventoryCraftResult implements IInventory {
 
 	@Override
 	public void l() {
-		for (int i = 0; i < this.items.length; ++i) {
-			this.items[i] = null;
-		}
+		Arrays.fill(this.items, null);
 
 	}
 }

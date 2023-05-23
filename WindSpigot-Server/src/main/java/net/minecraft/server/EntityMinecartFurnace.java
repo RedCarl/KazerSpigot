@@ -24,7 +24,7 @@ public class EntityMinecartFurnace extends EntityMinecartAbstract {
 	@Override
 	protected void h() {
 		super.h();
-		this.datawatcher.a(16, new Byte((byte) 0));
+		this.datawatcher.a(16, (byte) 0);
 	}
 
 	@Override
@@ -107,7 +107,7 @@ public class EntityMinecartFurnace extends EntityMinecartAbstract {
 
 		if (itemstack != null && itemstack.getItem() == Items.COAL) {
 			if (!entityhuman.abilities.canInstantlyBuild && --itemstack.count == 0) {
-				entityhuman.inventory.setItem(entityhuman.inventory.itemInHandIndex, (ItemStack) null);
+				entityhuman.inventory.setItem(entityhuman.inventory.itemInHandIndex, null);
 			}
 
 			this.c += 3600;
@@ -140,9 +140,9 @@ public class EntityMinecartFurnace extends EntityMinecartAbstract {
 
 	protected void i(boolean flag) {
 		if (flag) {
-			this.datawatcher.watch(16, Byte.valueOf((byte) (this.datawatcher.getByte(16) | 1)));
+			this.datawatcher.watch(16, (byte) (this.datawatcher.getByte(16) | 1));
 		} else {
-			this.datawatcher.watch(16, Byte.valueOf((byte) (this.datawatcher.getByte(16) & -2)));
+			this.datawatcher.watch(16, (byte) (this.datawatcher.getByte(16) & -2));
 		}
 
 	}

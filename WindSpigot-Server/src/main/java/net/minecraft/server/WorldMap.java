@@ -29,11 +29,11 @@ public class WorldMap extends PersistentBase {
 	public List<WorldMap.WorldMapHumanTracker> g = Lists.newArrayList();
 	public Map<EntityHuman, WorldMap.WorldMapHumanTracker> i = Maps.newHashMap(); // Spigot
 	public Map<UUID, MapIcon> decorations = Maps.newLinkedHashMap(); // Spigot
-	private org.bukkit.craftbukkit.map.RenderData vanillaRender = new org.bukkit.craftbukkit.map.RenderData(); // Paper
+	private final org.bukkit.craftbukkit.map.RenderData vanillaRender = new org.bukkit.craftbukkit.map.RenderData(); // Paper
 
 	// CraftBukkit start
 	public final CraftMapView mapView;
-	private CraftServer server;
+	private final CraftServer server;
 	private UUID uniqueId = null;
 	// CraftBukkit end
 
@@ -264,12 +264,8 @@ public class WorldMap extends PersistentBase {
 
 	public void flagDirty(int i, int j) {
 		super.c();
-		Iterator iterator = this.g.iterator();
 
-		while (iterator.hasNext()) {
-			WorldMap.WorldMapHumanTracker worldmap_worldmaphumantracker = (WorldMap.WorldMapHumanTracker) iterator
-					.next();
-
+		for (WorldMapHumanTracker worldmap_worldmaphumantracker : this.g) {
 			worldmap_worldmaphumantracker.a(i, j);
 		}
 

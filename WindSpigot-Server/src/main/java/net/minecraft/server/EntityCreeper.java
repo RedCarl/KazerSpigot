@@ -23,7 +23,7 @@ public class EntityCreeper extends EntityMonster {
 		this.goalSelector.a(6, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 8.0F));
 		this.goalSelector.a(6, new PathfinderGoalRandomLookaround(this));
 		this.targetSelector.a(1, new PathfinderGoalNearestAttackableTarget(this, EntityHuman.class, true));
-		this.targetSelector.a(2, new PathfinderGoalHurtByTarget(this, false, new Class[0]));
+		this.targetSelector.a(2, new PathfinderGoalHurtByTarget(this, false));
 	}
 
 	@Override
@@ -50,9 +50,9 @@ public class EntityCreeper extends EntityMonster {
 	@Override
 	protected void h() {
 		super.h();
-		this.datawatcher.a(16, Byte.valueOf((byte) -1));
-		this.datawatcher.a(17, Byte.valueOf((byte) 0));
-		this.datawatcher.a(18, Byte.valueOf((byte) 0));
+		this.datawatcher.a(16, (byte) -1);
+		this.datawatcher.a(17, (byte) 0);
+		this.datawatcher.a(18, (byte) 0);
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class EntityCreeper extends EntityMonster {
 	@Override
 	public void a(NBTTagCompound nbttagcompound) {
 		super.a(nbttagcompound);
-		this.datawatcher.watch(17, Byte.valueOf((byte) (nbttagcompound.getBoolean("powered") ? 1 : 0)));
+		this.datawatcher.watch(17, (byte) (nbttagcompound.getBoolean("powered") ? 1 : 0));
 		if (nbttagcompound.hasKeyOfType("Fuse", 99)) {
 			this.maxFuseTicks = nbttagcompound.getShort("Fuse");
 		}
@@ -180,7 +180,7 @@ public class EntityCreeper extends EntityMonster {
 	}
 
 	public void a(int i) {
-		this.datawatcher.watch(16, Byte.valueOf((byte) i));
+		this.datawatcher.watch(16, (byte) i);
 	}
 
 	@Override
@@ -197,9 +197,9 @@ public class EntityCreeper extends EntityMonster {
 
 	public void setPowered(boolean powered) {
 		if (!powered) {
-			this.datawatcher.watch(17, Byte.valueOf((byte) 0));
+			this.datawatcher.watch(17, (byte) 0);
 		} else {
-			this.datawatcher.watch(17, Byte.valueOf((byte) 1));
+			this.datawatcher.watch(17, (byte) 1);
 		}
 		// CraftBukkit end
 	}
@@ -247,7 +247,7 @@ public class EntityCreeper extends EntityMonster {
 	}
 
 	public void co() {
-		this.datawatcher.watch(18, Byte.valueOf((byte) 1));
+		this.datawatcher.watch(18, (byte) 1);
 	}
 
 	public boolean cp() {

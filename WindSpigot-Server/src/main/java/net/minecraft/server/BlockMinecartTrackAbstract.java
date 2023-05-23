@@ -47,7 +47,7 @@ public abstract class BlockMinecartTrackAbstract extends Block {
 	public void updateShape(IBlockAccess iblockaccess, BlockPosition blockposition) {
 		IBlockData iblockdata = iblockaccess.getType(blockposition);
 		BlockMinecartTrackAbstract.EnumTrackPosition blockminecarttrackabstract_enumtrackposition = iblockdata
-				.getBlock() == this ? (BlockMinecartTrackAbstract.EnumTrackPosition) iblockdata.get(this.n()) : null;
+				.getBlock() == this ? iblockdata.get(this.n()) : null;
 
 		if (blockminecarttrackabstract_enumtrackposition != null && blockminecarttrackabstract_enumtrackposition.c()) {
 			this.a(0.0F, 0.0F, 0.0F, 1.0F, 0.625F, 1.0F);
@@ -83,11 +83,7 @@ public abstract class BlockMinecartTrackAbstract extends Block {
 		if (!world.isClientSide) {
 			BlockMinecartTrackAbstract.EnumTrackPosition blockminecarttrackabstract_enumtrackposition = iblockdata
 					.get(this.n());
-			boolean flag = false;
-
-			if (!World.a(world, blockposition.down())) {
-				flag = true;
-			}
+			boolean flag = !World.a(world, blockposition.down());
 
 			if (blockminecarttrackabstract_enumtrackposition == BlockMinecartTrackAbstract.EnumTrackPosition.ASCENDING_EAST
 					&& !World.a(world, blockposition.east())) {
@@ -152,76 +148,66 @@ public abstract class BlockMinecartTrackAbstract extends Block {
 				BlockMinecartTrackAbstract.SyntheticClass_1.a[BlockMinecartTrackAbstract.EnumTrackPosition.NORTH_SOUTH
 						.ordinal()] = 1;
 			} catch (NoSuchFieldError nosuchfielderror) {
-				;
 			}
 
 			try {
 				BlockMinecartTrackAbstract.SyntheticClass_1.a[BlockMinecartTrackAbstract.EnumTrackPosition.EAST_WEST
 						.ordinal()] = 2;
 			} catch (NoSuchFieldError nosuchfielderror1) {
-				;
 			}
 
 			try {
 				BlockMinecartTrackAbstract.SyntheticClass_1.a[BlockMinecartTrackAbstract.EnumTrackPosition.ASCENDING_EAST
 						.ordinal()] = 3;
 			} catch (NoSuchFieldError nosuchfielderror2) {
-				;
 			}
 
 			try {
 				BlockMinecartTrackAbstract.SyntheticClass_1.a[BlockMinecartTrackAbstract.EnumTrackPosition.ASCENDING_WEST
 						.ordinal()] = 4;
 			} catch (NoSuchFieldError nosuchfielderror3) {
-				;
 			}
 
 			try {
 				BlockMinecartTrackAbstract.SyntheticClass_1.a[BlockMinecartTrackAbstract.EnumTrackPosition.ASCENDING_NORTH
 						.ordinal()] = 5;
 			} catch (NoSuchFieldError nosuchfielderror4) {
-				;
 			}
 
 			try {
 				BlockMinecartTrackAbstract.SyntheticClass_1.a[BlockMinecartTrackAbstract.EnumTrackPosition.ASCENDING_SOUTH
 						.ordinal()] = 6;
 			} catch (NoSuchFieldError nosuchfielderror5) {
-				;
 			}
 
 			try {
 				BlockMinecartTrackAbstract.SyntheticClass_1.a[BlockMinecartTrackAbstract.EnumTrackPosition.SOUTH_EAST
 						.ordinal()] = 7;
 			} catch (NoSuchFieldError nosuchfielderror6) {
-				;
 			}
 
 			try {
 				BlockMinecartTrackAbstract.SyntheticClass_1.a[BlockMinecartTrackAbstract.EnumTrackPosition.SOUTH_WEST
 						.ordinal()] = 8;
 			} catch (NoSuchFieldError nosuchfielderror7) {
-				;
 			}
 
 			try {
 				BlockMinecartTrackAbstract.SyntheticClass_1.a[BlockMinecartTrackAbstract.EnumTrackPosition.NORTH_WEST
 						.ordinal()] = 9;
 			} catch (NoSuchFieldError nosuchfielderror8) {
-				;
 			}
 
 			try {
 				BlockMinecartTrackAbstract.SyntheticClass_1.a[BlockMinecartTrackAbstract.EnumTrackPosition.NORTH_EAST
 						.ordinal()] = 10;
 			} catch (NoSuchFieldError nosuchfielderror9) {
-				;
 			}
 
 		}
 	}
 
-	public static enum EnumTrackPosition implements INamable {
+	public enum EnumTrackPosition implements INamable {
 
 		NORTH_SOUTH(0, "north_south"), EAST_WEST(1, "east_west"), ASCENDING_EAST(2, "ascending_east"),
 		ASCENDING_WEST(3, "ascending_west"), ASCENDING_NORTH(4, "ascending_north"),
@@ -232,7 +218,7 @@ public abstract class BlockMinecartTrackAbstract extends Block {
 		private final int l;
 		private final String m;
 
-		private EnumTrackPosition(int i, String s) {
+		EnumTrackPosition(int i, String s) {
 			this.l = i;
 			this.m = s;
 		}
@@ -270,10 +256,8 @@ public abstract class BlockMinecartTrackAbstract extends Block {
 			BlockMinecartTrackAbstract.EnumTrackPosition[] ablockminecarttrackabstract_enumtrackposition = values();
 			int i = ablockminecarttrackabstract_enumtrackposition.length;
 
-			for (int j = 0; j < i; ++j) {
-				BlockMinecartTrackAbstract.EnumTrackPosition blockminecarttrackabstract_enumtrackposition = ablockminecarttrackabstract_enumtrackposition[j];
-
-				BlockMinecartTrackAbstract.EnumTrackPosition.k[blockminecarttrackabstract_enumtrackposition
+			for (EnumTrackPosition blockminecarttrackabstract_enumtrackposition : ablockminecarttrackabstract_enumtrackposition) {
+				EnumTrackPosition.k[blockminecarttrackabstract_enumtrackposition
 						.a()] = blockminecarttrackabstract_enumtrackposition;
 			}
 
@@ -404,9 +388,7 @@ public abstract class BlockMinecartTrackAbstract extends Block {
 		}
 
 		private boolean c(BlockPosition blockposition) {
-			for (int i = 0; i < this.g.size(); ++i) {
-				BlockPosition blockposition1 = this.g.get(i);
-
+			for (BlockPosition blockposition1 : this.g) {
 				if (blockposition1.getX() == blockposition.getX() && blockposition1.getZ() == blockposition.getZ()) {
 					return true;
 				}
@@ -417,11 +399,8 @@ public abstract class BlockMinecartTrackAbstract extends Block {
 
 		protected int a() {
 			int i = 0;
-			Iterator iterator = EnumDirection.EnumDirectionLimit.HORIZONTAL.iterator();
 
-			while (iterator.hasNext()) {
-				EnumDirection enumdirection = (EnumDirection) iterator.next();
-
+			for (EnumDirection enumdirection : EnumDirection.EnumDirectionLimit.HORIZONTAL) {
 				if (this.a(this.c.shift(enumdirection))) {
 					++i;
 				}
@@ -624,9 +603,9 @@ public abstract class BlockMinecartTrackAbstract extends Block {
 			if (flag1 || this.b.getType(this.c) != this.e) {
 				this.b.setTypeAndData(this.c, this.e, 3);
 
-				for (int i = 0; i < this.g.size(); ++i) {
-					BlockMinecartTrackAbstract.MinecartTrackLogic blockminecarttrackabstract_minecarttracklogic = this
-							.b(this.g.get(i));
+				for (BlockPosition blockPosition : this.g) {
+					MinecartTrackLogic blockminecarttrackabstract_minecarttracklogic = this
+							.b(blockPosition);
 
 					if (blockminecarttrackabstract_minecarttracklogic != null) {
 						blockminecarttrackabstract_minecarttracklogic.c();

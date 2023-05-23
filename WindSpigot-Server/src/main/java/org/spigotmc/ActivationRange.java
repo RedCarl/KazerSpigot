@@ -42,7 +42,6 @@ public class ActivationRange {
 	 * Initializes an entities type on construction to specify what group this
 	 * entity is in for activation ranges.
 	 *
-	 * @param entity
 	 * @return group id
 	 */
 	public static byte initializeEntityActivationType(Entity entity) {
@@ -58,31 +57,24 @@ public class ActivationRange {
 	/**
 	 * These entities are excluded from Activation range checks.
 	 *
-	 * @param entity
-	 * @param config
 	 * @return boolean If it should always tick.
 	 */
 	public static boolean initializeEntityActivationState(Entity entity, SpigotWorldConfig config) {
-		if ((entity.activationType == 3 && config.miscActivationRange == 0)
+		return (entity.activationType == 3 && config.miscActivationRange == 0)
 				|| (entity.activationType == 2 && config.animalActivationRange == 0)
 				|| (entity.activationType == 1 && config.monsterActivationRange == 0) || entity instanceof EntityHuman
 				|| entity instanceof EntityProjectile || entity instanceof EntityEnderDragon
 				|| entity instanceof EntityComplexPart || entity instanceof EntityWither
 				|| entity instanceof EntityFireball || entity instanceof EntityWeather
 				|| entity instanceof EntityTNTPrimed || entity instanceof EntityFallingBlock // PaperSpigot - Always
-																								// tick falling blocks
-				|| entity instanceof EntityEnderCrystal || entity instanceof EntityFireworks) {
-			return true;
-		}
-
-		return false;
+				// tick falling blocks
+				|| entity instanceof EntityEnderCrystal || entity instanceof EntityFireworks;
 	}
 
 	/**
 	 * Find what entities are in range of the players in the world and set active if
 	 * in range.
 	 *
-	 * @param world
 	 */
 	public static void activateEntities(World world) {
 		SpigotTimings.entityActivationCheckTimer.startTiming();
@@ -122,7 +114,6 @@ public class ActivationRange {
 	/**
 	 * Checks for the activation state of all entities in this chunk.
 	 *
-	 * @param chunk
 	 */
 	private static void activateChunkEntities(Chunk chunk) {
 		for (List<Entity> slice : chunk.entitySlices) {
@@ -158,8 +149,6 @@ public class ActivationRange {
 	 * If an entity is not in range, do some more checks to see if we should give it
 	 * a shot.
 	 *
-	 * @param entity
-	 * @return
 	 */
 	public static boolean checkEntityImmunities(Entity entity) {
 		// quick checks.
@@ -195,9 +184,8 @@ public class ActivationRange {
 					return true;
 				}
 			}
-			if (entity instanceof EntityCreeper && ((EntityCreeper) entity).cn()) { // isExplosive
-				return true;
-			}
+			// isExplosive
+			return entity instanceof EntityCreeper && ((EntityCreeper) entity).cn();
 		}
 		return false;
 	}
@@ -205,8 +193,6 @@ public class ActivationRange {
 	/**
 	 * Checks if the entity is active for this tick.
 	 *
-	 * @param entity
-	 * @return
 	 */
 	public static boolean checkIfActive(Entity entity) {
 		SpigotTimings.checkIfActiveTimer.startTiming();

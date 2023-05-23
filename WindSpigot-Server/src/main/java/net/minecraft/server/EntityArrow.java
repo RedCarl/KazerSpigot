@@ -105,7 +105,7 @@ public class EntityArrow extends Entity implements IProjectile {
 
 	@Override
 	protected void h() {
-		this.datawatcher.a(16, Byte.valueOf((byte) 0));
+		this.datawatcher.a(16, (byte) 0);
 	}
 
 	@Override
@@ -188,7 +188,7 @@ public class EntityArrow extends Entity implements IProjectile {
 			}
 
 			Entity entity = null;
-			List list = this.world.getEntities(this,
+			List<Entity> list = this.world.getEntities(this,
 					this.getBoundingBox().a(this.motX, this.motY, this.motZ).grow(1.0D, 1.0D, 1.0D));
 			double d0 = 0.0D;
 
@@ -218,8 +218,7 @@ public class EntityArrow extends Entity implements IProjectile {
 				movingobjectposition = new MovingObjectPosition(entity);
 			}
 
-			if (movingobjectposition != null && movingobjectposition.entity != null
-					&& movingobjectposition.entity instanceof EntityHuman) {
+			if (movingobjectposition != null && movingobjectposition.entity instanceof EntityHuman) {
 				EntityHuman entityhuman = (EntityHuman) movingobjectposition.entity;
 
 				if (entityhuman.abilities.isInvulnerable
@@ -379,7 +378,6 @@ public class EntityArrow extends Entity implements IProjectile {
 
 			for (this.pitch = (float) (MathHelper.b(this.motY, f2) * 180.0D / 3.1415927410125732D); this.pitch
 					- this.lastPitch < -180.0F; this.lastPitch -= 360.0F) {
-				;
 			}
 
 			while (this.pitch - this.lastPitch >= 180.0F) {
@@ -533,9 +531,9 @@ public class EntityArrow extends Entity implements IProjectile {
 		byte b0 = this.datawatcher.getByte(16);
 
 		if (flag) {
-			this.datawatcher.watch(16, Byte.valueOf((byte) (b0 | 1)));
+			this.datawatcher.watch(16, (byte) (b0 | 1));
 		} else {
-			this.datawatcher.watch(16, Byte.valueOf((byte) (b0 & -2)));
+			this.datawatcher.watch(16, (byte) (b0 & -2));
 		}
 
 	}

@@ -12,7 +12,7 @@ import org.bukkit.event.entity.EntityTargetEvent;
 
 public class EntityZombie extends EntityMonster {
 
-	protected static final IAttribute a = (new AttributeRanged((IAttribute) null, "zombie.spawnReinforcements", 0.0D,
+	protected static final IAttribute a = (new AttributeRanged(null, "zombie.spawnReinforcements", 0.0D,
 			0.0D, 1.0D)).a("Spawn Reinforcements Chance");
 	private static final UUID b = UUID.fromString("B9766B59-9566-4402-BC1F-2EE2A276D836");
 	private static final AttributeModifier c = new AttributeModifier(EntityZombie.b, "Baby speed boost",
@@ -44,7 +44,7 @@ public class EntityZombie extends EntityMonster {
 		}
 		this.goalSelector.a(4, new PathfinderGoalMeleeAttack(this, EntityIronGolem.class, 1.0D, true));
 		this.goalSelector.a(6, new PathfinderGoalMoveThroughVillage(this, 1.0D, false));
-		this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, true, new Class[] { EntityPigZombie.class }));
+		this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, true, EntityPigZombie.class));
 		this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget(this, EntityHuman.class, true));
 		if (world.spigotConfig.zombieAggressiveTowardsVillager) {
 			this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget(this, EntityVillager.class, false)); // Spigot
@@ -64,9 +64,9 @@ public class EntityZombie extends EntityMonster {
 	@Override
 	protected void h() {
 		super.h();
-		this.getDataWatcher().a(12, Byte.valueOf((byte) 0));
-		this.getDataWatcher().a(13, Byte.valueOf((byte) 0));
-		this.getDataWatcher().a(14, Byte.valueOf((byte) 0));
+		this.getDataWatcher().a(12, (byte) 0);
+		this.getDataWatcher().a(13, (byte) 0);
+		this.getDataWatcher().a(14, (byte) 0);
 	}
 
 	@Override
@@ -111,7 +111,7 @@ public class EntityZombie extends EntityMonster {
 	}
 
 	public void setBaby(boolean flag) {
-		this.getDataWatcher().watch(12, Byte.valueOf((byte) (flag ? 1 : 0)));
+		this.getDataWatcher().watch(12, (byte) (flag ? 1 : 0));
 		if (this.world != null && !this.world.isClientSide) {
 			AttributeInstance attributeinstance = this.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED);
 
@@ -129,7 +129,7 @@ public class EntityZombie extends EntityMonster {
 	}
 
 	public void setVillager(boolean flag) {
-		this.getDataWatcher().watch(13, Byte.valueOf((byte) (flag ? 1 : 0)));
+		this.getDataWatcher().watch(13, (byte) (flag ? 1 : 0));
 	}
 
 	@Override
@@ -147,7 +147,7 @@ public class EntityZombie extends EntityMonster {
 						itemstack.setData(itemstack.h() + this.random.nextInt(2));
 						if (itemstack.h() >= itemstack.j()) {
 							this.b(itemstack);
-							this.setEquipment(4, (ItemStack) null);
+							this.setEquipment(4, null);
 						}
 					}
 
@@ -205,7 +205,7 @@ public class EntityZombie extends EntityMonster {
 							this.world.addEntity(entityzombie, CreatureSpawnEvent.SpawnReason.REINFORCEMENTS); // CraftBukkit
 							entityzombie.setGoalTarget(entityliving,
 									EntityTargetEvent.TargetReason.REINFORCEMENT_TARGET, true);
-							entityzombie.prepare(this.world.E(new BlockPosition(entityzombie)), (GroupDataEntity) null);
+							entityzombie.prepare(this.world.E(new BlockPosition(entityzombie)), null);
 							this.getAttributeInstance(EntityZombie.a).b(new AttributeModifier(
 									"Zombie reinforcement caller charge", -0.05000000074505806D, 0));
 							entityzombie.getAttributeInstance(EntityZombie.a).b(new AttributeModifier(
@@ -374,7 +374,7 @@ public class EntityZombie extends EntityMonster {
 
 			entityzombie.m(entityliving);
 			this.world.kill(entityliving);
-			entityzombie.prepare(this.world.E(new BlockPosition(entityzombie)), (GroupDataEntity) null);
+			entityzombie.prepare(this.world.E(new BlockPosition(entityzombie)), null);
 			entityzombie.setVillager(true);
 			if (entityliving.isBaby()) {
 				entityzombie.setBaby(true);
@@ -388,7 +388,7 @@ public class EntityZombie extends EntityMonster {
 
 			this.world.addEntity(entityzombie, CreatureSpawnEvent.SpawnReason.INFECTION); // CraftBukkit - add
 																							// SpawnReason
-			this.world.a((EntityHuman) null, 1016, new BlockPosition((int) this.locX, (int) this.locY, (int) this.locZ),
+			this.world.a(null, 1016, new BlockPosition((int) this.locX, (int) this.locY, (int) this.locZ),
 					0);
 		}
 
@@ -407,18 +407,18 @@ public class EntityZombie extends EntityMonster {
 
 	@Override
 	protected boolean a(ItemStack itemstack) {
-		return itemstack.getItem() == Items.EGG && this.isBaby() && this.au() ? false : super.a(itemstack);
+		return (itemstack.getItem() != Items.EGG || !this.isBaby() || !this.au()) && super.a(itemstack);
 	}
 
 	@Override
 	public GroupDataEntity prepare(DifficultyDamageScaler difficultydamagescaler, GroupDataEntity groupdataentity) {
-		Object object = super.prepare(difficultydamagescaler, groupdataentity);
+		GroupDataEntity object = super.prepare(difficultydamagescaler, groupdataentity);
 		float f = difficultydamagescaler.c();
 
 		this.j(this.random.nextFloat() < 0.55F * f);
 		if (object == null) {
 			object = new EntityZombie.GroupDataZombie(this.world.random.nextFloat() < 0.05F,
-					this.world.random.nextFloat() < 0.05F, (EntityZombie.SyntheticClass_1) null);
+					this.world.random.nextFloat() < 0.05F, null);
 		}
 
 		if (object instanceof EntityZombie.GroupDataZombie) {
@@ -431,7 +431,7 @@ public class EntityZombie extends EntityMonster {
 			if (entityzombie_groupdatazombie.a) {
 				this.setBaby(true);
 				if (this.world.random.nextFloat() < 0.05D) {
-					List list = this.world.a(EntityChicken.class, this.getBoundingBox().grow(5.0D, 3.0D, 5.0D),
+					List<EntityChicken> list = this.world.a(EntityChicken.class, this.getBoundingBox().grow(5.0D, 3.0D, 5.0D),
 							IEntitySelector.b);
 
 					if (!list.isEmpty()) {
@@ -444,7 +444,7 @@ public class EntityZombie extends EntityMonster {
 					EntityChicken entitychicken1 = new EntityChicken(this.world);
 
 					entitychicken1.setPositionRotation(this.locX, this.locY, this.locZ, this.yaw, 0.0F);
-					entitychicken1.prepare(difficultydamagescaler, (GroupDataEntity) null);
+					entitychicken1.prepare(difficultydamagescaler, null);
 					entitychicken1.l(true);
 					this.world.addEntity(entitychicken1, CreatureSpawnEvent.SpawnReason.MOUNT);
 					this.mount(entitychicken1);
@@ -482,7 +482,7 @@ public class EntityZombie extends EntityMonster {
 			this.a(true);
 		}
 
-		return (GroupDataEntity) object;
+		return object;
 	}
 
 	@Override
@@ -496,7 +496,7 @@ public class EntityZombie extends EntityMonster {
 			}
 
 			if (itemstack.count <= 0) {
-				entityhuman.inventory.setItem(entityhuman.inventory.itemInHandIndex, (ItemStack) null);
+				entityhuman.inventory.setItem(entityhuman.inventory.itemInHandIndex, null);
 			}
 
 			if (!this.world.isClientSide) {
@@ -511,7 +511,7 @@ public class EntityZombie extends EntityMonster {
 
 	protected void a(int i) {
 		this.bn = i;
-		this.getDataWatcher().watch(14, Byte.valueOf((byte) 1));
+		this.getDataWatcher().watch(14, (byte) 1);
 		this.removeEffect(MobEffectList.WEAKNESS.id);
 		this.addEffect(
 				new MobEffect(MobEffectList.INCREASE_DAMAGE.id, i, Math.min(this.world.getDifficulty().a() - 1, 0)));
@@ -531,7 +531,7 @@ public class EntityZombie extends EntityMonster {
 		EntityVillager entityvillager = new EntityVillager(this.world);
 
 		entityvillager.m(this);
-		entityvillager.prepare(this.world.E(new BlockPosition(entityvillager)), (GroupDataEntity) null);
+		entityvillager.prepare(this.world.E(new BlockPosition(entityvillager)), null);
 		entityvillager.cp();
 		if (this.isBaby()) {
 			entityvillager.setAgeRaw(-24000);
@@ -546,7 +546,7 @@ public class EntityZombie extends EntityMonster {
 
 		this.world.addEntity(entityvillager, CreatureSpawnEvent.SpawnReason.CURED); // CraftBukkit - add SpawnReason
 		entityvillager.addEffect(new MobEffect(MobEffectList.CONFUSION.id, 200, 0));
-		this.world.a((EntityHuman) null, 1017, new BlockPosition((int) this.locX, (int) this.locY, (int) this.locZ), 0);
+		this.world.a(null, 1017, new BlockPosition((int) this.locX, (int) this.locY, (int) this.locZ), 0);
 	}
 
 	protected int cr() {

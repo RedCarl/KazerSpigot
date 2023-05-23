@@ -19,14 +19,14 @@ public class BlockStateEnum<T extends Enum<T> & INamable> extends BlockState<T> 
 	protected BlockStateEnum(String s, Class<T> oclass, Collection<T> collection) {
 		super(s, oclass);
 		this.a = ImmutableSet.copyOf(collection);
-		Iterator<T> iterator = collection.iterator(); // TacoSpigot - generic iterator
+		// TacoSpigot - generic iterator
 
-		while (iterator.hasNext()) {
-			T oenum = iterator.next(); // TacoSpigot - generics
-			String s1 = ((INamable) oenum).getName();
+		// TacoSpigot - generics
+		for (T oenum : collection) {
+			String s1 = oenum.getName();
 
 			if (this.b.containsKey(s1)) {
-				throw new IllegalArgumentException("Multiple values have the same name \'" + s1 + "\'");
+				throw new IllegalArgumentException("Multiple values have the same name '" + s1 + "'");
 			}
 
 			this.b.put(s1, oenum);
@@ -41,7 +41,7 @@ public class BlockStateEnum<T extends Enum<T> & INamable> extends BlockState<T> 
 
 	@Override
 	public String a(T t0) {
-		return ((INamable) t0).getName();
+		return t0.getName();
 	}
 
 	// TacoSpigot start
@@ -70,8 +70,9 @@ public class BlockStateEnum<T extends Enum<T> & INamable> extends BlockState<T> 
 		return a(s, oclass, Collections2.filter(Lists.newArrayList(oclass.getEnumConstants()), predicate));
 	}
 
+	@SafeVarargs
 	public static <T extends Enum<T> & INamable> BlockStateEnum<T> of(String s, Class<T> oclass, T... at) {
-		return a(s, oclass, (Collection) Lists.newArrayList(at));
+		return a(s, oclass, Lists.newArrayList(at));
 	}
 
 	public static <T extends Enum<T> & INamable> BlockStateEnum<T> a(String s, Class<T> oclass,

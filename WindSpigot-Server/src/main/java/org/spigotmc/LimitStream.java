@@ -23,13 +23,13 @@ public class LimitStream extends FilterInputStream {
 
 	@Override
 	public int read(byte[] b) throws IOException {
-		limit.a(b.length * 8);
+		limit.a(b.length * 8L);
 		return super.read(b);
 	}
 
 	@Override
 	public int read(byte[] b, int off, int len) throws IOException {
-		limit.a(len * 8);
+		limit.a(len * 8L);
 		return super.read(b, off, len);
 	}
 }

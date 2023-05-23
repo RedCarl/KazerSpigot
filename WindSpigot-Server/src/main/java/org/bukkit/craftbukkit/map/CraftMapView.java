@@ -20,7 +20,7 @@ public final class CraftMapView implements MapView {
 	private final Map<CraftPlayer, RenderData> renderCache = new HashMap<CraftPlayer, RenderData>();
 	private final List<MapRenderer> renderers = new ArrayList<MapRenderer>();
 	private final Map<MapRenderer, Map<CraftPlayer, CraftMapCanvas>> canvases = new HashMap<MapRenderer, Map<CraftPlayer, CraftMapCanvas>>();
-	protected final WorldMap worldMap;
+	final WorldMap worldMap;
 
 	public CraftMapView(WorldMap worldMap) {
 		this.worldMap = worldMap;
@@ -142,7 +142,7 @@ public final class CraftMapView implements MapView {
 			renderCache.put(context ? player : null, render);
 		}
 
-		if (context && renderCache.containsKey(null)) {
+		if (context) {
 			renderCache.remove(null);
 		}
 

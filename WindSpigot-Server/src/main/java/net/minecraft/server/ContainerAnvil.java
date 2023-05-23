@@ -11,23 +11,23 @@ import org.bukkit.craftbukkit.inventory.CraftInventoryView; // CraftBukkit
 public class ContainerAnvil extends Container {
 
 	private static final Logger f = LogManager.getLogger();
-	private IInventory g = new InventoryCraftResult();
-	private IInventory h = new InventorySubcontainer("Repair", true, 2) {
+	private final IInventory g = new InventoryCraftResult();
+	private final IInventory h = new InventorySubcontainer("Repair", true, 2) {
 		@Override
 		public void update() {
 			super.update();
 			ContainerAnvil.this.a(this);
 		}
 	};
-	private World i;
-	private BlockPosition j;
+	private final World i;
+	private final BlockPosition j;
 	public int a;
 	private int k;
 	private String l;
 	private final EntityHuman m;
 	// CraftBukkit start
 	private CraftInventoryView bukkitEntity = null;
-	private PlayerInventory player;
+	private final PlayerInventory player;
 	// CraftBukkit end
 
 	public ContainerAnvil(PlayerInventory playerinventory, final World world, final BlockPosition blockposition,
@@ -56,7 +56,7 @@ public class ContainerAnvil extends Container {
 					entityhuman.levelDown(-ContainerAnvil.this.a);
 				}
 
-				ContainerAnvil.this.h.setItem(0, (ItemStack) null);
+				ContainerAnvil.this.h.setItem(0, null);
 				if (ContainerAnvil.this.k > 0) {
 					ItemStack itemstack1 = ContainerAnvil.this.h.getItem(1);
 
@@ -64,10 +64,10 @@ public class ContainerAnvil extends Container {
 						itemstack1.count -= ContainerAnvil.this.k;
 						ContainerAnvil.this.h.setItem(1, itemstack1);
 					} else {
-						ContainerAnvil.this.h.setItem(1, (ItemStack) null);
+						ContainerAnvil.this.h.setItem(1, null);
 					}
 				} else {
-					ContainerAnvil.this.h.setItem(1, (ItemStack) null);
+					ContainerAnvil.this.h.setItem(1, null);
 				}
 
 				ContainerAnvil.this.a = 0;
@@ -75,14 +75,14 @@ public class ContainerAnvil extends Container {
 
 				if (!entityhuman.abilities.canInstantlyBuild && !world.isClientSide
 						&& iblockdata.getBlock() == Blocks.ANVIL && entityhuman.bc().nextFloat() < 0.12F) {
-					int i = iblockdata.get(BlockAnvil.DAMAGE).intValue();
+					int i = iblockdata.get(BlockAnvil.DAMAGE);
 
 					++i;
 					if (i > 2) {
 						world.setAir(blockposition);
 						world.triggerEffect(1020, blockposition, 0);
 					} else {
-						world.setTypeAndData(blockposition, iblockdata.set(BlockAnvil.DAMAGE, Integer.valueOf(i)), 2);
+						world.setTypeAndData(blockposition, iblockdata.set(BlockAnvil.DAMAGE, i), 2);
 						world.triggerEffect(1021, blockposition, 0);
 					}
 				} else if (!world.isClientSide) {
@@ -131,12 +131,12 @@ public class ContainerAnvil extends Container {
 		byte b1 = 0;
 
 		if (itemstack == null) {
-			this.g.setItem(0, (ItemStack) null);
+			this.g.setItem(0, null);
 			this.a = 0;
 		} else {
 			ItemStack itemstack1 = itemstack.cloneItemStack();
 			ItemStack itemstack2 = this.h.getItem(1);
-			Map map = EnchantmentManager.a(itemstack1);
+			Map<Integer, Integer> map = EnchantmentManager.a(itemstack1);
 			boolean flag7 = false;
 			int j = b0 + itemstack.getRepairCost() + (itemstack2 == null ? 0 : itemstack2.getRepairCost());
 
@@ -151,7 +151,7 @@ public class ContainerAnvil extends Container {
 				if (itemstack1.e() && itemstack1.getItem().a(itemstack, itemstack2)) {
 					k = Math.min(itemstack1.h(), itemstack1.j() / 4);
 					if (k <= 0) {
-						this.g.setItem(0, (ItemStack) null);
+						this.g.setItem(0, null);
 						this.a = 0;
 						return;
 					}
@@ -166,7 +166,7 @@ public class ContainerAnvil extends Container {
 					this.k = l;
 				} else {
 					if (!flag7 && (itemstack1.getItem() != itemstack2.getItem() || !itemstack1.e())) {
-						this.g.setItem(0, (ItemStack) null);
+						this.g.setItem(0, null);
 						this.a = 0;
 						return;
 					}
@@ -190,18 +190,17 @@ public class ContainerAnvil extends Container {
 						}
 					}
 
-					Map map1 = EnchantmentManager.a(itemstack2);
-					Iterator iterator = map1.keySet().iterator();
+					Map<Integer, Integer> map1 = EnchantmentManager.a(itemstack2);
 
-					while (iterator.hasNext()) {
-						i1 = ((Integer) iterator.next()).intValue();
+					for (Integer value : map1.keySet()) {
+						i1 = value;
 						Enchantment enchantment = Enchantment.getById(i1);
 
 						if (enchantment != null) {
-							j1 = map.containsKey(Integer.valueOf(i1))
-									? ((Integer) map.get(Integer.valueOf(i1))).intValue()
+							j1 = map.containsKey(i1)
+									? (Integer) map.get(i1)
 									: 0;
-							int l1 = ((Integer) map1.get(Integer.valueOf(i1))).intValue();
+							int l1 = (Integer) map1.get(i1);
 							int i2;
 
 							if (j1 == l1) {
@@ -218,10 +217,8 @@ public class ContainerAnvil extends Container {
 								flag8 = true;
 							}
 
-							Iterator iterator1 = map.keySet().iterator();
-
-							while (iterator1.hasNext()) {
-								int j2 = ((Integer) iterator1.next()).intValue();
+							for (Integer integer : map.keySet()) {
+								int j2 = integer;
 
 								if (j2 != i1 && !enchantment.a(Enchantment.getById(j2))) {
 									flag8 = false;
@@ -234,32 +231,32 @@ public class ContainerAnvil extends Container {
 									l1 = enchantment.getMaxLevel();
 								}
 
-								map.put(Integer.valueOf(i1), Integer.valueOf(l1));
+								map.put(i1, l1);
 								int k2 = 0;
 
 								switch (enchantment.getRandomWeight()) {
-								case 1:
-									k2 = 8;
-									break;
+									case 1:
+										k2 = 8;
+										break;
 
-								case 2:
-									k2 = 4;
+									case 2:
+										k2 = 4;
 
-								case 3:
-								case 4:
-								case 6:
-								case 7:
-								case 8:
-								case 9:
-								default:
-									break;
+									case 3:
+									case 4:
+									case 6:
+									case 7:
+									case 8:
+									case 9:
+									default:
+										break;
 
-								case 5:
-									k2 = 2;
-									break;
+									case 5:
+										k2 = 2;
+										break;
 
-								case 10:
-									k2 = 1;
+									case 10:
+										k2 = 1;
 								}
 
 								if (flag7) {
@@ -340,8 +337,7 @@ public class ContainerAnvil extends Container {
 		if (!this.checkReachable) {
 			return true; // CraftBukkit
 		}
-		return this.i.getType(this.j).getBlock() != Blocks.ANVIL ? false
-				: entityhuman.e(this.j.getX() + 0.5D, this.j.getY() + 0.5D, this.j.getZ() + 0.5D) <= 64.0D;
+		return this.i.getType(this.j).getBlock() == Blocks.ANVIL && entityhuman.e(this.j.getX() + 0.5D, this.j.getY() + 0.5D, this.j.getZ() + 0.5D) <= 64.0D;
 	}
 
 	@Override
@@ -368,7 +364,7 @@ public class ContainerAnvil extends Container {
 			}
 
 			if (itemstack1.count == 0) {
-				slot.set((ItemStack) null);
+				slot.set(null);
 			} else {
 				slot.f();
 			}

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class VillageSiege {
 
-	private World a;
+	private final World a;
 	private boolean b;
 	private int c = -1;
 	private int d;
@@ -63,12 +63,9 @@ public class VillageSiege {
 	}
 
 	private boolean b() {
-		List list = this.a.players;
-		Iterator iterator = list.iterator();
+		List<EntityHuman> list = this.a.players;
 
-		while (iterator.hasNext()) {
-			EntityHuman entityhuman = (EntityHuman) iterator.next();
-
+		for (EntityHuman entityhuman : list) {
 			if (!entityhuman.isSpectator()) {
 				this.f = this.a.ae().getClosestVillage(new BlockPosition(entityhuman), 1);
 				if (this.f != null && this.f.c() >= 10 && this.f.d() >= 20 && this.f.e() >= 20) {
@@ -85,11 +82,8 @@ public class VillageSiege {
 							this.h = blockposition.getY();
 							this.i = blockposition.getZ() + (int) (MathHelper.sin(f1) * f * 0.9D);
 							flag = false;
-							Iterator iterator1 = this.a.ae().getVillages().iterator();
 
-							while (iterator1.hasNext()) {
-								Village village = (Village) iterator1.next();
-
+							for (Village village : this.a.ae().getVillages()) {
 								if (village != this.f && village.a(new BlockPosition(this.g, this.h, this.i))) {
 									flag = true;
 									break;
@@ -132,7 +126,7 @@ public class VillageSiege {
 
 			try {
 				entityzombie = new EntityZombie(this.a);
-				entityzombie.prepare(this.a.E(new BlockPosition(entityzombie)), (GroupDataEntity) null);
+				entityzombie.prepare(this.a.E(new BlockPosition(entityzombie)), null);
 				entityzombie.setVillager(false);
 			} catch (Exception exception) {
 				exception.printStackTrace();

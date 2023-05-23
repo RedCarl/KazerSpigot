@@ -10,7 +10,6 @@ import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.EncoderException;
 import io.netty.util.ByteProcessor;
 
-import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InputStream;
@@ -188,7 +187,7 @@ public class PacketDataSerializer extends ByteBuf {
         } else {
             this.readerIndex(i);
             try {
-                return NBTCompressedStreamTools.a((DataInput) (new ByteBufInputStream(this)), new NBTReadLimiter(50000L));
+                return NBTCompressedStreamTools.a(new ByteBufInputStream(this), new NBTReadLimiter(50000L));
             } catch (IOException ioexception) {
                 throw new EncoderException(ioexception);
             }

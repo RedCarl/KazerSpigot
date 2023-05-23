@@ -47,7 +47,7 @@ public abstract class EntityMonster extends EntityCreature implements IMonster {
 		} else if (super.damageEntity(damagesource, f)) {
 			Entity entity = damagesource.getEntity();
 
-			return this.passenger != entity && this.vehicle != entity ? true : true;
+			return true;
 		} else {
 			return false;
 		}

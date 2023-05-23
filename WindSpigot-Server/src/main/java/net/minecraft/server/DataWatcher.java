@@ -61,7 +61,7 @@ public class DataWatcher {
 	}
 
 	public void add(int i, int j) {
-		DataWatcher.WatchableObject datawatcher_watchableobject = new DataWatcher.WatchableObject(j, i, (Object) null);
+		DataWatcher.WatchableObject datawatcher_watchableobject = new DataWatcher.WatchableObject(j, i, null);
 
 //        this.f.writeLock().lock(); // Spigot - not required
 		this.dataValues.put(i, datawatcher_watchableobject); // Spigot
@@ -70,19 +70,19 @@ public class DataWatcher {
 	}
 
 	public byte getByte(int i) {
-		return ((Byte) this.j(i).b()).byteValue();
+		return (Byte) this.j(i).b();
 	}
 
 	public short getShort(int i) {
-		return ((Short) this.j(i).b()).shortValue();
+		return (Short) this.j(i).b();
 	}
 
 	public int getInt(int i) {
-		return ((Integer) this.j(i).b()).intValue();
+		return (Integer) this.j(i).b();
 	}
 
 	public float getFloat(int i) {
-		return ((Float) this.j(i).b()).floatValue();
+		return (Float) this.j(i).b();
 	}
 
 	public String getString(int i) {
@@ -142,11 +142,8 @@ public class DataWatcher {
 
 	public static void a(List<DataWatcher.WatchableObject> list, PacketDataSerializer serializer) throws IOException {
 		if (list != null) {
-			Iterator iterator = list.iterator();
 
-			while (iterator.hasNext()) {
-				DataWatcher.WatchableObject datawatcher_watchableobject = (DataWatcher.WatchableObject) iterator.next();
-
+			for (WatchableObject datawatcher_watchableobject : list) {
 				a(serializer, datawatcher_watchableobject);
 			}
 		}
@@ -159,10 +156,10 @@ public class DataWatcher {
 
 		if (this.e) {
 //            this.f.readLock().lock(); // Spigot - not required
-			Iterator iterator = this.dataValues.values().iterator(); // Spigot // TacoSpigot
+			// Spigot // TacoSpigot
 
-			while (iterator.hasNext()) {
-				DataWatcher.WatchableObject datawatcher_watchableobject = (DataWatcher.WatchableObject) iterator.next();
+			for (Object o : this.dataValues.values()) {
+				WatchableObject datawatcher_watchableobject = (WatchableObject) o;
 
 				if (datawatcher_watchableobject.d()) {
 					datawatcher_watchableobject.a(false);
@@ -191,10 +188,10 @@ public class DataWatcher {
 
 	public void a(PacketDataSerializer serializer) throws IOException {
 //        this.f.readLock().lock(); // Spigot - not required
-		Iterator iterator = this.dataValues.values().iterator(); // Spigot // TacoSpigot
+		// Spigot // TacoSpigot
 
-		while (iterator.hasNext()) {
-			DataWatcher.WatchableObject datawatcher_watchableobject = (DataWatcher.WatchableObject) iterator.next();
+		for (Object o : this.dataValues.values()) {
+			WatchableObject datawatcher_watchableobject = (WatchableObject) o;
 
 			a(serializer, datawatcher_watchableobject);
 		}
@@ -231,19 +228,19 @@ public class DataWatcher {
 		serializer.writeByte(i);
 		switch (datawatcher_watchableobject.c()) {
 		case 0:
-			serializer.writeByte(((Byte) datawatcher_watchableobject.b()).byteValue());
+			serializer.writeByte((Byte) datawatcher_watchableobject.b());
 			break;
 
 		case 1:
-			serializer.writeShort(((Short) datawatcher_watchableobject.b()).shortValue());
+			serializer.writeShort((Short) datawatcher_watchableobject.b());
 			break;
 
 		case 2:
-			serializer.writeInt(((Integer) datawatcher_watchableobject.b()).intValue());
+			serializer.writeInt((Integer) datawatcher_watchableobject.b());
 			break;
 
 		case 3:
-			serializer.writeFloat(((Float) datawatcher_watchableobject.b()).floatValue());
+			serializer.writeFloat((Float) datawatcher_watchableobject.b());
 			break;
 
 		case 4:
@@ -289,22 +286,22 @@ public class DataWatcher {
 			switch (i) {
 			case 0:
 				datawatcher_watchableobject = new DataWatcher.WatchableObject(i, j,
-						Byte.valueOf(serializer.readByte()));
+						serializer.readByte());
 				break;
 
 			case 1:
 				datawatcher_watchableobject = new DataWatcher.WatchableObject(i, j,
-						Short.valueOf(serializer.readShort()));
+						serializer.readShort());
 				break;
 
 			case 2:
 				datawatcher_watchableobject = new DataWatcher.WatchableObject(i, j,
-						Integer.valueOf(serializer.readInt()));
+						serializer.readInt());
 				break;
 
 			case 3:
 				datawatcher_watchableobject = new DataWatcher.WatchableObject(i, j,
-						Float.valueOf(serializer.readFloat()));
+						serializer.readFloat());
 				break;
 
 			case 4:

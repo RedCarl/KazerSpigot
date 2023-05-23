@@ -13,7 +13,7 @@ public class BlockJukeBox extends BlockContainer {
 	@Override
 	public boolean interact(World world, BlockPosition blockposition, IBlockData iblockdata, EntityHuman entityhuman,
 			EnumDirection enumdirection, float f, float f1, float f2) {
-		if (iblockdata.get(BlockJukeBox.HAS_RECORD).booleanValue()) {
+		if (iblockdata.get(BlockJukeBox.HAS_RECORD)) {
 			this.dropRecord(world, blockposition, iblockdata);
 			iblockdata = iblockdata.set(BlockJukeBox.HAS_RECORD, false);
 			world.setTypeAndData(blockposition, iblockdata, 2);
@@ -46,7 +46,7 @@ public class BlockJukeBox extends BlockContainer {
 				if (itemstack != null) {
 					world.triggerEffect(1005, blockposition, 0);
 					world.a(blockposition, (String) null);
-					blockjukebox_tileentityrecordplayer.setRecord((ItemStack) null);
+					blockjukebox_tileentityrecordplayer.setRecord(null);
 					float f = 0.7F;
 					double d0 = world.random.nextFloat() * f + (1.0F - f) * 0.5D;
 					double d1 = world.random.nextFloat() * f + (1.0F - f) * 0.2D + 0.6D;
@@ -112,12 +112,12 @@ public class BlockJukeBox extends BlockContainer {
 
 	@Override
 	public int toLegacyData(IBlockData iblockdata) {
-		return iblockdata.get(BlockJukeBox.HAS_RECORD).booleanValue() ? 1 : 0;
+		return iblockdata.get(BlockJukeBox.HAS_RECORD) ? 1 : 0;
 	}
 
 	@Override
 	protected BlockStateList getStateList() {
-		return new BlockStateList(this, new IBlockState[] { BlockJukeBox.HAS_RECORD });
+		return new BlockStateList(this, BlockJukeBox.HAS_RECORD);
 	}
 
 	public static class TileEntityRecordPlayer extends TileEntity {

@@ -12,6 +12,7 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.Configuration;
@@ -58,7 +59,7 @@ public abstract class FileConfiguration extends MemoryConfiguration {
 		final Charset defaultCharset = Charset.defaultCharset();
 		final String resultString = new String(testBytes, defaultCharset);
 		final boolean trueUTF = defaultCharset.name().contains("UTF");
-		UTF8_OVERRIDE = !testString.equals(resultString) || defaultCharset.equals(Charset.forName("US-ASCII"));
+		UTF8_OVERRIDE = !testString.equals(resultString) || defaultCharset.equals(StandardCharsets.US_ASCII);
 		SYSTEM_UTF = trueUTF || UTF8_OVERRIDE;
 		UTF_BIG = trueUTF && UTF8_OVERRIDE;
 	}
@@ -102,13 +103,9 @@ public abstract class FileConfiguration extends MemoryConfiguration {
 
 		String data = saveToString();
 
-		Writer writer = new OutputStreamWriter(new FileOutputStream(file),
-				UTF8_OVERRIDE && !UTF_BIG ? Charsets.UTF_8 : Charset.defaultCharset());
-
-		try {
+		try (Writer writer = new OutputStreamWriter(new FileOutputStream(file),
+				UTF8_OVERRIDE && !UTF_BIG ? Charsets.UTF_8 : Charset.defaultCharset())) {
 			writer.write(data);
-		} finally {
-			writer.close();
 		}
 	}
 

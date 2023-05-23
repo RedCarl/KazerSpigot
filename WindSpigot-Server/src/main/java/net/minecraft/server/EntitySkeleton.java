@@ -6,8 +6,8 @@ import org.bukkit.event.entity.EntityCombustEvent; // CraftBukkit
 
 public class EntitySkeleton extends EntityMonster implements IRangedEntity {
 
-	private PathfinderGoalArrowAttack a = new PathfinderGoalArrowAttack(this, 1.0D, 20, 60, 15.0F);
-	private PathfinderGoalMeleeAttack b = new PathfinderGoalMeleeAttack(this, EntityHuman.class, 1.2D, false);
+	private final PathfinderGoalArrowAttack a = new PathfinderGoalArrowAttack(this, 1.0D, 20, 60, 15.0F);
+	private final PathfinderGoalMeleeAttack b = new PathfinderGoalMeleeAttack(this, EntityHuman.class, 1.2D, false);
 
 	public EntitySkeleton(World world) {
 		super(world);
@@ -18,7 +18,7 @@ public class EntitySkeleton extends EntityMonster implements IRangedEntity {
 		this.goalSelector.a(4, new PathfinderGoalRandomStroll(this, 1.0D));
 		this.goalSelector.a(6, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 8.0F));
 		this.goalSelector.a(6, new PathfinderGoalRandomLookaround(this));
-		this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, false, new Class[0]));
+		this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, false));
 		this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget(this, EntityHuman.class, true));
 		this.targetSelector.a(3, new PathfinderGoalNearestAttackableTarget(this, EntityIronGolem.class, true));
 		if (world != null && !world.isClientSide) {
@@ -36,7 +36,7 @@ public class EntitySkeleton extends EntityMonster implements IRangedEntity {
 	@Override
 	protected void h() {
 		super.h();
-		this.datawatcher.a(13, new Byte((byte) 0));
+		this.datawatcher.a(13, (byte) 0);
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class EntitySkeleton extends EntityMonster implements IRangedEntity {
 						itemstack.setData(itemstack.h() + this.random.nextInt(2));
 						if (itemstack.h() >= itemstack.j()) {
 							this.b(itemstack);
-							this.setEquipment(4, (ItemStack) null);
+							this.setEquipment(4, null);
 						}
 					}
 
@@ -295,7 +295,7 @@ public class EntitySkeleton extends EntityMonster implements IRangedEntity {
 	}
 
 	public void setSkeletonType(int i) {
-		this.datawatcher.watch(13, Byte.valueOf((byte) i));
+		this.datawatcher.watch(13, (byte) i);
 		this.fireProof = i == 1;
 		if (i == 1) {
 			this.setSize(0.72F, 2.535F);

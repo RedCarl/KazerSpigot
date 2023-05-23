@@ -26,11 +26,11 @@ public class EntitySlime extends EntityInsentient implements IMonster {
 	@Override
 	protected void h() {
 		super.h();
-		this.datawatcher.a(16, Byte.valueOf((byte) 1));
+		this.datawatcher.a(16, (byte) 1);
 	}
 
 	public void setSize(int i) {
-		this.datawatcher.watch(16, Byte.valueOf((byte) i));
+		this.datawatcher.watch(16, (byte) i);
 		this.setSize(0.51000005F * i, 0.51000005F * i);
 		this.setPosition(this.locX, this.locY, this.locZ);
 		this.getAttributeInstance(GenericAttributes.maxHealth).setValue(i * i);
@@ -160,7 +160,7 @@ public class EntitySlime extends EntityInsentient implements IMonster {
 
 			for (int k = 0; k < j; ++k) {
 				float f = (k % 2 - 0.5F) * i / 4.0F;
-				float f1 = (k / 2 - 0.5F) * i / 4.0F;
+				float f1 = ((float) k / 2 - 0.5F) * i / 4.0F;
 				EntitySlime entityslime = this.cf();
 
 				if (this.hasCustomName()) {
@@ -308,7 +308,7 @@ public class EntitySlime extends EntityInsentient implements IMonster {
 
 	static class PathfinderGoalSlimeIdle extends PathfinderGoal {
 
-		private EntitySlime a;
+		private final EntitySlime a;
 
 		public PathfinderGoalSlimeIdle(EntitySlime entityslime) {
 			this.a = entityslime;
@@ -328,7 +328,7 @@ public class EntitySlime extends EntityInsentient implements IMonster {
 
 	static class PathfinderGoalSlimeRandomJump extends PathfinderGoal {
 
-		private EntitySlime a;
+		private final EntitySlime a;
 
 		public PathfinderGoalSlimeRandomJump(EntitySlime entityslime) {
 			this.a = entityslime;
@@ -353,7 +353,7 @@ public class EntitySlime extends EntityInsentient implements IMonster {
 
 	static class PathfinderGoalSlimeRandomDirection extends PathfinderGoal {
 
-		private EntitySlime a;
+		private final EntitySlime a;
 		private float b;
 		private int c;
 
@@ -380,7 +380,7 @@ public class EntitySlime extends EntityInsentient implements IMonster {
 
 	static class PathfinderGoalSlimeNearestPlayer extends PathfinderGoal {
 
-		private EntitySlime a;
+		private final EntitySlime a;
 		private int b;
 
 		public PathfinderGoalSlimeNearestPlayer(EntitySlime entityslime) {
@@ -392,10 +392,8 @@ public class EntitySlime extends EntityInsentient implements IMonster {
 		public boolean a() {
 			EntityLiving entityliving = this.a.getGoalTarget();
 
-			return entityliving == null ? false
-					: (!entityliving.isAlive() ? false
-							: !(entityliving instanceof EntityHuman)
-									|| !((EntityHuman) entityliving).abilities.isInvulnerable);
+			return entityliving != null && (entityliving.isAlive() && (!(entityliving instanceof EntityHuman)
+					|| !((EntityHuman) entityliving).abilities.isInvulnerable));
 		}
 
 		@Override
@@ -408,13 +406,9 @@ public class EntitySlime extends EntityInsentient implements IMonster {
 		public boolean b() {
 			EntityLiving entityliving = this.a.getGoalTarget();
 
-			return entityliving == null ? false
-					: (!entityliving
-							.isAlive()
-									? false
-									: (entityliving instanceof EntityHuman
-											&& ((EntityHuman) entityliving).abilities.isInvulnerable ? false
-													: --this.b > 0));
+			return entityliving != null && (entityliving
+					.isAlive() && ((!(entityliving instanceof EntityHuman)
+					|| !((EntityHuman) entityliving).abilities.isInvulnerable) && --this.b > 0));
 		}
 
 		@Override
@@ -428,7 +422,7 @@ public class EntitySlime extends EntityInsentient implements IMonster {
 
 		private float g;
 		private int h;
-		private EntitySlime i;
+		private final EntitySlime i;
 		private boolean j;
 
 		public ControllerMoveSlime(EntitySlime entityslime) {

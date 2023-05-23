@@ -286,10 +286,10 @@ public final class Color implements ConfigurationSerializable {
 			totalMax += Math.max(Math.max(color.getRed(), color.getGreen()), color.getBlue());
 		}
 
-		float averageRed = totalRed / (colors.length + 1);
-		float averageGreen = totalGreen / (colors.length + 1);
-		float averageBlue = totalBlue / (colors.length + 1);
-		float averageMax = totalMax / (colors.length + 1);
+		float averageRed = (float) totalRed / (colors.length + 1);
+		float averageGreen = (float) totalGreen / (colors.length + 1);
+		float averageBlue = (float) totalBlue / (colors.length + 1);
+		float averageMax = (float) totalMax / (colors.length + 1);
 
 		float maximumOfAverages = Math.max(Math.max(averageRed, averageGreen), averageBlue);
 		float gainFactor = averageMax / maximumOfAverages;
@@ -313,7 +313,7 @@ public final class Color implements ConfigurationSerializable {
 	}
 
 	public Map<String, Object> serialize() {
-		return ImmutableMap.<String, Object>of("RED", getRed(), "BLUE", getBlue(), "GREEN", getGreen());
+		return ImmutableMap.of("RED", getRed(), "BLUE", getBlue(), "GREEN", getGreen());
 	}
 
 	@SuppressWarnings("javadoc")

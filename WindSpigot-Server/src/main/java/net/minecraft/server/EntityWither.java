@@ -15,12 +15,12 @@ import ga.windpvp.windspigot.cache.Constants;
 
 public class EntityWither extends EntityMonster implements IRangedEntity {
 
-	private float[] a = new float[2];
-	private float[] b = new float[2];
-	private float[] c = new float[2];
-	private float[] bm = new float[2];
-	private int[] bn = new int[2];
-	private int[] bo = new int[2];
+	private final float[] a = new float[2];
+	private final float[] b = new float[2];
+	private final float[] c = new float[2];
+	private final float[] bm = new float[2];
+	private final int[] bn = new int[2];
+	private final int[] bo = new int[2];
 	private int bp;
 	private static final Predicate<Entity> bq = new Predicate() {
 		public boolean a(Entity entity) {
@@ -44,7 +44,7 @@ public class EntityWither extends EntityMonster implements IRangedEntity {
 		this.goalSelector.a(5, new PathfinderGoalRandomStroll(this, 1.0D));
 		this.goalSelector.a(6, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 8.0F));
 		this.goalSelector.a(7, new PathfinderGoalRandomLookaround(this));
-		this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, false, new Class[0]));
+		this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, false));
 		this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget(this, EntityInsentient.class, 0, false,
 				false, EntityWither.bq));
 		this.b_ = 50;
@@ -53,10 +53,10 @@ public class EntityWither extends EntityMonster implements IRangedEntity {
 	@Override
 	protected void h() {
 		super.h();
-		this.datawatcher.a(17, new Integer(0));
-		this.datawatcher.a(18, new Integer(0));
-		this.datawatcher.a(19, new Integer(0));
-		this.datawatcher.a(20, new Integer(0));
+		this.datawatcher.a(17, 0);
+		this.datawatcher.a(18, 0);
+		this.datawatcher.a(19, 0);
+		this.datawatcher.a(20, 0);
 	}
 
 	@Override
@@ -178,8 +178,8 @@ public class EntityWither extends EntityMonster implements IRangedEntity {
 
 		if (this.cl() > 0) {
 			for (j = 0; j < 3; ++j) {
-				this.world.addParticle(EnumParticle.SPELL_MOB, this.locX + this.random.nextGaussian() * 1.0D,
-						this.locY + this.random.nextFloat() * 3.3F, this.locZ + this.random.nextGaussian() * 1.0D,
+				this.world.addParticle(EnumParticle.SPELL_MOB, this.locX + this.random.nextGaussian(),
+						this.locY + this.random.nextFloat() * 3.3F, this.locZ + this.random.nextGaussian(),
 						0.699999988079071D, 0.699999988079071D, 0.8999999761581421D, Constants.EMPTY_ARRAY);
 			}
 		}
@@ -208,7 +208,7 @@ public class EntityWither extends EntityMonster implements IRangedEntity {
 
 				// CraftBukkit start - Use relative location for far away sounds
 				// this.world.a(1013, new BlockPosition(this), 0);
-				int viewDistance = ((WorldServer) this.world).getServer().getViewDistance() * 16;
+				int viewDistance = this.world.getServer().getViewDistance() * 16;
 				for (EntityPlayer player : MinecraftServer.getServer().getPlayerList().players) {
 					double deltaX = this.locX - player.locX;
 					double deltaZ = this.locZ - player.locZ;
@@ -280,7 +280,7 @@ public class EntityWither extends EntityMonster implements IRangedEntity {
 							this.b(i, 0);
 						}
 					} else {
-						List list = this.world.a(EntityLiving.class, this.getBoundingBox().grow(20.0D, 8.0D, 20.0D),
+						List<EntityLiving> list = this.world.a(EntityLiving.class, this.getBoundingBox().grow(20.0D, 8.0D, 20.0D),
 								Predicates.and(EntityWither.bq, IEntitySelector.d));
 
 						for (int i1 = 0; i1 < 10 && !list.isEmpty(); ++i1) {
@@ -340,7 +340,7 @@ public class EntityWither extends EntityMonster implements IRangedEntity {
 					}
 
 					if (flag) {
-						this.world.a((EntityHuman) null, 1012, new BlockPosition(this), 0);
+						this.world.a(null, 1012, new BlockPosition(this), 0);
 					}
 				}
 			}
@@ -417,7 +417,7 @@ public class EntityWither extends EntityMonster implements IRangedEntity {
 	}
 
 	private void a(int i, double d0, double d1, double d2, boolean flag) {
-		this.world.a((EntityHuman) null, 1014, new BlockPosition(this), 0);
+		this.world.a(null, 1014, new BlockPosition(this), 0);
 		double d3 = this.t(i);
 		double d4 = this.u(i);
 		double d5 = this.v(i);
@@ -459,7 +459,7 @@ public class EntityWither extends EntityMonster implements IRangedEntity {
 				}
 
 				entity = damagesource.getEntity();
-				if (entity != null && !(entity instanceof EntityHuman) && entity instanceof EntityLiving
+				if (!(entity instanceof EntityHuman) && entity instanceof EntityLiving
 						&& ((EntityLiving) entity).getMonsterType() == this.getMonsterType()) {
 					return false;
 				} else {
@@ -488,12 +488,8 @@ public class EntityWither extends EntityMonster implements IRangedEntity {
 		}
 
 		if (!this.world.isClientSide) {
-			Iterator iterator = this.world.a(EntityHuman.class, this.getBoundingBox().grow(50.0D, 100.0D, 50.0D))
-					.iterator();
 
-			while (iterator.hasNext()) {
-				EntityHuman entityhuman = (EntityHuman) iterator.next();
-
+			for (EntityHuman entityhuman : this.world.a(EntityHuman.class, this.getBoundingBox().grow(50.0D, 100.0D, 50.0D))) {
 				entityhuman.b(AchievementList.J);
 			}
 		}
@@ -526,7 +522,7 @@ public class EntityWither extends EntityMonster implements IRangedEntity {
 	}
 
 	public void r(int i) {
-		this.datawatcher.watch(20, Integer.valueOf(i));
+		this.datawatcher.watch(20, i);
 	}
 
 	public int s(int i) {
@@ -534,7 +530,7 @@ public class EntityWither extends EntityMonster implements IRangedEntity {
 	}
 
 	public void b(int i, int j) {
-		this.datawatcher.watch(17 + i, Integer.valueOf(j));
+		this.datawatcher.watch(17 + i, j);
 	}
 
 	public boolean cm() {

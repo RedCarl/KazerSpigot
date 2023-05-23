@@ -14,29 +14,28 @@ import ga.windpvp.windspigot.config.WindSpigotConfig;
 public class EntityFishingHook extends Entity {
 
 	private static final List<PossibleFishingResult> d = Arrays.asList(
-			new PossibleFishingResult[] { (new PossibleFishingResult(new ItemStack(Items.LEATHER_BOOTS), 10)).a(0.9F),
-					new PossibleFishingResult(new ItemStack(Items.LEATHER), 10),
-					new PossibleFishingResult(new ItemStack(Items.BONE), 10),
-					new PossibleFishingResult(new ItemStack(Items.POTION), 10),
-					new PossibleFishingResult(new ItemStack(Items.STRING), 5),
-					(new PossibleFishingResult(new ItemStack(Items.FISHING_ROD), 2)).a(0.9F),
-					new PossibleFishingResult(new ItemStack(Items.BOWL), 10),
-					new PossibleFishingResult(new ItemStack(Items.STICK), 5),
-					new PossibleFishingResult(new ItemStack(Items.DYE, 10, EnumColor.BLACK.getInvColorIndex()), 1),
-					new PossibleFishingResult(new ItemStack(Blocks.TRIPWIRE_HOOK), 10),
-					new PossibleFishingResult(new ItemStack(Items.ROTTEN_FLESH), 10) });
+			(new PossibleFishingResult(new ItemStack(Items.LEATHER_BOOTS), 10)).a(0.9F),
+			new PossibleFishingResult(new ItemStack(Items.LEATHER), 10),
+			new PossibleFishingResult(new ItemStack(Items.BONE), 10),
+			new PossibleFishingResult(new ItemStack(Items.POTION), 10),
+			new PossibleFishingResult(new ItemStack(Items.STRING), 5),
+			(new PossibleFishingResult(new ItemStack(Items.FISHING_ROD), 2)).a(0.9F),
+			new PossibleFishingResult(new ItemStack(Items.BOWL), 10),
+			new PossibleFishingResult(new ItemStack(Items.STICK), 5),
+			new PossibleFishingResult(new ItemStack(Items.DYE, 10, EnumColor.BLACK.getInvColorIndex()), 1),
+			new PossibleFishingResult(new ItemStack(Blocks.TRIPWIRE_HOOK), 10),
+			new PossibleFishingResult(new ItemStack(Items.ROTTEN_FLESH), 10));
 	private static final List<PossibleFishingResult> e = Arrays
-			.asList(new PossibleFishingResult[] { new PossibleFishingResult(new ItemStack(Blocks.WATERLILY), 1),
+			.asList(new PossibleFishingResult(new ItemStack(Blocks.WATERLILY), 1),
 					new PossibleFishingResult(new ItemStack(Items.NAME_TAG), 1),
 					new PossibleFishingResult(new ItemStack(Items.SADDLE), 1),
 					(new PossibleFishingResult(new ItemStack(Items.BOW), 1)).a(0.25F).a(),
 					(new PossibleFishingResult(new ItemStack(Items.FISHING_ROD), 1)).a(0.25F).a(),
-					(new PossibleFishingResult(new ItemStack(Items.BOOK), 1)).a() });
-	private static final List<PossibleFishingResult> f = Arrays.asList(new PossibleFishingResult[] {
-			new PossibleFishingResult(new ItemStack(Items.FISH, 1, ItemFish.EnumFish.COD.a()), 60),
+					(new PossibleFishingResult(new ItemStack(Items.BOOK), 1)).a());
+	private static final List<PossibleFishingResult> f = Arrays.asList(new PossibleFishingResult(new ItemStack(Items.FISH, 1, ItemFish.EnumFish.COD.a()), 60),
 			new PossibleFishingResult(new ItemStack(Items.FISH, 1, ItemFish.EnumFish.SALMON.a()), 25),
 			new PossibleFishingResult(new ItemStack(Items.FISH, 1, ItemFish.EnumFish.CLOWNFISH.a()), 2),
-			new PossibleFishingResult(new ItemStack(Items.FISH, 1, ItemFish.EnumFish.PUFFERFISH.a()), 13) });
+			new PossibleFishingResult(new ItemStack(Items.FISH, 1, ItemFish.EnumFish.PUFFERFISH.a()), 13));
 	private int g = -1;
 	private int h = -1;
 	private int i = -1;
@@ -190,14 +189,14 @@ public class EntityFishingHook extends Entity {
 			}
 
 			Entity entity = null;
-			List list = this.world.getEntities(this,
+			List<Entity> list = this.world.getEntities(this,
 					this.getBoundingBox().a(this.motX, this.motY, this.motZ).grow(1.0D, 1.0D, 1.0D));
 			double d5 = 0.0D;
 
 			double d6;
 
-			for (int i = 0; i < list.size(); ++i) {
-				Entity entity1 = (Entity) list.get(i);
+			for (Object o : list) {
+				Entity entity1 = (Entity) o;
 
 				if (entity1.ad() && (entity1 != this.owner || this.au >= 5)) {
 					float f = 0.3F;
@@ -253,7 +252,6 @@ public class EntityFishingHook extends Entity {
 
 				for (this.pitch = (float) (MathHelper.b(this.motY, f1) * 180.0D / 3.1415927410125732D); this.pitch
 						- this.lastPitch < -180.0F; this.lastPitch -= 360.0F) {
-					;
 				}
 
 				while (this.pitch - this.lastPitch >= 180.0F) {

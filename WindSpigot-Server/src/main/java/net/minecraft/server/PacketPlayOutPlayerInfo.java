@@ -26,7 +26,7 @@ public class PacketPlayOutPlayerInfo implements Packet<PacketListenerPlayOut> {
 
 		for (int var5 = 0; var5 < var4; ++var5) {
 			EntityPlayer var6 = var3[var5];
-			this.b.add(new PacketPlayOutPlayerInfo.PlayerInfoData(var6.getProfile(), var6.ping,
+			this.b.add(new PlayerInfoData(var6.getProfile(), var6.ping,
 					var6.playerInteractManager.getGameMode(), var6.getPlayerListName()));
 		}
 
@@ -34,11 +34,9 @@ public class PacketPlayOutPlayerInfo implements Packet<PacketListenerPlayOut> {
 
 	public PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction var1, Iterable<EntityPlayer> var2) {
 		this.a = var1;
-		Iterator var3 = var2.iterator();
 
-		while (var3.hasNext()) {
-			EntityPlayer var4 = (EntityPlayer) var3.next();
-			this.b.add(new PacketPlayOutPlayerInfo.PlayerInfoData(var4.getProfile(), var4.ping,
+		for (EntityPlayer var4 : var2) {
+			this.b.add(new PlayerInfoData(var4.getProfile(), var4.ping,
 					var4.playerInteractManager.getGameMode(), var4.getPlayerListName()));
 		}
 
@@ -89,24 +87,24 @@ public class PacketPlayOutPlayerInfo implements Packet<PacketListenerPlayOut> {
 				}
 				break;
 			case UPDATE_GAME_MODE:
-				var4 = new GameProfile(var1.g(), (String) null);
+				var4 = new GameProfile(var1.g(), null);
 				var6 = EnumGamemode.getById(var1.readVarInt());
 				break;
 			case UPDATE_LATENCY:
-				var4 = new GameProfile(var1.g(), (String) null);
+				var4 = new GameProfile(var1.g(), null);
 				var5 = var1.readVarInt();
 				break;
 			case UPDATE_DISPLAY_NAME:
-				var4 = new GameProfile(var1.g(), (String) null);
+				var4 = new GameProfile(var1.g(), null);
 				if (var1.readBoolean()) {
 					var7 = var1.d();
 				}
 				break;
 			case REMOVE_PLAYER:
-				var4 = new GameProfile(var1.g(), (String) null);
+				var4 = new GameProfile(var1.g(), null);
 			}
 
-			this.b.add(new PacketPlayOutPlayerInfo.PlayerInfoData(var4, var5, var6, var7));
+			this.b.add(new PlayerInfoData(var4, var5, var6, var7));
 		}
 
 	}
@@ -115,7 +113,7 @@ public class PacketPlayOutPlayerInfo implements Packet<PacketListenerPlayOut> {
 	public void b(PacketDataSerializer var1) throws IOException {
 		var1.a(this.a);
 		var1.b(this.b.size());
-		Iterator var2 = this.b.iterator();
+		Iterator<PlayerInfoData> var2 = this.b.iterator();
 
 		while (true) {
 			while (var2.hasNext()) {
@@ -125,10 +123,8 @@ public class PacketPlayOutPlayerInfo implements Packet<PacketListenerPlayOut> {
 					var1.a(var3.a().getId());
 					var1.a(var3.a().getName());
 					var1.b(var3.a().getProperties().size());
-					Iterator var4 = var3.a().getProperties().values().iterator();
 
-					while (var4.hasNext()) {
-						Property var5 = (Property) var4.next();
+					for (Property var5 : var3.a().getProperties().values()) {
 						var1.a(var5.getName());
 						var1.a(var5.getValue());
 						if (var5.hasSignature()) {
@@ -184,7 +180,7 @@ public class PacketPlayOutPlayerInfo implements Packet<PacketListenerPlayOut> {
 		return Objects.toStringHelper(this).add("action", this.a).add("entries", this.b).toString();
 	}
 
-	public class PlayerInfoData {
+	public static class PlayerInfoData {
 		private final int b;
 		private final EnumGamemode c;
 		private final GameProfile d;
@@ -220,10 +216,10 @@ public class PacketPlayOutPlayerInfo implements Packet<PacketListenerPlayOut> {
 		}
 	}
 
-	public static enum EnumPlayerInfoAction {
+	public enum EnumPlayerInfoAction {
 		ADD_PLAYER, UPDATE_GAME_MODE, UPDATE_LATENCY, UPDATE_DISPLAY_NAME, REMOVE_PLAYER;
 
-		private EnumPlayerInfoAction() {
+		EnumPlayerInfoAction() {
 		}
 	}
 }

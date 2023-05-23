@@ -31,13 +31,13 @@ public class WorldGenVillagePieces {
 		arraylist.add(new WorldGenVillagePieces.WorldGenVillagePieceWeight(
 				WorldGenVillagePieces.WorldGenVillageHouse.class, 4, MathHelper.nextInt(random, 2 + i, 4 + i * 2)));
 		arraylist.add(new WorldGenVillagePieces.WorldGenVillagePieceWeight(
-				WorldGenVillagePieces.WorldGenVillageTemple.class, 20, MathHelper.nextInt(random, 0 + i, 1 + i)));
+				WorldGenVillagePieces.WorldGenVillageTemple.class, 20, MathHelper.nextInt(random, i, 1 + i)));
 		arraylist.add(new WorldGenVillagePieces.WorldGenVillagePieceWeight(
-				WorldGenVillagePieces.WorldGenVillageLibrary.class, 20, MathHelper.nextInt(random, 0 + i, 2 + i)));
+				WorldGenVillagePieces.WorldGenVillageLibrary.class, 20, MathHelper.nextInt(random, i, 2 + i)));
 		arraylist.add(new WorldGenVillagePieces.WorldGenVillagePieceWeight(
 				WorldGenVillagePieces.WorldGenVillageHut.class, 3, MathHelper.nextInt(random, 2 + i, 5 + i * 3)));
 		arraylist.add(new WorldGenVillagePieces.WorldGenVillagePieceWeight(
-				WorldGenVillagePieces.WorldGenVillageButcher.class, 15, MathHelper.nextInt(random, 0 + i, 2 + i)));
+				WorldGenVillagePieces.WorldGenVillageButcher.class, 15, MathHelper.nextInt(random, i, 2 + i)));
 		arraylist.add(new WorldGenVillagePieces.WorldGenVillagePieceWeight(
 				WorldGenVillagePieces.WorldGenVillageFarm2.class, 3, MathHelper.nextInt(random, 1 + i, 4 + i)));
 		arraylist.add(new WorldGenVillagePieces.WorldGenVillagePieceWeight(
@@ -45,7 +45,7 @@ public class WorldGenVillagePieces {
 		arraylist.add(new WorldGenVillagePieces.WorldGenVillagePieceWeight(
 				WorldGenVillagePieces.WorldGenVillageBlacksmith.class, 15, MathHelper.nextInt(random, 0, 1 + i)));
 		arraylist.add(new WorldGenVillagePieces.WorldGenVillagePieceWeight(
-				WorldGenVillagePieces.WorldGenVillageHouse2.class, 8, MathHelper.nextInt(random, 0 + i, 3 + i * 2)));
+				WorldGenVillagePieces.WorldGenVillageHouse2.class, 8, MathHelper.nextInt(random, i, 3 + i * 2)));
 		Iterator iterator = arraylist.iterator();
 
 		while (iterator.hasNext()) {
@@ -63,7 +63,7 @@ public class WorldGenVillagePieces {
 
 		WorldGenVillagePieces.WorldGenVillagePieceWeight worldgenvillagepieces_worldgenvillagepieceweight;
 
-		for (Iterator iterator = list.iterator(); iterator
+		for (Iterator<WorldGenVillagePieceWeight> iterator = list.iterator(); iterator
 				.hasNext(); i += worldgenvillagepieces_worldgenvillagepieceweight.b) {
 			worldgenvillagepieces_worldgenvillagepieceweight = (WorldGenVillagePieces.WorldGenVillagePieceWeight) iterator
 					.next();
@@ -80,7 +80,7 @@ public class WorldGenVillagePieces {
 			WorldGenVillagePieces.WorldGenVillageStartPiece worldgenvillagepieces_worldgenvillagestartpiece,
 			WorldGenVillagePieces.WorldGenVillagePieceWeight worldgenvillagepieces_worldgenvillagepieceweight,
 			List<StructurePiece> list, Random random, int i, int j, int k, EnumDirection enumdirection, int l) {
-		Class oclass = worldgenvillagepieces_worldgenvillagepieceweight.a;
+		Class<? extends WorldGenVillagePiece> oclass = worldgenvillagepieces_worldgenvillagepieceweight.a;
 		WorldGenVillagePiece object = null;
 
 		if (oclass == WorldGenVillagePieces.WorldGenVillageHouse.class) {
@@ -128,21 +128,17 @@ public class WorldGenVillagePieces {
 			while (j1 < 5) {
 				++j1;
 				int k1 = random.nextInt(i1);
-				Iterator iterator = worldgenvillagepieces_worldgenvillagestartpiece.e.iterator();
 
-				while (iterator.hasNext()) {
-					WorldGenVillagePieces.WorldGenVillagePieceWeight worldgenvillagepieces_worldgenvillagepieceweight = (WorldGenVillagePieces.WorldGenVillagePieceWeight) iterator
-							.next();
-
+				for (WorldGenVillagePieceWeight worldgenvillagepieces_worldgenvillagepieceweight : worldgenvillagepieces_worldgenvillagestartpiece.e) {
 					k1 -= worldgenvillagepieces_worldgenvillagepieceweight.b;
 					if (k1 < 0) {
 						if (!worldgenvillagepieces_worldgenvillagepieceweight.a(l)
 								|| worldgenvillagepieces_worldgenvillagepieceweight == worldgenvillagepieces_worldgenvillagestartpiece.d
-										&& worldgenvillagepieces_worldgenvillagestartpiece.e.size() > 1) {
+								&& worldgenvillagepieces_worldgenvillagestartpiece.e.size() > 1) {
 							break;
 						}
 
-						WorldGenVillagePieces.WorldGenVillagePiece worldgenvillagepieces_worldgenvillagepiece = a(
+						WorldGenVillagePiece worldgenvillagepieces_worldgenvillagepiece = a(
 								worldgenvillagepieces_worldgenvillagestartpiece,
 								worldgenvillagepieces_worldgenvillagepieceweight, list, random, i, j, k, enumdirection,
 								l);
@@ -250,25 +246,21 @@ public class WorldGenVillagePieces {
 			try {
 				WorldGenVillagePieces.SyntheticClass_1.a[EnumDirection.NORTH.ordinal()] = 1;
 			} catch (NoSuchFieldError nosuchfielderror) {
-				;
 			}
 
 			try {
 				WorldGenVillagePieces.SyntheticClass_1.a[EnumDirection.SOUTH.ordinal()] = 2;
 			} catch (NoSuchFieldError nosuchfielderror1) {
-				;
 			}
 
 			try {
 				WorldGenVillagePieces.SyntheticClass_1.a[EnumDirection.WEST.ordinal()] = 3;
 			} catch (NoSuchFieldError nosuchfielderror2) {
-				;
 			}
 
 			try {
 				WorldGenVillagePieces.SyntheticClass_1.a[EnumDirection.EAST.ordinal()] = 4;
 			} catch (NoSuchFieldError nosuchfielderror3) {
-				;
 			}
 
 		}
@@ -560,7 +552,7 @@ public class WorldGenVillagePieces {
 	public static class WorldGenVillageBlacksmith extends WorldGenVillagePieces.WorldGenVillagePiece {
 
 		private static final List<StructurePieceTreasure> a = Lists
-				.newArrayList(new StructurePieceTreasure[] { new StructurePieceTreasure(Items.DIAMOND, 0, 1, 3, 3),
+				.newArrayList(new StructurePieceTreasure(Items.DIAMOND, 0, 1, 3, 3),
 						new StructurePieceTreasure(Items.IRON_INGOT, 0, 1, 5, 10),
 						new StructurePieceTreasure(Items.GOLD_INGOT, 0, 1, 3, 5),
 						new StructurePieceTreasure(Items.BREAD, 0, 1, 3, 15),
@@ -576,7 +568,7 @@ public class WorldGenVillagePieces {
 						new StructurePieceTreasure(Items.SADDLE, 0, 1, 1, 3),
 						new StructurePieceTreasure(Items.IRON_HORSE_ARMOR, 0, 1, 1, 1),
 						new StructurePieceTreasure(Items.GOLDEN_HORSE_ARMOR, 0, 1, 1, 1),
-						new StructurePieceTreasure(Items.DIAMOND_HORSE_ARMOR, 0, 1, 1, 1) });
+						new StructurePieceTreasure(Items.DIAMOND_HORSE_ARMOR, 0, 1, 1, 1));
 		private boolean b;
 
 		public WorldGenVillageBlacksmith() {
@@ -1742,7 +1734,7 @@ public class WorldGenVillagePieces {
 
 		public WorldGenVillageStartPiece(WorldChunkManager worldchunkmanager, int i, Random random, int j, int k,
 				List<WorldGenVillagePieces.WorldGenVillagePieceWeight> list, int l) {
-			super((WorldGenVillagePieces.WorldGenVillageStartPiece) null, 0, random, j, k);
+			super(null, 0, random, j, k);
 			this.a = worldchunkmanager;
 			this.e = list;
 			this.c = l;
@@ -1871,19 +1863,15 @@ public class WorldGenVillagePieces {
 			if (this.m != null) {
 				switch (WorldGenVillagePieces.SyntheticClass_1.a[this.m.ordinal()]) {
 				case 1:
-					return WorldGenVillagePieces.d(worldgenvillagepieces_worldgenvillagestartpiece, list, random,
+
+					case 2:
+						return WorldGenVillagePieces.d(worldgenvillagepieces_worldgenvillagestartpiece, list, random,
 							this.l.a - 1, this.l.b + i, this.l.c + j, EnumDirection.WEST, this.d());
 
-				case 2:
-					return WorldGenVillagePieces.d(worldgenvillagepieces_worldgenvillagestartpiece, list, random,
-							this.l.a - 1, this.l.b + i, this.l.c + j, EnumDirection.WEST, this.d());
+					case 3:
 
-				case 3:
-					return WorldGenVillagePieces.d(worldgenvillagepieces_worldgenvillagestartpiece, list, random,
-							this.l.a + j, this.l.b + i, this.l.c - 1, EnumDirection.NORTH, this.d());
-
-				case 4:
-					return WorldGenVillagePieces.d(worldgenvillagepieces_worldgenvillagestartpiece, list, random,
+					case 4:
+						return WorldGenVillagePieces.d(worldgenvillagepieces_worldgenvillagestartpiece, list, random,
 							this.l.a + j, this.l.b + i, this.l.c - 1, EnumDirection.NORTH, this.d());
 				}
 			}
@@ -1897,19 +1885,15 @@ public class WorldGenVillagePieces {
 			if (this.m != null) {
 				switch (WorldGenVillagePieces.SyntheticClass_1.a[this.m.ordinal()]) {
 				case 1:
-					return WorldGenVillagePieces.d(worldgenvillagepieces_worldgenvillagestartpiece, list, random,
+
+					case 2:
+						return WorldGenVillagePieces.d(worldgenvillagepieces_worldgenvillagestartpiece, list, random,
 							this.l.d + 1, this.l.b + i, this.l.c + j, EnumDirection.EAST, this.d());
 
-				case 2:
-					return WorldGenVillagePieces.d(worldgenvillagepieces_worldgenvillagestartpiece, list, random,
-							this.l.d + 1, this.l.b + i, this.l.c + j, EnumDirection.EAST, this.d());
+					case 3:
 
-				case 3:
-					return WorldGenVillagePieces.d(worldgenvillagepieces_worldgenvillagestartpiece, list, random,
-							this.l.a + j, this.l.b + i, this.l.f + 1, EnumDirection.SOUTH, this.d());
-
-				case 4:
-					return WorldGenVillagePieces.d(worldgenvillagepieces_worldgenvillagestartpiece, list, random,
+					case 4:
+						return WorldGenVillagePieces.d(worldgenvillagepieces_worldgenvillagestartpiece, list, random,
 							this.l.a + j, this.l.b + i, this.l.f + 1, EnumDirection.SOUTH, this.d());
 				}
 			}
@@ -1959,7 +1943,7 @@ public class WorldGenVillagePieces {
 					EntityVillager entityvillager = new EntityVillager(world);
 
 					entityvillager.setPositionRotation(j1 + 0.5D, k1, l1 + 0.5D, 0.0F, 0.0F);
-					entityvillager.prepare(world.E(new BlockPosition(entityvillager)), (GroupDataEntity) null);
+					entityvillager.prepare(world.E(new BlockPosition(entityvillager)), null);
 					entityvillager.setProfession(this.c(i1, entityvillager.getProfession()));
 					world.addEntity(entityvillager, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.CHUNK_GEN); // CraftBukkit
 																														// -

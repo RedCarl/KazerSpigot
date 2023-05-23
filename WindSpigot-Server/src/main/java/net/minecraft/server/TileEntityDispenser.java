@@ -1,6 +1,7 @@
 package net.minecraft.server;
 
 // CraftBukkit start
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -196,9 +197,8 @@ public class TileEntityDispenser extends TileEntityContainer implements IInvento
 
 	@Override
 	public boolean a(EntityHuman entityhuman) {
-		return this.world.getTileEntity(this.position) != this ? false
-				: entityhuman.e(this.position.getX() + 0.5D, this.position.getY() + 0.5D,
-						this.position.getZ() + 0.5D) <= 64.0D;
+		return this.world.getTileEntity(this.position) == this && entityhuman.e(this.position.getX() + 0.5D, this.position.getY() + 0.5D,
+				this.position.getZ() + 0.5D) <= 64.0D;
 	}
 
 	@Override
@@ -240,9 +240,7 @@ public class TileEntityDispenser extends TileEntityContainer implements IInvento
 
 	@Override
 	public void l() {
-		for (int i = 0; i < this.items.length; ++i) {
-			this.items[i] = null;
-		}
+		Arrays.fill(this.items, null);
 
 	}
 }

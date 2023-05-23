@@ -61,7 +61,7 @@ public abstract class EntityHuman extends EntityLiving {
 	protected float bF = 0.02F;
 	private int i;
 	private final GameProfile bH;
-	private boolean bI = false;
+	private final boolean bI = false;
 	public EntityFishingHook hookedFish;
 	public boolean affectsSpawning = true; // PaperSpigot
 
@@ -100,10 +100,10 @@ public abstract class EntityHuman extends EntityLiving {
 	@Override
 	protected void h() {
 		super.h();
-		this.datawatcher.a(16, Byte.valueOf((byte) 0));
-		this.datawatcher.a(17, Float.valueOf(0.0F));
-		this.datawatcher.a(18, Integer.valueOf(0));
-		this.datawatcher.a(10, Byte.valueOf((byte) 0));
+		this.datawatcher.a(16, (byte) 0);
+		this.datawatcher.a(17, 0.0F);
+		this.datawatcher.a(18, 0);
+		this.datawatcher.a(10, (byte) 0);
 	}
 
 	public boolean bS() {
@@ -291,10 +291,10 @@ public abstract class EntityHuman extends EntityLiving {
 				if (itemstack.usesData()) {
 					this.world.addParticle(EnumParticle.ITEM_CRACK, vec3d1.a, vec3d1.b, vec3d1.c, vec3d.a,
 							vec3d.b + 0.05D, vec3d.c,
-							new int[] { Item.getId(itemstack.getItem()), itemstack.getData() });
+							Item.getId(itemstack.getItem()), itemstack.getData());
 				} else {
 					this.world.addParticle(EnumParticle.ITEM_CRACK, vec3d1.a, vec3d1.b, vec3d1.c, vec3d.a,
-							vec3d.b + 0.05D, vec3d.c, new int[] { Item.getId(itemstack.getItem()) });
+							vec3d.b + 0.05D, vec3d.c, Item.getId(itemstack.getItem()));
 				}
 			}
 
@@ -366,7 +366,7 @@ public abstract class EntityHuman extends EntityLiving {
 	@Override
 	public void ak() {
 		if (!this.world.isClientSide && this.isSneaking()) {
-			this.mount((Entity) null);
+			this.mount(null);
 			this.setSneaking(false);
 		} else {
 			double d0 = this.locX;
@@ -454,12 +454,12 @@ public abstract class EntityHuman extends EntityLiving {
 				axisalignedbb = this.getBoundingBox().grow(1.0D, 0.5D, 1.0D);
 			}
 
-			List list = this.world.getEntities(this, axisalignedbb);
+			List<Entity> list = this.world.getEntities(this, axisalignedbb);
 
 			if (this.ae()) { // Spigot: Add this.ae() condition (second !this.isDead near bottom of
 								// EntityLiving)
-				for (int i = 0; i < list.size(); ++i) {
-					Entity entity = (Entity) list.get(i);
+				for (Object o : list) {
+					Entity entity = (Entity) o;
 
 					if (!entity.dead) {
 						this.d(entity);
@@ -479,13 +479,13 @@ public abstract class EntityHuman extends EntityLiving {
 	}
 
 	public void setScore(int i) {
-		this.datawatcher.watch(18, Integer.valueOf(i));
+		this.datawatcher.watch(18, i);
 	}
 
 	public void addScore(int i) {
 		int j = this.getScore();
 
-		this.datawatcher.watch(18, Integer.valueOf(j + i));
+		this.datawatcher.watch(18, j + i);
 	}
 
 	@Override
@@ -540,11 +540,8 @@ public abstract class EntityHuman extends EntityLiving {
 			this.b(StatisticList.z);
 		}
 
-		Iterator iterator = collection.iterator();
-
-		while (iterator.hasNext()) {
-			ScoreboardScore scoreboardscore = (ScoreboardScore) iterator.next(); // CraftBukkit - Use our scores instead
-
+		// CraftBukkit - Use our scores instead
+		for (ScoreboardScore scoreboardscore : collection) {
 			scoreboardscore.incrementScore();
 		}
 
@@ -557,10 +554,8 @@ public abstract class EntityHuman extends EntityLiving {
 			int i = scoreboardteam.l().b();
 
 			if (i >= 0 && i < IScoreboardCriteria.i.length) {
-				Iterator iterator = this.getScoreboard().getObjectivesForCriteria(IScoreboardCriteria.i[i]).iterator();
 
-				while (iterator.hasNext()) {
-					ScoreboardObjective scoreboardobjective = (ScoreboardObjective) iterator.next();
+				for (ScoreboardObjective scoreboardobjective : this.getScoreboard().getObjectivesForCriteria(IScoreboardCriteria.i[i])) {
 					ScoreboardScore scoreboardscore = this.getScoreboard().getPlayerScoreForObjective(entity.getName(),
 							scoreboardobjective);
 
@@ -894,9 +889,7 @@ public abstract class EntityHuman extends EntityLiving {
 		ItemStack[] aitemstack = this.inventory.armor;
 		int j = aitemstack.length;
 
-		for (int k = 0; k < j; ++k) {
-			ItemStack itemstack = aitemstack[k];
-
+		for (ItemStack itemstack : aitemstack) {
 			if (itemstack != null) {
 				++i;
 			}
@@ -1010,7 +1003,7 @@ public abstract class EntityHuman extends EntityLiving {
 	}
 
 	public void ca() {
-		this.inventory.setItem(this.inventory.itemInHandIndex, (ItemStack) null);
+		this.inventory.setItem(this.inventory.itemInHandIndex, null);
 	}
 
 	@Override
@@ -1224,7 +1217,7 @@ public abstract class EntityHuman extends EntityLiving {
 
 			double d0 = 8.0D;
 			double d1 = 5.0D;
-			List list = this.world.a(EntityMonster.class,
+			List<EntityMonster> list = this.world.a(EntityMonster.class,
 					new AxisAlignedBB(blockposition.getX() - d0, blockposition.getY() - d1, blockposition.getZ() - d0,
 							blockposition.getX() + d0, blockposition.getY() + d1, blockposition.getZ() + d0));
 
@@ -1234,7 +1227,7 @@ public abstract class EntityHuman extends EntityLiving {
 		}
 
 		if (this.au()) {
-			this.mount((Entity) null);
+			this.mount(null);
 		}
 
 		// CraftBukkit start - fire PlayerBedEnterEvent
@@ -1582,7 +1575,7 @@ public abstract class EntityHuman extends EntityLiving {
 		}
 
 		EntityTypes.MonsterEggInfo entitytypes_monsteregginfo = EntityTypes.eggInfo
-				.get(Integer.valueOf(EntityTypes.a(entityliving)));
+				.get(EntityTypes.a(entityliving));
 
 		if (entitytypes_monsteregginfo != null) {
 			this.b(entitytypes_monsteregginfo.killEntityStatistic);
@@ -1743,7 +1736,7 @@ public abstract class EntityHuman extends EntityLiving {
 
 		this.f = entityhuman.f;
 		this.enderChest = entityhuman.enderChest;
-		this.getDataWatcher().watch(10, Byte.valueOf(entityhuman.getDataWatcher().getByte(10)));
+		this.getDataWatcher().watch(10, entityhuman.getDataWatcher().getByte(10));
 	}
 
 	@Override
@@ -1836,7 +1829,7 @@ public abstract class EntityHuman extends EntityLiving {
 			f = 0.0F;
 		}
 
-		this.getDataWatcher().watch(17, Float.valueOf(f));
+		this.getDataWatcher().watch(17, f);
 	}
 
 	@Override
@@ -1864,7 +1857,7 @@ public abstract class EntityHuman extends EntityLiving {
 		} else {
 			ItemStack itemstack = this.bZ();
 
-			return itemstack != null && itemstack.hasName() ? itemstack.getName().equals(chestlock.b()) : false;
+			return itemstack != null && itemstack.hasName() && itemstack.getName().equals(chestlock.b());
 		}
 	}
 
@@ -1917,39 +1910,35 @@ public abstract class EntityHuman extends EntityLiving {
 			try {
 				EntityHuman.SyntheticClass_1.a[EnumDirection.SOUTH.ordinal()] = 1;
 			} catch (NoSuchFieldError nosuchfielderror) {
-				;
 			}
 
 			try {
 				EntityHuman.SyntheticClass_1.a[EnumDirection.NORTH.ordinal()] = 2;
 			} catch (NoSuchFieldError nosuchfielderror1) {
-				;
 			}
 
 			try {
 				EntityHuman.SyntheticClass_1.a[EnumDirection.WEST.ordinal()] = 3;
 			} catch (NoSuchFieldError nosuchfielderror2) {
-				;
 			}
 
 			try {
 				EntityHuman.SyntheticClass_1.a[EnumDirection.EAST.ordinal()] = 4;
 			} catch (NoSuchFieldError nosuchfielderror3) {
-				;
 			}
 
 		}
 	}
 
-	public static enum EnumBedResult {
+	public enum EnumBedResult {
 
 		OK, NOT_POSSIBLE_HERE, NOT_POSSIBLE_NOW, TOO_FAR_AWAY, OTHER_PROBLEM, NOT_SAFE;
 
-		private EnumBedResult() {
+		EnumBedResult() {
 		}
 	}
 
-	public static enum EnumChatVisibility {
+	public enum EnumChatVisibility {
 
 		FULL(0, "options.chat.visibility.full"), SYSTEM(1, "options.chat.visibility.system"),
 		HIDDEN(2, "options.chat.visibility.hidden");
@@ -1958,7 +1947,7 @@ public abstract class EntityHuman extends EntityLiving {
 		private final int e;
 		private final String f;
 
-		private EnumChatVisibility(int i, String s) {
+		EnumChatVisibility(int i, String s) {
 			this.e = i;
 			this.f = s;
 		}
@@ -1975,10 +1964,8 @@ public abstract class EntityHuman extends EntityLiving {
 			EntityHuman.EnumChatVisibility[] aentityhuman_enumchatvisibility = values();
 			int i = aentityhuman_enumchatvisibility.length;
 
-			for (int j = 0; j < i; ++j) {
-				EntityHuman.EnumChatVisibility entityhuman_enumchatvisibility = aentityhuman_enumchatvisibility[j];
-
-				EntityHuman.EnumChatVisibility.d[entityhuman_enumchatvisibility.e] = entityhuman_enumchatvisibility;
+			for (EnumChatVisibility entityhuman_enumchatvisibility : aentityhuman_enumchatvisibility) {
+				EnumChatVisibility.d[entityhuman_enumchatvisibility.e] = entityhuman_enumchatvisibility;
 			}
 
 		}

@@ -1,6 +1,7 @@
 package net.minecraft.server;
 
 // CraftBukkit start
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.craftbukkit.entity.CraftHumanEntity;
@@ -146,7 +147,7 @@ public abstract class EntityMinecartContainer extends EntityMinecartAbstract imp
 
 	@Override
 	public boolean a(EntityHuman entityhuman) {
-		return this.dead ? false : entityhuman.h(this) <= 64.0D;
+		return !this.dead && entityhuman.h(this) <= 64.0D;
 	}
 
 	@Override
@@ -277,9 +278,7 @@ public abstract class EntityMinecartContainer extends EntityMinecartAbstract imp
 
 	@Override
 	public void l() {
-		for (int i = 0; i < this.items.length; ++i) {
-			this.items[i] = null;
-		}
+		Arrays.fill(this.items, null);
 
 	}
 }

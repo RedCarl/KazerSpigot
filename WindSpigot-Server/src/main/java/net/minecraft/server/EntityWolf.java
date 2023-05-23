@@ -32,7 +32,7 @@ public class EntityWolf extends EntityTameableAnimal {
 		this.goalSelector.a(9, new PathfinderGoalRandomLookaround(this));
 		this.targetSelector.a(1, new PathfinderGoalOwnerHurtByTarget(this));
 		this.targetSelector.a(2, new PathfinderGoalOwnerHurtTarget(this));
-		this.targetSelector.a(3, new PathfinderGoalHurtByTarget(this, true, new Class[0]));
+		this.targetSelector.a(3, new PathfinderGoalHurtByTarget(this, true));
 		this.targetSelector.a(4,
 				new PathfinderGoalRandomTargetNonTamed(this, EntityAnimal.class, false, new Predicate() {
 					public boolean a(Entity entity) {
@@ -88,15 +88,15 @@ public class EntityWolf extends EntityTameableAnimal {
 
 	@Override
 	protected void E() {
-		this.datawatcher.watch(18, Float.valueOf(this.getHealth()));
+		this.datawatcher.watch(18, this.getHealth());
 	}
 
 	@Override
 	protected void h() {
 		super.h();
-		this.datawatcher.a(18, new Float(this.getHealth()));
-		this.datawatcher.a(19, new Byte((byte) 0));
-		this.datawatcher.a(20, new Byte((byte) EnumColor.RED.getColorIndex()));
+		this.datawatcher.a(18, this.getHealth());
+		this.datawatcher.a(19, (byte) 0);
+		this.datawatcher.a(20, (byte) EnumColor.RED.getColorIndex());
 	}
 
 	@Override
@@ -281,7 +281,7 @@ public class EntityWolf extends EntityTameableAnimal {
 						this.heal(itemfood.getNutrition(itemstack),
 								org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason.EATING); // CraftBukkit
 						if (itemstack.count <= 0) {
-							entityhuman.inventory.setItem(entityhuman.inventory.itemInHandIndex, (ItemStack) null);
+							entityhuman.inventory.setItem(entityhuman.inventory.itemInHandIndex, null);
 						}
 
 						return true;
@@ -292,7 +292,7 @@ public class EntityWolf extends EntityTameableAnimal {
 					if (enumcolor != this.getCollarColor()) {
 						this.setCollarColor(enumcolor);
 						if (!entityhuman.abilities.canInstantlyBuild && --itemstack.count <= 0) {
-							entityhuman.inventory.setItem(entityhuman.inventory.itemInHandIndex, (ItemStack) null);
+							entityhuman.inventory.setItem(entityhuman.inventory.itemInHandIndex, null);
 						}
 
 						return true;
@@ -304,7 +304,7 @@ public class EntityWolf extends EntityTameableAnimal {
 				this.bm.setSitting(!this.isSitting());
 				this.aY = false;
 				this.navigation.n();
-				this.setGoalTarget((EntityLiving) null, TargetReason.FORGOT_TARGET, true); // CraftBukkit - reason
+				this.setGoalTarget(null, TargetReason.FORGOT_TARGET, true); // CraftBukkit - reason
 			}
 		} else if (itemstack != null && itemstack.getItem() == Items.BONE && !this.isAngry()) {
 			if (!entityhuman.abilities.canInstantlyBuild) {
@@ -312,7 +312,7 @@ public class EntityWolf extends EntityTameableAnimal {
 			}
 
 			if (itemstack.count <= 0) {
-				entityhuman.inventory.setItem(entityhuman.inventory.itemInHandIndex, (ItemStack) null);
+				entityhuman.inventory.setItem(entityhuman.inventory.itemInHandIndex, null);
 			}
 
 			if (!this.world.isClientSide) {
@@ -321,7 +321,7 @@ public class EntityWolf extends EntityTameableAnimal {
 						&& !CraftEventFactory.callEntityTameEvent(this, entityhuman).isCancelled()) {
 					this.setTamed(true);
 					this.navigation.n();
-					this.setGoalTarget((EntityLiving) null, TargetReason.FORGOT_TARGET, true);
+					this.setGoalTarget(null, TargetReason.FORGOT_TARGET, true);
 					this.bm.setSitting(true);
 					this.setHealth(this.getMaxHealth()); // CraftBukkit - 20.0 -> getMaxHealth()
 					this.setOwnerUUID(entityhuman.getUniqueID().toString());
@@ -341,8 +341,7 @@ public class EntityWolf extends EntityTameableAnimal {
 
 	@Override
 	public boolean d(ItemStack itemstack) {
-		return itemstack == null ? false
-				: (!(itemstack.getItem() instanceof ItemFood) ? false : ((ItemFood) itemstack.getItem()).g());
+		return itemstack != null && (itemstack.getItem() instanceof ItemFood && ((ItemFood) itemstack.getItem()).g());
 	}
 
 	@Override
@@ -358,9 +357,9 @@ public class EntityWolf extends EntityTameableAnimal {
 		byte b0 = this.datawatcher.getByte(16);
 
 		if (flag) {
-			this.datawatcher.watch(16, Byte.valueOf((byte) (b0 | 2)));
+			this.datawatcher.watch(16, (byte) (b0 | 2));
 		} else {
-			this.datawatcher.watch(16, Byte.valueOf((byte) (b0 & -3)));
+			this.datawatcher.watch(16, (byte) (b0 & -3));
 		}
 
 	}
@@ -370,7 +369,7 @@ public class EntityWolf extends EntityTameableAnimal {
 	}
 
 	public void setCollarColor(EnumColor enumcolor) {
-		this.datawatcher.watch(20, Byte.valueOf((byte) (enumcolor.getInvColorIndex() & 15)));
+		this.datawatcher.watch(20, (byte) (enumcolor.getInvColorIndex() & 15));
 	}
 
 	public EntityWolf b(EntityAgeable entityageable) {
@@ -387,9 +386,9 @@ public class EntityWolf extends EntityTameableAnimal {
 
 	public void p(boolean flag) {
 		if (flag) {
-			this.datawatcher.watch(19, Byte.valueOf((byte) 1));
+			this.datawatcher.watch(19, (byte) 1);
 		} else {
-			this.datawatcher.watch(19, Byte.valueOf((byte) 0));
+			this.datawatcher.watch(19, (byte) 0);
 		}
 
 	}
@@ -405,8 +404,7 @@ public class EntityWolf extends EntityTameableAnimal {
 		} else {
 			EntityWolf entitywolf = (EntityWolf) entityanimal;
 
-			return !entitywolf.isTamed() ? false
-					: (entitywolf.isSitting() ? false : this.isInLove() && entitywolf.isInLove());
+			return entitywolf.isTamed() && (!entitywolf.isSitting() && this.isInLove() && entitywolf.isInLove());
 		}
 	}
 
@@ -430,9 +428,8 @@ public class EntityWolf extends EntityTameableAnimal {
 				}
 			}
 
-			return entityliving instanceof EntityHuman && entityliving1 instanceof EntityHuman
-					&& !((EntityHuman) entityliving1).a((EntityHuman) entityliving) ? false
-							: !(entityliving instanceof EntityHorse) || !((EntityHorse) entityliving).isTame();
+			return (!(entityliving instanceof EntityHuman) || !(entityliving1 instanceof EntityHuman)
+					|| ((EntityHuman) entityliving1).a((EntityHuman) entityliving)) && (!(entityliving instanceof EntityHorse) || !((EntityHorse) entityliving).isTame());
 		} else {
 			return false;
 		}

@@ -28,7 +28,7 @@ public class EntitySheep extends EntityAnimal {
 	}, 2, 1);
 	private static final Map<EnumColor, float[]> bo = Maps.newEnumMap(EnumColor.class);
 	private int bp;
-	private PathfinderGoalEatTile bq = new PathfinderGoalEatTile(this);
+	private final PathfinderGoalEatTile bq = new PathfinderGoalEatTile(this);
 
 	public static float[] a(EnumColor enumcolor) {
 		return EntitySheep.bo.get(enumcolor);
@@ -77,7 +77,7 @@ public class EntitySheep extends EntityAnimal {
 	@Override
 	protected void h() {
 		super.h();
-		this.datawatcher.a(16, new Byte((byte) 0));
+		this.datawatcher.a(16, (byte) 0);
 	}
 
 	@Override
@@ -180,7 +180,7 @@ public class EntitySheep extends EntityAnimal {
 	public void setColor(EnumColor enumcolor) {
 		byte b0 = this.datawatcher.getByte(16);
 
-		this.datawatcher.watch(16, Byte.valueOf((byte) (b0 & 240 | enumcolor.getColorIndex() & 15)));
+		this.datawatcher.watch(16, (byte) (b0 & 240 | enumcolor.getColorIndex() & 15));
 	}
 
 	public boolean isSheared() {
@@ -191,9 +191,9 @@ public class EntitySheep extends EntityAnimal {
 		byte b0 = this.datawatcher.getByte(16);
 
 		if (flag) {
-			this.datawatcher.watch(16, Byte.valueOf((byte) (b0 | 16)));
+			this.datawatcher.watch(16, (byte) (b0 | 16));
 		} else {
-			this.datawatcher.watch(16, Byte.valueOf((byte) (b0 & -17)));
+			this.datawatcher.watch(16, (byte) (b0 & -17));
 		}
 
 	}
@@ -245,7 +245,7 @@ public class EntitySheep extends EntityAnimal {
 
 		this.bm.getItem(0).setData(i);
 		this.bm.getItem(1).setData(j);
-		ItemStack itemstack = CraftingManager.getInstance().craft(this.bm, ((EntitySheep) entityanimal).world);
+		ItemStack itemstack = CraftingManager.getInstance().craft(this.bm, entityanimal.world);
 		int k;
 
 		if (itemstack != null && itemstack.getItem() == Items.DYE) {

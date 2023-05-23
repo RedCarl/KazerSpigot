@@ -25,7 +25,6 @@ import com.eatthepath.uuid.FastUUID;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -94,7 +93,7 @@ public class UserCache {
 		minecraftserver.getGameProfileRepository().findProfilesByNames(new String[] { s }, Agent.MINECRAFT,
 				profilelookupcallback);
 		if (!minecraftserver.getOnlineMode() && agameprofile[0] == null) {
-			UUID uuid = EntityHuman.a(new GameProfile((UUID) null, s));
+			UUID uuid = EntityHuman.a(new GameProfile(null, s));
 			GameProfile gameprofile = new GameProfile(uuid, s);
 
 			profilelookupcallback.onProfileLookupSucceeded(gameprofile);
@@ -104,7 +103,7 @@ public class UserCache {
 	}
 
 	public void a(GameProfile gameprofile) {
-		this.a(gameprofile, (Date) null);
+		this.a(gameprofile, null);
 	}
 
 	private void a(GameProfile gameprofile, Date date) {
@@ -119,7 +118,7 @@ public class UserCache {
 		}
 
 		String s = gameprofile.getName().toLowerCase(Locale.ROOT);
-		UserCache.UserCacheEntry usercache_usercacheentry = new UserCache.UserCacheEntry(gameprofile, date, null);
+		UserCache.UserCacheEntry usercache_usercacheentry = new UserCacheEntry(gameprofile, date, null);
 
 		if (this.d.containsKey(uuid)) {
 			UserCache.UserCacheEntry usercache_usercacheentry1 = this.d.get(uuid);
@@ -166,9 +165,9 @@ public class UserCache {
 	}
 
 	public String[] a() {
-		ArrayList arraylist = Lists.newArrayList(this.c.keySet());
+		ArrayList<String> arraylist = Lists.newArrayList(this.c.keySet());
 
-		return (String[]) arraylist.toArray(new String[arraylist.size()]);
+		return (String[]) arraylist.toArray(new String[0]);
 	}
 
 	public GameProfile a(UUID uuid) {
@@ -195,15 +194,14 @@ public class UserCache {
 
 		try {
 			bufferedreader = Files.newReader(this.g, Charsets.UTF_8);
-			List list = (List) this.b.fromJson(bufferedreader, UserCache.h);
+			List list = this.b.fromJson(bufferedreader, UserCache.h);
 
 			this.c.clear();
 			this.d.clear();
 			this.e.clear();
-			Iterator iterator = Lists.reverse(list).iterator();
 
-			while (iterator.hasNext()) {
-				UserCache.UserCacheEntry usercache_usercacheentry = (UserCache.UserCacheEntry) iterator.next();
+			for (Object o : Lists.reverse(list)) {
+				UserCacheEntry usercache_usercacheentry = (UserCacheEntry) o;
 
 				if (usercache_usercacheentry != null) {
 					this.a(usercache_usercacheentry.a(), usercache_usercacheentry.b());
@@ -227,11 +225,7 @@ public class UserCache {
 		try {
 			bufferedwriter = Files.newWriter(this.g, Charsets.UTF_8);
 			bufferedwriter.write(s);
-			return;
-		} catch (FileNotFoundException filenotfoundexception) {
-			return;
 		} catch (IOException ioexception) {
-			;
 		} finally {
 			IOUtils.closeQuietly(bufferedwriter);
 		}
@@ -240,12 +234,10 @@ public class UserCache {
 
 	private List<UserCache.UserCacheEntry> a(int i) {
 		ArrayList arraylist = Lists.newArrayList();
-		ArrayList arraylist1 = Lists.newArrayList(Iterators.limit(this.e.iterator(), i));
-		Iterator iterator = arraylist1.iterator();
+		ArrayList<GameProfile> arraylist1 = Lists.newArrayList(Iterators.limit(this.e.iterator(), i));
 
-		while (iterator.hasNext()) {
-			GameProfile gameprofile = (GameProfile) iterator.next();
-			UserCache.UserCacheEntry usercache_usercacheentry = this.b(gameprofile.getId());
+		for (GameProfile gameprofile : arraylist1) {
+			UserCacheEntry usercache_usercacheentry = this.b(gameprofile.getId());
 
 			if (usercache_usercacheentry != null) {
 				arraylist.add(usercache_usercacheentry);
@@ -255,7 +247,7 @@ public class UserCache {
 		return arraylist;
 	}
 
-	class UserCacheEntry {
+	static class UserCacheEntry {
 
 		private final GameProfile b;
 		private final Date c;
@@ -326,7 +318,7 @@ public class UserCache {
 							return null;
 						}
 
-						UserCache.UserCacheEntry usercache_usercacheentry = UserCache.this.new UserCacheEntry(
+						UserCache.UserCacheEntry usercache_usercacheentry = new UserCacheEntry(
 								new GameProfile(uuid, s1), date, null);
 
 						return usercache_usercacheentry;

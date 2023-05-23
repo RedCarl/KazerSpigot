@@ -21,7 +21,7 @@ public class ItemMinecart extends Item {
 			IBlockData iblockdata = world.getType(blockposition);
 			BlockMinecartTrackAbstract.EnumTrackPosition blockminecarttrackabstract_enumtrackposition = iblockdata
 					.getBlock() instanceof BlockMinecartTrackAbstract
-							? (BlockMinecartTrackAbstract.EnumTrackPosition) iblockdata
+							? iblockdata
 									.get(((BlockMinecartTrackAbstract) iblockdata.getBlock()).n())
 							: BlockMinecartTrackAbstract.EnumTrackPosition.NORTH_SOUTH;
 			double d3;
@@ -41,7 +41,7 @@ public class ItemMinecart extends Item {
 				IBlockData iblockdata1 = world.getType(blockposition.down());
 				BlockMinecartTrackAbstract.EnumTrackPosition blockminecarttrackabstract_enumtrackposition1 = iblockdata1
 						.getBlock() instanceof BlockMinecartTrackAbstract
-								? (BlockMinecartTrackAbstract.EnumTrackPosition) iblockdata1
+								? iblockdata1
 										.get(((BlockMinecartTrackAbstract) iblockdata1.getBlock()).n())
 								: BlockMinecartTrackAbstract.EnumTrackPosition.NORTH_SOUTH;
 
@@ -120,7 +120,7 @@ public class ItemMinecart extends Item {
 			if (!world.isClientSide) {
 				BlockMinecartTrackAbstract.EnumTrackPosition blockminecarttrackabstract_enumtrackposition = iblockdata
 						.getBlock() instanceof BlockMinecartTrackAbstract
-								? (BlockMinecartTrackAbstract.EnumTrackPosition) iblockdata
+								? iblockdata
 										.get(((BlockMinecartTrackAbstract) iblockdata.getBlock()).n())
 								: BlockMinecartTrackAbstract.EnumTrackPosition.NORTH_SOUTH;
 				double d0 = 0.0D;

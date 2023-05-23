@@ -21,14 +21,14 @@ public final class CraftChatMessage {
 
 	private static final Pattern LINK_PATTERN = Pattern
 			.compile("((?:(?:https?):\\/\\/)?(?:[-\\w_\\.]{2,}\\.[a-z]{2,4}.*?(?=[\\.\\?!,;:]?(?:["
-					+ String.valueOf(org.bukkit.ChatColor.COLOR_CHAR) + " \\n]|$))))");
+					+ org.bukkit.ChatColor.COLOR_CHAR + " \\n]|$))))");
 
 	private static class StringMessage {
 		private static final Map<Character, EnumChatFormat> formatMap;
 		private static final Pattern INCREMENTAL_PATTERN = Pattern.compile("("
-				+ String.valueOf(org.bukkit.ChatColor.COLOR_CHAR)
+				+ org.bukkit.ChatColor.COLOR_CHAR
 				+ "[0-9a-fk-or])|(\\n)|((?:(?:https?):\\/\\/)?(?:[-\\w_\\.]{2,}\\.[a-z]{2,4}.*?(?=[\\.\\?!,;:]?(?:["
-				+ String.valueOf(org.bukkit.ChatColor.COLOR_CHAR) + " \\n]|$))))", Pattern.CASE_INSENSITIVE);
+				+ org.bukkit.ChatColor.COLOR_CHAR + " \\n]|$))))", Pattern.CASE_INSENSITIVE);
 		// private static final Pattern INCREMENTAL_PATTERN =
 		// Pattern.compile("(§[0-9a-fk-or])|(\\n)|(https?://[^\\s/$.?#].[^\\s§]*)",
 		// Pattern.CASE_INSENSITIVE); // KigPaper - better regex
@@ -106,7 +106,7 @@ public final class CraftChatMessage {
 					}
 					modifier.setChatClickable(new ChatClickable(EnumClickAction.OPEN_URL, match));
 					appendNewComponent(matcher.end(groupId));
-					modifier.setChatClickable((ChatClickable) null);
+					modifier.setChatClickable(null);
 				}
 				currentIndex = matcher.end(groupId);
 			}
@@ -115,7 +115,7 @@ public final class CraftChatMessage {
 				appendNewComponent(message.length());
 			}
 
-			output = list.toArray(new IChatBaseComponent[list.size()]);
+			output = list.toArray(new IChatBaseComponent[0]);
 		}
 
 		private void appendNewComponent(int index) {
@@ -237,7 +237,7 @@ public final class CraftChatMessage {
 			}
 		}
 
-		List extras = component.a();
+		List<IChatBaseComponent> extras = component.a();
 		for (int i = 0; i < extras.size(); i++) {
 			IChatBaseComponent comp = (IChatBaseComponent) extras.get(i);
 			if (comp.getChatModifier() != null && comp.getChatModifier().h() == null) {

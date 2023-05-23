@@ -1,5 +1,6 @@
 package net.minecraft.server;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -178,9 +179,8 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
 
 	@Override
 	public boolean a(EntityHuman entityhuman) {
-		return this.world.getTileEntity(this.position) != this ? false
-				: entityhuman.e(this.position.getX() + 0.5D, this.position.getY() + 0.5D,
-						this.position.getZ() + 0.5D) <= 64.0D;
+		return this.world.getTileEntity(this.position) == this && entityhuman.e(this.position.getX() + 0.5D, this.position.getY() + 0.5D,
+				this.position.getZ() + 0.5D) <= 64.0D;
 	}
 
 	@Override
@@ -250,9 +250,7 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
 		ItemStack[] aitemstack = this.items;
 		int i = aitemstack.length;
 
-		for (int j = 0; j < i; ++j) {
-			ItemStack itemstack = aitemstack[j];
-
+		for (ItemStack itemstack : aitemstack) {
 			if (itemstack != null) {
 				return false;
 			}
@@ -271,9 +269,7 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
 		ItemStack[] aitemstack = this.items;
 		int i = aitemstack.length;
 
-		for (int j = 0; j < i; ++j) {
-			ItemStack itemstack = aitemstack[j];
-
+		for (ItemStack itemstack : aitemstack) {
 			if (itemstack == null || itemstack.count != itemstack.getMaxStackSize()) {
 				return false;
 			}
@@ -361,8 +357,8 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
 			IWorldInventory iworldinventory = (IWorldInventory) iinventory;
 			int[] aint = iworldinventory.getSlotsForFace(enumdirection);
 
-			for (int i = 0; i < aint.length; ++i) {
-				ItemStack itemstack = iworldinventory.getItem(aint[i]);
+			for (int j : aint) {
+				ItemStack itemstack = iworldinventory.getItem(j);
 
 				if (itemstack == null || itemstack.count != itemstack.getMaxStackSize()) {
 					return false;
@@ -388,8 +384,8 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
 			IWorldInventory iworldinventory = (IWorldInventory) iinventory;
 			int[] aint = iworldinventory.getSlotsForFace(enumdirection);
 
-			for (int i = 0; i < aint.length; ++i) {
-				if (iworldinventory.getItem(aint[i]) != null) {
+			for (int j : aint) {
+				if (iworldinventory.getItem(j) != null) {
 					return false;
 				}
 			}
@@ -433,8 +429,8 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
 				IWorldInventory iworldinventory = (IWorldInventory) iinventory;
 				int[] aint = iworldinventory.getSlotsForFace(enumdirection);
 
-				for (int i = 0; i < aint.length; ++i) {
-					if (a(ihopper, iinventory, aint[i], enumdirection)) {
+				for (int j : aint) {
+					if (a(ihopper, iinventory, j, enumdirection)) {
 						return true;
 					}
 				}
@@ -456,11 +452,8 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
 																														// in
 																														// 'pull
 																														// mode'
-			Iterator iterator = a(ihopper.getWorld(), ihopper.A(), ihopper.B() + 1.0D, ihopper.C()).iterator();
 
-			while (iterator.hasNext()) {
-				EntityItem entityitem = (EntityItem) iterator.next();
-
+			for (EntityItem entityitem : a(ihopper.getWorld(), ihopper.A(), ihopper.B() + 1.0D, ihopper.C())) {
 				if (a(ihopper, entityitem)) {
 					return true;
 				}
@@ -551,7 +544,7 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
 			}
 			// CraftBukkit end
 			ItemStack itemstack = entityitem.getItemStack().cloneItemStack();
-			ItemStack itemstack1 = addItem(iinventory, itemstack, (EnumDirection) null);
+			ItemStack itemstack1 = addItem(iinventory, itemstack, null);
 
 			if (itemstack1 != null && itemstack1.count != 0) {
 				entityitem.setItemStack(itemstack1);
@@ -588,9 +581,8 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
 	}
 
 	private static boolean a(IInventory iinventory, ItemStack itemstack, int i, EnumDirection enumdirection) {
-		return !iinventory.b(i, itemstack) ? false
-				: !(iinventory instanceof IWorldInventory)
-						|| ((IWorldInventory) iinventory).canPlaceItemThroughFace(i, itemstack, enumdirection);
+		return iinventory.b(i, itemstack) && (!(iinventory instanceof IWorldInventory)
+				|| ((IWorldInventory) iinventory).canPlaceItemThroughFace(i, itemstack, enumdirection));
 	}
 
 	private static boolean b(IInventory iinventory, ItemStack itemstack, int i, EnumDirection enumdirection) {
@@ -707,10 +699,7 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
 	// TacoSpigot end
 
 	private static boolean a(ItemStack itemstack, ItemStack itemstack1) {
-		return itemstack.getItem() != itemstack1.getItem() ? false
-				: (itemstack.getData() != itemstack1.getData() ? false
-						: (itemstack.count > itemstack.getMaxStackSize() ? false
-								: ItemStack.equals(itemstack, itemstack1)));
+		return itemstack.getItem() == itemstack1.getItem() && (itemstack.getData() == itemstack1.getData() && (itemstack.count <= itemstack.getMaxStackSize() && ItemStack.equals(itemstack, itemstack1)));
 	}
 
 	@Override
@@ -770,9 +759,7 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
 
 	@Override
 	public void l() {
-		for (int i = 0; i < this.items.length; ++i) {
-			this.items[i] = null;
-		}
+		Arrays.fill(this.items, null);
 
 	}
 }

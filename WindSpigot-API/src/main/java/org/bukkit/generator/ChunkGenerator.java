@@ -47,29 +47,29 @@ public abstract class ChunkGenerator {
 	}
 
 	@Deprecated
-	/**
-	 * Shapes the chunk for the given coordinates.
-	 * <p>
-	 * This method should return a byte[32768] in the following format:
-	 * 
-	 * <pre>
-	 * for (int x = 0; x &lt; 16; x++) {
-	 * 	for (int z = 0; z &lt; 16; z++) {
-	 * 		for (int y = 0; y &lt; 128; y++) {
-	 * 			// result[(x * 16 + z) * 128 + y] = ??;
-	 * 		}
-	 * 	}
-	 * }
-	 * </pre>
-	 * <p>
-	 * Note that this method should <b>never</b> attempt to get the Chunk at the
-	 * passed coordinates, as doing so may cause an infinite loop
-	 * <p>
-	 * Note this deprecated method will only be called when both
-	 * generateExtBlockSections() and generateBlockSections() are unimplemented and
-	 * return null.
-	 *
-	 * @param world  The world this chunk will be used for
+	/*
+	  Shapes the chunk for the given coordinates.
+	  <p>
+	  This method should return a byte[32768] in the following format:
+
+	  <pre>
+	  for (int x = 0; x &lt; 16; x++) {
+	  	for (int z = 0; z &lt; 16; z++) {
+	  		for (int y = 0; y &lt; 128; y++) {
+	  			// result[(x * 16 + z) * 128 + y] = ??;
+	  		}
+	  	}
+	  }
+	  </pre>
+	  <p>
+	  Note that this method should <b>never</b> attempt to get the Chunk at the
+	  passed coordinates, as doing so may cause an infinite loop
+	  <p>
+	  Note this deprecated method will only be called when both
+	  generateExtBlockSections() and generateBlockSections() are unimplemented and
+	  return null.
+
+	  @param world  The world this chunk will be used for
 	 * @param random The random generator to use
 	 * @param x      The X-coordinate of the chunk
 	 * @param z      The Z-coordinate of the chunk
@@ -236,7 +236,7 @@ public abstract class ChunkGenerator {
 
 	/**
 	 * Shapes the chunk for the given coordinates.
-	 * 
+	 * <p>
 	 * This method must return a ChunkData.
 	 * <p>
 	 * Notes:
@@ -322,19 +322,19 @@ public abstract class ChunkGenerator {
 	/**
 	 * Data for a Chunk.
 	 */
-	public static interface ChunkData {
+	public interface ChunkData {
 		/**
 		 * Get the maximum height for the chunk.
-		 * 
+		 * <p>
 		 * Setting blocks at or above this height will do nothing.
 		 * 
 		 * @return the maximum height
 		 */
-		public int getMaxHeight();
+        int getMaxHeight();
 
 		/**
 		 * Set the block at x,y,z in the chunk data to material.
-		 *
+		 * <p>
 		 * Note: setting blocks outside the chunk's bounds does nothing.
 		 *
 		 * @param x        the x location in the chunk from 0-15 inclusive
@@ -343,11 +343,11 @@ public abstract class ChunkGenerator {
 		 * @param z        the z location in the chunk from 0-15 inclusive
 		 * @param material the type to set the block to
 		 */
-		public void setBlock(int x, int y, int z, Material material);
+        void setBlock(int x, int y, int z, Material material);
 
 		/**
 		 * Set the block at x,y,z in the chunk data to material.
-		 *
+		 * <p>
 		 * Setting blocks outside the chunk's bounds does nothing.
 		 *
 		 * @param x        the x location in the chunk from 0-15 inclusive
@@ -356,12 +356,12 @@ public abstract class ChunkGenerator {
 		 * @param z        the z location in the chunk from 0-15 inclusive
 		 * @param material the type to set the block to
 		 */
-		public void setBlock(int x, int y, int z, MaterialData material);
+        void setBlock(int x, int y, int z, MaterialData material);
 
 		/**
 		 * Set a region of this chunk from xMin, yMin, zMin (inclusive) to xMax, yMax,
 		 * zMax (exclusive) to material.
-		 *
+		 * <p>
 		 * Setting blocks outside the chunk's bounds does nothing.
 		 *
 		 * @param xMin     minimum x location (inclusive) in the chunk to set
@@ -372,12 +372,12 @@ public abstract class ChunkGenerator {
 		 * @param zMax     maximum z location (exclusive) in the chunk to set
 		 * @param material the type to set the blocks to
 		 */
-		public void setRegion(int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, Material material);
+        void setRegion(int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, Material material);
 
 		/**
 		 * Set a region of this chunk from xMin, yMin, zMin (inclusive) to xMax, yMax,
 		 * zMax (exclusive) to material.
-		 *
+		 * <p>
 		 * Setting blocks outside the chunk's bounds does nothing.
 		 *
 		 * @param xMin     minimum x location (inclusive) in the chunk to set
@@ -388,11 +388,11 @@ public abstract class ChunkGenerator {
 		 * @param zMax     maximum z location (exclusive) in the chunk to set
 		 * @param material the type to set the blocks to
 		 */
-		public void setRegion(int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, MaterialData material);
+        void setRegion(int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, MaterialData material);
 
 		/**
 		 * Get the type of the block at x, y, z.
-		 *
+		 * <p>
 		 * Getting blocks outside the chunk's bounds returns air.
 		 *
 		 * @param x the x location in the chunk from 0-15 inclusive
@@ -402,11 +402,11 @@ public abstract class ChunkGenerator {
 		 * @return the type of the block or Material.AIR if x, y or z are outside the
 		 *         chunk's bounds
 		 */
-		public Material getType(int x, int y, int z);
+        Material getType(int x, int y, int z);
 
 		/**
 		 * Get the type and data of the block at x, y ,z.
-		 *
+		 * <p>
 		 * Getting blocks outside the chunk's bounds returns air.
 		 *
 		 * @param x the x location in the chunk from 0-15 inclusive
@@ -416,12 +416,12 @@ public abstract class ChunkGenerator {
 		 * @return the type and data of the block or the MaterialData for air if x, y or
 		 *         z are outside the chunk's bounds
 		 */
-		public MaterialData getTypeAndData(int x, int y, int z);
+        MaterialData getTypeAndData(int x, int y, int z);
 
 		/**
 		 * Set a region of this chunk from xMin, yMin, zMin (inclusive) to xMax, yMax,
 		 * zMax (exclusive) to block id.
-		 *
+		 * <p>
 		 * Setting blocks outside the chunk's bounds does nothing.
 		 *
 		 * @param xMin    minimum x location (inclusive) in the chunk to set
@@ -434,12 +434,12 @@ public abstract class ChunkGenerator {
 		 * @deprecated Uses magic values.
 		 */
 		@Deprecated
-		public void setRegion(int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, int blockId);
+        void setRegion(int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, int blockId);
 
 		/**
 		 * Set a region of this chunk from xMin, yMin, zMin (inclusive) to xMax, yMax,
 		 * zMax (exclusive) to block id and data.
-		 *
+		 * <p>
 		 * Setting blocks outside the chunk's bounds does nothing.
 		 *
 		 * @param xMin    minimum x location (inclusive) in the chunk to set
@@ -453,11 +453,11 @@ public abstract class ChunkGenerator {
 		 * @deprecated Uses magic values.
 		 */
 		@Deprecated
-		public void setRegion(int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, int blockId, int data);
+        void setRegion(int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, int blockId, int data);
 
 		/**
 		 * Set the block at x,y,z in the chunk data to blockId.
-		 *
+		 * <p>
 		 * Setting blocks outside the chunk's bounds does nothing.
 		 *
 		 * @param x       the x location in the chunk from 0-15 inclusive
@@ -468,11 +468,11 @@ public abstract class ChunkGenerator {
 		 * @deprecated Uses magic values
 		 */
 		@Deprecated
-		public void setBlock(int x, int y, int z, int blockId);
+        void setBlock(int x, int y, int z, int blockId);
 
 		/**
 		 * Set the block at x,y,z in the chunk data to blockId.
-		 *
+		 * <p>
 		 * Setting blocks outside the chunk's bounds does nothing.
 		 *
 		 * @param x       the x location in the chunk from 0-15 inclusive
@@ -484,11 +484,11 @@ public abstract class ChunkGenerator {
 		 * @deprecated Uses magic values
 		 */
 		@Deprecated
-		public void setBlock(int x, int y, int z, int blockId, byte data);
+        void setBlock(int x, int y, int z, int blockId, byte data);
 
 		/**
 		 * Get the blockId at x,y,z in the chunk data.
-		 *
+		 * <p>
 		 * Getting blocks outside the chunk's bounds returns 0.
 		 *
 		 * @param x the x location in the chunk from 0-15 inclusive
@@ -499,11 +499,11 @@ public abstract class ChunkGenerator {
 		 * @deprecated Uses magic values
 		 */
 		@Deprecated
-		public int getTypeId(int x, int y, int z);
+        int getTypeId(int x, int y, int z);
 
 		/**
 		 * Get the block data at x,y,z in the chunk data.
-		 *
+		 * <p>
 		 * Getting blocks outside the chunk's bounds returns 0.
 		 *
 		 * @param x the x location in the chunk from 0-15 inclusive
@@ -515,6 +515,6 @@ public abstract class ChunkGenerator {
 		 * @deprecated Uses magic values
 		 */
 		@Deprecated
-		public byte getData(int x, int y, int z);
+        byte getData(int x, int y, int z);
 	}
 }

@@ -5,8 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 // CraftBukkit start
 import java.util.Random;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import ga.windpvp.windspigot.random.FastRandom;
 import org.apache.logging.log4j.LogManager;
@@ -115,11 +113,8 @@ public class ChunkProviderServer implements IChunkProvider {
 	}
 
 	public void b() {
-		Iterator iterator = this.chunks.values().iterator();
 
-		while (iterator.hasNext()) {
-			Chunk chunk = (Chunk) iterator.next();
-
+		for (Chunk chunk : this.chunks.values()) {
 			this.queueUnload(chunk.locX, chunk.locZ);
 		}
 
@@ -214,7 +209,7 @@ public class ChunkProviderServer implements IChunkProvider {
 						CrashReportSystemDetails crashreportsystemdetails = crashreport.a("Chunk to be generated");
 
 						crashreportsystemdetails.a("Location",
-								String.format("%d,%d", new Object[] { Integer.valueOf(i), Integer.valueOf(j) }));
+								String.format("%d,%d", i, j));
 						crashreportsystemdetails.a("Position hash", key); // CraftBukkit - Use LongHash
 						crashreportsystemdetails.a("Generator", this.chunkProvider.getName());
 						throw new ReportedException(crashreport);
@@ -311,7 +306,7 @@ public class ChunkProviderServer implements IChunkProvider {
 			try {
 				this.chunkLoader.b(this.world, chunk);
 			} catch (Exception exception) {
-				ChunkProviderServer.b.error("Couldn\'t save entities", exception);
+				ChunkProviderServer.b.error("Couldn't save entities", exception);
 			}
 
 		}
@@ -323,9 +318,9 @@ public class ChunkProviderServer implements IChunkProvider {
 				chunk.setLastSaved(this.world.getTime());
 				this.chunkLoader.a(this.world, chunk);
 			} catch (IOException ioexception) {
-				ChunkProviderServer.b.error("Couldn\'t save chunk", ioexception);
+				ChunkProviderServer.b.error("Couldn't save chunk", ioexception);
 			} catch (ExceptionWorldConflict exceptionworldconflict) {
-				ChunkProviderServer.b.error("Couldn\'t save chunk; already in use by another instance of Minecraft?",
+				ChunkProviderServer.b.error("Couldn't save chunk; already in use by another instance of Minecraft?",
 						exceptionworldconflict);
 			}
 
@@ -388,9 +383,7 @@ public class ChunkProviderServer implements IChunkProvider {
 		int i = 0;
 
 		// CraftBukkit start
-		Iterator iterator = this.chunks.values().iterator();
-		while (iterator.hasNext()) {
-			Chunk chunk = (Chunk) iterator.next();
+		for (Chunk chunk : this.chunks.values()) {
 			// CraftBukkit end
 
 			if (flag) {
@@ -401,7 +394,7 @@ public class ChunkProviderServer implements IChunkProvider {
 				this.saveChunk(chunk);
 				chunk.f(false);
 				++i;
-				if (i == 24 && !flag && false) { // Spigot
+				if (false) { // Spigot
 					return false;
 				}
 			}

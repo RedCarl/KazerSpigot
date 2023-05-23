@@ -477,11 +477,11 @@ public final class PluginDescriptionFile {
 	 * In the plugin.yml, this entry is named <code>website</code>.
 	 * <p>
 	 * Example: <blockquote>
-	 * 
+	 *
 	 * <pre>
-	 * website: http://www.curse.com/server-mods/minecraft/myplugin
+	 * website: <a href="http://www.curse.com/server-mods/minecraft/myplugin">...</a>
 	 * </pre>
-	 * 
+	 *
 	 * </blockquote>
 	 *
 	 * @return description of this plugin, or null if not specified
@@ -736,8 +736,7 @@ public final class PluginDescriptionFile {
 	 * <td>String</td>
 	 * <td>This message is displayed to a player when the
 	 * {@link PluginCommand#setExecutor(CommandExecutor)}
-	 * {@linkplain CommandExecutor#onCommand(CommandSender,Command,String,String[])
-	 * returns false}. &lt;command&gt; is a macro that is replaced the command
+	 * . &lt;command&gt; is a macro that is replaced the command
 	 * issued.</td>
 	 * <td><blockquote>
 	 * 
@@ -931,7 +930,7 @@ public final class PluginDescriptionFile {
 	public List<Permission> getPermissions() {
 		if (permissions == null) {
 			if (lazyPermissions == null) {
-				permissions = ImmutableList.<Permission>of();
+				permissions = ImmutableList.of();
 			} else {
 				permissions = ImmutableList.copyOf(Permission.loadPermissions(lazyPermissions,
 						"Permission node '%s' in plugin description file for " + getFullName() + " is invalid",
@@ -1078,15 +1077,15 @@ public final class PluginDescriptionFile {
 
 		if (map.get("commands") != null) {
 			ImmutableMap.Builder<String, Map<String, Object>> commandsBuilder = ImmutableMap
-					.<String, Map<String, Object>>builder();
+					.builder();
 			try {
 				for (Map.Entry<?, ?> command : ((Map<?, ?>) map.get("commands")).entrySet()) {
-					ImmutableMap.Builder<String, Object> commandBuilder = ImmutableMap.<String, Object>builder();
+					ImmutableMap.Builder<String, Object> commandBuilder = ImmutableMap.builder();
 					if (command.getValue() != null) {
 						for (Map.Entry<?, ?> commandEntry : ((Map<?, ?>) command.getValue()).entrySet()) {
 							if (commandEntry.getValue() instanceof Iterable) {
 								// This prevents internal alias list changes
-								ImmutableList.Builder<Object> commandSubList = ImmutableList.<Object>builder();
+								ImmutableList.Builder<Object> commandSubList = ImmutableList.builder();
 								for (Object commandSubListItem : (Iterable<?>) commandEntry.getValue()) {
 									if (commandSubListItem != null) {
 										commandSubList.add(commandSubListItem);
@@ -1141,7 +1140,7 @@ public final class PluginDescriptionFile {
 		}
 
 		if (map.get("authors") != null) {
-			ImmutableList.Builder<String> authorsBuilder = ImmutableList.<String>builder();
+			ImmutableList.Builder<String> authorsBuilder = ImmutableList.builder();
 			if (map.get("author") != null) {
 				authorsBuilder.add(map.get("author").toString());
 			}
@@ -1158,7 +1157,7 @@ public final class PluginDescriptionFile {
 		} else if (map.get("author") != null) {
 			authors = ImmutableList.of(map.get("author").toString());
 		} else {
-			authors = ImmutableList.<String>of();
+			authors = ImmutableList.of();
 		}
 
 		if (map.get("default-permission") != null) {
@@ -1201,7 +1200,7 @@ public final class PluginDescriptionFile {
 			return ImmutableList.of();
 		}
 
-		final ImmutableList.Builder<String> builder = ImmutableList.<String>builder();
+		final ImmutableList.Builder<String> builder = ImmutableList.builder();
 		try {
 			for (final Object entry : (Iterable<?>) value) {
 				builder.add(entry.toString().replace(' ', '_'));

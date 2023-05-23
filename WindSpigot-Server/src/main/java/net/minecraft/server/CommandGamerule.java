@@ -36,7 +36,7 @@ public class CommandGamerule extends CommandAbstract {
 
 		case 1:
 			if (!gamerules.contains(s)) {
-				throw new CommandException("commands.gamerule.norule", new Object[] { s });
+				throw new CommandException("commands.gamerule.norule", s);
 			}
 
 			String s2 = gamerules.get(s);
@@ -47,12 +47,12 @@ public class CommandGamerule extends CommandAbstract {
 
 		default:
 			if (gamerules.a(s, GameRules.EnumGameRuleType.BOOLEAN_VALUE) && !"true".equals(s1) && !"false".equals(s1)) {
-				throw new CommandException("commands.generic.boolean.invalid", new Object[] { s1 });
+				throw new CommandException("commands.generic.boolean.invalid", s1);
 			}
 
 			gamerules.set(s, s1);
 			a(gamerules, s);
-			a(icommandlistener, this, "commands.gamerule.success", new Object[0]);
+			a(icommandlistener, this, "commands.gamerule.success");
 		}
 
 	}
@@ -60,11 +60,8 @@ public class CommandGamerule extends CommandAbstract {
 	public static void a(GameRules gamerules, String s) {
 		if ("reducedDebugInfo".equals(s)) {
 			int i = gamerules.getBoolean(s) ? 22 : 23;
-			Iterator iterator = MinecraftServer.getServer().getPlayerList().v().iterator();
 
-			while (iterator.hasNext()) {
-				EntityPlayer entityplayer = (EntityPlayer) iterator.next();
-
+			for (EntityPlayer entityplayer : MinecraftServer.getServer().getPlayerList().v()) {
 				entityplayer.playerConnection.sendPacket(new PacketPlayOutEntityStatus(entityplayer, (byte) i));
 			}
 		}
@@ -80,7 +77,7 @@ public class CommandGamerule extends CommandAbstract {
 				GameRules gamerules = this.d();
 
 				if (gamerules.a(astring[0], GameRules.EnumGameRuleType.BOOLEAN_VALUE)) {
-					return a(astring, new String[] { "true", "false" });
+					return a(astring, "true", "false");
 				}
 			}
 

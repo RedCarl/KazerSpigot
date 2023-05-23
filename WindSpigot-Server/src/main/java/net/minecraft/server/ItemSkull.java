@@ -1,7 +1,5 @@
 package net.minecraft.server;
 
-import java.util.UUID;
-
 import com.mojang.authlib.GameProfile;
 
 public class ItemSkull extends Item {
@@ -67,7 +65,7 @@ public class ItemSkull extends Item {
 											.deserialize(nbttagcompound.getCompound("SkullOwner"));
 								} else if (nbttagcompound.hasKeyOfType("SkullOwner", 8)
 										&& nbttagcompound.getString("SkullOwner").length() > 0) {
-									gameprofile = new GameProfile((UUID) null, nbttagcompound.getString("SkullOwner"));
+									gameprofile = new GameProfile(null, nbttagcompound.getString("SkullOwner"));
 								}
 							}
 
@@ -109,14 +107,14 @@ public class ItemSkull extends Item {
 		if (itemstack.getData() == 3 && itemstack.hasTag()) {
 			if (itemstack.getTag().hasKeyOfType("SkullOwner", 8)) {
 				return LocaleI18n.a("item.skull.player.name",
-						new Object[] { itemstack.getTag().getString("SkullOwner") });
+						itemstack.getTag().getString("SkullOwner"));
 			}
 
 			if (itemstack.getTag().hasKeyOfType("SkullOwner", 10)) {
 				NBTTagCompound nbttagcompound = itemstack.getTag().getCompound("SkullOwner");
 
 				if (nbttagcompound.hasKeyOfType("Name", 8)) {
-					return LocaleI18n.a("item.skull.player.name", new Object[] { nbttagcompound.getString("Name") });
+					return LocaleI18n.a("item.skull.player.name", nbttagcompound.getString("Name"));
 				}
 			}
 		}
@@ -128,7 +126,7 @@ public class ItemSkull extends Item {
 	public boolean a(final NBTTagCompound nbttagcompound) { // Spigot - make final
 		super.a(nbttagcompound);
 		if (nbttagcompound.hasKeyOfType("SkullOwner", 8) && nbttagcompound.getString("SkullOwner").length() > 0) {
-			GameProfile gameprofile = new GameProfile((UUID) null, nbttagcompound.getString("SkullOwner"));
+			GameProfile gameprofile = new GameProfile(null, nbttagcompound.getString("SkullOwner"));
 
 			// Spigot start
 			TileEntitySkull.b(gameprofile, new com.google.common.base.Predicate<GameProfile>() {

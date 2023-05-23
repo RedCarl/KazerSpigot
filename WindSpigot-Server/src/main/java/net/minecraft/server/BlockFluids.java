@@ -12,7 +12,7 @@ public abstract class BlockFluids extends Block {
 
 	protected BlockFluids(Material material) {
 		super(material);
-		this.j(this.blockStateList.getBlockData().set(BlockFluids.LEVEL, Integer.valueOf(0)));
+		this.j(this.blockStateList.getBlockData().set(BlockFluids.LEVEL, 0));
 		this.a(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 		this.a(true);
 	}
@@ -32,7 +32,7 @@ public abstract class BlockFluids extends Block {
 
 	protected int e(IBlockAccess iblockaccess, BlockPosition blockposition) {
 		return iblockaccess.getType(blockposition).getBlock().getMaterial() == this.material
-				? iblockaccess.getType(blockposition).get(BlockFluids.LEVEL).intValue()
+				? iblockaccess.getType(blockposition).get(BlockFluids.LEVEL)
 				: -1;
 	}
 
@@ -54,16 +54,14 @@ public abstract class BlockFluids extends Block {
 
 	@Override
 	public boolean a(IBlockData iblockdata, boolean flag) {
-		return flag && iblockdata.get(BlockFluids.LEVEL).intValue() == 0;
+		return flag && iblockdata.get(BlockFluids.LEVEL) == 0;
 	}
 
 	@Override
 	public boolean b(IBlockAccess iblockaccess, BlockPosition blockposition, EnumDirection enumdirection) {
 		Material material = iblockaccess.getType(blockposition).getBlock().getMaterial();
 
-		return material == this.material ? false
-				: (enumdirection == EnumDirection.UP ? true
-						: (material == Material.ICE ? false : super.b(iblockaccess, blockposition, enumdirection)));
+		return material != this.material && (enumdirection == EnumDirection.UP || (material != Material.ICE && super.b(iblockaccess, blockposition, enumdirection)));
 	}
 
 	@Override
@@ -89,7 +87,7 @@ public abstract class BlockFluids extends Block {
 	protected Vec3D h(IBlockAccess iblockaccess, BlockPosition blockposition) {
 		Vec3D vec3d = new Vec3D(0.0D, 0.0D, 0.0D);
 		int i = this.f(iblockaccess, blockposition);
-		Iterator iterator = EnumDirection.EnumDirectionLimit.HORIZONTAL.iterator();
+		Iterator<EnumDirection> iterator = EnumDirection.EnumDirectionLimit.HORIZONTAL.iterator();
 
 		EnumDirection enumdirection;
 		BlockPosition blockposition1;
@@ -118,7 +116,7 @@ public abstract class BlockFluids extends Block {
 			}
 		}
 
-		if (iblockaccess.getType(blockposition).get(BlockFluids.LEVEL).intValue() >= 8) {
+		if (iblockaccess.getType(blockposition).get(BlockFluids.LEVEL) >= 8) {
 			iterator = EnumDirection.EnumDirectionLimit.HORIZONTAL.iterator();
 
 			while (iterator.hasNext()) {
@@ -161,9 +159,7 @@ public abstract class BlockFluids extends Block {
 			boolean flag = false;
 			int i = aenumdirection.length;
 
-			for (int j = 0; j < i; ++j) {
-				EnumDirection enumdirection = aenumdirection[j];
-
+			for (EnumDirection enumdirection : aenumdirection) {
 				if (enumdirection != EnumDirection.DOWN && world.getType(blockposition.shift(enumdirection)).getBlock()
 						.getMaterial() == Material.WATER) {
 					flag = true;
@@ -174,13 +170,13 @@ public abstract class BlockFluids extends Block {
 			if ((flag) && (world.nachoSpigotConfig.enableLavaToCobblestone)) {
 				Integer integer = iblockdata.get(BlockFluids.LEVEL);
 
-				if (integer.intValue() == 0) {
+				if (integer == 0) {
 					world.setTypeUpdate(blockposition, Blocks.OBSIDIAN.getBlockData());
 					this.fizz(world, blockposition);
 					return true;
 				}
 
-				if (integer.intValue() > 0) { // PaperSpigot
+				if (integer > 0) { // PaperSpigot
 					world.setTypeUpdate(blockposition, Blocks.COBBLESTONE.getBlockData());
 					this.fizz(world, blockposition);
 					return true;
@@ -208,17 +204,17 @@ public abstract class BlockFluids extends Block {
 
 	@Override
 	public IBlockData fromLegacyData(int i) {
-		return this.getBlockData().set(BlockFluids.LEVEL, Integer.valueOf(i));
+		return this.getBlockData().set(BlockFluids.LEVEL, i);
 	}
 
 	@Override
 	public int toLegacyData(IBlockData iblockdata) {
-		return iblockdata.get(BlockFluids.LEVEL).intValue();
+		return iblockdata.get(BlockFluids.LEVEL);
 	}
 
 	@Override
 	protected BlockStateList getStateList() {
-		return new BlockStateList(this, new IBlockState[] { BlockFluids.LEVEL });
+		return new BlockStateList(this, BlockFluids.LEVEL);
 	}
 
 	public static BlockFlowing a(Material material) {

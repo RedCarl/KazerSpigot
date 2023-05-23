@@ -18,9 +18,9 @@ public class BlockTripwireHook extends Block {
 	public BlockTripwireHook() {
 		super(Material.ORIENTABLE);
 		this.j(this.blockStateList.getBlockData().set(BlockTripwireHook.FACING, EnumDirection.NORTH)
-				.set(BlockTripwireHook.POWERED, Boolean.valueOf(false))
-				.set(BlockTripwireHook.ATTACHED, Boolean.valueOf(false))
-				.set(BlockTripwireHook.SUSPENDED, Boolean.valueOf(false)));
+				.set(BlockTripwireHook.POWERED, Boolean.FALSE)
+				.set(BlockTripwireHook.ATTACHED, Boolean.FALSE)
+				.set(BlockTripwireHook.SUSPENDED, Boolean.FALSE));
 		this.a(CreativeModeTab.d);
 		this.a(true);
 	}
@@ -28,7 +28,7 @@ public class BlockTripwireHook extends Block {
 	@Override
 	public IBlockData updateState(IBlockData iblockdata, IBlockAccess iblockaccess, BlockPosition blockposition) {
 		return iblockdata.set(BlockTripwireHook.SUSPENDED,
-				Boolean.valueOf(!World.a(iblockaccess, blockposition.down())));
+				!World.a(iblockaccess, blockposition.down()));
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class BlockTripwireHook extends Block {
 
 	@Override
 	public boolean canPlace(World world, BlockPosition blockposition) {
-		Iterator iterator = EnumDirection.EnumDirectionLimit.HORIZONTAL.iterator();
+		Iterator<EnumDirection> iterator = EnumDirection.EnumDirectionLimit.HORIZONTAL.iterator();
 
 		EnumDirection enumdirection;
 
@@ -72,9 +72,9 @@ public class BlockTripwireHook extends Block {
 	@Override
 	public IBlockData getPlacedState(World world, BlockPosition blockposition, EnumDirection enumdirection, float f,
 			float f1, float f2, int i, EntityLiving entityliving) {
-		IBlockData iblockdata = this.getBlockData().set(BlockTripwireHook.POWERED, Boolean.valueOf(false))
-				.set(BlockTripwireHook.ATTACHED, Boolean.valueOf(false))
-				.set(BlockTripwireHook.SUSPENDED, Boolean.valueOf(false));
+		IBlockData iblockdata = this.getBlockData().set(BlockTripwireHook.POWERED, Boolean.FALSE)
+				.set(BlockTripwireHook.ATTACHED, Boolean.FALSE)
+				.set(BlockTripwireHook.SUSPENDED, Boolean.FALSE);
 
 		if (enumdirection.k().c()) {
 			iblockdata = iblockdata.set(BlockTripwireHook.FACING, enumdirection);
@@ -86,7 +86,7 @@ public class BlockTripwireHook extends Block {
 	@Override
 	public void postPlace(World world, BlockPosition blockposition, IBlockData iblockdata, EntityLiving entityliving,
 			ItemStack itemstack) {
-		this.a(world, blockposition, iblockdata, false, false, -1, (IBlockData) null);
+		this.a(world, blockposition, iblockdata, false, false, -1, null);
 	}
 
 	@Override
@@ -107,8 +107,8 @@ public class BlockTripwireHook extends Block {
 	public void a(World world, BlockPosition blockposition, IBlockData iblockdata, boolean flag, boolean flag1, int i,
 			IBlockData iblockdata1) {
 		EnumDirection enumdirection = iblockdata.get(BlockTripwireHook.FACING);
-		boolean flag2 = iblockdata.get(BlockTripwireHook.ATTACHED).booleanValue();
-		boolean flag3 = iblockdata.get(BlockTripwireHook.POWERED).booleanValue();
+		boolean flag2 = iblockdata.get(BlockTripwireHook.ATTACHED);
+		boolean flag3 = iblockdata.get(BlockTripwireHook.POWERED);
 		boolean flag4 = !World.a(world, blockposition.down());
 		boolean flag5 = !flag;
 		boolean flag6 = false;
@@ -136,9 +136,9 @@ public class BlockTripwireHook extends Block {
 					iblockdata2 = Objects.firstNonNull(iblockdata1, iblockdata2);
 				}
 
-				boolean flag7 = !iblockdata2.get(BlockTripwire.DISARMED).booleanValue();
-				boolean flag8 = iblockdata2.get(BlockTripwire.POWERED).booleanValue();
-				boolean flag9 = iblockdata2.get(BlockTripwire.SUSPENDED).booleanValue();
+				boolean flag7 = !iblockdata2.get(BlockTripwire.DISARMED);
+				boolean flag8 = iblockdata2.get(BlockTripwire.POWERED);
+				boolean flag9 = iblockdata2.get(BlockTripwire.SUSPENDED);
 
 				flag5 &= flag9 == flag4;
 				flag6 |= flag7 && flag8;
@@ -152,8 +152,8 @@ public class BlockTripwireHook extends Block {
 
 		flag5 &= j > 1;
 		flag6 &= flag5;
-		IBlockData iblockdata3 = this.getBlockData().set(BlockTripwireHook.ATTACHED, Boolean.valueOf(flag5))
-				.set(BlockTripwireHook.POWERED, Boolean.valueOf(flag6));
+		IBlockData iblockdata3 = this.getBlockData().set(BlockTripwireHook.ATTACHED, flag5)
+				.set(BlockTripwireHook.POWERED, flag6);
 
 		if (j > 0) {
 			blockposition1 = blockposition.shift(enumdirection, j);
@@ -191,7 +191,7 @@ public class BlockTripwireHook extends Block {
 
 				if (iblockdata4 != null && world.getType(blockposition2).getBlock() != Blocks.AIR) {
 					world.setTypeAndData(blockposition2,
-							iblockdata4.set(BlockTripwireHook.ATTACHED, Boolean.valueOf(flag5)), 3);
+							iblockdata4.set(BlockTripwireHook.ATTACHED, flag5), 3);
 				}
 			}
 		}
@@ -204,7 +204,7 @@ public class BlockTripwireHook extends Block {
 
 	@Override
 	public void b(World world, BlockPosition blockposition, IBlockData iblockdata, Random random) {
-		this.a(world, blockposition, iblockdata, false, true, -1, (IBlockData) null);
+		this.a(world, blockposition, iblockdata, false, true, -1, null);
 	}
 
 	private void a(World world, BlockPosition blockposition, boolean flag, boolean flag1, boolean flag2,
@@ -266,11 +266,11 @@ public class BlockTripwireHook extends Block {
 
 	@Override
 	public void remove(World world, BlockPosition blockposition, IBlockData iblockdata) {
-		boolean flag = iblockdata.get(BlockTripwireHook.ATTACHED).booleanValue();
-		boolean flag1 = iblockdata.get(BlockTripwireHook.POWERED).booleanValue();
+		boolean flag = iblockdata.get(BlockTripwireHook.ATTACHED);
+		boolean flag1 = iblockdata.get(BlockTripwireHook.POWERED);
 
 		if (flag || flag1) {
-			this.a(world, blockposition, iblockdata, true, false, -1, (IBlockData) null);
+			this.a(world, blockposition, iblockdata, true, false, -1, null);
 		}
 
 		if (flag1) {
@@ -284,13 +284,13 @@ public class BlockTripwireHook extends Block {
 	@Override
 	public int a(IBlockAccess iblockaccess, BlockPosition blockposition, IBlockData iblockdata,
 			EnumDirection enumdirection) {
-		return iblockdata.get(BlockTripwireHook.POWERED).booleanValue() ? 15 : 0;
+		return iblockdata.get(BlockTripwireHook.POWERED) ? 15 : 0;
 	}
 
 	@Override
 	public int b(IBlockAccess iblockaccess, BlockPosition blockposition, IBlockData iblockdata,
 			EnumDirection enumdirection) {
-		return !iblockdata.get(BlockTripwireHook.POWERED).booleanValue() ? 0
+		return !iblockdata.get(BlockTripwireHook.POWERED) ? 0
 				: (iblockdata.get(BlockTripwireHook.FACING) == enumdirection ? 15 : 0);
 	}
 
@@ -302,8 +302,8 @@ public class BlockTripwireHook extends Block {
 	@Override
 	public IBlockData fromLegacyData(int i) {
 		return this.getBlockData().set(BlockTripwireHook.FACING, EnumDirection.fromType2(i & 3))
-				.set(BlockTripwireHook.POWERED, Boolean.valueOf((i & 8) > 0))
-				.set(BlockTripwireHook.ATTACHED, Boolean.valueOf((i & 4) > 0));
+				.set(BlockTripwireHook.POWERED, (i & 8) > 0)
+				.set(BlockTripwireHook.ATTACHED, (i & 4) > 0);
 	}
 
 	@Override
@@ -311,11 +311,11 @@ public class BlockTripwireHook extends Block {
 		byte b0 = 0;
 		int i = b0 | iblockdata.get(BlockTripwireHook.FACING).b();
 
-		if (iblockdata.get(BlockTripwireHook.POWERED).booleanValue()) {
+		if (iblockdata.get(BlockTripwireHook.POWERED)) {
 			i |= 8;
 		}
 
-		if (iblockdata.get(BlockTripwireHook.ATTACHED).booleanValue()) {
+		if (iblockdata.get(BlockTripwireHook.ATTACHED)) {
 			i |= 4;
 		}
 
@@ -324,8 +324,8 @@ public class BlockTripwireHook extends Block {
 
 	@Override
 	protected BlockStateList getStateList() {
-		return new BlockStateList(this, new IBlockState[] { BlockTripwireHook.FACING, BlockTripwireHook.POWERED,
-				BlockTripwireHook.ATTACHED, BlockTripwireHook.SUSPENDED });
+		return new BlockStateList(this, BlockTripwireHook.FACING, BlockTripwireHook.POWERED,
+				BlockTripwireHook.ATTACHED, BlockTripwireHook.SUSPENDED);
 	}
 
 	static class SyntheticClass_1 {
@@ -336,25 +336,21 @@ public class BlockTripwireHook extends Block {
 			try {
 				BlockTripwireHook.SyntheticClass_1.a[EnumDirection.EAST.ordinal()] = 1;
 			} catch (NoSuchFieldError nosuchfielderror) {
-				;
 			}
 
 			try {
 				BlockTripwireHook.SyntheticClass_1.a[EnumDirection.WEST.ordinal()] = 2;
 			} catch (NoSuchFieldError nosuchfielderror1) {
-				;
 			}
 
 			try {
 				BlockTripwireHook.SyntheticClass_1.a[EnumDirection.SOUTH.ordinal()] = 3;
 			} catch (NoSuchFieldError nosuchfielderror2) {
-				;
 			}
 
 			try {
 				BlockTripwireHook.SyntheticClass_1.a[EnumDirection.NORTH.ordinal()] = 4;
 			} catch (NoSuchFieldError nosuchfielderror3) {
-				;
 			}
 
 		}

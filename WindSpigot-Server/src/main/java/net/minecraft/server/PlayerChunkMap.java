@@ -363,7 +363,7 @@ public class PlayerChunkMap {
 
 		private final List<EntityPlayer> b = Lists.newArrayList();
 		private final ChunkCoordIntPair location;
-		private short[] dirtyBlocks = new short[64];
+		private final short[] dirtyBlocks = new short[64];
 		private int dirtyCount;
 		private int f;
 		private long g;

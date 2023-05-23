@@ -431,7 +431,7 @@ public abstract class Command {
 
 		Set<Permissible> users = Bukkit.getPluginManager()
 				.getPermissionSubscriptions(Server.BROADCAST_CHANNEL_ADMINISTRATIVE);
-		String colored = ChatColor.GRAY + "" + ChatColor.ITALIC + "[" + result + ChatColor.GRAY + ChatColor.ITALIC
+		String colored = ChatColor.GRAY + String.valueOf(ChatColor.ITALIC) + "[" + result + ChatColor.GRAY + ChatColor.ITALIC
 				+ "]";
 
 		if (sendToSource && !(source instanceof ConsoleCommandSender)) {

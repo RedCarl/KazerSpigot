@@ -9,7 +9,7 @@ import org.bukkit.entity.HumanEntity;
 
 public class InventoryLargeChest implements ITileInventory {
 
-	private String a;
+	private final String a;
 	public ITileInventory left;
 	public ITileInventory right;
 
@@ -100,7 +100,7 @@ public class InventoryLargeChest implements ITileInventory {
 	@Override
 	public IChatBaseComponent getScoreboardDisplayName() {
 		return this.hasCustomName() ? new ChatComponentText(this.getName())
-				: new ChatMessage(this.getName(), new Object[0]);
+				: new ChatMessage(this.getName());
 	}
 
 	@Override

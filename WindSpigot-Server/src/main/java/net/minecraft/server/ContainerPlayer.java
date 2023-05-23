@@ -13,7 +13,7 @@ public class ContainerPlayer extends Container {
 	private final EntityHuman h;
 	// CraftBukkit start
 	private CraftInventoryView bukkitEntity = null;
-	private PlayerInventory player;
+	private final PlayerInventory player;
 	// CraftBukkit end
 
 	public ContainerPlayer(final PlayerInventory playerinventory, boolean flag, EntityHuman entityhuman) {
@@ -46,10 +46,9 @@ public class ContainerPlayer extends Container {
 
 				@Override
 				public boolean isAllowed(ItemStack itemstack) {
-					return itemstack == null ? false
-							: (itemstack.getItem() instanceof ItemArmor ? ((ItemArmor) itemstack.getItem()).b == i
-									: (itemstack.getItem() != Item.getItemOf(Blocks.PUMPKIN)
-											&& itemstack.getItem() != Items.SKULL ? false : i == 0));
+					return itemstack != null && (itemstack.getItem() instanceof ItemArmor ? ((ItemArmor) itemstack.getItem()).b == i
+							: ((itemstack.getItem() == Item.getItemOf(Blocks.PUMPKIN)
+							|| itemstack.getItem() == Items.SKULL) && i == 0));
 				}
 			});
 		}
@@ -98,7 +97,7 @@ public class ContainerPlayer extends Container {
 			}
 		}
 
-		this.resultInventory.setItem(0, (ItemStack) null);
+		this.resultInventory.setItem(0, null);
 	}
 
 	@Override
@@ -149,7 +148,7 @@ public class ContainerPlayer extends Container {
 			}
 
 			if (itemstack1.count == 0) {
-				slot.set((ItemStack) null);
+				slot.set(null);
 			} else {
 				slot.f();
 			}

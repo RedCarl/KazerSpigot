@@ -1,9 +1,6 @@
 package org.bukkit.craftbukkit.inventory;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
@@ -107,12 +104,10 @@ class CraftMetaPotion extends CraftMetaItem implements PotionMeta {
 
 	@Override
 	boolean applicableTo(Material type) {
-		switch (type) {
-		case POTION:
+		if (Objects.requireNonNull(type) == Material.POTION) {
 			return true;
-		default:
-			return false;
 		}
+		return false;
 	}
 
 	@Override

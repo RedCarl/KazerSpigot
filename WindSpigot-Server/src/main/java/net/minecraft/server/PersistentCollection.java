@@ -6,6 +6,7 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Map;
 
@@ -14,10 +15,10 @@ import com.google.common.collect.Maps;
 
 public class PersistentCollection {
 
-	private IDataManager b;
+	private final IDataManager b;
 	protected Map<String, PersistentBase> a = Maps.newHashMap();
 	public List<PersistentBase> c = Lists.newArrayList(); // Spigot
-	private Map<String, Short> d = Maps.newHashMap();
+	private final Map<String, Short> d = Maps.newHashMap();
 
 	public PersistentCollection(IDataManager idatamanager) {
 		this.b = idatamanager;
@@ -106,7 +107,7 @@ public class PersistentCollection {
 			File file = this.b.getDataFile("idcounts");
 
 			if (file != null && file.exists()) {
-				DataInputStream datainputstream = new DataInputStream(new FileInputStream(file));
+				DataInputStream datainputstream = new DataInputStream(Files.newInputStream(file.toPath()));
 				NBTTagCompound nbttagcompound = NBTCompressedStreamTools.a(datainputstream);
 
 				datainputstream.close();
@@ -143,7 +144,7 @@ public class PersistentCollection {
 						short short0 = this.d.get(s1);
 						nbttagcompound.setShort(s1, short0);
 					}
-					DataOutputStream dataoutputstream = new DataOutputStream(new FileOutputStream(file));
+					DataOutputStream dataoutputstream = new DataOutputStream(Files.newOutputStream(file.toPath()));
 					NBTCompressedStreamTools.a(nbttagcompound, (DataOutput) dataoutputstream);
 					dataoutputstream.close();
 				}

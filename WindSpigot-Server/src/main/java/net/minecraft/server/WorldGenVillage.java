@@ -10,10 +10,10 @@ import java.util.Random;
 public class WorldGenVillage extends StructureGenerator {
 
 	public static final List<BiomeBase> d = Arrays
-			.asList(new BiomeBase[] { BiomeBase.PLAINS, BiomeBase.DESERT, BiomeBase.SAVANNA });
+			.asList(BiomeBase.PLAINS, BiomeBase.DESERT, BiomeBase.SAVANNA);
 	private int f;
 	private int g;
-	private int h;
+	private final int h;
 
 	public WorldGenVillage() {
 		this.g = 32;
@@ -22,14 +22,13 @@ public class WorldGenVillage extends StructureGenerator {
 
 	public WorldGenVillage(Map<String, String> map) {
 		this();
-		Iterator iterator = map.entrySet().iterator();
 
-		while (iterator.hasNext()) {
-			Entry entry = (Entry) iterator.next();
+		for (Entry<String, String> stringStringEntry : map.entrySet()) {
+			Entry entry = (Entry) stringStringEntry;
 
-			if ("size".equals((String) entry.getKey())) {
+			if ("size".equals(entry.getKey())) {
 				this.f = MathHelper.a((String) entry.getValue(), this.f, 0);
-			} else if ("distance".equals((String) entry.getKey())) {
+			} else if ("distance".equals(entry.getKey())) {
 				this.g = MathHelper.a((String) entry.getValue(), this.g, this.h + 1);
 			}
 		}
@@ -65,9 +64,7 @@ public class WorldGenVillage extends StructureGenerator {
 		if (k == i1 && l == j1) {
 			boolean flag = this.c.getWorldChunkManager().a(k * 16 + 8, l * 16 + 8, 0, WorldGenVillage.d);
 
-			if (flag) {
-				return true;
-			}
+			return flag;
 		}
 
 		return false;
@@ -87,15 +84,15 @@ public class WorldGenVillage extends StructureGenerator {
 
 		public WorldGenVillageStart(World world, Random random, int i, int j, int k) {
 			super(i, j);
-			List list = WorldGenVillagePieces.a(random, k);
+			List<WorldGenVillagePieces.WorldGenVillagePieceWeight> list = WorldGenVillagePieces.a(random, k);
 			WorldGenVillagePieces.WorldGenVillageStartPiece worldgenvillagepieces_worldgenvillagestartpiece = new WorldGenVillagePieces.WorldGenVillageStartPiece(
 					world.getWorldChunkManager(), 0, random, (i << 4) + 2, (j << 4) + 2, list, k);
 
 			this.a.add(worldgenvillagepieces_worldgenvillagestartpiece);
 			worldgenvillagepieces_worldgenvillagestartpiece.a(worldgenvillagepieces_worldgenvillagestartpiece, this.a,
 					random);
-			List list1 = worldgenvillagepieces_worldgenvillagestartpiece.g;
-			List list2 = worldgenvillagepieces_worldgenvillagestartpiece.f;
+			List<StructurePiece> list1 = worldgenvillagepieces_worldgenvillagestartpiece.g;
+			List<StructurePiece> list2 = worldgenvillagepieces_worldgenvillagestartpiece.f;
 
 			int l;
 
@@ -115,11 +112,8 @@ public class WorldGenVillage extends StructureGenerator {
 
 			this.c();
 			l = 0;
-			Iterator iterator = this.a.iterator();
 
-			while (iterator.hasNext()) {
-				StructurePiece structurepiece1 = (StructurePiece) iterator.next();
-
+			for (StructurePiece structurepiece1 : this.a) {
 				if (!(structurepiece1 instanceof WorldGenVillagePieces.WorldGenVillageRoadPiece)) {
 					++l;
 				}

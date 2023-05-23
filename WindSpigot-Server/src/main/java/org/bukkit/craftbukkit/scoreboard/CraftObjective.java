@@ -9,6 +9,8 @@ import org.bukkit.scoreboard.Score;
 import net.minecraft.server.Scoreboard;
 import net.minecraft.server.ScoreboardObjective;
 
+import java.util.Objects;
+
 final class CraftObjective extends CraftScoreboardComponent implements Objective {
 	private final ScoreboardObjective objective;
 	private final CraftCriteria criteria;
@@ -143,8 +145,7 @@ final class CraftObjective extends CraftScoreboardComponent implements Objective
 			return false;
 		}
 		final CraftObjective other = (CraftObjective) obj;
-		return !(this.objective != other.objective
-				&& (this.objective == null || !this.objective.equals(other.objective)));
+		return !(!Objects.equals(this.objective, other.objective));
 	}
 
 }

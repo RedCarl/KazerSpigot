@@ -239,11 +239,8 @@ public class SimpleHelpMap implements HelpMap {
 				&& ignoredPlugins.contains("Bukkit")) {
 			return true;
 		}
-		if (command instanceof PluginIdentifiableCommand
-				&& ignoredPlugins.contains(((PluginIdentifiableCommand) command).getPlugin().getName())) {
-			return true;
-		}
-		return false;
+		return command instanceof PluginIdentifiableCommand
+				&& ignoredPlugins.contains(((PluginIdentifiableCommand) command).getPlugin().getName());
 	}
 
 	@Override
@@ -254,7 +251,7 @@ public class SimpleHelpMap implements HelpMap {
 		topicFactoryMap.put(commandClass, factory);
 	}
 
-	private class IsCommandTopicPredicate implements Predicate<HelpTopic> {
+	private static class IsCommandTopicPredicate implements Predicate<HelpTopic> {
 
 		@Override
 		public boolean apply(HelpTopic topic) {

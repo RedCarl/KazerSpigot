@@ -2,9 +2,9 @@ package net.minecraft.server;
 
 public class PathfinderGoalMakeLove extends PathfinderGoal {
 
-	private EntityVillager b;
+	private final EntityVillager b;
 	private EntityVillager c;
-	private World d;
+	private final World d;
 	private int e;
 	Village a;
 

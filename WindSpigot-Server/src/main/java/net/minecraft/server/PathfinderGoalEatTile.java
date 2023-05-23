@@ -12,8 +12,8 @@ public class PathfinderGoalEatTile extends PathfinderGoal {
 
 	private static final Predicate<IBlockData> b = BlockStatePredicate.a(Blocks.TALLGRASS).a(BlockLongGrass.TYPE,
 			Predicates.equalTo(BlockLongGrass.EnumTallGrassType.GRASS));
-	private EntityInsentient c;
-	private World d;
+	private final EntityInsentient c;
+	private final World d;
 	int a;
 
 	public PathfinderGoalEatTile(EntityInsentient entityinsentient) {
@@ -29,8 +29,7 @@ public class PathfinderGoalEatTile extends PathfinderGoal {
 		} else {
 			BlockPosition blockposition = new BlockPosition(this.c.locX, this.c.locY, this.c.locZ);
 
-			return PathfinderGoalEatTile.b.apply(this.d.getType(blockposition)) ? true
-					: this.d.getType(blockposition.down()).getBlock() == Blocks.GRASS;
+			return PathfinderGoalEatTile.b.apply(this.d.getType(blockposition)) || this.d.getType(blockposition.down()).getBlock() == Blocks.GRASS;
 		}
 	}
 

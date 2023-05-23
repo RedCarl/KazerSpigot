@@ -15,7 +15,7 @@ import ga.windpvp.windspigot.cache.Constants;
 
 public class EntityBoat extends Entity {
 
-	private boolean a;
+	private final boolean a;
 	private double b;
 	private int c;
 	private double d;
@@ -61,9 +61,9 @@ public class EntityBoat extends Entity {
 
 	@Override
 	protected void h() {
-		this.datawatcher.a(17, new Integer(0));
-		this.datawatcher.a(18, new Integer(1));
-		this.datawatcher.a(19, new Float(0.0F));
+		this.datawatcher.a(17, 0);
+		this.datawatcher.a(18, 1);
+		this.datawatcher.a(19, 0.0F);
 	}
 
 	@Override
@@ -188,7 +188,7 @@ public class EntityBoat extends Entity {
 		double d0 = 0.0D;
 
 		for (int i = 0; i < b0; ++i) {
-			double d1 = this.getBoundingBox().b + (this.getBoundingBox().e - this.getBoundingBox().b) * (i + 0) / b0
+			double d1 = this.getBoundingBox().b + (this.getBoundingBox().e - this.getBoundingBox().b) * (i) / b0
 					- 0.125D;
 			double d2 = this.getBoundingBox().b + (this.getBoundingBox().e - this.getBoundingBox().b) * (i + 1) / b0
 					- 0.125D;
@@ -317,7 +317,7 @@ public class EntityBoat extends Entity {
 			for (k = 0; k < 4; ++k) {
 				int l = MathHelper.floor(this.locX + (k % 2 - 0.5D) * 0.8D);
 
-				j = MathHelper.floor(this.locZ + (k / 2 - 0.5D) * 0.8D);
+				j = MathHelper.floor(this.locZ + ((double) k / 2 - 0.5D) * 0.8D);
 
 				for (int i1 = 0; i1 < 2; ++i1) {
 					int j1 = MathHelper.floor(this.locY) + i1;
@@ -407,12 +407,12 @@ public class EntityBoat extends Entity {
 			}
 			// CraftBukkit end
 			if (!this.world.isClientSide) {
-				List list = this.world.getEntities(this,
+				List<Entity> list = this.world.getEntities(this,
 						this.getBoundingBox().grow(0.20000000298023224D, 0.0D, 0.20000000298023224D));
 
 				if (list != null && !list.isEmpty()) {
-					for (int k1 = 0; k1 < list.size(); ++k1) {
-						Entity entity = (Entity) list.get(k1);
+					for (Object o : list) {
+						Entity entity = (Entity) o;
 
 						if (entity != this.passenger && entity.ae() && entity instanceof EntityBoat) {
 							entity.collide(this);
@@ -488,7 +488,7 @@ public class EntityBoat extends Entity {
 	}
 
 	public void setDamage(float f) {
-		this.datawatcher.watch(19, Float.valueOf(f));
+		this.datawatcher.watch(19, f);
 	}
 
 	public float j() {
@@ -496,7 +496,7 @@ public class EntityBoat extends Entity {
 	}
 
 	public void a(int i) {
-		this.datawatcher.watch(17, Integer.valueOf(i));
+		this.datawatcher.watch(17, i);
 	}
 
 	public int l() {
@@ -504,7 +504,7 @@ public class EntityBoat extends Entity {
 	}
 
 	public void b(int i) {
-		this.datawatcher.watch(18, Integer.valueOf(i));
+		this.datawatcher.watch(18, i);
 	}
 
 	public int m() {

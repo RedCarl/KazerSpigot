@@ -5,12 +5,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
@@ -166,7 +161,7 @@ public class SpigotConfig {
 	public static String unknownCommandMessage;
 	public static String serverFullMessage;
 	public static String outdatedClientMessage = "Outdated client! Please use {0}";
-	public static String outdatedServerMessage = "Outdated server! I\'m still on {0}";
+	public static String outdatedServerMessage = "Outdated server! I'm still on {0}";
 
 	private static String transform(String s) {
 		return ChatColor.translateAlternateColorCodes('&', s).replaceAll("\\n", "\n");
@@ -300,7 +295,7 @@ public class SpigotConfig {
 	public static List<String> spamExclusions;
 
 	private static void spamExclusions() {
-		spamExclusions = getList("commands.spam-exclusions", Arrays.asList(new String[] { "/skill" }));
+		spamExclusions = getList("commands.spam-exclusions", Collections.singletonList("/skill"));
 	}
 
 	public static boolean silentCommandBlocks;

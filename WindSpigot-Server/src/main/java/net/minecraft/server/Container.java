@@ -30,7 +30,7 @@ public abstract class Container {
 	private int g;
 	private final Set<Slot> h = Sets.newHashSet();
 	protected List<ICrafting> listeners = Lists.newArrayList();
-	private Set<EntityHuman> i = Sets.newHashSet();
+	private final Set<EntityHuman> i = Sets.newHashSet();
 	private int tickCount; // Spigot
 
 	// CraftBukkit start
@@ -70,8 +70,8 @@ public abstract class Container {
 	public List<ItemStack> a() {
 		ArrayList arraylist = Lists.newArrayList();
 
-		for (int i = 0; i < this.c.size(); ++i) {
-			arraylist.add(this.c.get(i).getItem());
+		for (Slot slot : this.c) {
+			arraylist.add(slot.getItem());
 		}
 
 		return arraylist;
@@ -87,8 +87,8 @@ public abstract class Container {
 				itemstack1 = itemstack == null ? null : itemstack.cloneItemStack();
 				this.b.set(i, itemstack1);
 
-				for (int j = 0; j < this.listeners.size(); ++j) {
-					this.listeners.get(j).a(this, i, itemstack1);
+				for (ICrafting listener : this.listeners) {
+					listener.a(this, i, itemstack1);
 				}
 			}
 		}
@@ -159,7 +159,7 @@ public abstract class Container {
 					if (!this.h.isEmpty()) {
 						itemstack1 = playerinventory.getCarried().cloneItemStack();
 						l = playerinventory.getCarried().count;
-						Iterator iterator = this.h.iterator();
+						Iterator<Slot> iterator = this.h.iterator();
 
 						Map<Integer, ItemStack> draggedSlots = new HashMap<Integer, ItemStack>(); // CraftBukkit - Store
 																									// slots from drag
@@ -253,7 +253,7 @@ public abstract class Container {
 					if (playerinventory.getCarried() != null) {
 						if (j == 0) {
 							entityhuman.drop(playerinventory.getCarried(), true);
-							playerinventory.setCarried((ItemStack) null);
+							playerinventory.setCarried(null);
 						}
 
 						if (j == 1) {
@@ -265,7 +265,7 @@ public abstract class Container {
 
 							if (itemstack4.count == 0) {
 								// CraftBukkit end
-								playerinventory.setCarried((ItemStack) null);
+								playerinventory.setCarried(null);
 							}
 						}
 					}
@@ -312,7 +312,7 @@ public abstract class Container {
 								}
 
 								if (itemstack4.count == 0) {
-									playerinventory.setCarried((ItemStack) null);
+									playerinventory.setCarried(null);
 									// CraftBukkit start - Update client cursor if we didn't empty it
 								} else if (entityhuman instanceof EntityPlayer) {
 									((EntityPlayer) entityhuman).playerConnection.sendPacket(
@@ -326,7 +326,7 @@ public abstract class Container {
 								itemstack3 = slot2.a(k1);
 								playerinventory.setCarried(itemstack3);
 								if (itemstack1.count == 0) {
-									slot2.set((ItemStack) null);
+									slot2.set(null);
 								}
 
 								slot2.a(entityhuman, playerinventory.getCarried());
@@ -345,7 +345,7 @@ public abstract class Container {
 
 									itemstack4.cloneAndSubtract(k1);
 									if (itemstack4.count == 0) {
-										playerinventory.setCarried((ItemStack) null);
+										playerinventory.setCarried(null);
 										// CraftBukkit start - Update client cursor if we didn't empty it
 									} else if (entityhuman instanceof EntityPlayer) {
 										((EntityPlayer) entityhuman).playerConnection.sendPacket(
@@ -368,7 +368,7 @@ public abstract class Container {
 									itemstack4.count += k1;
 									itemstack1 = slot2.a(k1);
 									if (itemstack1.count == 0) {
-										slot2.set((ItemStack) null);
+										slot2.set(null);
 									}
 
 									slot2.a(entityhuman, playerinventory.getCarried());
@@ -418,7 +418,7 @@ public abstract class Container {
 							if (k1 > -1) {
 								playerinventory.pickup(itemstack1);
 								slot2.a(itemstack3.count);
-								slot2.set((ItemStack) null);
+								slot2.set(null);
 								slot2.a(entityhuman, itemstack3);
 							}
 						} else {
@@ -427,7 +427,7 @@ public abstract class Container {
 							slot2.a(entityhuman, itemstack3);
 						}
 					} else if (!slot2.hasItem() && itemstack1 != null && slot2.isAllowed(itemstack1)) {
-						playerinventory.setItem(j, (ItemStack) null);
+						playerinventory.setItem(j, null);
 						slot2.set(itemstack1);
 					}
 				}
@@ -467,7 +467,7 @@ public abstract class Container {
 
 								itemstack1.count += j2;
 								if (itemstack5.count <= 0) {
-									slot3.set((ItemStack) null);
+									slot3.set(null);
 								}
 
 								slot3.a(entityhuman, itemstack5);
@@ -496,7 +496,7 @@ public abstract class Container {
 
 		if (playerinventory.getCarried() != null) {
 			entityhuman.drop(playerinventory.getCarried(), false);
-			playerinventory.setCarried((ItemStack) null);
+			playerinventory.setCarried(null);
 		}
 
 	}
@@ -606,7 +606,7 @@ public abstract class Container {
 	}
 
 	public static boolean a(int i, EntityHuman entityhuman) {
-		return i == 0 ? true : (i == 1 ? true : i == 2 && entityhuman.abilities.canInstantlyBuild);
+		return i == 0 || (i == 1 || i == 2 && entityhuman.abilities.canInstantlyBuild);
 	}
 
 	protected void d() {

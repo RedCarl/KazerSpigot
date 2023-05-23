@@ -5,7 +5,7 @@ import java.util.List;
 
 public class PathfinderGoalHurtByTarget extends PathfinderGoalTarget {
 
-	private boolean a;
+	private final boolean a;
 	private int b;
 	private final Class[] c;
 
@@ -31,22 +31,17 @@ public class PathfinderGoalHurtByTarget extends PathfinderGoalTarget {
 		this.b = this.e.be();
 		if (this.a) {
 			double d0 = this.f();
-			List list = this.e.world.a(this.e.getClass(), (new AxisAlignedBB(this.e.locX, this.e.locY, this.e.locZ,
+			List<? extends EntityCreature> list = this.e.world.a(this.e.getClass(), (new AxisAlignedBB(this.e.locX, this.e.locY, this.e.locZ,
 					this.e.locX + 1.0D, this.e.locY + 1.0D, this.e.locZ + 1.0D)).grow(d0, 10.0D, d0));
-			Iterator iterator = list.iterator();
 
-			while (iterator.hasNext()) {
-				EntityCreature entitycreature = (EntityCreature) iterator.next();
-
+			for (EntityCreature entitycreature : list) {
 				if (this.e != entitycreature && entitycreature.getGoalTarget() == null
 						&& !entitycreature.c(this.e.getLastDamager())) {
 					boolean flag = false;
 					Class[] aclass = this.c;
 					int i = aclass.length;
 
-					for (int j = 0; j < i; ++j) {
-						Class oclass = aclass[j];
-
+					for (Class oclass : aclass) {
 						if (entitycreature.getClass() == oclass) {
 							flag = true;
 							break;

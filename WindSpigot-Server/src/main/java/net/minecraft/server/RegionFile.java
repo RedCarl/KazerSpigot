@@ -9,7 +9,6 @@ import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.List;
@@ -77,7 +76,7 @@ public class RegionFile {
 					throw new EOFException();
 				}
 			}
-			((Buffer) header).clear();
+			header.clear();
 			IntBuffer headerAsInts = header.asIntBuffer();
 			// Paper end
 
@@ -122,7 +121,7 @@ public class RegionFile {
 						return false;
 					}
 
-					this.c.seek(l * 4096);
+					this.c.seek(l * 4096L);
 					int j1 = this.c.readInt();
 
 					if (j1 > 4096 * i1 || j1 <= 0) {
@@ -160,7 +159,7 @@ public class RegionFile {
 					if (l + i1 > this.f.size()) {
 						return null;
 					} else {
-						this.c.seek(l * 4096);
+						this.c.seek(l * 4096L);
 						int j1 = this.c.readInt();
 
 						if (j1 > 4096 * i1) {
@@ -229,22 +228,22 @@ public class RegionFile {
 				int l1;
 
 				for (l1 = 0; l1 < j1; ++l1) {
-					this.f.set(i1 + l1, Boolean.valueOf(true));
+					this.f.set(i1 + l1, Boolean.TRUE);
 				}
 
-				l1 = this.f.indexOf(Boolean.valueOf(true));
+				l1 = this.f.indexOf(Boolean.TRUE);
 				int i2 = 0;
 				int j2;
 
 				if (l1 != -1) {
 					for (j2 = l1; j2 < this.f.size(); ++j2) {
 						if (i2 != 0) {
-							if (this.f.get(j2).booleanValue()) {
+							if (this.f.get(j2)) {
 								++i2;
 							} else {
 								i2 = 0;
 							}
-						} else if (this.f.get(j2).booleanValue()) {
+						} else if (this.f.get(j2)) {
 							l1 = j2;
 							i2 = 1;
 						}
@@ -260,7 +259,7 @@ public class RegionFile {
 					this.a(i, j, l1 << 8 | k1);
 
 					for (j2 = 0; j2 < k1; ++j2) {
-						this.f.set(i1 + j2, Boolean.valueOf(false));
+						this.f.set(i1 + j2, Boolean.FALSE);
 					}
 
 					this.a(i1, abyte, k);
@@ -287,7 +286,7 @@ public class RegionFile {
 	}
 
 	private void a(int i, byte[] abyte, int j) throws IOException {
-		this.c.seek(i * 4096);
+		this.c.seek(i * 4096L);
 		this.c.writeInt(j + 1);
 		this.c.writeByte(2);
 		this.c.write(abyte, 0, j);
@@ -307,13 +306,13 @@ public class RegionFile {
 
 	private void a(int i, int j, int k) throws IOException {
 		this.d[i + j * 32] = k;
-		this.c.seek((i + j * 32) * 4);
+		this.c.seek((i + j * 32L) * 4);
 		this.c.writeInt(k);
 	}
 
 	private void b(int i, int j, int k) throws IOException {
 		this.e[i + j * 32] = k;
-		this.c.seek(4096 + (i + j * 32) * 4);
+		this.c.seek(4096 + (i + j * 32L) * 4);
 		this.c.writeInt(k);
 	}
 
@@ -326,8 +325,8 @@ public class RegionFile {
 
 	class ChunkBuffer extends ByteArrayOutputStream {
 
-		private int b;
-		private int c;
+		private final int b;
+		private final int c;
 
 		public ChunkBuffer(int i, int j) {
 			super(8096);

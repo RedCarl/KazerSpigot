@@ -1,14 +1,18 @@
 package net.minecraft.server;
 
 import java.util.List;
+import java.util.Set;
+
 import com.google.common.collect.Lists;
 
+import com.google.common.collect.Sets;
 import ga.windpvp.windspigot.commons.ConcurrentIntHashMap;
 import ga.windpvp.windspigot.config.WindSpigotConfig;
+import me.rastrian.dev.utils.IndexedLinkedHashSet;
 
 public class EntityTracker {
-
-	public List<EntityTrackerEntry> c = Lists.newCopyOnWriteArrayList();
+	//Has to be HashSet/Set to not fuck up Citizens and other plugins, sadly I'll have to do it like this.
+	public IndexedLinkedHashSet<EntityTrackerEntry> c = new IndexedLinkedHashSet<>(); // tracked entities
 	
 	public IntHashMap<EntityTrackerEntry> trackedEntities = new ConcurrentIntHashMap<>(); // WindSpigot
 
@@ -22,7 +26,7 @@ public class EntityTracker {
 		this.noTrackDistance = noTrackDistance;
 	}
 
-	private int e; 
+	private final int e;
 	
 	public EntityTracker(WorldServer worldserver) {
 		this.e = 128;

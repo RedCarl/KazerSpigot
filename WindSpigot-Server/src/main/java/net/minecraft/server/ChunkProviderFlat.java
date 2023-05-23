@@ -10,8 +10,8 @@ import ga.windpvp.windspigot.random.FastRandom;
 
 public class ChunkProviderFlat implements IChunkProvider {
 
-	private World a;
-	private Random b;
+	private final World a;
+	private final Random b;
 	private final IBlockData[] c = new IBlockData[256];
 	private final WorldGenFlatInfo d;
 	private final List<StructureGenerator> e = Lists.newArrayList();
@@ -25,7 +25,7 @@ public class ChunkProviderFlat implements IChunkProvider {
 		this.b = new FastRandom(i);
 		this.d = WorldGenFlatInfo.a(s);
 		if (flag) {
-			Map map = this.d.b();
+			Map<String, Map<String, String>> map = this.d.b();
 
 			if (map.containsKey("village") && world.paperSpigotConfig.generateVillage) { // PaperSpigot
 				Map map1 = (Map) map.get("village");
@@ -66,11 +66,8 @@ public class ChunkProviderFlat implements IChunkProvider {
 		int j = 0;
 		int k = 0;
 		boolean flag1 = true;
-		Iterator iterator = this.d.c().iterator();
 
-		while (iterator.hasNext()) {
-			WorldGenFlatLayerInfo worldgenflatlayerinfo = (WorldGenFlatLayerInfo) iterator.next();
-
+		for (WorldGenFlatLayerInfo worldgenflatlayerinfo : this.d.c()) {
 			for (int l = worldgenflatlayerinfo.d(); l < worldgenflatlayerinfo.d() + worldgenflatlayerinfo.b(); ++l) {
 				IBlockData iblockdata = worldgenflatlayerinfo.c();
 
@@ -89,7 +86,7 @@ public class ChunkProviderFlat implements IChunkProvider {
 		}
 
 		world.b(j);
-		this.f = flag1 ? false : this.d.b().containsKey("decoration");
+		this.f = !flag1 && this.d.b().containsKey("decoration");
 	}
 
 	@Override
@@ -110,16 +107,14 @@ public class ChunkProviderFlat implements IChunkProvider {
 			}
 		}
 
-		Iterator iterator = this.e.iterator();
-
-		while (iterator.hasNext()) {
-			WorldGenBase worldgenbase = (WorldGenBase) iterator.next();
+		for (StructureGenerator structureGenerator : this.e) {
+			WorldGenBase worldgenbase = (WorldGenBase) structureGenerator;
 
 			worldgenbase.a(this, this.a, i, j, chunksnapshot);
 		}
 
 		Chunk chunk = new Chunk(this.a, chunksnapshot, i, j);
-		BiomeBase[] abiomebase = this.a.getWorldChunkManager().getBiomeBlock((BiomeBase[]) null, i * 16, j * 16, 16,
+		BiomeBase[] abiomebase = this.a.getWorldChunkManager().getBiomeBlock(null, i * 16, j * 16, 16,
 				16);
 		byte[] abyte = chunk.getBiomeIndex();
 
@@ -150,10 +145,8 @@ public class ChunkProviderFlat implements IChunkProvider {
 
 		this.b.setSeed(i * i1 + j * j1 ^ this.a.getSeed());
 		ChunkCoordIntPair chunkcoordintpair = new ChunkCoordIntPair(i, j);
-		Iterator iterator = this.e.iterator();
 
-		while (iterator.hasNext()) {
-			StructureGenerator structuregenerator = (StructureGenerator) iterator.next();
+		for (StructureGenerator structuregenerator : this.e) {
 			boolean flag1 = structuregenerator.a(this.a, this.b, chunkcoordintpair);
 
 			if (structuregenerator instanceof WorldGenVillage) {
@@ -227,11 +220,8 @@ public class ChunkProviderFlat implements IChunkProvider {
 	@Override
 	public BlockPosition findNearestMapFeature(World world, String s, BlockPosition blockposition) {
 		if ("Stronghold".equals(s)) {
-			Iterator iterator = this.e.iterator();
 
-			while (iterator.hasNext()) {
-				StructureGenerator structuregenerator = (StructureGenerator) iterator.next();
-
+			for (StructureGenerator structuregenerator : this.e) {
 				if (structuregenerator instanceof WorldGenStronghold) {
 					return structuregenerator.getNearestGeneratedFeature(world, blockposition);
 				}
@@ -248,12 +238,9 @@ public class ChunkProviderFlat implements IChunkProvider {
 
 	@Override
 	public void recreateStructures(Chunk chunk, int i, int j) {
-		Iterator iterator = this.e.iterator();
 
-		while (iterator.hasNext()) {
-			StructureGenerator structuregenerator = (StructureGenerator) iterator.next();
-
-			structuregenerator.a(this, this.a, i, j, (ChunkSnapshot) null);
+		for (StructureGenerator structuregenerator : this.e) {
+			structuregenerator.a(this, this.a, i, j, null);
 		}
 
 	}

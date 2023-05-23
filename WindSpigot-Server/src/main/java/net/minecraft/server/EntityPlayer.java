@@ -204,7 +204,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
 	}
 
 	private long chunkToLong(int chunkX, int chunkZ) {
-		return (chunkX << 32L) + chunkZ - -2147483648L;
+		return ((long) chunkX << 32L) + chunkZ + 2147483648L;
 	}
 
 	@Override
@@ -369,14 +369,11 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
 
 			if (this.getHealth() + this.getAbsorptionHearts() != this.bL) {
 				this.bL = this.getHealth() + this.getAbsorptionHearts();
-				Collection collection = this.getScoreboard().getObjectivesForCriteria(IScoreboardCriteria.g);
-				Iterator iterator = collection.iterator();
+				Collection<ScoreboardObjective> collection = this.getScoreboard().getObjectivesForCriteria(IScoreboardCriteria.g);
 
-				while (iterator.hasNext()) {
-					ScoreboardObjective scoreboardobjective = (ScoreboardObjective) iterator.next();
-
+				for (ScoreboardObjective scoreboardobjective : collection) {
 					this.getScoreboard().getPlayerScoreForObjective(this.getName(), scoreboardobjective)
-							.updateForList(Arrays.asList(new EntityHuman[] { this }));
+							.updateForList(Arrays.asList(new EntityHuman[]{this}));
 				}
 				// CraftBukkit - Update ALL the scores!
 				this.world.getServer().getScoreboardManager().updateAllScoresForList(IScoreboardCriteria.g,
@@ -421,7 +418,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
 		BiomeBase biomebase = this.world
 				.getBiome(new BlockPosition(MathHelper.floor(this.locX), 0, MathHelper.floor(this.locZ)));
 		String s = biomebase.ah;
-		AchievementSet achievementset = (AchievementSet) this.getStatisticManager().b((Statistic) AchievementList.L);
+		AchievementSet achievementset = this.getStatisticManager().b((Statistic) AchievementList.L);
 
 		if (achievementset == null) {
 			achievementset = this.getStatisticManager().a(AchievementList.L, new AchievementSet());
@@ -429,11 +426,9 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
 
 		achievementset.add(s);
 		if (this.getStatisticManager().b(AchievementList.L) && achievementset.size() >= BiomeBase.n.size()) {
-			HashSet hashset = Sets.newHashSet(BiomeBase.n);
-			Iterator iterator = achievementset.iterator();
+			HashSet<BiomeBase> hashset = Sets.newHashSet(BiomeBase.n);
 
-			while (iterator.hasNext()) {
-				String s1 = (String) iterator.next();
+			for (String s1 : achievementset) {
 				Iterator iterator1 = hashset.iterator();
 
 				while (iterator1.hasNext()) {
@@ -771,7 +766,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
 																													// the
 																													// lock
 				this.playerConnection.sendPacket(new PacketPlayOutChat(
-						new ChatMessage("container.isLocked", new Object[] { iinventory.getScoreboardDisplayName() }),
+						new ChatMessage("container.isLocked", iinventory.getScoreboardDisplayName()),
 						(byte) 2));
 				this.playerConnection.sendPacket(new PacketPlayOutNamedSoundEffect("random.door_close", this.locX,
 						this.locY, this.locZ, 1.0F, 1.0F));
@@ -938,11 +933,8 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
 	public void a(Statistic statistic, int i) {
 		if (statistic != null) {
 			this.bK.b(this, statistic, i);
-			Iterator iterator = this.getScoreboard().getObjectivesForCriteria(statistic.k()).iterator();
 
-			while (iterator.hasNext()) {
-				ScoreboardObjective scoreboardobjective = (ScoreboardObjective) iterator.next();
-
+			for (ScoreboardObjective scoreboardobjective : this.getScoreboard().getObjectivesForCriteria(statistic.k())) {
 				this.getScoreboard().getPlayerScoreForObjective(this.getName(), scoreboardobjective).addScore(i);
 			}
 
@@ -957,11 +949,8 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
 	public void a(Statistic statistic) {
 		if (statistic != null) {
 			this.bK.setStatistic(this, statistic, 0);
-			Iterator iterator = this.getScoreboard().getObjectivesForCriteria(statistic.k()).iterator();
 
-			while (iterator.hasNext()) {
-				ScoreboardObjective scoreboardobjective = (ScoreboardObjective) iterator.next();
-
+			for (ScoreboardObjective scoreboardobjective : this.getScoreboard().getObjectivesForCriteria(statistic.k())) {
 				this.getScoreboard().getPlayerScoreForObjective(this.getName(), scoreboardobjective).setScore(0);
 			}
 
@@ -1133,7 +1122,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
 		// PaperSpigot end
 		this.bR = packetplayinsettings.c();
 		boolean bS = packetplayinsettings.d();
-		this.getDataWatcher().watch(10, Byte.valueOf((byte) packetplayinsettings.e()));
+		this.getDataWatcher().watch(10, (byte) packetplayinsettings.e());
 	}
 
 	public EntityHuman.EnumChatVisibility getChatFlags() {

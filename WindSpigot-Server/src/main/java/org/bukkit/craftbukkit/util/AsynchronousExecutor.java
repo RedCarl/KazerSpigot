@@ -37,7 +37,7 @@ import org.apache.commons.lang.Validate;
  */
 public final class AsynchronousExecutor<P, T, C, E extends Throwable> {
 
-	public static interface CallBackProvider<P, T, C, E extends Throwable> extends ThreadFactory {
+	public interface CallBackProvider<P, T, C, E extends Throwable> extends ThreadFactory {
 
 		/**
 		 * Normally an asynchronous call, but can be synchronous
@@ -244,7 +244,7 @@ public final class AsynchronousExecutor<P, T, C, E extends Throwable> {
 		this.provider = provider;
 
 		// We have an unbound queue size so do not need a max thread size
-		pool = new ThreadPoolExecutor(coreSize, Integer.MAX_VALUE, 60l, TimeUnit.SECONDS,
+		pool = new ThreadPoolExecutor(coreSize, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS,
 				new LinkedBlockingQueue<Runnable>(), provider);
 	}
 
@@ -338,7 +338,8 @@ public final class AsynchronousExecutor<P, T, C, E extends Throwable> {
 	 * Processes a parameter as if it was in the queue, without ever passing to
 	 * another thread.
 	 */
-	public T getSkipQueue(P parameter, C... callbacks) throws E {
+	@SafeVarargs
+	public final T getSkipQueue(P parameter, C... callbacks) throws E {
 		final CallBackProvider<P, T, C, E> provider = this.provider;
 		final T object = skipQueue(parameter);
 		for (C callback : callbacks) {

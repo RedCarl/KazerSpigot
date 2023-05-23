@@ -2,7 +2,7 @@ package net.minecraft.server;
 
 public class ChunkSection {
 
-	private int yPos;
+	private final int yPos;
 	private int nonEmptyBlockCount;
 	private int tickingBlockCount;
 	private char[] blockIds;

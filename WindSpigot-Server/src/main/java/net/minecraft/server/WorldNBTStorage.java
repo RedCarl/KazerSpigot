@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 // CraftBukkit start
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
@@ -49,12 +51,9 @@ public class WorldNBTStorage implements IDataManager, IPlayerFileData {
 	private void h() {
 		try {
 			File file = new File(this.baseDir, "session.lock");
-			DataOutputStream dataoutputstream = new DataOutputStream(new FileOutputStream(file));
 
-			try {
+			try (DataOutputStream dataoutputstream = new DataOutputStream(new FileOutputStream(file))) {
 				dataoutputstream.writeLong(this.sessionId);
-			} finally {
-				dataoutputstream.close();
 			}
 
 		} catch (IOException ioexception) {
@@ -78,7 +77,7 @@ public class WorldNBTStorage implements IDataManager, IPlayerFileData {
 		try {
 			File file = new File(this.baseDir, "session.lock");
 
-			try (DataInputStream datainputstream = new DataInputStream(new FileInputStream(file))) {
+			try (DataInputStream datainputstream = new DataInputStream(Files.newInputStream(file.toPath()))) {
 				if (datainputstream.readLong() != this.sessionId) {
 					throw new ExceptionWorldConflict("The save for world located at " + this.baseDir
 							+ " is being accessed from another location, aborting"); // Spigot
@@ -104,7 +103,7 @@ public class WorldNBTStorage implements IDataManager, IPlayerFileData {
 
 		if (file.exists()) {
 			try {
-				nbttagcompound = NBTCompressedStreamTools.a((new FileInputStream(file)));
+				nbttagcompound = NBTCompressedStreamTools.a((Files.newInputStream(file.toPath())));
 				nbttagcompound1 = nbttagcompound.getCompound("Data");
 				return new WorldData(nbttagcompound1);
 			} catch (Exception exception) {
@@ -115,7 +114,7 @@ public class WorldNBTStorage implements IDataManager, IPlayerFileData {
 		file = new File(this.baseDir, "level.dat_old");
 		if (file.exists()) {
 			try {
-				nbttagcompound = NBTCompressedStreamTools.a((new FileInputStream(file)));
+				nbttagcompound = NBTCompressedStreamTools.a((Files.newInputStream(file.toPath())));
 				nbttagcompound1 = nbttagcompound.getCompound("Data");
 				return new WorldData(nbttagcompound1);
 			} catch (Exception exception1) {
@@ -138,7 +137,7 @@ public class WorldNBTStorage implements IDataManager, IPlayerFileData {
 			File file1 = new File(this.baseDir, "level.dat_old");
 			File file2 = new File(this.baseDir, "level.dat");
 
-			NBTCompressedStreamTools.a(nbttagcompound2, (new FileOutputStream(file)));
+			NBTCompressedStreamTools.a(nbttagcompound2, (Files.newOutputStream(file.toPath())));
 			if (file1.exists()) {
 				file1.delete();
 			}
@@ -170,7 +169,7 @@ public class WorldNBTStorage implements IDataManager, IPlayerFileData {
 			File file1 = new File(this.baseDir, "level.dat_old");
 			File file2 = new File(this.baseDir, "level.dat");
 
-			NBTCompressedStreamTools.a(nbttagcompound1, (new FileOutputStream(file)));
+			NBTCompressedStreamTools.a(nbttagcompound1, (Files.newOutputStream(file.toPath())));
 			if (file1.exists()) {
 				file1.delete();
 			}
@@ -202,7 +201,7 @@ public class WorldNBTStorage implements IDataManager, IPlayerFileData {
 			File file = new File(this.playerDir, entityhuman.getUniqueID().toString() + ".dat.tmp");
 			File file1 = new File(this.playerDir, entityhuman.getUniqueID().toString() + ".dat");
 
-			NBTCompressedStreamTools.a(nbttagcompound, (new FileOutputStream(file)));
+			NBTCompressedStreamTools.a(nbttagcompound, (Files.newOutputStream(file.toPath())));
 			if (file1.exists()) {
 				file1.delete();
 			}
@@ -228,7 +227,7 @@ public class WorldNBTStorage implements IDataManager, IPlayerFileData {
 																	// normal file
 			{
 				file = new File(this.playerDir,
-						UUID.nameUUIDFromBytes(("OfflinePlayer:" + entityhuman.getName()).getBytes("UTF-8")).toString()
+						UUID.nameUUIDFromBytes(("OfflinePlayer:" + entityhuman.getName()).getBytes(StandardCharsets.UTF_8))
 								+ ".dat");
 				if (file.exists()) {
 					usingWrongFile = true;
@@ -239,7 +238,7 @@ public class WorldNBTStorage implements IDataManager, IPlayerFileData {
 			// Spigot End
 
 			if (normalFile) { // Akarin - avoid double I/O operation
-				nbttagcompound = NBTCompressedStreamTools.a((new FileInputStream(file)));
+				nbttagcompound = NBTCompressedStreamTools.a((Files.newInputStream(file.toPath())));
 			}
 			// Spigot Start
 			if (usingWrongFile) {
@@ -274,7 +273,7 @@ public class WorldNBTStorage implements IDataManager, IPlayerFileData {
 			File file1 = new File(this.playerDir, s + ".dat");
 
 			if (file1.exists()) {
-				return NBTCompressedStreamTools.a((new FileInputStream(file1)));
+				return NBTCompressedStreamTools.a((Files.newInputStream(file1.toPath())));
 			}
 		} catch (Exception exception) {
 			a.warn("Failed to load player data for " + s);
@@ -328,39 +327,21 @@ public class WorldNBTStorage implements IDataManager, IPlayerFileData {
 		}
 		File file1 = new File(this.baseDir, "uid.dat");
 		if (file1.exists()) {
-			DataInputStream dis = null;
-			try {
-				dis = new DataInputStream(new FileInputStream(file1));
+			try (DataInputStream dis = new DataInputStream(new FileInputStream(file1))) {
 				return uuid = new UUID(dis.readLong(), dis.readLong());
 			} catch (IOException ex) {
 				a.warn("Failed to read " + file1 + ", generating new FastRandom UUID", ex);
-			} finally {
-				if (dis != null) {
-					try {
-						dis.close();
-					} catch (IOException ex) {
-						// NOOP
-					}
-				}
 			}
+			// NOOP
 		}
 		uuid = UUID.randomUUID();
-		DataOutputStream dos = null;
-		try {
-			dos = new DataOutputStream(new FileOutputStream(file1));
+		try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(file1))) {
 			dos.writeLong(uuid.getMostSignificantBits());
 			dos.writeLong(uuid.getLeastSignificantBits());
 		} catch (IOException ex) {
 			a.warn("Failed to write " + file1, ex);
-		} finally {
-			if (dos != null) {
-				try {
-					dos.close();
-				} catch (IOException ex) {
-					// NOOP
-				}
-			}
 		}
+		// NOOP
 		return uuid;
 	}
 

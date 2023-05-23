@@ -53,7 +53,7 @@ public final class CraftDamageSource extends DamageSource {
 		FALLING_BLOCK("fallingBlock"),
 		FALL("fall");
 
-		private String code;
+		private final String code;
 		DAMAGE_SOURCE(String code) {
 			this.code = code;
 		}

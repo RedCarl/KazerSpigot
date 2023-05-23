@@ -10,7 +10,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 // CraftBukkit end
 
 // CraftBukkit start
-import it.unimi.dsi.fastutil.objects.ObjectIterator;
+
 
 public final class SpawnerCreature {
 
@@ -24,9 +24,7 @@ public final class SpawnerCreature {
 	private int getEntityCount(WorldServer server, Class oClass) {
 		// NachoSpigot start - remove Steam
 		int sum = 0;
-		for (ObjectIterator<Chunk> objectIterator = (server.chunkProviderServer).chunks.values()
-				.iterator(); objectIterator.hasNext();) {
-			Chunk c = objectIterator.next();
+		for (Chunk c : (server.chunkProviderServer).chunks.values()) {
 			sum += c.entityCount.get(oClass);
 		}
 		return sum;
@@ -158,7 +156,7 @@ public final class SpawnerCreature {
 						label115: while (iterator1.hasNext() && (moblimit > 0)) { // Spigot - while more allowed
 																					// CraftBukkit start = use LongHash
 																					// and LongObjectHashMap
-							long key = ((Long) iterator1.next()).longValue();
+							long key = (Long) iterator1.next();
 							BlockPosition blockposition1 = getRandomPosition(worldserver, LongHash.msw(key),
 									LongHash.lsw(key));
 							// CraftBukkit
@@ -211,7 +209,7 @@ public final class SpawnerCreature {
 														try {
 															entityinsentient = biomebase_biomemeta.b
 																	.getConstructor(new Class[] { World.class })
-																	.newInstance(new Object[] { worldserver });
+																	.newInstance(worldserver);
 														} catch (Exception exception) {
 															exception.printStackTrace();
 															return j1;
@@ -265,7 +263,7 @@ public final class SpawnerCreature {
 		}
 	}
 
-	protected static BlockPosition getRandomPosition(World world, int i, int j) {
+	private static BlockPosition getRandomPosition(World world, int i, int j) {
 		Chunk chunk = world.getChunkAt(i, j);
 		int k = i * 16 + world.random.nextInt(16);
 		int l = j * 16 + world.random.nextInt(16);
@@ -303,7 +301,7 @@ public final class SpawnerCreature {
 	}
 
 	public static void a(World world, BiomeBase biomebase, int i, int j, int k, int l, Random random) {
-		List list = biomebase.getMobs(EnumCreatureType.CREATURE);
+		List<BiomeBase.BiomeMeta> list = biomebase.getMobs(EnumCreatureType.CREATURE);
 
 		if (!list.isEmpty()) {
 			while (random.nextFloat() < biomebase.g()) {
@@ -326,7 +324,7 @@ public final class SpawnerCreature {
 
 							try {
 								entityinsentient = biomebase_biomemeta.b.getConstructor(new Class[] { World.class })
-										.newInstance(new Object[] { world });
+										.newInstance(world);
 							} catch (Exception exception) {
 								exception.printStackTrace();
 								continue;

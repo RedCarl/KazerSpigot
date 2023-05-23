@@ -11,7 +11,7 @@ public class ContainerHopper extends Container {
 
 	// CraftBukkit start
 	private CraftInventoryView bukkitEntity = null;
-	private PlayerInventory player;
+	private final PlayerInventory player;
 
 	@Override
 	public CraftInventoryView getBukkitView() {

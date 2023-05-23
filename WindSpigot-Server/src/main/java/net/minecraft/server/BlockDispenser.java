@@ -16,7 +16,7 @@ public class BlockDispenser extends BlockContainer {
 	protected BlockDispenser() {
 		super(Material.STONE);
 		this.j(this.blockStateList.getBlockData().set(BlockDispenser.FACING, EnumDirection.NORTH)
-				.set(BlockDispenser.TRIGGERED, Boolean.valueOf(false)));
+				.set(BlockDispenser.TRIGGERED, Boolean.FALSE));
 		this.a(CreativeModeTab.d);
 	}
 
@@ -53,7 +53,7 @@ public class BlockDispenser extends BlockContainer {
 			}
 
 			world.setTypeAndData(blockposition, iblockdata.set(BlockDispenser.FACING, enumdirection)
-					.set(BlockDispenser.TRIGGERED, Boolean.valueOf(false)), 2);
+					.set(BlockDispenser.TRIGGERED, Boolean.FALSE), 2);
 		}
 	}
 
@@ -80,7 +80,7 @@ public class BlockDispenser extends BlockContainer {
 
 	public void dispense(World world, BlockPosition blockposition) {
 		SourceBlock sourceblock = new SourceBlock(world, blockposition);
-		TileEntityDispenser tileentitydispenser = (TileEntityDispenser) sourceblock.getTileEntity();
+		TileEntityDispenser tileentitydispenser = sourceblock.getTileEntity();
 
 		if (tileentitydispenser != null) {
 			int i = tileentitydispenser.m();
@@ -110,13 +110,13 @@ public class BlockDispenser extends BlockContainer {
 	public void doPhysics(World world, BlockPosition blockposition, IBlockData iblockdata, Block block) {
 		boolean flag = world.isBlockIndirectlyPowered(blockposition)
 				|| world.isBlockIndirectlyPowered(blockposition.up());
-		boolean flag1 = iblockdata.get(BlockDispenser.TRIGGERED).booleanValue();
+		boolean flag1 = iblockdata.get(BlockDispenser.TRIGGERED);
 
 		if (flag && !flag1) {
 			world.a(blockposition, this, this.a(world));
-			world.setTypeAndData(blockposition, iblockdata.set(BlockDispenser.TRIGGERED, Boolean.valueOf(true)), 4);
+			world.setTypeAndData(blockposition, iblockdata.set(BlockDispenser.TRIGGERED, Boolean.TRUE), 4);
 		} else if (!flag && flag1) {
-			world.setTypeAndData(blockposition, iblockdata.set(BlockDispenser.TRIGGERED, Boolean.valueOf(false)), 4);
+			world.setTypeAndData(blockposition, iblockdata.set(BlockDispenser.TRIGGERED, Boolean.FALSE), 4);
 		}
 
 	}
@@ -138,7 +138,7 @@ public class BlockDispenser extends BlockContainer {
 	public IBlockData getPlacedState(World world, BlockPosition blockposition, EnumDirection enumdirection, float f,
 			float f1, float f2, int i, EntityLiving entityliving) {
 		return this.getBlockData().set(BlockDispenser.FACING, BlockPiston.a(world, blockposition, entityliving))
-				.set(BlockDispenser.TRIGGERED, Boolean.valueOf(false));
+				.set(BlockDispenser.TRIGGERED, Boolean.FALSE);
 	}
 
 	@Override
@@ -199,7 +199,7 @@ public class BlockDispenser extends BlockContainer {
 	@Override
 	public IBlockData fromLegacyData(int i) {
 		return this.getBlockData().set(BlockDispenser.FACING, b(i)).set(BlockDispenser.TRIGGERED,
-				Boolean.valueOf((i & 8) > 0));
+				(i & 8) > 0);
 	}
 
 	@Override
@@ -207,7 +207,7 @@ public class BlockDispenser extends BlockContainer {
 		byte b0 = 0;
 		int i = b0 | iblockdata.get(BlockDispenser.FACING).a();
 
-		if (iblockdata.get(BlockDispenser.TRIGGERED).booleanValue()) {
+		if (iblockdata.get(BlockDispenser.TRIGGERED)) {
 			i |= 8;
 		}
 
@@ -216,6 +216,6 @@ public class BlockDispenser extends BlockContainer {
 
 	@Override
 	protected BlockStateList getStateList() {
-		return new BlockStateList(this, new IBlockState[] { BlockDispenser.FACING, BlockDispenser.TRIGGERED });
+		return new BlockStateList(this, BlockDispenser.FACING, BlockDispenser.TRIGGERED);
 	}
 }

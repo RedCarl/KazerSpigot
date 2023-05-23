@@ -84,7 +84,7 @@ public class BlockMonsterEggs extends Block {
 
 	@Override
 	protected BlockStateList getStateList() {
-		return new BlockStateList(this, new IBlockState[] { BlockMonsterEggs.VARIANT });
+		return new BlockStateList(this, BlockMonsterEggs.VARIANT);
 	}
 
 	static class SyntheticClass_1 {
@@ -95,57 +95,49 @@ public class BlockMonsterEggs extends Block {
 			try {
 				BlockMonsterEggs.SyntheticClass_1.a[BlockMonsterEggs.EnumMonsterEggVarient.COBBLESTONE.ordinal()] = 1;
 			} catch (NoSuchFieldError nosuchfielderror) {
-				;
 			}
 
 			try {
 				BlockMonsterEggs.SyntheticClass_1.a[BlockMonsterEggs.EnumMonsterEggVarient.STONEBRICK.ordinal()] = 2;
 			} catch (NoSuchFieldError nosuchfielderror1) {
-				;
 			}
 
 			try {
 				BlockMonsterEggs.SyntheticClass_1.a[BlockMonsterEggs.EnumMonsterEggVarient.MOSSY_STONEBRICK
 						.ordinal()] = 3;
 			} catch (NoSuchFieldError nosuchfielderror2) {
-				;
 			}
 
 			try {
 				BlockMonsterEggs.SyntheticClass_1.a[BlockMonsterEggs.EnumMonsterEggVarient.CRACKED_STONEBRICK
 						.ordinal()] = 4;
 			} catch (NoSuchFieldError nosuchfielderror3) {
-				;
 			}
 
 			try {
 				BlockMonsterEggs.SyntheticClass_1.a[BlockMonsterEggs.EnumMonsterEggVarient.CHISELED_STONEBRICK
 						.ordinal()] = 5;
 			} catch (NoSuchFieldError nosuchfielderror4) {
-				;
 			}
 
 		}
 	}
 
-	public static enum EnumMonsterEggVarient implements INamable {
+	public enum EnumMonsterEggVarient implements INamable {
 
 		STONE(0, "stone") {
-			;
 			@Override
 			public IBlockData d() {
 				return Blocks.STONE.getBlockData().set(BlockStone.VARIANT, BlockStone.EnumStoneVariant.STONE);
 			}
 		},
 		COBBLESTONE(1, "cobblestone", "cobble") {
-			;
 			@Override
 			public IBlockData d() {
 				return Blocks.COBBLESTONE.getBlockData();
 			}
 		},
 		STONEBRICK(2, "stone_brick", "brick") {
-			;
 			@Override
 			public IBlockData d() {
 				return Blocks.STONEBRICK.getBlockData().set(BlockSmoothBrick.VARIANT,
@@ -153,7 +145,6 @@ public class BlockMonsterEggs extends Block {
 			}
 		},
 		MOSSY_STONEBRICK(3, "mossy_brick", "mossybrick") {
-			;
 			@Override
 			public IBlockData d() {
 				return Blocks.STONEBRICK.getBlockData().set(BlockSmoothBrick.VARIANT,
@@ -161,7 +152,6 @@ public class BlockMonsterEggs extends Block {
 			}
 		},
 		CRACKED_STONEBRICK(4, "cracked_brick", "crackedbrick") {
-			;
 			@Override
 			public IBlockData d() {
 				return Blocks.STONEBRICK.getBlockData().set(BlockSmoothBrick.VARIANT,
@@ -169,7 +159,6 @@ public class BlockMonsterEggs extends Block {
 			}
 		},
 		CHISELED_STONEBRICK(5, "chiseled_brick", "chiseledbrick") {
-			;
 			@Override
 			public IBlockData d() {
 				return Blocks.STONEBRICK.getBlockData().set(BlockSmoothBrick.VARIANT,
@@ -182,11 +171,11 @@ public class BlockMonsterEggs extends Block {
 		private final String i;
 		private final String j;
 
-		private EnumMonsterEggVarient(int i, String s) {
+		EnumMonsterEggVarient(int i, String s) {
 			this(i, s, s);
 		}
 
-		private EnumMonsterEggVarient(int i, String s, String s1) {
+		EnumMonsterEggVarient(int i, String s, String s1) {
 			this.h = i;
 			this.i = s;
 			this.j = s1;
@@ -224,9 +213,7 @@ public class BlockMonsterEggs extends Block {
 			BlockMonsterEggs.EnumMonsterEggVarient[] ablockmonstereggs_enummonstereggvarient = values();
 			int i = ablockmonstereggs_enummonstereggvarient.length;
 
-			for (int j = 0; j < i; ++j) {
-				BlockMonsterEggs.EnumMonsterEggVarient blockmonstereggs_enummonstereggvarient = ablockmonstereggs_enummonstereggvarient[j];
-
+			for (EnumMonsterEggVarient blockmonstereggs_enummonstereggvarient : ablockmonstereggs_enummonstereggvarient) {
 				if (iblockdata == blockmonstereggs_enummonstereggvarient.d()) {
 					return blockmonstereggs_enummonstereggvarient;
 				}
@@ -248,10 +235,8 @@ public class BlockMonsterEggs extends Block {
 			BlockMonsterEggs.EnumMonsterEggVarient[] ablockmonstereggs_enummonstereggvarient = values();
 			int i = ablockmonstereggs_enummonstereggvarient.length;
 
-			for (int j = 0; j < i; ++j) {
-				BlockMonsterEggs.EnumMonsterEggVarient blockmonstereggs_enummonstereggvarient = ablockmonstereggs_enummonstereggvarient[j];
-
-				BlockMonsterEggs.EnumMonsterEggVarient.g[blockmonstereggs_enummonstereggvarient
+			for (EnumMonsterEggVarient blockmonstereggs_enummonstereggvarient : ablockmonstereggs_enummonstereggvarient) {
+				EnumMonsterEggVarient.g[blockmonstereggs_enummonstereggvarient
 						.a()] = blockmonstereggs_enummonstereggvarient;
 			}
 

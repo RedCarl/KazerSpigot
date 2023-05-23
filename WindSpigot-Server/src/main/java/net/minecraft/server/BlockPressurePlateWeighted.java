@@ -2,6 +2,8 @@ package net.minecraft.server;
 
 import org.bukkit.event.entity.EntityInteractEvent; // CraftBukkit
 
+import java.util.Iterator;
+
 public class BlockPressurePlateWeighted extends BlockPressurePlateAbstract {
 
 	public static final BlockStateInteger POWER = BlockStateInteger.of("power", 0, 15);
@@ -13,7 +15,7 @@ public class BlockPressurePlateWeighted extends BlockPressurePlateAbstract {
 
 	protected BlockPressurePlateWeighted(Material material, int i, MaterialMapColor materialmapcolor) {
 		super(material, materialmapcolor);
-		this.j(this.blockStateList.getBlockData().set(BlockPressurePlateWeighted.POWER, Integer.valueOf(0)));
+		this.j(this.blockStateList.getBlockData().set(BlockPressurePlateWeighted.POWER, 0));
 		this.weight = i;
 	}
 
@@ -23,11 +25,8 @@ public class BlockPressurePlateWeighted extends BlockPressurePlateAbstract {
 		// int i = Math.min(world.a(Entity.class, this.a(blockposition)).size(),
 		// this.b);
 		int i = 0;
-		java.util.Iterator iterator = world.a(Entity.class, this.getBoundingBox(blockposition)).iterator();
 
-		while (iterator.hasNext()) {
-			Entity entity = (Entity) iterator.next();
-
+		for (Entity entity : world.a(Entity.class, this.getBoundingBox(blockposition))) {
 			org.bukkit.event.Cancellable cancellable;
 
 			if (entity instanceof EntityHuman) {
@@ -59,12 +58,12 @@ public class BlockPressurePlateWeighted extends BlockPressurePlateAbstract {
 
 	@Override
 	protected int e(IBlockData iblockdata) {
-		return iblockdata.get(BlockPressurePlateWeighted.POWER).intValue();
+		return iblockdata.get(BlockPressurePlateWeighted.POWER);
 	}
 
 	@Override
 	protected IBlockData a(IBlockData iblockdata, int i) {
-		return iblockdata.set(BlockPressurePlateWeighted.POWER, Integer.valueOf(i));
+		return iblockdata.set(BlockPressurePlateWeighted.POWER, i);
 	}
 
 	@Override
@@ -74,16 +73,16 @@ public class BlockPressurePlateWeighted extends BlockPressurePlateAbstract {
 
 	@Override
 	public IBlockData fromLegacyData(int i) {
-		return this.getBlockData().set(BlockPressurePlateWeighted.POWER, Integer.valueOf(i));
+		return this.getBlockData().set(BlockPressurePlateWeighted.POWER, i);
 	}
 
 	@Override
 	public int toLegacyData(IBlockData iblockdata) {
-		return iblockdata.get(BlockPressurePlateWeighted.POWER).intValue();
+		return iblockdata.get(BlockPressurePlateWeighted.POWER);
 	}
 
 	@Override
 	protected BlockStateList getStateList() {
-		return new BlockStateList(this, new IBlockState[] { BlockPressurePlateWeighted.POWER });
+		return new BlockStateList(this, BlockPressurePlateWeighted.POWER);
 	}
 }

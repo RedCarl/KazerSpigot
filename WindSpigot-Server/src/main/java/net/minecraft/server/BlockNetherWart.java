@@ -8,7 +8,7 @@ public class BlockNetherWart extends BlockPlant {
 
 	protected BlockNetherWart() {
 		super(Material.PLANT, MaterialMapColor.D);
-		this.j(this.blockStateList.getBlockData().set(BlockNetherWart.AGE, Integer.valueOf(0)));
+		this.j(this.blockStateList.getBlockData().set(BlockNetherWart.AGE, 0));
 		this.a(true);
 		float f = 0.5F;
 
@@ -28,10 +28,10 @@ public class BlockNetherWart extends BlockPlant {
 
 	@Override
 	public void b(World world, BlockPosition blockposition, IBlockData iblockdata, Random random) {
-		int i = iblockdata.get(BlockNetherWart.AGE).intValue();
+		int i = iblockdata.get(BlockNetherWart.AGE);
 
 		if (i < 3 && random.nextInt(Math.max(1, (int) world.growthOdds / world.spigotConfig.wartModifier * 10)) == 0) { // Spigot
-			iblockdata = iblockdata.set(BlockNetherWart.AGE, Integer.valueOf(i + 1));
+			iblockdata = iblockdata.set(BlockNetherWart.AGE, i + 1);
 			// world.setTypeAndData(blockposition, iblockdata, 2); // CraftBukkit
 			org.bukkit.craftbukkit.event.CraftEventFactory.handleBlockGrowEvent(world, blockposition.getX(),
 					blockposition.getY(), blockposition.getZ(), this, toLegacyData(iblockdata)); // CraftBukkit
@@ -45,7 +45,7 @@ public class BlockNetherWart extends BlockPlant {
 		if (!world.isClientSide) {
 			int j = 1;
 
-			if (iblockdata.get(BlockNetherWart.AGE).intValue() >= 3) {
+			if (iblockdata.get(BlockNetherWart.AGE) >= 3) {
 				j = 2 + world.random.nextInt(3);
 				if (i > 0) {
 					j += world.random.nextInt(i + 1);
@@ -71,16 +71,16 @@ public class BlockNetherWart extends BlockPlant {
 
 	@Override
 	public IBlockData fromLegacyData(int i) {
-		return this.getBlockData().set(BlockNetherWart.AGE, Integer.valueOf(i));
+		return this.getBlockData().set(BlockNetherWart.AGE, i);
 	}
 
 	@Override
 	public int toLegacyData(IBlockData iblockdata) {
-		return iblockdata.get(BlockNetherWart.AGE).intValue();
+		return iblockdata.get(BlockNetherWart.AGE);
 	}
 
 	@Override
 	protected BlockStateList getStateList() {
-		return new BlockStateList(this, new IBlockState[] { BlockNetherWart.AGE });
+		return new BlockStateList(this, BlockNetherWart.AGE);
 	}
 }

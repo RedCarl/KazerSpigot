@@ -157,7 +157,7 @@ public abstract class EntityHanging extends Entity {
 				}
 			}
 
-			List list = this.world.getEntities(this, this.getBoundingBox());
+			List<Entity> list = this.world.getEntities(this, this.getBoundingBox());
 			Iterator iterator = list.iterator();
 
 			Entity entity;
@@ -181,8 +181,7 @@ public abstract class EntityHanging extends Entity {
 
 	@Override
 	public boolean l(Entity entity) {
-		return entity instanceof EntityHuman ? this.damageEntity(DamageSource.playerAttack((EntityHuman) entity), 0.0F)
-				: false;
+		return entity instanceof EntityHuman && this.damageEntity(DamageSource.playerAttack((EntityHuman) entity), 0.0F);
 	}
 
 	@Override
@@ -262,7 +261,7 @@ public abstract class EntityHanging extends Entity {
 
 	@Override
 	public void g(double d0, double d1, double d2) {
-		if (false && !this.world.isClientSide && !this.dead && d0 * d0 + d1 * d1 + d2 * d2 > 0.0D) { // CraftBukkit -
+		if (false) { // CraftBukkit -
 																										// not needed
 			this.die();
 			this.b((Entity) null);

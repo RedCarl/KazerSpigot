@@ -2,7 +2,7 @@ package net.minecraft.server;
 
 public class EntityDamageSourceIndirect extends EntityDamageSource {
 
-	private Entity owner;
+	private final Entity owner;
 
 	public EntityDamageSourceIndirect(String s, Entity entity, Entity entity1) {
 		super(s, entity);
@@ -29,8 +29,8 @@ public class EntityDamageSourceIndirect extends EntityDamageSource {
 
 		return itemstack != null && itemstack.hasName() && LocaleI18n.c(s1)
 				? new ChatMessage(s1,
-						new Object[] { entityliving.getScoreboardDisplayName(), ichatbasecomponent, itemstack.C() })
-				: new ChatMessage(s, new Object[] { entityliving.getScoreboardDisplayName(), ichatbasecomponent });
+				entityliving.getScoreboardDisplayName(), ichatbasecomponent, itemstack.C())
+				: new ChatMessage(s, entityliving.getScoreboardDisplayName(), ichatbasecomponent);
 	}
 
 	// CraftBukkit start

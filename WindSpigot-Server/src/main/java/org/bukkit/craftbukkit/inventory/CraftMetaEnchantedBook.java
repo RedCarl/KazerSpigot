@@ -2,6 +2,7 @@ package org.bukkit.craftbukkit.inventory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
@@ -59,12 +60,10 @@ class CraftMetaEnchantedBook extends CraftMetaItem implements EnchantmentStorage
 
 	@Override
 	boolean applicableTo(Material type) {
-		switch (type) {
-		case ENCHANTED_BOOK:
+		if (Objects.requireNonNull(type) == Material.ENCHANTED_BOOK) {
 			return true;
-		default:
-			return false;
 		}
+		return false;
 	}
 
 	@Override
@@ -143,7 +142,7 @@ class CraftMetaEnchantedBook extends CraftMetaItem implements EnchantmentStorage
 
 	@Override
 	public Map<Enchantment, Integer> getStoredEnchants() {
-		return hasStoredEnchants() ? ImmutableMap.copyOf(enchantments) : ImmutableMap.<Enchantment, Integer>of();
+		return hasStoredEnchants() ? ImmutableMap.copyOf(enchantments) : ImmutableMap.of();
 	}
 
 	@Override

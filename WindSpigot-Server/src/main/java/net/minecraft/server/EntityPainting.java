@@ -17,13 +17,11 @@ public class EntityPainting extends EntityHanging {
 
 	public EntityPainting(World world, BlockPosition blockposition, EnumDirection enumdirection) {
 		super(world, blockposition);
-		ArrayList arraylist = Lists.newArrayList();
+		ArrayList<Object> arraylist = Lists.newArrayList();
 		EntityPainting.EnumArt[] aentitypainting_enumart = CACHED_ART_VALUES;
 		int i = aentitypainting_enumart.length;
 
-		for (int j = 0; j < i; ++j) {
-			EntityPainting.EnumArt entitypainting_enumart = aentitypainting_enumart[j];
-
+		for (EnumArt entitypainting_enumart : aentitypainting_enumart) {
 			this.art = entitypainting_enumart;
 			this.setDirection(enumdirection);
 			if (this.survives()) {
@@ -50,9 +48,7 @@ public class EntityPainting extends EntityHanging {
 		EntityPainting.EnumArt[] aentitypainting_enumart = CACHED_ART_VALUES;
 		int i = aentitypainting_enumart.length;
 
-		for (int j = 0; j < i; ++j) {
-			EntityPainting.EnumArt entitypainting_enumart = aentitypainting_enumart[j];
-
+		for (EnumArt entitypainting_enumart : aentitypainting_enumart) {
 			if (entitypainting_enumart.B.equals(s)) {
 				this.art = entitypainting_enumart;
 			}
@@ -97,7 +93,7 @@ public class EntityPainting extends EntityHanging {
 		this.setPosition(blockposition.getX(), blockposition.getY(), blockposition.getZ());
 	}
 
-	public static enum EnumArt {
+	public enum EnumArt {
 
 		KEBAB("Kebab", 16, 16, 0, 0), AZTEC("Aztec", 16, 16, 16, 0), ALBAN("Alban", 16, 16, 32, 0),
 		AZTEC_2("Aztec2", 16, 16, 48, 0), BOMB("Bomb", 16, 16, 64, 0), PLANT("Plant", 16, 16, 80, 0),
@@ -117,7 +113,7 @@ public class EntityPainting extends EntityHanging {
 		public final int E;
 		public final int F;
 
-		private EnumArt(String s, int i, int j, int k, int l) {
+		EnumArt(String s, int i, int j, int k, int l) {
 			this.B = s;
 			this.C = i;
 			this.D = j;

@@ -7,29 +7,29 @@ import java.util.Random;
 
 public class ChunkProviderGenerate implements IChunkProvider {
 
-	private Random h;
-	private NoiseGeneratorOctaves i;
-	private NoiseGeneratorOctaves j;
-	private NoiseGeneratorOctaves k;
-	private NoiseGenerator3 l;
+	private final Random h;
+	private final NoiseGeneratorOctaves i;
+	private final NoiseGeneratorOctaves j;
+	private final NoiseGeneratorOctaves k;
+	private final NoiseGenerator3 l;
 	public NoiseGeneratorOctaves a;
 	public NoiseGeneratorOctaves b;
 	public NoiseGeneratorOctaves c;
-	private World m;
+	private final World m;
 	private final boolean n;
-	private WorldType o;
+	private final WorldType o;
 	private final double[] p;
 	private final float[] q;
 	private CustomWorldSettingsFinal r;
 	private Block s;
 	private double[] t;
-	private WorldGenBase u;
-	private WorldGenStronghold v;
-	private WorldGenVillage w;
-	private WorldGenMineshaft x;
-	private WorldGenLargeFeature y;
-	private WorldGenBase z;
-	private WorldGenMonument A;
+	private final WorldGenBase u;
+	private final WorldGenStronghold v;
+	private final WorldGenVillage w;
+	private final WorldGenMineshaft x;
+	private final WorldGenLargeFeature y;
+	private final WorldGenBase z;
+	private final WorldGenMonument A;
 	private BiomeBase[] B;
 	double[] d;
 	double[] e;
@@ -463,23 +463,23 @@ public class ChunkProviderGenerate implements IChunkProvider {
 	@Override
 	public void recreateStructures(Chunk chunk, int i, int j) {
 		if (this.r.w && this.n && this.m.paperSpigotConfig.generateMineshaft) { // PaperSpigot
-			this.x.a(this, this.m, i, j, (ChunkSnapshot) null);
+			this.x.a(this, this.m, i, j, null);
 		}
 
 		if (this.r.v && this.n && this.m.paperSpigotConfig.generateVillage) { // PaperSpigot
-			this.w.a(this, this.m, i, j, (ChunkSnapshot) null);
+			this.w.a(this, this.m, i, j, null);
 		}
 
 		if (this.r.u && this.n && this.m.paperSpigotConfig.generateStronghold) { // PaperSpigot
-			this.v.a(this, this.m, i, j, (ChunkSnapshot) null);
+			this.v.a(this, this.m, i, j, null);
 		}
 
 		if (this.r.x && this.n && this.m.paperSpigotConfig.generateTemple) { // PaperSpigot
-			this.y.a(this, this.m, i, j, (ChunkSnapshot) null);
+			this.y.a(this, this.m, i, j, null);
 		}
 
 		if (this.r.y && this.n && this.m.paperSpigotConfig.generateMonument) { // PaperSpigot
-			this.A.a(this, this.m, i, j, (ChunkSnapshot) null);
+			this.A.a(this, this.m, i, j, null);
 		}
 
 	}

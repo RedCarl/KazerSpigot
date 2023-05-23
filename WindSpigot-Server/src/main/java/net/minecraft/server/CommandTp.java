@@ -26,7 +26,7 @@ public class CommandTp extends CommandAbstract {
 	@Override
 	public void execute(ICommandListener icommandlistener, String[] astring) throws CommandException {
 		if (astring.length < 1) {
-			throw new ExceptionUsage("commands.tp.usage", new Object[0]);
+			throw new ExceptionUsage("commands.tp.usage");
 		} else {
 			byte b0 = 0;
 			Entity object;
@@ -40,7 +40,7 @@ public class CommandTp extends CommandAbstract {
 
 			if (astring.length != 1 && astring.length != 2) {
 				if (astring.length < b0 + 3) {
-					throw new ExceptionUsage("commands.tp.usage", new Object[0]);
+					throw new ExceptionUsage("commands.tp.usage");
 				} else if (object.world != null) {
 					int i = b0 + 1;
 					CommandAbstract.CommandNumber commandabstract_commandnumber = a(object.locX, astring[b0],
@@ -56,7 +56,7 @@ public class CommandTp extends CommandAbstract {
 					float f;
 
 					if (object instanceof EntityPlayer) {
-						EnumSet enumset = EnumSet.noneOf(PacketPlayOutPosition.EnumPlayerTeleportFlags.class);
+						EnumSet<PacketPlayOutPosition.EnumPlayerTeleportFlags> enumset = EnumSet.noneOf(PacketPlayOutPosition.EnumPlayerTeleportFlags.class);
 
 						if (commandabstract_commandnumber.c()) {
 							enumset.add(PacketPlayOutPosition.EnumPlayerTeleportFlags.X);
@@ -94,7 +94,7 @@ public class CommandTp extends CommandAbstract {
 							f = MathHelper.g(f + 180.0F);
 						}
 
-						object.mount((Entity) null);
+						object.mount(null);
 						((EntityPlayer) object).playerConnection.a(commandabstract_commandnumber.b(),
 								commandabstract_commandnumber1.b(), commandabstract_commandnumber2.b(), f, f1, enumset);
 						object.f(f);
@@ -113,10 +113,10 @@ public class CommandTp extends CommandAbstract {
 					}
 
 					a(icommandlistener, this, "commands.tp.success.coordinates",
-							new Object[] { object.getName(),
-									Double.valueOf(commandabstract_commandnumber.a()),
-									Double.valueOf(commandabstract_commandnumber1.a()),
-									Double.valueOf(commandabstract_commandnumber2.a()) });
+							object.getName(),
+							commandabstract_commandnumber.a(),
+							commandabstract_commandnumber1.a(),
+							commandabstract_commandnumber2.a());
 				}
 			} else {
 				Entity entity = b(icommandlistener, astring[astring.length - 1]);
@@ -127,7 +127,7 @@ public class CommandTp extends CommandAbstract {
 				if (object.getBukkitEntity().teleport(entity.getBukkitEntity(),
 						org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.COMMAND)) {
 					a(icommandlistener, this, "commands.tp.success",
-							new Object[] { object.getName(), entity.getName() });
+							object.getName(), entity.getName());
 					// CraftBukkit End
 				}
 			}

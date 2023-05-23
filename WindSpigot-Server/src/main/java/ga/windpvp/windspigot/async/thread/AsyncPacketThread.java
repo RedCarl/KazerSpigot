@@ -14,12 +14,12 @@ import net.minecraft.server.NetworkManager;
 import net.minecraft.server.Packet;
 
 public abstract class AsyncPacketThread {
-    private boolean running = true;
+    private final boolean running = true;
 	private static final long SEC_IN_NANO = 1000000000;
 	private static final int TPS = WindSpigotConfig.combatThreadTPS;
 	private static final long TICK_TIME = SEC_IN_NANO / TPS;
 	private static final long MAX_CATCHUP_BUFFER = TICK_TIME * TPS * 60L;
-    private Thread thread;
+    private final Thread thread;
     protected Queue<Runnable> packets = new ConcurrentLinkedQueue<Runnable>();
 
     public AsyncPacketThread(String s) {
@@ -93,8 +93,8 @@ public abstract class AsyncPacketThread {
 
     // Store packet data
     public static class RunnableItem {
-        private Channel channel;
-        private Packet<?>  packet;
+        private final Channel channel;
+        private final Packet<?>  packet;
 
         public RunnableItem(Channel m, Packet<?>  p) {
             this.channel = m;

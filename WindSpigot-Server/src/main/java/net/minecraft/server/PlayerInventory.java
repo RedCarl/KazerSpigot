@@ -95,19 +95,19 @@ public class PlayerInventory implements IInventory {
 	// CraftBukkit start - Watch method above! :D
 	public int canHold(ItemStack itemstack) {
 		int remains = itemstack.count;
-		for (int i = 0; i < this.items.length; ++i) {
-			if (this.items[i] == null) {
+		for (ItemStack item : this.items) {
+			if (item == null) {
 				return itemstack.count;
 			}
 
 			// Taken from firstPartial(ItemStack)
-			if (this.items[i] != null && this.items[i].getItem() == itemstack.getItem() && this.items[i].isStackable()
-					&& this.items[i].count < this.items[i].getMaxStackSize()
-					&& this.items[i].count < this.getMaxStackSize()
-					&& (!this.items[i].usesData() || this.items[i].getData() == itemstack.getData())
-					&& ItemStack.equals(this.items[i], itemstack)) {
-				remains -= (this.items[i].getMaxStackSize() < this.getMaxStackSize() ? this.items[i].getMaxStackSize()
-						: this.getMaxStackSize()) - this.items[i].count;
+			if (item != null && item.getItem() == itemstack.getItem() && item.isStackable()
+					&& item.count < item.getMaxStackSize()
+					&& item.count < this.getMaxStackSize()
+					&& (!item.usesData() || item.getData() == itemstack.getData())
+					&& ItemStack.equals(item, itemstack)) {
+				remains -= (item.getMaxStackSize() < this.getMaxStackSize() ? item.getMaxStackSize()
+						: this.getMaxStackSize()) - item.count;
 			}
 			if (remains <= 0) {
 				return itemstack.count;
@@ -308,8 +308,8 @@ public class PlayerInventory implements IInventory {
 				CrashReport crashreport = CrashReport.a(throwable, "Adding item to inventory");
 				CrashReportSystemDetails crashreportsystemdetails = crashreport.a("Item being added");
 
-				crashreportsystemdetails.a("Item ID", Integer.valueOf(Item.getId(itemstack.getItem())));
-				crashreportsystemdetails.a("Item data", Integer.valueOf(itemstack.getData()));
+				crashreportsystemdetails.a("Item ID", Item.getId(itemstack.getItem()));
+				crashreportsystemdetails.a("Item data", itemstack.getData());
 				crashreportsystemdetails.a("Item name", new Callable() {
 					public String a() throws Exception {
 						return itemstack.getName();
@@ -474,7 +474,7 @@ public class PlayerInventory implements IInventory {
 	@Override
 	public IChatBaseComponent getScoreboardDisplayName() {
 		return this.hasCustomName() ? new ChatComponentText(this.getName())
-				: new ChatMessage(this.getName(), new Object[0]);
+				: new ChatMessage(this.getName());
 	}
 
 	@Override
@@ -488,7 +488,7 @@ public class PlayerInventory implements IInventory {
 		} else {
 			ItemStack itemstack = this.getItem(this.itemInHandIndex);
 
-			return itemstack != null ? itemstack.b(block) : false;
+			return itemstack != null && itemstack.b(block);
 		}
 	}
 
@@ -499,9 +499,9 @@ public class PlayerInventory implements IInventory {
 	public int m() {
 		int i = 0;
 
-		for (int j = 0; j < this.armor.length; ++j) {
-			if (this.armor[j] != null && this.armor[j].getItem() instanceof ItemArmor) {
-				int k = ((ItemArmor) this.armor[j].getItem()).c;
+		for (ItemStack itemStack : this.armor) {
+			if (itemStack != null && itemStack.getItem() instanceof ItemArmor) {
+				int k = ((ItemArmor) itemStack.getItem()).c;
 
 				i += k;
 			}
@@ -566,7 +566,7 @@ public class PlayerInventory implements IInventory {
 
 	@Override
 	public boolean a(EntityHuman entityhuman) {
-		return this.player.dead ? false : entityhuman.h(this.player) <= 64.0D;
+		return !this.player.dead && entityhuman.h(this.player) <= 64.0D;
 	}
 
 	public boolean c(ItemStack itemstack) {

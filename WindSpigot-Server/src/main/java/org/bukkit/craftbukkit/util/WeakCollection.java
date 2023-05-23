@@ -64,7 +64,7 @@ public final class WeakCollection<T> implements Collection<T> {
 	@Override
 	public Iterator<T> iterator() {
 		return new Iterator<T>() {
-			Iterator<WeakReference<T>> it = collection.iterator();
+			final Iterator<WeakReference<T>> it = collection.iterator();
 			Object value = NO_VALUE;
 
 			@Override
@@ -177,9 +177,7 @@ public final class WeakCollection<T> implements Collection<T> {
 
 	private Collection<T> toCollection() {
 		ArrayList<T> collection = new ArrayList<T>();
-		for (T value : this) {
-			collection.add(value);
-		}
+		collection.addAll(this);
 		return collection;
 	}
 }

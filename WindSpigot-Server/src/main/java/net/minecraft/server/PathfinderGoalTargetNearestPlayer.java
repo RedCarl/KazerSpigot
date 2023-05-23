@@ -11,7 +11,7 @@ import com.google.common.base.Predicate;
 public class PathfinderGoalTargetNearestPlayer extends PathfinderGoal {
 
 	private static final Logger a = LogManager.getLogger();
-	private EntityInsentient b;
+	private final EntityInsentient b;
 	private final Predicate<Entity> c;
 	private final PathfinderGoalNearestAttackableTarget.DistanceComparator d;
 	private EntityLiving e;
@@ -45,9 +45,8 @@ public class PathfinderGoalTargetNearestPlayer extends PathfinderGoal {
 						d0 *= 0.7F * f;
 					}
 
-					return entity.g(PathfinderGoalTargetNearestPlayer.this.b) > d0 ? false
-							: PathfinderGoalTarget.a(PathfinderGoalTargetNearestPlayer.this.b, (EntityLiving) entity,
-									false, true);
+					return !(entity.g(PathfinderGoalTargetNearestPlayer.this.b) > d0) && PathfinderGoalTarget.a(PathfinderGoalTargetNearestPlayer.this.b, (EntityLiving) entity,
+							false, true);
 				}
 			}
 
@@ -62,7 +61,7 @@ public class PathfinderGoalTargetNearestPlayer extends PathfinderGoal {
 	@Override
 	public boolean a() {
 		double d0 = this.f();
-		List list = this.b.world.a(EntityHuman.class, this.b.getBoundingBox().grow(d0, 4.0D, d0), this.c);
+		List<EntityHuman> list = this.b.world.a(EntityHuman.class, this.b.getBoundingBox().grow(d0, 4.0D, d0), this.c);
 
 		Collections.sort(list, this.d);
 		if (list.isEmpty()) {
@@ -92,9 +91,8 @@ public class PathfinderGoalTargetNearestPlayer extends PathfinderGoal {
 			} else {
 				double d0 = this.f();
 
-				return this.b.h(entityliving) > d0 * d0 ? false
-						: !(entityliving instanceof EntityPlayer)
-								|| !((EntityPlayer) entityliving).playerInteractManager.isCreative();
+				return !(this.b.h(entityliving) > d0 * d0) && (!(entityliving instanceof EntityPlayer)
+						|| !((EntityPlayer) entityliving).playerInteractManager.isCreative());
 			}
 		}
 	}
@@ -110,7 +108,7 @@ public class PathfinderGoalTargetNearestPlayer extends PathfinderGoal {
 
 	@Override
 	public void d() {
-		this.b.setGoalTarget((EntityLiving) null);
+		this.b.setGoalTarget(null);
 		super.c();
 	}
 

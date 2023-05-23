@@ -22,8 +22,6 @@ import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
 import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import dev.cobblesword.nachospigot.knockback.KnockbackProfile;
 import ga.windpvp.windspigot.cache.Constants;
@@ -135,10 +133,10 @@ public abstract class EntityLiving extends Entity {
 
 	@Override
 	protected void h() {
-		this.datawatcher.a(7, Integer.valueOf(0));
-		this.datawatcher.a(8, Byte.valueOf((byte) 0));
-		this.datawatcher.a(9, Byte.valueOf((byte) 0));
-		this.datawatcher.a(6, Float.valueOf(1.0F));
+		this.datawatcher.a(7, 0);
+		this.datawatcher.a(8, (byte) 0);
+		this.datawatcher.a(9, (byte) 0);
+		this.datawatcher.a(6, 1.0F);
 	}
 
 	protected void initAttributes() {
@@ -171,10 +169,10 @@ public abstract class EntityLiving extends Entity {
 				if (this instanceof EntityPlayer) {
 					((WorldServer) this.world).sendParticles((EntityPlayer) this, EnumParticle.BLOCK_DUST, false,
 							this.locX, this.locY, this.locZ, i, 0.0D, 0.0D, 0.0D, 0.15000000596046448D,
-							new int[] { Block.getCombinedId(iblockdata) });
+							Block.getCombinedId(iblockdata));
 				} else {
 					((WorldServer) this.world).a(EnumParticle.BLOCK_DUST, this.locX, this.locY, this.locZ, i, 0.0D,
-							0.0D, 0.0D, 0.15000000596046448D, new int[] { Block.getCombinedId(iblockdata) });
+							0.0D, 0.0D, 0.15000000596046448D, Block.getCombinedId(iblockdata));
 				}
 				// CraftBukkit end
 			}
@@ -246,7 +244,7 @@ public abstract class EntityLiving extends Entity {
 				}
 
 				if (!this.world.isClientSide && this.au() && this.vehicle instanceof EntityLiving) {
-					this.mount((Entity) null);
+					this.mount(null);
 				}
 			} else // CraftBukkit start - Only set if needed to work around a DataWatcher
 			// inefficiency
@@ -441,11 +439,8 @@ public abstract class EntityLiving extends Entity {
 
 		if (!this.effects.isEmpty()) {
 			NBTTagList nbttaglist = new NBTTagList();
-			Iterator iterator = this.effects.values().iterator();
 
-			while (iterator.hasNext()) {
-				MobEffect mobeffect = (MobEffect) iterator.next();
-
+			for (MobEffect mobeffect : this.effects.values()) {
 				nbttaglist.add(mobeffect.a(new NBTTagCompound()));
 			}
 
@@ -469,7 +464,7 @@ public abstract class EntityLiving extends Entity {
 				MobEffect mobeffect = MobEffect.b(nbttagcompound1);
 
 				if (mobeffect != null) {
-					this.effects.put(Integer.valueOf(mobeffect.getEffectId()), mobeffect);
+					this.effects.put(mobeffect.getEffectId(), mobeffect);
 				}
 			}
 		}
@@ -506,11 +501,11 @@ public abstract class EntityLiving extends Entity {
 
 	// CraftBukkit start
 	private boolean isTickingEffects = false;
-	private List<Object> effectsToProcess = new ObjectArrayList<>(); // WindSpigot - more fastutil collections
+	private final List<Object> effectsToProcess = new ObjectArrayList<>(); // WindSpigot - more fastutil collections
 	// CraftBukkit end
 
 	protected void bi() {
-		Iterator iterator = this.effects.keySet().iterator();
+		Iterator<Integer> iterator = this.effects.keySet().iterator();
 
 		isTickingEffects = true; // CraftBukkit
 		while (iterator.hasNext()) {
@@ -582,20 +577,20 @@ public abstract class EntityLiving extends Entity {
 		} else {
 			int i = PotionBrewer.a(this.effects.values());
 
-			this.datawatcher.watch(8, Byte.valueOf((byte) (PotionBrewer.b(this.effects.values()) ? 1 : 0)));
-			this.datawatcher.watch(7, Integer.valueOf(i));
+			this.datawatcher.watch(8, (byte) (PotionBrewer.b(this.effects.values()) ? 1 : 0));
+			this.datawatcher.watch(7, i);
 			this.setInvisible(this.hasEffect(MobEffectList.INVISIBILITY.id));
 		}
 
 	}
 
 	protected void bj() {
-		this.datawatcher.watch(8, Byte.valueOf((byte) 0));
-		this.datawatcher.watch(7, Integer.valueOf(0));
+		this.datawatcher.watch(8, (byte) 0);
+		this.datawatcher.watch(7, 0);
 	}
 
 	public void removeAllEffects() {
-		Iterator iterator = this.effects.keySet().iterator();
+		Iterator<Integer> iterator = this.effects.keySet().iterator();
 
 		while (iterator.hasNext()) {
 			Integer integer = (Integer) iterator.next();
@@ -615,15 +610,15 @@ public abstract class EntityLiving extends Entity {
 
 	public boolean hasEffect(int i) {
 		// CraftBukkit - Add size check for efficiency
-		return this.effects.size() != 0 && this.effects.containsKey(Integer.valueOf(i));
+		return this.effects.size() != 0 && this.effects.containsKey(i);
 	}
 
 	public boolean hasEffect(MobEffectList mobeffectlist) {
-		return this.effects.containsKey(Integer.valueOf(mobeffectlist.id));
+		return this.effects.containsKey(mobeffectlist.id);
 	}
 
 	public MobEffect getEffect(MobEffectList mobeffectlist) {
-		return this.effects.get(Integer.valueOf(mobeffectlist.id));
+		return this.effects.get(mobeffectlist.id);
 	}
 
 	public void addEffect(MobEffect mobeffect) {
@@ -635,11 +630,11 @@ public abstract class EntityLiving extends Entity {
 		}
 		// CraftBukkit end
 		if (this.d(mobeffect)) {
-			if (this.effects.containsKey(Integer.valueOf(mobeffect.getEffectId()))) {
-				this.effects.get(Integer.valueOf(mobeffect.getEffectId())).a(mobeffect);
-				this.a(this.effects.get(Integer.valueOf(mobeffect.getEffectId())), true);
+			if (this.effects.containsKey(mobeffect.getEffectId())) {
+				this.effects.get(mobeffect.getEffectId()).a(mobeffect);
+				this.a(this.effects.get(mobeffect.getEffectId()), true);
 			} else {
-				this.effects.put(Integer.valueOf(mobeffect.getEffectId()), mobeffect);
+				this.effects.put(mobeffect.getEffectId(), mobeffect);
 				this.a(mobeffect);
 			}
 
@@ -650,9 +645,7 @@ public abstract class EntityLiving extends Entity {
 		if (this.getMonsterType() == EnumMonsterType.UNDEAD) {
 			int i = mobeffect.getEffectId();
 
-			if (i == MobEffectList.REGENERATION.id || i == MobEffectList.POISON.id) {
-				return false;
-			}
+			return i != MobEffectList.REGENERATION.id && i != MobEffectList.POISON.id;
 		}
 
 		return true;
@@ -669,7 +662,7 @@ public abstract class EntityLiving extends Entity {
 			return;
 		}
 		// CraftBukkit end
-		MobEffect mobeffect = this.effects.remove(Integer.valueOf(i));
+		MobEffect mobeffect = this.effects.remove(i);
 
 		if (mobeffect != null) {
 			this.b(mobeffect);
@@ -745,11 +738,11 @@ public abstract class EntityLiving extends Entity {
 				player.setRealHealth(f);
 			}
 
-			this.datawatcher.watch(6, Float.valueOf(player.getScaledHealth()));
+			this.datawatcher.watch(6, player.getScaledHealth());
 			return;
 		}
 		// CraftBukkit end
-		this.datawatcher.watch(6, Float.valueOf(MathHelper.a(f, 0.0F, this.getMaxHealth())));
+		this.datawatcher.watch(6, MathHelper.a(f, 0.0F, this.getMaxHealth()));
 	}
 
 	@Override
@@ -902,7 +895,7 @@ public abstract class EntityLiving extends Entity {
 			vec3d1 = vec3d1.b(-this.yaw * 3.1415927F / 180.0F);
 			vec3d1 = vec3d1.add(this.locX, this.locY + this.getHeadHeight(), this.locZ);
 			this.world.addParticle(EnumParticle.ITEM_CRACK, vec3d1.a, vec3d1.b, vec3d1.c, vec3d.a, vec3d.b + 0.05D,
-					vec3d.c, new int[] { Item.getId(itemstack.getItem()) });
+					vec3d.c, Item.getId(itemstack.getItem()));
 		}
 
 	}
@@ -1101,9 +1094,7 @@ public abstract class EntityLiving extends Entity {
 		ItemStack[] aitemstack = this.getEquipment();
 		int j = aitemstack.length;
 
-		for (int k = 0; k < j; ++k) {
-			ItemStack itemstack = aitemstack[k];
-
+		for (ItemStack itemstack : aitemstack) {
 			if (itemstack != null && itemstack.getItem() instanceof ItemArmor) {
 				int l = ((ItemArmor) itemstack.getItem()).c;
 
@@ -1320,12 +1311,12 @@ public abstract class EntityLiving extends Entity {
 
 	// TacoSpigot end
 	public final void o(int i) {
-		this.datawatcher.watch(9, Byte.valueOf((byte) i));
+		this.datawatcher.watch(9, (byte) i);
 	}
 
 	private int n() {
 		return this.hasEffect(MobEffectList.FASTER_DIG)
-				? 6 - (1 + this.getEffect(MobEffectList.FASTER_DIG).getAmplifier()) * 1
+				? 6 - (1 + this.getEffect(MobEffectList.FASTER_DIG).getAmplifier())
 				: (this.hasEffect(MobEffectList.SLOWER_DIG)
 						? 6 + (1 + this.getEffect(MobEffectList.SLOWER_DIG).getAmplifier()) * 2
 						: 6);
@@ -1502,7 +1493,7 @@ public abstract class EntityLiving extends Entity {
 
 				if (f2 > 0.0F) {
 					f3 += (0.54600006F - f3) * f2 / 3.0F;
-					f4 += (this.bI() * 1.0F - f4) * f2 / 3.0F;
+					f4 += (this.bI() - f4) * f2 / 3.0F;
 				}
 
 				this.a(f, f1, f4);
@@ -1850,7 +1841,7 @@ public abstract class EntityLiving extends Entity {
 
 	protected void bL() {
 		// IonSpigot start - Optimise Entity Collisions
-		List list = this.world.getEntitiesByAmount(this,
+		List<Entity> list = this.world.getEntitiesByAmount(this,
 				this.getBoundingBox().grow(0.20000000298023224D, 0.0D, 0.20000000298023224D),
 				input -> IEntitySelector.d.apply(input) && input != null && input.ae(),
 				world.spigotConfig.maxCollisionsPerEntity);
@@ -1858,11 +1849,11 @@ public abstract class EntityLiving extends Entity {
 
 		if (this.ad() && !list.isEmpty()) { // Spigot: Add this.ad() condition
 			numCollisions -= world.spigotConfig.maxCollisionsPerEntity; // Spigot
-			for (int i = 0; i < list.size(); ++i) {
+			for (Object o : list) {
 				if (numCollisions > world.spigotConfig.maxCollisionsPerEntity) {
 					break;
 				} // Spigot
-				Entity entity = (Entity) list.get(i);
+				Entity entity = (Entity) o;
 
 				// TODO better check now?
 				// CraftBukkit start - Only handle mob (non-player) collisions every other tick
@@ -2058,7 +2049,7 @@ public abstract class EntityLiving extends Entity {
 	}
 
 	public boolean a(ScoreboardTeamBase scoreboardteambase) {
-		return this.getScoreboardTeam() != null ? this.getScoreboardTeam().isAlly(scoreboardteambase) : false;
+		return this.getScoreboardTeam() != null && this.getScoreboardTeam().isAlly(scoreboardteambase);
 	}
 
 	public void enterCombat() {

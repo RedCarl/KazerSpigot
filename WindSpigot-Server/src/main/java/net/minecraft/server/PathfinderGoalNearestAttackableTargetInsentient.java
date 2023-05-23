@@ -11,11 +11,11 @@ import com.google.common.base.Predicate;
 public class PathfinderGoalNearestAttackableTargetInsentient extends PathfinderGoal {
 
 	private static final Logger a = LogManager.getLogger();
-	private EntityInsentient b;
+	private final EntityInsentient b;
 	private final Predicate<EntityLiving> c;
 	private final PathfinderGoalNearestAttackableTarget.DistanceComparator d;
 	private EntityLiving e;
-	private Class<? extends EntityLiving> f;
+	private final Class<? extends EntityLiving> f;
 
 	public PathfinderGoalNearestAttackableTargetInsentient(EntityInsentient entityinsentient,
 			Class<? extends EntityLiving> oclass) {
@@ -34,10 +34,8 @@ public class PathfinderGoalNearestAttackableTargetInsentient extends PathfinderG
 					d0 *= 0.800000011920929D;
 				}
 
-				return entityliving.isInvisible() ? false
-						: (entityliving.g(PathfinderGoalNearestAttackableTargetInsentient.this.b) > d0 ? false
-								: PathfinderGoalTarget.a(PathfinderGoalNearestAttackableTargetInsentient.this.b,
-										entityliving, false, true));
+				return !entityliving.isInvisible() && (!(entityliving.g(PathfinderGoalNearestAttackableTargetInsentient.this.b) > d0) && PathfinderGoalTarget.a(PathfinderGoalNearestAttackableTargetInsentient.this.b,
+						entityliving, false, true));
 			}
 
 			@Override
@@ -51,7 +49,7 @@ public class PathfinderGoalNearestAttackableTargetInsentient extends PathfinderG
 	@Override
 	public boolean a() {
 		double d0 = this.f();
-		List list = this.b.world.a(this.f, this.b.getBoundingBox().grow(d0, 4.0D, d0), this.c);
+		List<? extends EntityLiving> list = this.b.world.a(this.f, this.b.getBoundingBox().grow(d0, 4.0D, d0), this.c);
 
 		Collections.sort(list, this.d);
 		if (list.isEmpty()) {
@@ -73,9 +71,8 @@ public class PathfinderGoalNearestAttackableTargetInsentient extends PathfinderG
 		} else {
 			double d0 = this.f();
 
-			return this.b.h(entityliving) > d0 * d0 ? false
-					: !(entityliving instanceof EntityPlayer)
-							|| !((EntityPlayer) entityliving).playerInteractManager.isCreative();
+			return !(this.b.h(entityliving) > d0 * d0) && (!(entityliving instanceof EntityPlayer)
+					|| !((EntityPlayer) entityliving).playerInteractManager.isCreative());
 		}
 	}
 
@@ -89,7 +86,7 @@ public class PathfinderGoalNearestAttackableTargetInsentient extends PathfinderG
 
 	@Override
 	public void d() {
-		this.b.setGoalTarget((EntityLiving) null);
+		this.b.setGoalTarget(null);
 		super.c();
 	}
 

@@ -10,7 +10,7 @@ public class RecipesFurnace {
 
 	private static final RecipesFurnace a = new RecipesFurnace();
 	public Map<ItemStack, ItemStack> recipes = Maps.newHashMap();
-	private Map<ItemStack, Float> c = Maps.newHashMap();
+	private final Map<ItemStack, Float> c = Maps.newHashMap();
 	public Map customRecipes = Maps.newHashMap(); // CraftBukkit - add field
 
 	public static RecipesFurnace getInstance() {
@@ -42,9 +42,7 @@ public class RecipesFurnace {
 		ItemFish.EnumFish[] aitemfish_enumfish = ItemFish.EnumFish.values();
 		int i = aitemfish_enumfish.length;
 
-		for (int j = 0; j < i; ++j) {
-			ItemFish.EnumFish itemfish_enumfish = aitemfish_enumfish[j];
-
+		for (ItemFish.EnumFish itemfish_enumfish : aitemfish_enumfish) {
 			if (itemfish_enumfish.g()) {
 				this.a(new ItemStack(Items.FISH, 1, itemfish_enumfish.a()),
 						new ItemStack(Items.COOKED_FISH, 1, itemfish_enumfish.a()), 0.35F);
@@ -73,7 +71,7 @@ public class RecipesFurnace {
 
 	public void a(ItemStack itemstack, ItemStack itemstack1, float f) {
 		this.recipes.put(itemstack, itemstack1);
-		this.c.put(itemstack1, Float.valueOf(f));
+		this.c.put(itemstack1, f);
 	}
 
 	public ItemStack getResult(ItemStack itemstack) {
@@ -112,7 +110,7 @@ public class RecipesFurnace {
 	}
 
 	public float b(ItemStack itemstack) {
-		Iterator iterator = this.c.entrySet().iterator();
+		Iterator<Entry<ItemStack, Float>> iterator = this.c.entrySet().iterator();
 
 		Entry entry;
 
@@ -124,6 +122,6 @@ public class RecipesFurnace {
 			entry = (Entry) iterator.next();
 		} while (!this.a(itemstack, (ItemStack) entry.getKey()));
 
-		return ((Float) entry.getValue()).floatValue();
+		return (Float) entry.getValue();
 	}
 }

@@ -109,7 +109,7 @@ public class CraftTask implements BukkitTask, Runnable { // Spigot
 	 *         true otherwise
 	 */
 	boolean cancel0() {
-		setPeriod(-2l);
+		setPeriod(-2L);
 		return true;
 	}
 

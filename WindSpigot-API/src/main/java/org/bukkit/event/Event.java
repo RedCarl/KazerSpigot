@@ -5,7 +5,7 @@ import org.bukkit.plugin.PluginManager;
 
 /**
  * Represents an event.
- *
+ * <p>
  * All events require a static method named getHandlerList() which returns the
  * same {@link HandlerList} as {@link #getHandlers()}.
  *
@@ -93,6 +93,6 @@ public abstract class Event {
 		 * possible, even if the server would not normally allow the action. Some
 		 * actions may not be allowed.
 		 */
-		ALLOW;
-	}
+		ALLOW
+    }
 }

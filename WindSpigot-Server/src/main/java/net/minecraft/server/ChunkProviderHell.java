@@ -71,13 +71,13 @@ public class ChunkProviderHell implements IChunkProvider {
 			for (int k1 = 0; k1 < b0; ++k1) {
 				for (int l1 = 0; l1 < 16; ++l1) {
 					double d0 = 0.125D;
-					double d1 = this.n[((j1 + 0) * i1 + k1 + 0) * b1 + l1 + 0];
-					double d2 = this.n[((j1 + 0) * i1 + k1 + 1) * b1 + l1 + 0];
-					double d3 = this.n[((j1 + 1) * i1 + k1 + 0) * b1 + l1 + 0];
-					double d4 = this.n[((j1 + 1) * i1 + k1 + 1) * b1 + l1 + 0];
-					double d5 = (this.n[((j1 + 0) * i1 + k1 + 0) * b1 + l1 + 1] - d1) * d0;
-					double d6 = (this.n[((j1 + 0) * i1 + k1 + 1) * b1 + l1 + 1] - d2) * d0;
-					double d7 = (this.n[((j1 + 1) * i1 + k1 + 0) * b1 + l1 + 1] - d3) * d0;
+					double d1 = this.n[((j1) * i1 + k1) * b1 + l1];
+					double d2 = this.n[((j1) * i1 + k1 + 1) * b1 + l1];
+					double d3 = this.n[((j1 + 1) * i1 + k1) * b1 + l1];
+					double d4 = this.n[((j1 + 1) * i1 + k1 + 1) * b1 + l1];
+					double d5 = (this.n[((j1) * i1 + k1) * b1 + l1 + 1] - d1) * d0;
+					double d6 = (this.n[((j1) * i1 + k1 + 1) * b1 + l1 + 1] - d2) * d0;
+					double d7 = (this.n[((j1 + 1) * i1 + k1) * b1 + l1 + 1] - d3) * d0;
 					double d8 = (this.n[((j1 + 1) * i1 + k1 + 1) * b1 + l1 + 1] - d4) * d0;
 
 					for (int i2 = 0; i2 < 8; ++i2) {
@@ -213,7 +213,7 @@ public class ChunkProviderHell implements IChunkProvider {
 		}
 
 		Chunk chunk = new Chunk(this.h, chunksnapshot, i, j);
-		BiomeBase[] abiomebase = this.h.getWorldChunkManager().getBiomeBlock((BiomeBase[]) null, i * 16, j * 16, 16,
+		BiomeBase[] abiomebase = this.h.getWorldChunkManager().getBiomeBlock(null, i * 16, j * 16, 16,
 				16);
 		byte[] abyte = chunk.getBiomeIndex();
 
@@ -417,7 +417,7 @@ public class ChunkProviderHell implements IChunkProvider {
 	@Override
 	public void recreateStructures(Chunk chunk, int i, int j) {
 		if (this.h.paperSpigotConfig.generateFortress) {
-			this.B.a(this, this.h, i, j, (ChunkSnapshot) null); // PaperSpigot
+			this.B.a(this, this.h, i, j, null); // PaperSpigot
 		}
 	}
 

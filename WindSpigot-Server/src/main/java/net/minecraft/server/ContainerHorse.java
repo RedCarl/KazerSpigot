@@ -8,8 +8,8 @@ import org.bukkit.inventory.InventoryView;
 
 public class ContainerHorse extends Container {
 
-	private IInventory a;
-	private EntityHorse f;
+	private final IInventory a;
+	private final EntityHorse f;
 
 	// CraftBukkit start
 	org.bukkit.craftbukkit.inventory.CraftInventoryView bukkitEntity;
@@ -102,7 +102,7 @@ public class ContainerHorse extends Container {
 			}
 
 			if (itemstack1.count == 0) {
-				slot.set((ItemStack) null);
+				slot.set(null);
 			} else {
 				slot.f();
 			}

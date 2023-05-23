@@ -7,7 +7,7 @@ public class NextTickListEntry implements Comparable<NextTickListEntry> {
 	public final BlockPosition a;
 	public long b;
 	public int c;
-	private long f;
+	private final long f;
 
 	public NextTickListEntry(BlockPosition blockposition, Block block) {
 		this.f = (NextTickListEntry.d++);
@@ -44,7 +44,7 @@ public class NextTickListEntry implements Comparable<NextTickListEntry> {
 		return this.b < nextticklistentry.b ? -1
 				: (this.b > nextticklistentry.b ? 1
 						: (this.c != nextticklistentry.c ? this.c - nextticklistentry.c
-								: (this.f < nextticklistentry.f ? -1 : (this.f > nextticklistentry.f ? 1 : 0))));
+								: (Long.compare(this.f, nextticklistentry.f))));
 	}
 
 	@Override

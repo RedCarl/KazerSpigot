@@ -69,7 +69,7 @@ public class FormattedCommandAlias extends Command {
 				throw new IllegalArgumentException("Invalid replacement token");
 			}
 
-			int position = Integer.valueOf(formatString.substring(argStart, index));
+			int position = Integer.parseInt(formatString.substring(argStart, index));
 
 			// Arguments are not 0 indexed
 			if (position == 0) {
@@ -104,7 +104,7 @@ public class FormattedCommandAlias extends Command {
 				replacement.append(args[position]);
 			}
 
-			formatString = formatString.substring(0, start) + replacement.toString() + formatString.substring(end);
+			formatString = formatString.substring(0, start) + replacement + formatString.substring(end);
 			// Move index past the replaced data so we don't process it again
 			index = start + replacement.length();
 

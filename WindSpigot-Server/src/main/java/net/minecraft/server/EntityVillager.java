@@ -295,11 +295,8 @@ public class EntityVillager extends EntityAgeable implements IMerchant, NPC {
 			--this.bs;
 			if (this.bs <= 0) {
 				if (this.bt) {
-					Iterator iterator = this.br.iterator();
 
-					while (iterator.hasNext()) {
-						MerchantRecipe merchantrecipe = (MerchantRecipe) iterator.next();
-
+					for (MerchantRecipe merchantrecipe : this.br) {
 						if (merchantrecipe.h()) {
 							merchantrecipe.a(this.random.nextInt(6) + this.random.nextInt(6) + 2);
 						}
@@ -341,7 +338,7 @@ public class EntityVillager extends EntityAgeable implements IMerchant, NPC {
 	@Override
 	protected void h() {
 		super.h();
-		this.datawatcher.a(16, Integer.valueOf(0));
+		this.datawatcher.a(16, 0);
 	}
 
 	@Override
@@ -418,7 +415,7 @@ public class EntityVillager extends EntityAgeable implements IMerchant, NPC {
 	}
 
 	public void setProfession(int i) {
-		this.datawatcher.watch(16, Integer.valueOf(i));
+		this.datawatcher.watch(16, i);
 	}
 
 	public int getProfession() {
@@ -681,7 +678,7 @@ public class EntityVillager extends EntityAgeable implements IMerchant, NPC {
 			}
 
 			if (s1 != null) {
-				ChatMessage chatmessage = new ChatMessage("entity.Villager." + s1, new Object[0]);
+				ChatMessage chatmessage = new ChatMessage("entity.Villager." + s1);
 
 				chatmessage.getChatModifier().setChatHoverable(this.aQ());
 				chatmessage.getChatModifier().setInsertion(this.getUniqueID().toString());
@@ -718,7 +715,7 @@ public class EntityVillager extends EntityAgeable implements IMerchant, NPC {
 	public EntityVillager b(EntityAgeable entityageable) {
 		EntityVillager entityvillager = new EntityVillager(this.world);
 
-		entityvillager.prepare(this.world.E(new BlockPosition(entityvillager)), (GroupDataEntity) null);
+		entityvillager.prepare(this.world.E(new BlockPosition(entityvillager)), null);
 		return entityvillager;
 	}
 
@@ -733,7 +730,7 @@ public class EntityVillager extends EntityAgeable implements IMerchant, NPC {
 			EntityWitch entitywitch = new EntityWitch(this.world);
 
 			entitywitch.setPositionRotation(this.locX, this.locY, this.locZ, this.yaw, this.pitch);
-			entitywitch.prepare(this.world.E(new BlockPosition(entitywitch)), (GroupDataEntity) null);
+			entitywitch.prepare(this.world.E(new BlockPosition(entitywitch)), null);
 			entitywitch.k(this.ce());
 			if (this.hasCustomName()) {
 				entitywitch.setCustomName(this.getCustomName());
@@ -995,12 +992,12 @@ public class EntityVillager extends EntityAgeable implements IMerchant, NPC {
 	static class MerchantOptionRandomRange extends Tuple<Integer, Integer> {
 
 		public MerchantOptionRandomRange(int i, int j) {
-			super(Integer.valueOf(i), Integer.valueOf(j));
+			super(i, j);
 		}
 
 		public int a(Random random) {
-			return this.a().intValue() >= this.b().intValue() ? this.a().intValue()
-					: this.a().intValue() + random.nextInt(this.b().intValue() - this.a().intValue() + 1);
+			return this.a() >= this.b() ? this.a()
+					: this.a() + random.nextInt(this.b() - this.a() + 1);
 		}
 	}
 }

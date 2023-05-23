@@ -10,10 +10,10 @@ public class ContainerWorkbench extends Container {
 	public InventoryCrafting craftInventory; // CraftBukkit - move initialization into constructor
 	public IInventory resultInventory; // CraftBukkit - move initialization into constructor
 	public World g; // KigPaper - make public
-	private BlockPosition h;
+	private final BlockPosition h;
 	// CraftBukkit start
 	private CraftInventoryView bukkitEntity = null;
-	private PlayerInventory player;
+	private final PlayerInventory player;
 	// CraftBukkit end
 
 	public ContainerWorkbench(PlayerInventory playerinventory, World world, BlockPosition blockposition) {
@@ -90,8 +90,7 @@ public class ContainerWorkbench extends Container {
 		if (!this.checkReachable) {
 			return true; // CraftBukkit
 		}
-		return this.g.getType(this.h).getBlock() != Blocks.CRAFTING_TABLE ? false
-				: entityhuman.e(this.h.getX() + 0.5D, this.h.getY() + 0.5D, this.h.getZ() + 0.5D) <= 64.0D;
+		return this.g.getType(this.h).getBlock() == Blocks.CRAFTING_TABLE && entityhuman.e(this.h.getX() + 0.5D, this.h.getY() + 0.5D, this.h.getZ() + 0.5D) <= 64.0D;
 	}
 
 	@Override
@@ -122,7 +121,7 @@ public class ContainerWorkbench extends Container {
 			}
 
 			if (itemstack1.count == 0) {
-				slot.set((ItemStack) null);
+				slot.set(null);
 			} else {
 				slot.f();
 			}

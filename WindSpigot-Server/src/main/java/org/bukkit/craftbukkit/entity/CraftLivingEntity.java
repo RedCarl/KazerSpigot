@@ -46,7 +46,6 @@ import net.minecraft.server.EntityArmorStand;
 import net.minecraft.server.EntityArrow;
 import net.minecraft.server.EntityEgg;
 import net.minecraft.server.EntityEnderPearl;
-import net.minecraft.server.EntityFireball;
 import net.minecraft.server.EntityFishingHook;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityInsentient;
@@ -406,7 +405,7 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
 						direction.getZ());
 			}
 
-			((EntityFireball) launch).projectileSource = this;
+			launch.projectileSource = this;
 			launch.setPositionRotation(location.getX(), location.getY(), location.getZ(), location.getYaw(),
 					location.getPitch());
 		}

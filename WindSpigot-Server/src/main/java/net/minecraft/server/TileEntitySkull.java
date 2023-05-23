@@ -98,7 +98,7 @@ public class TileEntitySkull extends TileEntity {
 				String s = nbttagcompound.getString("ExtraType");
 
 				if (!UtilColor.b(s)) {
-					this.g = new GameProfile((UUID) null, s);
+					this.g = new GameProfile(null, s);
 					this.e();
 				}
 			}
@@ -165,21 +165,14 @@ public class TileEntitySkull extends TileEntity {
 					executor.execute(new Runnable() {
 						@Override
 						public void run() {
-							try {
-								final GameProfile profile = skinCache.get(gameprofile.getName().toLowerCase());
-								MinecraftServer.getServer().processQueue.add(new Runnable() {
-									@Override
-									public void run() {
-										if (profile == null) {
-											callback.apply(gameprofile);
-										} else {
-											callback.apply(profile);
-										}
-									}
-								});
-							} catch (ExecutionException ex) {
-								ex.printStackTrace();
-							}
+							final GameProfile profile = skinCache.getUnchecked(gameprofile.getName().toLowerCase());
+							MinecraftServer.getServer().processQueue.add(() -> {
+								if (profile == null) {
+									callback.apply(gameprofile);
+								} else {
+									callback.apply(profile);
+								}
+							});
 						}
 					});
 				}

@@ -20,8 +20,8 @@ public class NBTTagIntArray extends NBTBase {
 	void write(DataOutput dataoutput) throws IOException {
 		dataoutput.writeInt(this.data.length);
 
-		for (int i = 0; i < this.data.length; ++i) {
-			dataoutput.writeInt(this.data[i]);
+		for (int datum : this.data) {
+			dataoutput.writeInt(datum);
 		}
 
 	}
@@ -32,7 +32,7 @@ public class NBTTagIntArray extends NBTBase {
 		int j = datainput.readInt();
 		com.google.common.base.Preconditions.checkArgument(j < 1 << 24);
 
-		nbtreadlimiter.a(32 * j);
+		nbtreadlimiter.a(32L * j);
 		this.data = new int[j];
 
 		for (int k = 0; k < j; ++k) {
@@ -52,9 +52,7 @@ public class NBTTagIntArray extends NBTBase {
 		int[] aint = this.data;
 		int i = aint.length;
 
-		for (int j = 0; j < i; ++j) {
-			int k = aint[j];
-
+		for (int k : aint) {
 			s.append(k).append(",");
 		}
 
@@ -71,7 +69,7 @@ public class NBTTagIntArray extends NBTBase {
 
 	@Override
 	public boolean equals(Object object) {
-		return super.equals(object) ? Arrays.equals(this.data, ((NBTTagIntArray) object).data) : false;
+		return super.equals(object) && Arrays.equals(this.data, ((NBTTagIntArray) object).data);
 	}
 
 	@Override

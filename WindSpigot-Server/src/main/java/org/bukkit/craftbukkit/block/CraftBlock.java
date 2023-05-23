@@ -40,8 +40,8 @@ public class CraftBlock implements Block {
 	private final int x;
 	private final int y;
 	private final int z;
-	private static final Biome BIOME_MAPPING[];
-	private static final BiomeBase BIOMEBASE_MAPPING[];
+	private static final Biome[] BIOME_MAPPING;
+	private static final BiomeBase[] BIOMEBASE_MAPPING;
 
 	public CraftBlock(CraftChunk chunk, int x, int y, int z) {
 		this.x = x;

@@ -55,7 +55,7 @@ public class EntityTrackerEntry {
 	private double posY;
 	private double posZ;
 	private boolean isMoving;
-	private boolean u;
+	private final boolean u;
 
 	public boolean sendVelocityUpdates() {
 		return u;
@@ -86,9 +86,9 @@ public class EntityTrackerEntry {
 	public Set<EntityPlayer> trackedPlayers = trackedPlayerMap.keySet();
 	// PaperSpigot end
 
-	private List<EntityPlayer> toRemove = new ArrayList<>();
-	private EntityTracker entityTracker;
-	private int addRemoveRate;
+	private final List<EntityPlayer> toRemove = new ArrayList<>();
+	private final EntityTracker entityTracker;
+	private final int addRemoveRate;
 	private int addRemoveCooldown;
 	private boolean withinNoTrack = false;
 
@@ -273,10 +273,10 @@ public class EntityTrackerEntry {
 
 			if (itemstack != null && itemstack.getItem() instanceof ItemWorldMap) { // Paper - moved back up
 				WorldMap worldmap = Items.FILLED_MAP.getSavedMap(itemstack, this.tracker.world);
-				Iterator iterator = this.trackedPlayers.iterator(); // CraftBukkit
+				// CraftBukkit
 
-				while (iterator.hasNext()) {
-					EntityHuman entityhuman = (EntityHuman) iterator.next();
+				for (EntityPlayer trackedPlayer : this.trackedPlayers) {
+					EntityHuman entityhuman = (EntityHuman) trackedPlayer;
 					EntityPlayer entityplayer = (EntityPlayer) entityhuman;
 
 					worldmap.a(entityplayer, itemstack);
@@ -471,7 +471,7 @@ public class EntityTrackerEntry {
 		if (this.tracker instanceof EntityLiving) {
 			AttributeMapServer attributemapserver = (AttributeMapServer) ((EntityLiving) this.tracker)
 					.getAttributeMap();
-			Set set = attributemapserver.getAttributes();
+			Set<AttributeInstance> set = attributemapserver.getAttributes();
 
 			if (!set.isEmpty()) {
 				// CraftBukkit start - Send scaled max health
@@ -488,11 +488,8 @@ public class EntityTrackerEntry {
 	}
 
 	public void broadcast(Packet packet) {
-		Iterator iterator = this.trackedPlayers.iterator();
 
-		while (iterator.hasNext()) {
-			EntityPlayer entityplayer = (EntityPlayer) iterator.next();
-
+		for (EntityPlayer entityplayer : this.trackedPlayers) {
 			entityplayer.playerConnection.sendPacket(packet);
 		}
 
@@ -500,11 +497,8 @@ public class EntityTrackerEntry {
 	
 	// WindSpigot start
 	protected void broadcastInternal(Packet<?> packet) {
-		Iterator iterator = this.trackedPlayers.iterator();
 
-		while (iterator.hasNext()) {
-			EntityPlayer entityplayer = (EntityPlayer) iterator.next();
-
+		for (EntityPlayer entityplayer : this.trackedPlayers) {
 			entityplayer.playerConnection.queuePacket(packet);
 		}
 	}
@@ -528,11 +522,8 @@ public class EntityTrackerEntry {
 	// WindSpigot end
 	
 	public void a() {
-		Iterator iterator = this.trackedPlayers.iterator();
 
-		while (iterator.hasNext()) {
-			EntityPlayer entityplayer = (EntityPlayer) iterator.next();
-
+		for (EntityPlayer entityplayer : this.trackedPlayers) {
 			entityplayer.d(this.tracker);
 		}
 
@@ -801,7 +792,7 @@ public class EntityTrackerEntry {
 				} else if (this.tracker instanceof EntityExperienceOrb) {
 					return new PacketPlayOutSpawnEntityExperienceOrb((EntityExperienceOrb) this.tracker);
 				} else {
-					throw new IllegalArgumentException("Don\'t know how to add " + this.tracker.getClass() + "!");
+					throw new IllegalArgumentException("Don't know how to add " + this.tracker.getClass() + "!");
 				}
 			}
 		}

@@ -1,5 +1,6 @@
 package net.minecraft.server;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.craftbukkit.entity.CraftHumanEntity;
@@ -11,7 +12,7 @@ import com.google.common.collect.Lists;
 public class InventorySubcontainer implements IInventory {
 
 	private String a;
-	private int b;
+	private final int b;
 	public ItemStack[] items;
 	private List<IInventoryListener> d;
 	private boolean e;
@@ -184,7 +185,7 @@ public class InventorySubcontainer implements IInventory {
 	@Override
 	public IChatBaseComponent getScoreboardDisplayName() {
 		return this.hasCustomName() ? new ChatComponentText(this.getName())
-				: new ChatMessage(this.getName(), new Object[0]);
+				: new ChatMessage(this.getName());
 	}
 
 	@Override
@@ -195,8 +196,8 @@ public class InventorySubcontainer implements IInventory {
 	@Override
 	public void update() {
 		if (this.d != null) {
-			for (int i = 0; i < this.d.size(); ++i) {
-				this.d.get(i).a(this);
+			for (IInventoryListener iInventoryListener : this.d) {
+				iInventoryListener.a(this);
 			}
 		}
 
@@ -236,9 +237,7 @@ public class InventorySubcontainer implements IInventory {
 
 	@Override
 	public void l() {
-		for (int i = 0; i < this.items.length; ++i) {
-			this.items[i] = null;
-		}
+		Arrays.fill(this.items, null);
 
 	}
 }

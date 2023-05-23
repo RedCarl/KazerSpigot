@@ -1,6 +1,7 @@
 package net.minecraft.server;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import com.google.common.collect.Lists;
 
@@ -8,13 +9,13 @@ public class RecipeRepair extends ShapelessRecipes implements IRecipe { // Craft
 
 	// CraftBukkit start - Delegate to new parent class
 	public RecipeRepair() {
-		super(new ItemStack(Items.LEATHER_HELMET), java.util.Arrays.asList(new ItemStack(Items.LEATHER_HELMET)));
+		super(new ItemStack(Items.LEATHER_HELMET), Collections.singletonList(new ItemStack(Items.LEATHER_HELMET)));
 	}
 	// CraftBukkit end
 
 	@Override
 	public boolean a(InventoryCrafting inventorycrafting, World world) {
-		ArrayList arraylist = Lists.newArrayList();
+		ArrayList<Object> arraylist = Lists.newArrayList();
 
 		for (int i = 0; i < inventorycrafting.getSize(); ++i) {
 			ItemStack itemstack = inventorycrafting.getItem(i);
@@ -37,7 +38,7 @@ public class RecipeRepair extends ShapelessRecipes implements IRecipe { // Craft
 
 	@Override
 	public ItemStack craftItem(InventoryCrafting inventorycrafting) {
-		ArrayList arraylist = Lists.newArrayList();
+		ArrayList<Object> arraylist = Lists.newArrayList();
 
 		ItemStack itemstack;
 

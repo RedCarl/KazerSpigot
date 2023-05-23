@@ -209,7 +209,7 @@ public final class ItemStack {
 				// ItemRecord.
 				if (this.getItem() instanceof ItemRecord) {
 					((BlockJukeBox) Blocks.JUKEBOX).a(world, blockposition, world.getType(blockposition), this);
-					world.a((EntityHuman) null, 1005, blockposition, Item.getId(this.getItem()));
+					world.a(null, 1005, blockposition, Item.getId(this.getItem()));
 					--this.count;
 					entityhuman.b(StatisticList.X);
 				}
@@ -479,12 +479,7 @@ public final class ItemStack {
 
 	public static boolean equals(ItemStack itemstack, ItemStack itemstack1) {
 		return itemstack == null
-				&& itemstack1 == null
-						? true
-						: (itemstack != null && itemstack1 != null
-								? (itemstack.tag == null && itemstack1.tag != null ? false
-										: itemstack.tag == null || itemstack.tag.equals(itemstack1.tag))
-								: false);
+				&& itemstack1 == null || (itemstack != null && itemstack1 != null && ((itemstack.tag != null || itemstack1.tag == null) && (itemstack.tag == null || itemstack.tag.equals(itemstack1.tag))));
 	}
 
 	// Spigot Start
@@ -529,8 +524,7 @@ public final class ItemStack {
 	}
 
 	public static boolean c(ItemStack itemstack, ItemStack itemstack1) {
-		return itemstack == null && itemstack1 == null ? true
-				: (itemstack != null && itemstack1 != null ? itemstack.doMaterialsMatch(itemstack1) : false);
+		return itemstack == null && itemstack1 == null || (itemstack != null && itemstack1 != null && itemstack.doMaterialsMatch(itemstack1));
 	}
 
 	public boolean doMaterialsMatch(ItemStack itemstack) {
@@ -640,7 +634,7 @@ public final class ItemStack {
 				if (nbttagcompound.isEmpty()) {
 					this.tag.remove("display");
 					if (this.tag.isEmpty()) {
-						this.setTag((NBTTagCompound) null);
+						this.setTag(null);
 					}
 				}
 
@@ -649,9 +643,7 @@ public final class ItemStack {
 	}
 
 	public boolean hasName() {
-		return this.tag == null ? false
-				: (!this.tag.hasKeyOfType("display", 10) ? false
-						: this.tag.getCompound("display").hasKeyOfType("Name", 8));
+		return this.tag != null && (this.tag.hasKeyOfType("display", 10) && this.tag.getCompound("display").hasKeyOfType("Name", 8));
 	}
 
 	public EnumItemRarity u() {
@@ -659,7 +651,7 @@ public final class ItemStack {
 	}
 
 	public boolean v() {
-		return !this.getItem().f_(this) ? false : !this.hasEnchantments();
+		return this.getItem().f_(this) && !this.hasEnchantments();
 	}
 
 	public void addEnchantment(Enchantment enchantment, int i) {
@@ -751,7 +743,7 @@ public final class ItemStack {
 		ChatComponentText chatcomponenttext = new ChatComponentText(this.getName());
 
 		if (this.hasName()) {
-			chatcomponenttext.getChatModifier().setItalic(Boolean.valueOf(true));
+			chatcomponenttext.getChatModifier().setItalic(Boolean.TRUE);
 		}
 
 		IChatBaseComponent ichatbasecomponent = (new ChatComponentText("[")).addSibling(chatcomponenttext).a("]");

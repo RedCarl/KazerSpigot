@@ -58,7 +58,7 @@ public class EntityArmorStand extends EntityLiving {
 	@Override
 	protected void h() {
 		super.h();
-		this.datawatcher.a(10, Byte.valueOf((byte) 0));
+		this.datawatcher.a(10, (byte) 0);
 		this.datawatcher.a(11, EntityArmorStand.a);
 		this.datawatcher.a(12, EntityArmorStand.b);
 		this.datawatcher.a(13, EntityArmorStand.c);
@@ -114,11 +114,11 @@ public class EntityArmorStand extends EntityLiving {
 		super.b(nbttagcompound);
 		NBTTagList nbttaglist = new NBTTagList();
 
-		for (int i = 0; i < this.items.length; ++i) {
+		for (ItemStack item : this.items) {
 			NBTTagCompound nbttagcompound1 = new NBTTagCompound();
 
-			if (this.items[i] != null) {
-				this.items[i].save(nbttagcompound1);
+			if (item != null) {
+				item.save(nbttagcompound1);
 			}
 
 			nbttaglist.add(nbttagcompound1);
@@ -264,11 +264,11 @@ public class EntityArmorStand extends EntityLiving {
 
 	@Override
 	protected void bL() {
-		List list = this.world.getEntities(this, this.getBoundingBox());
+		List<Entity> list = this.world.getEntities(this, this.getBoundingBox());
 
 		if (list != null && !list.isEmpty()) {
-			for (int i = 0; i < list.size(); ++i) {
-				Entity entity = (Entity) list.get(i);
+			for (Object o : list) {
+				Entity entity = (Entity) o;
 
 				if (entity instanceof EntityMinecartAbstract
 						&& ((EntityMinecartAbstract) entity).s() == EntityMinecartAbstract.EnumMinecartType.RIDEABLE
@@ -479,7 +479,7 @@ public class EntityArmorStand extends EntityLiving {
 		if (this.world instanceof WorldServer) {
 			((WorldServer) this.world).a(EnumParticle.BLOCK_DUST, this.locX, this.locY + this.length / 1.5D, this.locZ,
 					10, this.width / 4.0F, this.length / 4.0F, this.width / 4.0F, 0.05D,
-					new int[] { Block.getCombinedId(Blocks.PLANKS.getBlockData()) });
+					Block.getCombinedId(Blocks.PLANKS.getBlockData()));
 		}
 
 	}
@@ -637,7 +637,7 @@ public class EntityArmorStand extends EntityLiving {
 			b0 &= -2;
 		}
 
-		this.datawatcher.watch(10, Byte.valueOf(b0));
+		this.datawatcher.watch(10, b0);
 	}
 
 	public boolean isSmall() {
@@ -653,7 +653,7 @@ public class EntityArmorStand extends EntityLiving {
 			b0 &= -3;
 		}
 
-		this.datawatcher.watch(10, Byte.valueOf(b0));
+		this.datawatcher.watch(10, b0);
 	}
 
 	public boolean hasGravity() {
@@ -669,7 +669,7 @@ public class EntityArmorStand extends EntityLiving {
 			b0 &= -5;
 		}
 
-		this.datawatcher.watch(10, Byte.valueOf(b0));
+		this.datawatcher.watch(10, b0);
 	}
 
 	public boolean hasArms() {
@@ -685,7 +685,7 @@ public class EntityArmorStand extends EntityLiving {
 			b0 &= -9;
 		}
 
-		this.datawatcher.watch(10, Byte.valueOf(b0));
+		this.datawatcher.watch(10, b0);
 	}
 
 	public boolean hasBasePlate() {
@@ -702,7 +702,7 @@ public class EntityArmorStand extends EntityLiving {
 			b0 &= -17;
 		}
 
-		this.datawatcher.watch(10, Byte.valueOf(b0));
+		this.datawatcher.watch(10, b0);
 	}
 
 	// PAIL

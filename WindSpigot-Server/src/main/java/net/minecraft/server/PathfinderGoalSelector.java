@@ -10,11 +10,11 @@ import org.bukkit.craftbukkit.util.UnsafeList; // CraftBukkit
 public class PathfinderGoalSelector {
 
 	private static final Logger a = LogManager.getLogger();
-	private List<PathfinderGoalSelector.PathfinderGoalSelectorItem> b = new UnsafeList<PathfinderGoalSelector.PathfinderGoalSelectorItem>();
-	private List<PathfinderGoalSelector.PathfinderGoalSelectorItem> c = new UnsafeList<PathfinderGoalSelector.PathfinderGoalSelectorItem>();
+	private final List<PathfinderGoalSelector.PathfinderGoalSelectorItem> b = new UnsafeList<PathfinderGoalSelector.PathfinderGoalSelectorItem>();
+	private final List<PathfinderGoalSelector.PathfinderGoalSelectorItem> c = new UnsafeList<PathfinderGoalSelector.PathfinderGoalSelectorItem>();
 	private final MethodProfiler d;
 	private int e;
-	private int f = 3;
+	private final int f = 3;
 
 	public PathfinderGoalSelector(MethodProfiler methodprofiler) {
 		this.d = methodprofiler;
@@ -25,7 +25,7 @@ public class PathfinderGoalSelector {
 	}
 
 	public void a(PathfinderGoal pathfindergoal) {
-		Iterator iterator = this.b.iterator();
+		Iterator<PathfinderGoalSelectorItem> iterator = this.b.iterator();
 
 		while (iterator.hasNext()) {
 			PathfinderGoalSelector.PathfinderGoalSelectorItem pathfindergoalselector_pathfindergoalselectoritem = (PathfinderGoalSelector.PathfinderGoalSelectorItem) iterator
@@ -108,7 +108,7 @@ public class PathfinderGoalSelector {
 
 	private boolean b(
 			PathfinderGoalSelector.PathfinderGoalSelectorItem pathfindergoalselector_pathfindergoalselectoritem) {
-		Iterator iterator = this.b.iterator();
+		Iterator<PathfinderGoalSelectorItem> iterator = this.b.iterator();
 
 		while (iterator.hasNext()) {
 			PathfinderGoalSelector.PathfinderGoalSelectorItem pathfindergoalselector_pathfindergoalselectoritem1 = (PathfinderGoalSelector.PathfinderGoalSelectorItem) iterator

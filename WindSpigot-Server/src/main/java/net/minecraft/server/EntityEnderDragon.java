@@ -40,7 +40,7 @@ public class EntityEnderDragon extends EntityInsentient implements IComplex, IMo
 	public Entity target;
 	public int by;
 	public EntityEnderCrystal bz;
-	private Explosion explosionSource = new Explosion(null, this, Double.NaN, Double.NaN, Double.NaN, Float.NaN, true,
+	private final Explosion explosionSource = new Explosion(null, this, Double.NaN, Double.NaN, Double.NaN, Float.NaN, true,
 			true); // CraftBukkit - reusable source for CraftTNTPrimed.getSource()
 
 	public EntityEnderDragon(World world) {
@@ -77,8 +77,8 @@ public class EntityEnderDragon extends EntityInsentient implements IComplex, IMo
 		}
 
 		f = 1.0F - f;
-		int j = this.bl - i * 1 & 63;
-		int k = this.bl - i * 1 - 1 & 63;
+		int j = this.bl - i & 63;
+		int k = this.bl - i - 1 & 63;
 		double[] adouble = new double[3];
 		double d0 = this.bk[j][0];
 		double d1 = MathHelper.g(this.bk[k][0] - d0);
@@ -215,8 +215,8 @@ public class EntityEnderDragon extends EntityInsentient implements IComplex, IMo
 					}
 
 					this.bb *= 0.8F;
-					float f5 = MathHelper.sqrt(this.motX * this.motX + this.motZ * this.motZ) * 1.0F + 1.0F;
-					double d10 = Math.sqrt(this.motX * this.motX + this.motZ * this.motZ) * 1.0D + 1.0D;
+					float f5 = MathHelper.sqrt(this.motX * this.motX + this.motZ * this.motZ) + 1.0F;
+					double d10 = Math.sqrt(this.motX * this.motX + this.motZ * this.motZ) + 1.0D;
 
 					if (d10 > 40.0D) {
 						d10 = 40.0D;
@@ -286,7 +286,7 @@ public class EntityEnderDragon extends EntityInsentient implements IComplex, IMo
 
 				this.bn.t_();
 				this.bn.setPositionRotation(this.locX + f3 * 5.5F * f2,
-						this.locY + (adouble1[1] - adouble[1]) * 1.0D + f9 * 5.5F, this.locZ - f13 * 5.5F * f2, 0.0F,
+						this.locY + (adouble1[1] - adouble[1]) + f9 * 5.5F, this.locZ - f13 * 5.5F * f2, 0.0F,
 						0.0F);
 
 				for (int j = 0; j < 3; ++j) {
@@ -306,7 +306,7 @@ public class EntityEnderDragon extends EntityInsentient implements IComplex, IMo
 
 					double[] adouble2 = this.b(12 + j * 2, 1.0F);
 					float f14 = this.yaw * 3.1415927F / 180.0F
-							+ this.b(adouble2[0] - adouble[0]) * 3.1415927F / 180.0F * 1.0F;
+							+ this.b(adouble2[0] - adouble[0]) * 3.1415927F / 180.0F;
 					float f15 = MathHelper.sin(f14);
 					float f16 = MathHelper.cos(f14);
 					float f17 = 1.5F;
@@ -314,7 +314,7 @@ public class EntityEnderDragon extends EntityInsentient implements IComplex, IMo
 
 					entitycomplexpart.t_();
 					entitycomplexpart.setPositionRotation(this.locX - (f11 * f17 + f15 * f18) * f2,
-							this.locY + (adouble2[1] - adouble[1]) * 1.0D - (f18 + f17) * f9 + 1.5D,
+							this.locY + (adouble2[1] - adouble[1]) - (f18 + f17) * f9 + 1.5D,
 							this.locZ + (f12 * f17 + f16 * f18) * f2, 0.0F, 0.0F);
 				}
 
@@ -331,7 +331,7 @@ public class EntityEnderDragon extends EntityInsentient implements IComplex, IMo
 			if (this.bz.dead) {
 				if (!this.world.isClientSide) {
 					CraftEventFactory.entityDamage = this.bz; // CraftBukkit
-					this.a(this.bn, DamageSource.explosion((Explosion) null), 10.0F);
+					this.a(this.bn, DamageSource.explosion(null), 10.0F);
 					CraftEventFactory.entityDamage = null; // CraftBukkit
 				}
 
@@ -351,13 +351,11 @@ public class EntityEnderDragon extends EntityInsentient implements IComplex, IMo
 
 		if (this.random.nextInt(10) == 0) {
 			float f = 32.0F;
-			List list = this.world.a(EntityEnderCrystal.class, this.getBoundingBox().grow(f, f, f));
+			List<EntityEnderCrystal> list = this.world.a(EntityEnderCrystal.class, this.getBoundingBox().grow(f, f, f));
 			EntityEnderCrystal entityendercrystal = null;
 			double d0 = Double.MAX_VALUE;
-			Iterator iterator = list.iterator();
 
-			while (iterator.hasNext()) {
-				EntityEnderCrystal entityendercrystal1 = (EntityEnderCrystal) iterator.next();
+			for (EntityEnderCrystal entityendercrystal1 : list) {
 				double d1 = entityendercrystal1.h(this);
 
 				if (d1 < d0) {
@@ -374,11 +372,8 @@ public class EntityEnderDragon extends EntityInsentient implements IComplex, IMo
 	private void a(List<Entity> list) {
 		double d0 = (this.bo.getBoundingBox().a + this.bo.getBoundingBox().d) / 2.0D;
 		double d1 = (this.bo.getBoundingBox().c + this.bo.getBoundingBox().f) / 2.0D;
-		Iterator iterator = list.iterator();
 
-		while (iterator.hasNext()) {
-			Entity entity = (Entity) iterator.next();
-
+		for (Entity entity : list) {
 			if (entity instanceof EntityLiving) {
 				double d2 = entity.locX - d0;
 				double d3 = entity.locZ - d1;
@@ -391,9 +386,7 @@ public class EntityEnderDragon extends EntityInsentient implements IComplex, IMo
 	}
 
 	private void b(List<Entity> list) {
-		for (int i = 0; i < list.size(); ++i) {
-			Entity entity = list.get(i);
-
+		for (Entity entity : list) {
 			if (entity instanceof EntityLiving) {
 				entity.damageEntity(DamageSource.mobAttack(this), 10.0F);
 				this.a(this, entity);
@@ -404,7 +397,7 @@ public class EntityEnderDragon extends EntityInsentient implements IComplex, IMo
 
 	private void cf() {
 		this.bw = false;
-		ArrayList arraylist = Lists.newArrayList(this.world.players);
+		ArrayList<EntityHuman> arraylist = Lists.newArrayList(this.world.players);
 		Iterator iterator = arraylist.iterator();
 
 		while (iterator.hasNext()) {
@@ -614,7 +607,7 @@ public class EntityEnderDragon extends EntityInsentient implements IComplex, IMo
 			if (this.by == 1) {
 				// CraftBukkit start - Use relative location for far away sounds
 				// this.world.a(1018, new BlockPosition(this), 0);
-				int viewDistance = ((WorldServer) this.world).getServer().getViewDistance() * 16;
+				int viewDistance = this.world.getServer().getViewDistance() * 16;
 				for (EntityPlayer player : MinecraftServer.getServer().getPlayerList().players) {
 					double deltaX = this.locX - player.locX;
 					double deltaZ = this.locZ - player.locZ;
@@ -720,8 +713,7 @@ public class EntityEnderDragon extends EntityInsentient implements IComplex, IMo
 			for (BlockState state : event.getBlocks()) {
 				PacketPlayOutBlockChange packet = new PacketPlayOutBlockChange(this.world,
 						new BlockPosition(state.getX(), state.getY(), state.getZ()));
-				for (Iterator it = this.world.players.iterator(); it.hasNext();) {
-					EntityHuman entity = (EntityHuman) it.next();
+				for (EntityHuman entity : this.world.players) {
 					if (entity instanceof EntityPlayer) {
 						((EntityPlayer) entity).playerConnection.sendPacket(packet);
 					}

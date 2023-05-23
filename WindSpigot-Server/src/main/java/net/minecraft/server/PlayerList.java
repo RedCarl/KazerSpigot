@@ -285,11 +285,11 @@ public abstract class PlayerList {
 		if (!entityplayer.getName().equalsIgnoreCase(s)) {
 			// chatmessage = new ChatMessage("multiplayer.player.joined.renamed", new
 			// Object[] { entityplayer.getScoreboardDisplayName(), s});
-			joinMessage = "\u00A7e" + LocaleI18n.a("multiplayer.player.joined.renamed", entityplayer.getName(), s);
+			joinMessage = "§e" + LocaleI18n.a("multiplayer.player.joined.renamed", entityplayer.getName(), s);
 		} else {
 			// chatmessage = new ChatMessage("multiplayer.player.joined", new Object[] {
 			// entityplayer.getScoreboardDisplayName()});
-			joinMessage = "\u00A7e" + LocaleI18n.a("multiplayer.player.joined", entityplayer.getName());
+			joinMessage = "§e" + LocaleI18n.a("multiplayer.player.joined", entityplayer.getName());
 		}
 
 		// chatmessage.getChatModifier().setColor(EnumChatFormat.YELLOW);
@@ -470,9 +470,7 @@ public abstract class PlayerList {
 		PacketPlayOutPlayerInfo packet = new PacketPlayOutPlayerInfo(
 				PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, entityplayer);
 
-		for (int i = 0; i < this.players.size(); ++i) {
-			EntityPlayer entityplayer1 = this.players.get(i);
-
+		for (EntityPlayer entityplayer1 : this.players) {
 			if (entityplayer1.getBukkitEntity().canSee(entityplayer.getBukkitEntity())) {
 				entityplayer1.playerConnection.sendPacket(packet);
 			}
@@ -482,7 +480,7 @@ public abstract class PlayerList {
 			}
 
 			entityplayer.playerConnection.sendPacket(new PacketPlayOutPlayerInfo(
-					PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, new EntityPlayer[] { entityplayer1 }));
+					PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, entityplayer1));
 		}
 		// CraftBukkit end
 
@@ -508,7 +506,7 @@ public abstract class PlayerList {
 
 		Player bukkit = cserver.getPlayer(entityplayer); // KigPaper
 		PlayerQuitEvent playerQuitEvent = new PlayerQuitEvent(bukkit,
-				"\u00A7e" + entityplayer.getName() + " left the game.");
+				"§e" + entityplayer.getName() + " left the game.");
 		cserver.getPluginManager().callEvent(playerQuitEvent);
 		entityplayer.getBukkitEntity().disconnect(playerQuitEvent.getQuitMessage());
 		// CraftBukkit end
@@ -542,9 +540,7 @@ public abstract class PlayerList {
 		// new EntityPlayer[] { entityplayer}));
 		PacketPlayOutPlayerInfo packet = new PacketPlayOutPlayerInfo(
 				PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, entityplayer);
-		for (int i = 0; i < players.size(); i++) {
-			EntityPlayer entityplayer2 = this.players.get(i);
-
+		for (EntityPlayer entityplayer2 : players) {
 			if (entityplayer2.getBukkitEntity().canSee(entityplayer.getBukkitEntity())) {
 				entityplayer2.playerConnection.sendPacket(packet);
 			} else {
@@ -1088,21 +1084,20 @@ public abstract class PlayerList {
 	}
 
 	public void sendAll(Packet packet) {
-		for (int i = 0; i < this.players.size(); ++i) {
-			this.players.get(i).playerConnection.sendPacket(packet);
+		for (EntityPlayer player : this.players) {
+			player.playerConnection.sendPacket(packet);
 		}
 
 	}
 
 	// CraftBukkit start - add a world/entity limited version
 	public void sendAll(Packet packet, EntityHuman entityhuman) {
-		for (int i = 0; i < this.players.size(); ++i) {
-			EntityPlayer entityplayer = this.players.get(i);
+		for (EntityPlayer entityplayer : this.players) {
 			if (entityhuman != null && entityhuman instanceof EntityPlayer
 					&& !entityplayer.getBukkitEntity().canSee(((EntityPlayer) entityhuman).getBukkitEntity())) {
 				continue;
 			}
-			this.players.get(i).playerConnection.sendPacket(packet);
+			entityplayer.playerConnection.sendPacket(packet);
 		}
 	}
 
@@ -1115,9 +1110,7 @@ public abstract class PlayerList {
 	// CraftBukkit end
 
 	public void a(Packet packet, int i) {
-		for (int j = 0; j < this.players.size(); ++j) {
-			EntityPlayer entityplayer = this.players.get(j);
-
+		for (EntityPlayer entityplayer : this.players) {
 			if (entityplayer.dimension == i) {
 				entityplayer.playerConnection.sendPacket(packet);
 			}
@@ -1129,11 +1122,9 @@ public abstract class PlayerList {
 		ScoreboardTeamBase scoreboardteambase = entityhuman.getScoreboardTeam();
 
 		if (scoreboardteambase != null) {
-			Collection collection = scoreboardteambase.getPlayerNameSet();
-			Iterator iterator = collection.iterator();
+			Collection<String> collection = scoreboardteambase.getPlayerNameSet();
 
-			while (iterator.hasNext()) {
-				String s = (String) iterator.next();
+			for (String s : collection) {
 				EntityPlayer entityplayer = this.getPlayer(s);
 
 				if (entityplayer != null && entityplayer != entityhuman) {
@@ -1150,9 +1141,7 @@ public abstract class PlayerList {
 		if (scoreboardteambase == null) {
 			this.sendMessage(ichatbasecomponent);
 		} else {
-			for (int i = 0; i < this.players.size(); ++i) {
-				EntityPlayer entityplayer = this.players.get(i);
-
+			for (EntityPlayer entityplayer : this.players) {
 				if (entityplayer.getScoreboardTeam() != scoreboardteambase) {
 					entityplayer.sendMessage(ichatbasecomponent);
 				}
@@ -1163,7 +1152,7 @@ public abstract class PlayerList {
 
 	public String b(boolean flag) {
 		StringBuilder s = new StringBuilder();
-		ArrayList arraylist = Lists.newArrayList(this.players);
+		ArrayList<EntityPlayer> arraylist = Lists.newArrayList(this.players);
 
 		for (int i = 0; i < arraylist.size(); ++i) {
 			if (i > 0) {
@@ -1256,7 +1245,7 @@ public abstract class PlayerList {
 	}
 
 	public void sendPacketNearby(double d0, double d1, double d2, double d3, int i, Packet packet) {
-		this.sendPacketNearby((EntityHuman) null, d0, d1, d2, d3, i, packet);
+		this.sendPacketNearby(null, d0, d1, d2, d3, i, packet);
 	}
 
 	public void sendPacketNearby(EntityHuman entityhuman, double d0, double d1, double d2, double d3, int i,
@@ -1279,15 +1268,14 @@ public abstract class PlayerList {
 
 		double squared = d3 * d3;
 		List<? extends EntityHuman> players1 = world == null ? players : world.players;
-		for (int j = 0; j < players1.size(); ++j) {
-			EntityHuman entity = players1.get(j);
+		for (EntityHuman entity : players1) {
 			if (!(entity instanceof EntityPlayer)) {
 				continue;
 			}
-			EntityPlayer entityplayer = (EntityPlayer) players1.get(j);
+			EntityPlayer entityplayer = (EntityPlayer) entity;
 			// CraftBukkit start - Test if player receiving packet can see the source of the
 			// packet
-			if (entityhuman != null && entityhuman instanceof EntityPlayer
+			if (entityhuman instanceof EntityPlayer
 					&& !entityplayer.getBukkitEntity().canSee(((EntityPlayer) entityhuman).getBukkitEntity())) {
 				continue;
 			}
@@ -1308,8 +1296,7 @@ public abstract class PlayerList {
 
 	public void sendPacketNearbyIncludingSelf(EntityHuman entityhuman, double d0, double d1, double d2, double d3,
 			int i, Packet packet) { // Saith
-		for (int j = 0; j < this.players.size(); ++j) {
-			EntityPlayer entityplayer = this.players.get(j);
+		for (EntityPlayer entityplayer : this.players) {
 			if (entityhuman != null && !entityplayer.getBukkitEntity().canSee(entityhuman.getBukkitEntity())) {
 				continue;
 			}
@@ -1327,8 +1314,8 @@ public abstract class PlayerList {
 	}
 
 	public void savePlayers() {
-		for (int i = 0; i < this.players.size(); ++i) {
-			this.savePlayerFile(this.players.get(i));
+		for (EntityPlayer player : this.players) {
+			this.savePlayerFile(player);
 		}
 
 	}
@@ -1416,11 +1403,8 @@ public abstract class PlayerList {
 
 	public List<EntityPlayer> b(String s) {
 		ArrayList arraylist = Lists.newArrayList();
-		Iterator iterator = this.players.iterator();
 
-		while (iterator.hasNext()) {
-			EntityPlayer entityplayer = (EntityPlayer) iterator.next();
-
+		for (EntityPlayer entityplayer : this.players) {
 			if (entityplayer.w().equals(s)) {
 				arraylist.add(entityplayer);
 			}
@@ -1452,13 +1436,13 @@ public abstract class PlayerList {
 	}
 
 	public void u() {
-		for (int i = 0; i < this.players.size(); ++i) {
-			this.players.get(i).playerConnection.disconnect(this.server.server.getShutdownMessage()); // CraftBukkit
-																										// -
-																										// add
-																										// custom
-																										// shutdown
-																										// message
+		for (EntityPlayer player : this.players) {
+			player.playerConnection.disconnect(this.server.server.getShutdownMessage()); // CraftBukkit
+			// -
+			// add
+			// custom
+			// shutdown
+			// message
 		}
 
 	}
@@ -1487,7 +1471,7 @@ public abstract class PlayerList {
 
 	public ServerStatisticManager a(EntityHuman entityhuman) {
 		UUID uuid = entityhuman.getUniqueID();
-		ServerStatisticManager serverstatisticmanager = uuid == null ? null : (ServerStatisticManager) this.o.get(uuid);
+		ServerStatisticManager serverstatisticmanager = uuid == null ? null : this.o.get(uuid);
 
 		if (serverstatisticmanager == null) {
 			File file = new File(this.server.getWorldServer(0).getDataManager().getDirectory(), "stats");

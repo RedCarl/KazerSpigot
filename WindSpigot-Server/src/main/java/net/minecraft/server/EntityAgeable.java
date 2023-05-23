@@ -43,7 +43,7 @@ public abstract class EntityAgeable extends EntityCreature {
 
 		if (itemstack != null && itemstack.getItem() == Items.SPAWN_EGG) {
 			if (!this.world.isClientSide) {
-				Class oclass = EntityTypes.a(itemstack.getData());
+				Class<? extends Entity> oclass = EntityTypes.a(itemstack.getData());
 
 				if (oclass != null && this.getClass() == oclass) {
 					EntityAgeable entityageable = this.createChild(this);
@@ -60,7 +60,7 @@ public abstract class EntityAgeable extends EntityCreature {
 						if (!entityhuman.abilities.canInstantlyBuild) {
 							--itemstack.count;
 							if (itemstack.count == 0) { // CraftBukkit - allow less than 0 stacks as "infinite"
-								entityhuman.inventory.setItem(entityhuman.inventory.itemInHandIndex, (ItemStack) null);
+								entityhuman.inventory.setItem(entityhuman.inventory.itemInHandIndex, null);
 							}
 						}
 					}
@@ -76,7 +76,7 @@ public abstract class EntityAgeable extends EntityCreature {
 	@Override
 	protected void h() {
 		super.h();
-		this.datawatcher.a(12, Byte.valueOf((byte) 0));
+		this.datawatcher.a(12, (byte) 0);
 	}
 
 	public int getAge() {
@@ -116,7 +116,7 @@ public abstract class EntityAgeable extends EntityCreature {
 	}
 
 	public void setAgeRaw(int i) {
-		this.datawatcher.watch(12, Byte.valueOf((byte) MathHelper.clamp(i, -1, 1)));
+		this.datawatcher.watch(12, (byte) MathHelper.clamp(i, -1, 1));
 		this.a = i;
 		this.a(this.isBaby());
 	}

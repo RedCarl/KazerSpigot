@@ -170,7 +170,7 @@ public class EntitySquid extends EntityWaterAnimal {
 
 	static class PathfinderGoalSquid extends PathfinderGoal {
 
-		private EntitySquid a;
+		private final EntitySquid a;
 
 		public PathfinderGoalSquid(EntitySquid entitysquid) {
 			this.a = entitysquid;

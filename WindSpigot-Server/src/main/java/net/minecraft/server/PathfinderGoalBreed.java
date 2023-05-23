@@ -8,7 +8,7 @@ import ga.windpvp.windspigot.cache.Constants;
 
 public class PathfinderGoalBreed extends PathfinderGoal {
 
-	private EntityAnimal d;
+	private final EntityAnimal d;
 	World a;
 	private EntityAnimal e;
 	int b;
@@ -55,14 +55,11 @@ public class PathfinderGoalBreed extends PathfinderGoal {
 
 	private EntityAnimal f() {
 		float f = 8.0F;
-		List list = this.a.a(this.d.getClass(), this.d.getBoundingBox().grow(f, f, f));
+		List<? extends EntityAnimal> list = this.a.a(this.d.getClass(), this.d.getBoundingBox().grow(f, f, f));
 		double d0 = Double.MAX_VALUE;
 		EntityAnimal entityanimal = null;
-		Iterator iterator = list.iterator();
 
-		while (iterator.hasNext()) {
-			EntityAnimal entityanimal1 = (EntityAnimal) iterator.next();
-
+		for (EntityAnimal entityanimal1 : list) {
 			if (this.d.mate(entityanimal1) && this.d.h(entityanimal1) < d0) {
 				entityanimal = entityanimal1;
 				d0 = this.d.h(entityanimal1);

@@ -8,7 +8,6 @@ import java.util.Set;
 
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 
@@ -24,10 +23,9 @@ public class EntitySlice<T> extends AbstractSet<T> {
 		this.d = oclass;
 		this.c.add(oclass);
 		this.b.put(oclass, this.e);
-		Iterator iterator = EntitySlice.a.iterator();
 
-		while (iterator.hasNext()) {
-			Class oclass1 = (Class) iterator.next();
+		for (Class<?> aClass : EntitySlice.a) {
+			Class oclass1 = (Class) aClass;
 
 			this.a(oclass1);
 		}
@@ -36,11 +34,8 @@ public class EntitySlice<T> extends AbstractSet<T> {
 
 	protected void a(Class<?> oclass) {
 		EntitySlice.a.add(oclass);
-		Iterator iterator = this.e.iterator();
 
-		while (iterator.hasNext()) {
-			Object object = iterator.next();
-
+		for (Object object : this.e) {
 			if (oclass.isAssignableFrom(object.getClass())) {
 				this.a((T) object, oclass);
 			}
@@ -57,16 +52,15 @@ public class EntitySlice<T> extends AbstractSet<T> {
 
 			return oclass;
 		} else {
-			throw new IllegalArgumentException("Don\'t know how to search for " + oclass);
+			throw new IllegalArgumentException("Don't know how to search for " + oclass);
 		}
 	}
 
 	@Override
 	public boolean add(T t0) {
-		Iterator iterator = this.c.iterator();
 
-		while (iterator.hasNext()) {
-			Class oclass = (Class) iterator.next();
+		for (Class<?> aClass : this.c) {
+			Class oclass = (Class) aClass;
 
 			if (oclass.isAssignableFrom(t0.getClass())) {
 				this.a(t0, oclass);
@@ -77,7 +71,7 @@ public class EntitySlice<T> extends AbstractSet<T> {
 	}
 
 	private void a(T t0, Class<?> oclass) {
-		List list = this.b.get(oclass);
+		List<T> list = this.b.get(oclass);
 
 		if (list == null) {
 			this.b.put(oclass, Lists.newArrayList(t0));
@@ -91,13 +85,12 @@ public class EntitySlice<T> extends AbstractSet<T> {
 	public boolean remove(Object object) {
 		Object object1 = object;
 		boolean flag = false;
-		Iterator iterator = this.c.iterator();
 
-		while (iterator.hasNext()) {
-			Class oclass = (Class) iterator.next();
+		for (Class<?> aClass : this.c) {
+			Class oclass = (Class) aClass;
 
 			if (oclass.isAssignableFrom(object1.getClass())) {
-				List list = this.b.get(oclass);
+				List<T> list = this.b.get(oclass);
 
 				if (list != null && list.remove(object1)) {
 					flag = true;
@@ -117,7 +110,7 @@ public class EntitySlice<T> extends AbstractSet<T> {
 		return new Iterable() {
 			@Override
 			public Iterator<S> iterator() {
-				List list = EntitySlice.this.b.get(EntitySlice.this.b(oclass));
+				List<T> list = EntitySlice.this.b.get(EntitySlice.this.b(oclass));
 
 				if (list == null) {
 					return Iterators.emptyIterator();
@@ -132,7 +125,7 @@ public class EntitySlice<T> extends AbstractSet<T> {
 
 	@Override
 	public Iterator<T> iterator() {
-		return this.e.isEmpty() ? Iterators.<T>emptyIterator() : Iterators.unmodifiableIterator(this.e.iterator());
+		return this.e.isEmpty() ? Iterators.emptyIterator() : Iterators.unmodifiableIterator(this.e.iterator());
 	}
 
 	@Override

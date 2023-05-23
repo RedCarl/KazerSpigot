@@ -171,7 +171,7 @@ public class BlockSkull extends BlockContainer {
 
 	public boolean b(World world, BlockPosition blockposition, ItemStack itemstack) {
 		return itemstack.getData() == 1 && blockposition.getY() >= 2 && world.getDifficulty() != EnumDifficulty.PEACEFUL
-				&& !world.isClientSide ? this.l().a(world, blockposition) != null : false;
+				&& !world.isClientSide && this.l().a(world, blockposition) != null;
 	}
 
 	public void a(World world, BlockPosition blockposition, TileEntitySkull tileentityskull) {
@@ -225,7 +225,7 @@ public class BlockSkull extends BlockContainer {
 				entitywither.aI = shapedetector_shapedetectorcollection.b().k() == EnumDirection.EnumAxis.X ? 0.0F
 						: 90.0F;
 				entitywither.n();
-				Iterator iterator = world.a(EntityHuman.class, entitywither.getBoundingBox().grow(50.0D, 50.0D, 50.0D))
+				Iterator<EntityHuman> iterator = world.a(EntityHuman.class, entitywither.getBoundingBox().grow(50.0D, 50.0D, 50.0D))
 						.iterator();
 
 				// CraftBukkit start
@@ -263,7 +263,7 @@ public class BlockSkull extends BlockContainer {
 	@Override
 	public IBlockData fromLegacyData(int i) {
 		return this.getBlockData().set(BlockSkull.FACING, EnumDirection.fromType1(i & 7)).set(BlockSkull.NODROP,
-				Boolean.valueOf((i & 8) > 0));
+				(i & 8) > 0);
 	}
 
 	@Override
@@ -271,7 +271,7 @@ public class BlockSkull extends BlockContainer {
 		byte b0 = 0;
 		int i = b0 | iblockdata.get(BlockSkull.FACING).a();
 
-		if (iblockdata.get(BlockSkull.NODROP).booleanValue()) {
+		if (iblockdata.get(BlockSkull.NODROP)) {
 			i |= 8;
 		}
 
@@ -280,7 +280,7 @@ public class BlockSkull extends BlockContainer {
 
 	@Override
 	protected BlockStateList getStateList() {
-		return new BlockStateList(this, new IBlockState[] { BlockSkull.FACING, BlockSkull.NODROP });
+		return new BlockStateList(this, BlockSkull.FACING, BlockSkull.NODROP);
 	}
 
 	protected ShapeDetector l() {
@@ -311,31 +311,26 @@ public class BlockSkull extends BlockContainer {
 			try {
 				BlockSkull.SyntheticClass_1.a[EnumDirection.UP.ordinal()] = 1;
 			} catch (NoSuchFieldError nosuchfielderror) {
-				;
 			}
 
 			try {
 				BlockSkull.SyntheticClass_1.a[EnumDirection.NORTH.ordinal()] = 2;
 			} catch (NoSuchFieldError nosuchfielderror1) {
-				;
 			}
 
 			try {
 				BlockSkull.SyntheticClass_1.a[EnumDirection.SOUTH.ordinal()] = 3;
 			} catch (NoSuchFieldError nosuchfielderror2) {
-				;
 			}
 
 			try {
 				BlockSkull.SyntheticClass_1.a[EnumDirection.WEST.ordinal()] = 4;
 			} catch (NoSuchFieldError nosuchfielderror3) {
-				;
 			}
 
 			try {
 				BlockSkull.SyntheticClass_1.a[EnumDirection.EAST.ordinal()] = 5;
 			} catch (NoSuchFieldError nosuchfielderror4) {
-				;
 			}
 
 		}

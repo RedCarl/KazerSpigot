@@ -1,9 +1,6 @@
 package org.bukkit.craftbukkit.inventory;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Color;
@@ -237,12 +234,10 @@ class CraftMetaFirework extends CraftMetaItem implements FireworkMeta {
 
 	@Override
 	boolean applicableTo(Material type) {
-		switch (type) {
-		case FIREWORK:
+		if (Objects.requireNonNull(type) == Material.FIREWORK) {
 			return true;
-		default:
-			return false;
 		}
+		return false;
 	}
 
 	@Override
@@ -353,7 +348,7 @@ class CraftMetaFirework extends CraftMetaItem implements FireworkMeta {
 
 	@Override
 	public List<FireworkEffect> getEffects() {
-		return this.effects == null ? ImmutableList.<FireworkEffect>of() : ImmutableList.copyOf(this.effects);
+		return this.effects == null ? ImmutableList.of() : ImmutableList.copyOf(this.effects);
 	}
 
 	@Override

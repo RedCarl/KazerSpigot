@@ -21,7 +21,7 @@ public class PathfinderGoalNearestAttackableTarget<T extends EntityLiving> exten
 
 	public PathfinderGoalNearestAttackableTarget(EntityCreature entitycreature, Class<T> oclass, boolean flag,
 			boolean flag1) {
-		this(entitycreature, oclass, 10, flag, flag1, (Predicate) null);
+		this(entitycreature, oclass, 10, flag, flag1, null);
 	}
 
 	public PathfinderGoalNearestAttackableTarget(EntityCreature entitycreature, Class<T> oclass, int i, boolean flag,
@@ -111,7 +111,7 @@ public class PathfinderGoalNearestAttackableTarget<T extends EntityLiving> exten
 			double d0 = this.a.h(entity);
 			double d1 = this.a.h(entity1);
 
-			return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
+			return Double.compare(d0, d1);
 		}
 
 		@Override

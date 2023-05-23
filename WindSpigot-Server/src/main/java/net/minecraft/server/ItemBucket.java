@@ -11,7 +11,7 @@ import ga.windpvp.windspigot.cache.Constants;
 
 public class ItemBucket extends Item {
 
-	private Block a;
+	private final Block a;
 
 	public ItemBucket(Block block) {
 		this.maxStackSize = 1;
@@ -43,7 +43,7 @@ public class ItemBucket extends Item {
 					IBlockData iblockdata = world.getType(blockposition);
 					Material material = iblockdata.getBlock().getMaterial();
 
-					if (material == Material.WATER && iblockdata.get(BlockFluids.LEVEL).intValue() == 0) {
+					if (material == Material.WATER && iblockdata.get(BlockFluids.LEVEL) == 0) {
 						// CraftBukkit start
 						PlayerBucketFillEvent event = CraftEventFactory.callPlayerBucketFillEvent(entityhuman,
 								blockposition.getX(), blockposition.getY(), blockposition.getZ(), null, itemstack,
@@ -61,7 +61,7 @@ public class ItemBucket extends Item {
 																											// stack
 					}
 
-					if (material == Material.LAVA && iblockdata.get(BlockFluids.LEVEL).intValue() == 0) {
+					if (material == Material.LAVA && iblockdata.get(BlockFluids.LEVEL) == 0) {
 						// CraftBukkit start
 						PlayerBucketFillEvent event = CraftEventFactory.callPlayerBucketFillEvent(entityhuman,
 								blockposition.getX(), blockposition.getY(), blockposition.getZ(), null, itemstack,

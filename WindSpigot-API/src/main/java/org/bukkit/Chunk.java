@@ -1,7 +1,6 @@
 package org.bukkit;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -124,5 +123,5 @@ public interface Chunk {
 	 */
 	boolean unload();
 
-	public List<Block> getBlocks(Material material);
+	List<Block> getBlocks(Material material);
 }

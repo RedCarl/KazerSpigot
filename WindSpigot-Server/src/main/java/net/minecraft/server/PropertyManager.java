@@ -20,23 +20,12 @@ public class PropertyManager {
 	public PropertyManager(File file) {
 		this.file = file;
 		if (file.exists()) {
-			FileInputStream fileinputstream = null;
 
-			try {
-				fileinputstream = new FileInputStream(file);
+			try (FileInputStream fileinputstream = new FileInputStream(file)) {
 				this.properties.load(fileinputstream);
 			} catch (Exception exception) {
 				PropertyManager.a.warn("Failed to load " + file, exception);
 				this.a();
-			} finally {
-				if (fileinputstream != null) {
-					try {
-						fileinputstream.close();
-					} catch (IOException ioexception) {
-						;
-					}
-				}
-
 			}
 		} else {
 			PropertyManager.a.warn(file + " does not exist");
@@ -88,7 +77,6 @@ public class PropertyManager {
 				try {
 					fileoutputstream.close();
 				} catch (IOException ioexception) {
-					;
 				}
 			}
 
@@ -112,9 +100,9 @@ public class PropertyManager {
 
 	public int getInt(String s, int i) {
 		try {
-			return getOverride(s, Integer.parseInt(this.getString(s, "" + i))); // CraftBukkit
+			return getOverride(s, Integer.parseInt(this.getString(s, String.valueOf(i)))); // CraftBukkit
 		} catch (Exception exception) {
-			this.properties.setProperty(s, "" + i);
+			this.properties.setProperty(s, String.valueOf(i));
 			this.savePropertiesFile();
 			return getOverride(s, i); // CraftBukkit
 		}
@@ -122,9 +110,9 @@ public class PropertyManager {
 
 	public long getLong(String s, long i) {
 		try {
-			return getOverride(s, Long.parseLong(this.getString(s, "" + i))); // CraftBukkit
+			return getOverride(s, Long.parseLong(this.getString(s, String.valueOf(i)))); // CraftBukkit
 		} catch (Exception exception) {
-			this.properties.setProperty(s, "" + i);
+			this.properties.setProperty(s, String.valueOf(i));
 			this.savePropertiesFile();
 			return getOverride(s, i); // CraftBukkit
 		}
@@ -132,15 +120,15 @@ public class PropertyManager {
 
 	public boolean getBoolean(String s, boolean flag) {
 		try {
-			return getOverride(s, Boolean.parseBoolean(this.getString(s, "" + flag))); // CraftBukkit
+			return getOverride(s, Boolean.parseBoolean(this.getString(s, String.valueOf(flag)))); // CraftBukkit
 		} catch (Exception exception) {
-			this.properties.setProperty(s, "" + flag);
+			this.properties.setProperty(s, String.valueOf(flag));
 			this.savePropertiesFile();
 			return getOverride(s, flag); // CraftBukkit
 		}
 	}
 
 	public void setProperty(String s, Object object) {
-		this.properties.setProperty(s, "" + object);
+		this.properties.setProperty(s, String.valueOf(object));
 	}
 }

@@ -6,12 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
@@ -144,9 +139,7 @@ public final class JavaPluginLoader implements PluginLoader {
 
 			return new PluginDescriptionFile(stream);
 
-		} catch (IOException ex) {
-			throw new InvalidDescriptionException(ex);
-		} catch (YAMLException ex) {
+		} catch (IOException | YAMLException ex) {
 			throw new InvalidDescriptionException(ex);
 		} finally {
 			if (jar != null) {
@@ -228,12 +221,8 @@ public final class JavaPluginLoader implements PluginLoader {
 			Method[] publicMethods = listener.getClass().getMethods();
 			Method[] privateMethods = listener.getClass().getDeclaredMethods();
 			methods = new HashSet<Method>(publicMethods.length + privateMethods.length, 1.0f);
-			for (Method method : publicMethods) {
-				methods.add(method);
-			}
-			for (Method method : privateMethods) {
-				methods.add(method);
-			}
+			Collections.addAll(methods, publicMethods);
+			Collections.addAll(methods, privateMethods);
 		} catch (NoClassDefFoundError e) {
 			plugin.getLogger()
 					.severe("Plugin " + plugin.getDescription().getFullName() + " has failed to register events for "

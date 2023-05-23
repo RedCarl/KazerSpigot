@@ -59,7 +59,7 @@ public class BlockStateList {
 		this.d = ImmutableList.copyOf(aiblockstate);
 		LinkedHashMap linkedhashmap = Maps.newLinkedHashMap();
 		ArrayList arraylist = Lists.newArrayList();
-		Iterable iterable = IteratorUtils.a(this.e());
+		Iterable<List<Comparable>> iterable = IteratorUtils.a(this.e());
 		Iterator iterator = iterable.iterator();
 
 		while (iterator.hasNext()) {
@@ -143,8 +143,8 @@ public class BlockStateList {
 			assert this.b.containsKey(iblockstate)
 					: "Cannot get property " + iblockstate + " as it does not exist in " + this.a.P();
 			Object value = this.b.get(iblockstate);
-			assert value == bAsImmutableMap.get(iblockstate) : "Array map gave data " + String.valueOf(value)
-					+ " and regular map gave data " + String.valueOf(bAsImmutableMap.get(iblockstate));
+			assert value == bAsImmutableMap.get(iblockstate) : "Array map gave data " + value
+					+ " and regular map gave data " + bAsImmutableMap.get(iblockstate);
 			assert value != null : "Null value for state " + iblockstate + " and data " + this;
 			assert iblockstate.b().isInstance(value) : "Value " + value + " for state " + iblockstate + " and data "
 					+ this + " not instanceof " + iblockstate.b().getTypeName();
@@ -161,7 +161,7 @@ public class BlockStateList {
 					: "Cannot set property " + iblockstate + " as it does not exist in " + this.a.P();
 			assert iblockstate.c().contains(v0) : "Cannot set property " + iblockstate + " to " + v0 + " on block "
 					+ Block.REGISTRY.c(this.a) + ", it is not an allowed value";
-			IBlockData data = this.b.get(iblockstate) == v0 ? this : (IBlockData) this.c.get(iblockstate, v0);
+			IBlockData data = this.b.get(iblockstate) == v0 ? this : this.c.get(iblockstate, v0);
 			assert data != null
 					: "No block data with property " + iblockstate + " and value " + v0 + " for block data " + this;
 			return data;
@@ -193,20 +193,16 @@ public class BlockStateList {
 				throw new IllegalStateException();
 			} else {
 				HashBasedTable hashbasedtable = HashBasedTable.create();
-				Iterator iterator = this.b.keySet().iterator();
 
-				while (iterator.hasNext()) {
-					IBlockState iblockstate = (IBlockState) iterator.next();
-					Iterator iterator1 = iblockstate.c().iterator();
-
-					while (iterator1.hasNext()) {
-						Comparable comparable = (Comparable) iterator1.next();
+				for (IBlockState iblockstate : this.b.keySet()) {
+					for (Object o : iblockstate.c()) {
+						Comparable comparable = (Comparable) o;
 
 						if (comparable != this.get(iblockstate)) { // TacoSpigot - use this.get(iblockstate) instead of
-																	// this.b.get(iblockstate)
+							// this.b.get(iblockstate)
 							assert map.get(this.b(iblockstate, comparable)) != null
 									: "Map doesn't contain block data with state " + iblockstate + " and comparable "
-											+ comparable + b(iblockstate, comparable); // TacoSpigot - assert present
+									+ comparable + b(iblockstate, comparable); // TacoSpigot - assert present
 							hashbasedtable.put(iblockstate, comparable, map.get(this.b(iblockstate, comparable)));
 						}
 					}
@@ -217,7 +213,7 @@ public class BlockStateList {
 		}
 
 		private Map<IBlockState, Comparable> b(IBlockState iblockstate, Comparable comparable) {
-			HashMap hashmap = Maps.newHashMap(this.b);
+			HashMap<IBlockState, Comparable> hashmap = Maps.newHashMap(this.b);
 
 			hashmap.put(iblockstate, comparable);
 			return hashmap;

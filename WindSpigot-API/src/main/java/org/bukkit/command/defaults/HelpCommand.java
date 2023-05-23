@@ -1,12 +1,6 @@
 package org.bukkit.command.defaults;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -29,7 +23,7 @@ public class HelpCommand extends VanillaCommand {
 		super("help");
 		this.description = "Shows the help menu";
 		this.usageMessage = "/help <pageNumber>\n/help <topic>\n/help <topic> <pageNumber>";
-		this.setAliases(Arrays.asList(new String[] { "?" }));
+		this.setAliases(Collections.singletonList("?"));
 		this.setPermission("bukkit.command.help");
 	}
 

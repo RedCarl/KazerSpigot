@@ -107,12 +107,12 @@ public abstract class EntityFireball extends Entity {
 			}
 
 			Entity entity = null;
-			List list = this.world.getEntities(this,
+			List<Entity> list = this.world.getEntities(this,
 					this.getBoundingBox().a(this.motX, this.motY, this.motZ).grow(1.0D, 1.0D, 1.0D));
 			double d0 = 0.0D;
 
-			for (int i = 0; i < list.size(); ++i) {
-				Entity entity1 = (Entity) list.get(i);
+			for (Object o : list) {
+				Entity entity1 = (Entity) o;
 
 				if (entity1.ad() && (!entity1.k(this.shooter) || this.as >= 25)) {
 					float f = 0.3F;
@@ -153,7 +153,6 @@ public abstract class EntityFireball extends Entity {
 
 			for (this.pitch = (float) (MathHelper.b(f1, this.motY) * 180.0D / 3.1415927410125732D) - 90.0F; this.pitch
 					- this.lastPitch < -180.0F; this.lastPitch -= 360.0F) {
-				;
 			}
 
 			while (this.pitch - this.lastPitch >= 180.0F) {
@@ -212,8 +211,8 @@ public abstract class EntityFireball extends Entity {
 		nbttagcompound.setString("inTile", minecraftkey == null ? "" : minecraftkey.toString());
 		nbttagcompound.setByte("inGround", (byte) (this.i ? 1 : 0));
 		// CraftBukkit - Fix direction being mismapped to invalid variables
-		nbttagcompound.set("power", this.a(new double[] { this.dirX, this.dirY, this.dirZ }));
-		nbttagcompound.set("direction", this.a(new double[] { this.motX, this.motY, this.motZ }));
+		nbttagcompound.set("power", this.a(this.dirX, this.dirY, this.dirZ));
+		nbttagcompound.set("direction", this.a(this.motX, this.motY, this.motZ));
 	}
 
 	@Override

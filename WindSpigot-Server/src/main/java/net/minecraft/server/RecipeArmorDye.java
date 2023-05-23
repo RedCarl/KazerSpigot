@@ -1,6 +1,7 @@
 package net.minecraft.server;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import com.google.common.collect.Lists;
 
@@ -8,14 +9,14 @@ public class RecipeArmorDye extends ShapelessRecipes implements IRecipe { // Cra
 
 	// CraftBukkit start - Delegate to new parent class with bogus info
 	public RecipeArmorDye() {
-		super(new ItemStack(Items.LEATHER_HELMET, 0, 0), java.util.Arrays.asList(new ItemStack(Items.DYE, 0, 5)));
+		super(new ItemStack(Items.LEATHER_HELMET, 0, 0), Collections.singletonList(new ItemStack(Items.DYE, 0, 5)));
 	}
 	// CraftBukkit end
 
 	@Override
 	public boolean a(InventoryCrafting inventorycrafting, World world) {
 		ItemStack itemstack = null;
-		ArrayList arraylist = Lists.newArrayList();
+		ArrayList<Object> arraylist = Lists.newArrayList();
 
 		for (int i = 0; i < inventorycrafting.getSize(); ++i) {
 			ItemStack itemstack1 = inventorycrafting.getItem(i);

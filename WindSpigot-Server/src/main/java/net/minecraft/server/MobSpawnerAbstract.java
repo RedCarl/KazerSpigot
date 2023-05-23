@@ -68,7 +68,7 @@ public abstract class MobSpawnerAbstract {
 
 		return this.a().isPlayerNearbyWhoAffectsSpawning((double) blockposition.getX() + 0.5D,
 				(double) blockposition.getY() + 0.5D, (double) blockposition.getZ() + 0.5D,
-				(double) this.requiredPlayerRange); // PaperSpigot - Affects Spawning API
+				this.requiredPlayerRange); // PaperSpigot - Affects Spawning API
 	}
 
 	public void c() {
@@ -78,10 +78,10 @@ public abstract class MobSpawnerAbstract {
 			double d0;
 
 			if (this.a().isClientSide) {
-				double d1 = (double) ((float) blockposition.getX() + this.a().random.nextFloat());
-				double d2 = (double) ((float) blockposition.getY() + this.a().random.nextFloat());
+				double d1 = (float) blockposition.getX() + this.a().random.nextFloat();
+				double d2 = (float) blockposition.getY() + this.a().random.nextFloat();
 
-				d0 = (double) ((float) blockposition.getZ() + this.a().random.nextFloat());
+				d0 = (float) blockposition.getZ() + this.a().random.nextFloat();
 				
 				// WindSpigot start - configurable spawner animations
 				if (WindSpigotConfig.spawnerAnimation) {
@@ -128,11 +128,11 @@ public abstract class MobSpawnerAbstract {
 
 					int j = this.a()
 							.a(entity.getClass(),
-									(new AxisAlignedBB((double) blockposition.getX(), (double) blockposition.getY(),
-											(double) blockposition.getZ(), (double) (blockposition.getX() + 1),
-											(double) (blockposition.getY() + 1), (double) (blockposition.getZ() + 1)))
-													.grow((double) this.spawnRange, (double) this.spawnRange,
-															(double) this.spawnRange))
+									(new AxisAlignedBB(blockposition.getX(), blockposition.getY(),
+											blockposition.getZ(), blockposition.getX() + 1,
+											blockposition.getY() + 1, blockposition.getZ() + 1))
+													.grow(this.spawnRange, this.spawnRange,
+															this.spawnRange))
 							.size();
 
 					if (maxNearbyEntities > 0 && j >= this.maxNearbyEntities) {
@@ -143,7 +143,7 @@ public abstract class MobSpawnerAbstract {
 					d0 = (double) blockposition.getX()
 							+ (this.a().random.nextDouble() - this.a().random.nextDouble()) * (double) this.spawnRange
 							+ 0.5D;
-					double d3 = (double) (blockposition.getY() + this.a().random.nextInt(3) - 1);
+					double d3 = blockposition.getY() + this.a().random.nextInt(3) - 1;
 					double d4 = (double) blockposition.getZ()
 							+ (this.a().random.nextDouble() - this.a().random.nextDouble()) * (double) this.spawnRange
 							+ 0.5D;
@@ -175,10 +175,8 @@ public abstract class MobSpawnerAbstract {
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 
 			entity.d(nbttagcompound);
-			Iterator iterator = this.i().c.c().iterator();
 
-			while (iterator.hasNext()) {
-				String s = (String) iterator.next();
+			for (String s : this.i().c.c()) {
 				NBTBase nbtbase = this.i().c.get(s);
 
 				nbttagcompound.set(s, nbtbase.clone());
@@ -210,10 +208,8 @@ public abstract class MobSpawnerAbstract {
 					NBTTagCompound nbttagcompound2 = new NBTTagCompound();
 
 					entity2.d(nbttagcompound2);
-					Iterator iterator1 = nbttagcompound1.c().iterator();
 
-					while (iterator1.hasNext()) {
-						String s1 = (String) iterator1.next();
+					for (String s1 : nbttagcompound1.c()) {
 						NBTBase nbtbase1 = nbttagcompound1.get(s1);
 
 						nbttagcompound2.set(s1, nbtbase1.clone());
@@ -238,7 +234,7 @@ public abstract class MobSpawnerAbstract {
 			}
 		} else if (entity instanceof EntityLiving && entity.world != null && flag) {
 			if (entity instanceof EntityInsentient) {
-				((EntityInsentient) entity).prepare(entity.world.E(new BlockPosition(entity)), (GroupDataEntity) null);
+				((EntityInsentient) entity).prepare(entity.world.E(new BlockPosition(entity)), null);
 			}
 			// Spigot start - call SpawnerSpawnEvent, abort if cancelled
 			SpawnerSpawnEvent event = CraftEventFactory.callSpawnerSpawnEvent(entity, this.b().getX(), this.b().getY(),
@@ -267,7 +263,7 @@ public abstract class MobSpawnerAbstract {
 		}
 
 		if (this.mobs.size() > 0) {
-			this.a((MobSpawnerAbstract.a) WeightedRandom.a(this.a().random, this.mobs));
+			this.a(WeightedRandom.a(this.a().random, this.mobs));
 		}
 
 		this.a(1);
@@ -281,12 +277,12 @@ public abstract class MobSpawnerAbstract {
 			NBTTagList nbttaglist = nbttagcompound.getList("SpawnPotentials", 10);
 
 			for (int i = 0; i < nbttaglist.size(); ++i) {
-				this.mobs.add(new MobSpawnerAbstract.a(nbttaglist.get(i)));
+				this.mobs.add(new a(nbttaglist.get(i)));
 			}
 		}
 
 		if (nbttagcompound.hasKeyOfType("SpawnData", 10)) {
-			this.a(new MobSpawnerAbstract.a(nbttagcompound.getCompound("SpawnData"), this.mobName));
+			this.a(new a(nbttagcompound.getCompound("SpawnData"), this.mobName));
 		} else {
 			this.a((MobSpawnerAbstract.a) null);
 		}
@@ -328,11 +324,8 @@ public abstract class MobSpawnerAbstract {
 				NBTTagList nbttaglist = new NBTTagList();
 
 				if (this.mobs.size() > 0) {
-					Iterator iterator = this.mobs.iterator();
 
-					while (iterator.hasNext()) {
-						MobSpawnerAbstract.a mobspawnerabstract_a = (MobSpawnerAbstract.a) iterator.next();
-
+					for (a mobspawnerabstract_a : this.mobs) {
 						nbttaglist.add(mobspawnerabstract_a.a());
 					}
 				} else {
@@ -368,7 +361,7 @@ public abstract class MobSpawnerAbstract {
 
 	public abstract BlockPosition b();
 
-	public class a extends WeightedRandom.WeightedRandomChoice {
+	public static class a extends WeightedRandom.WeightedRandomChoice {
 
 		private final NBTTagCompound c;
 		private final String d;

@@ -10,9 +10,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.BlockChangeDelegate;
@@ -552,19 +549,19 @@ public class CraftWorld implements World {
 		case SMALL_JUNGLE:
 			iblockdata1 = Blocks.LOG.getBlockData().set(BlockLog1.VARIANT, BlockWood.EnumLogVariant.JUNGLE);
 			iblockdata2 = Blocks.LEAVES.getBlockData().set(BlockLeaves1.VARIANT, BlockWood.EnumLogVariant.JUNGLE)
-					.set(BlockLeaves.CHECK_DECAY, Boolean.valueOf(false));
+					.set(BlockLeaves.CHECK_DECAY, Boolean.FALSE);
 			gen = new WorldGenTrees(true, 4 + rand.nextInt(7), iblockdata1, iblockdata2, false);
 			break;
 		case COCOA_TREE:
 			iblockdata1 = Blocks.LOG.getBlockData().set(BlockLog1.VARIANT, BlockWood.EnumLogVariant.JUNGLE);
 			iblockdata2 = Blocks.LEAVES.getBlockData().set(BlockLeaves1.VARIANT, BlockWood.EnumLogVariant.JUNGLE)
-					.set(BlockLeaves.CHECK_DECAY, Boolean.valueOf(false));
+					.set(BlockLeaves.CHECK_DECAY, Boolean.FALSE);
 			gen = new WorldGenTrees(true, 4 + rand.nextInt(7), iblockdata1, iblockdata2, true);
 			break;
 		case JUNGLE_BUSH:
 			iblockdata1 = Blocks.LOG.getBlockData().set(BlockLog1.VARIANT, BlockWood.EnumLogVariant.JUNGLE);
 			iblockdata2 = Blocks.LEAVES.getBlockData().set(BlockLeaves1.VARIANT, BlockWood.EnumLogVariant.OAK)
-					.set(BlockLeaves.CHECK_DECAY, Boolean.valueOf(false));
+					.set(BlockLeaves.CHECK_DECAY, Boolean.FALSE);
 			gen = new WorldGenGroundBush(iblockdata1, iblockdata2);
 			break;
 		case RED_MUSHROOM:
@@ -798,9 +795,9 @@ public class CraftWorld implements World {
 	public List<Entity> getEntities() {
 		List<Entity> list = new ArrayList<Entity>();
 
-		for (Object o : world.entityList) {
+		for (net.minecraft.server.Entity o : world.entityList) {
 			if (o instanceof net.minecraft.server.Entity) {
-				net.minecraft.server.Entity mcEnt = (net.minecraft.server.Entity) o;
+				net.minecraft.server.Entity mcEnt = o;
 				Entity bukkitEntity = mcEnt.getBukkitEntity();
 
 				// Assuming that bukkitEntity isn't null
@@ -823,7 +820,7 @@ public class CraftWorld implements World {
 				Entity bukkitEntity = mcEnt.getBukkitEntity();
 
 				// Assuming that bukkitEntity isn't null
-				if (bukkitEntity != null && bukkitEntity instanceof LivingEntity) {
+				if (bukkitEntity instanceof LivingEntity) {
 					list.add((LivingEntity) bukkitEntity);
 				}
 			//}
@@ -914,7 +911,7 @@ public class CraftWorld implements World {
 		for (EntityHuman human : world.players) {
 			HumanEntity bukkitEntity = human.getBukkitEntity();
 
-			if ((bukkitEntity != null) && (bukkitEntity instanceof Player)) {
+			if ((bukkitEntity instanceof Player)) {
 				list.add((Player) bukkitEntity);
 			}
 		}
@@ -1345,7 +1342,7 @@ public class CraftWorld implements World {
 		Preconditions.checkArgument(entity != null, "Cannot spawn null entity");
 
 		if (entity instanceof EntityInsentient) {
-			((EntityInsentient) entity).prepare(getHandle().E(new BlockPosition(entity)), (GroupDataEntity) null);
+			((EntityInsentient) entity).prepare(getHandle().E(new BlockPosition(entity)), null);
 		}
 
 		world.addEntity(entity, reason);
@@ -1438,7 +1435,7 @@ public class CraftWorld implements World {
 
 	@Override
 	public File getWorldFolder() {
-		return ((WorldNBTStorage) world.getDataManager()).getDirectory();
+		return world.getDataManager().getDirectory();
 	}
 
 	@Override

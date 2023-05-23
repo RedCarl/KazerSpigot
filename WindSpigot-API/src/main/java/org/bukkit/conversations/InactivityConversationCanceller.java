@@ -53,7 +53,7 @@ public class InactivityConversationCanceller implements ConversationCanceller {
 							new ConversationAbandonedEvent(conversation, InactivityConversationCanceller.this));
 				}
 			}
-		}, timeoutSeconds * 20);
+		}, timeoutSeconds * 20L);
 	}
 
 	/**

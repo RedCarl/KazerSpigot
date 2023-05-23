@@ -6,7 +6,7 @@ public class FoodMetaData {
 	public float saturationLevel = 5.0F;
 	public float exhaustionLevel;
 	private int foodTickTimer;
-	private EntityHuman entityhuman; // CraftBukkit
+	private final EntityHuman entityhuman; // CraftBukkit
 
 	public FoodMetaData() {
 		throw new AssertionError("Whoopsie, we missed the bukkit.");

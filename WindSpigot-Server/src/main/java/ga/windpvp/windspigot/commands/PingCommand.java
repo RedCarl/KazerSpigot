@@ -38,7 +38,7 @@ public class PingCommand extends Command {
 			if (pingPlayer != null && Bukkit.getOnlinePlayers().contains(pingPlayer)) {
 				String finalString = ChatColor.translateAlternateColorCodes('&', WindSpigotConfig.pingOtherCmdString)
 						.replace("%player%", pingPlayer.getName())
-						.replace("%ping%", ((Integer) ((CraftPlayer) pingPlayer).getPing()).toString());
+						.replace("%ping%", ((Integer) pingPlayer.getPing()).toString());
 				sender.sendMessage(finalString);
 			} else {
 				sender.sendMessage(ChatColor.RED + "Invalid player!");

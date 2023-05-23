@@ -182,8 +182,8 @@ public final class CraftServer implements Server {
 	private final SimpleHelpMap helpMap = new SimpleHelpMap(this);
 	private final StandardMessenger messenger = new StandardMessenger();
 	private final PluginManager pluginManager = new SimplePluginManager(this, commandMap);
-	protected final MinecraftServer console;
-	protected final DedicatedPlayerList playerList;
+	final MinecraftServer console;
+	private final DedicatedPlayerList playerList;
 	private final Map<String, World> worlds = new LinkedHashMap<>();
 	private YamlConfiguration configuration;
 	private YamlConfiguration commandsConfiguration;
@@ -937,7 +937,7 @@ public final class CraftServer implements Server {
 		try {
 			perms = (Map<String, Map<String, Object>>) yaml.load(stream);
 		} catch (MarkedYAMLException ex) {
-			getLogger().log(Level.WARNING, "Server permissions file " + file + " is not valid YAML: " + ex.toString());
+			getLogger().log(Level.WARNING, "Server permissions file " + file + " is not valid YAML: " + ex);
 			return;
 		} catch (Throwable ex) {
 			getLogger().log(Level.WARNING, "Server permissions file " + file + " is not valid YAML.", ex);
@@ -1365,7 +1365,7 @@ public final class CraftServer implements Server {
 					commands = ImmutableList.of(section.getString(key));
 				}
 
-				result.put(key, commands.toArray(new String[commands.size()]));
+				result.put(key, commands.toArray(new String[0]));
 			}
 		}
 
@@ -1722,7 +1722,7 @@ public final class CraftServer implements Server {
 
 		players.addAll(getOnlinePlayers());
 
-		return players.toArray(new OfflinePlayer[players.size()]);
+		return players.toArray(new OfflinePlayer[0]);
 	}
 
 	@Override
@@ -1807,7 +1807,7 @@ public final class CraftServer implements Server {
 	public boolean isPrimaryThread() {
 		Thread current = Thread.currentThread();
 		
-		if (current.getName().indexOf("WindSpigot Parallel World Thread") != -1) {
+		if (current.getName().contains("WindSpigot Parallel World Thread")) {
 			return true;
 		}
 		
@@ -1886,7 +1886,7 @@ public final class CraftServer implements Server {
 					"Exception when " + player.getName() + " attempted to tab complete " + message, ex);
 		}
 
-		return completions == null ? ImmutableList.<String>of() : completions;
+		return completions == null ? ImmutableList.of() : completions;
 	}
 	// PaperSpigot end
 

@@ -36,7 +36,7 @@ public class PlayerInteractManager {
 		this.player.updateAbilities();
 		this.player.server.getPlayerList()
 				.sendAll(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.UPDATE_GAME_MODE,
-						new EntityPlayer[] { this.player }), this.player); // CraftBukkit
+						this.player), this.player); // CraftBukkit
 	}
 
 	public WorldSettings.EnumGamemode getGameMode() {
@@ -120,7 +120,7 @@ public class PlayerInteractManager {
 		}
 		// CraftBukkit end
 		if (this.isCreative()) {
-			if (!this.world.douseFire((EntityHuman) null, blockposition, enumdirection)) {
+			if (!this.world.douseFire(null, blockposition, enumdirection)) {
 				this.breakBlock(blockposition);
 			}
 
@@ -168,7 +168,7 @@ public class PlayerInteractManager {
 				block.attack(this.world, blockposition, this.player);
 				f = block.getDamage(this.player, this.player.world, blockposition);
 				// Allow fire punching to be blocked
-				this.world.douseFire((EntityHuman) null, blockposition, enumdirection);
+				this.world.douseFire(null, blockposition, enumdirection);
 			}
 
 			if (event.useItemInHand() == Event.Result.DENY) {
@@ -310,7 +310,7 @@ public class PlayerInteractManager {
 				return false;
 			}
 		}
-		if (false && this.gamemode.d() && this.player.bA() != null && this.player.bA().getItem() instanceof ItemSword) {
+		if (false) {
 			return false;
 		} else {
 			IBlockData iblockdata = this.world.getType(blockposition);
@@ -454,7 +454,7 @@ public class PlayerInteractManager {
 
 			if (this.gamemode == WorldSettings.EnumGamemode.SPECTATOR) {
 				TileEntity tileentity = world.getTileEntity(blockposition);
-				cancelledBlock = !(tileentity instanceof ITileInventory || tileentity instanceof IInventory);
+				cancelledBlock = !(tileentity instanceof IInventory);
 			}
 
 			if (!entityhuman.getBukkitEntity().isOp() && itemstack != null

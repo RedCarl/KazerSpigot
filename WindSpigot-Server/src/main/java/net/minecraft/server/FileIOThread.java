@@ -8,7 +8,7 @@ import com.google.common.collect.Lists;
 public class FileIOThread implements Runnable {
 
 	private static final FileIOThread a = new FileIOThread();
-	private List<IAsyncChunkSaver> b = Collections.synchronizedList(Lists.<IAsyncChunkSaver>newArrayList());
+	private final List<IAsyncChunkSaver> b = Collections.synchronizedList(Lists.newArrayList());
 	private volatile long c;
 	private volatile long d;
 

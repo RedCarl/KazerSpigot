@@ -98,7 +98,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 	private boolean isExploiter = false;
 	
 	// WindSpigot - queue-able packets
-	private Queue<Packet<?>> queuedPackets = Queues.newLinkedBlockingQueue();
+	private final Queue<Packet<?>> queuedPackets = Queues.newLinkedBlockingQueue();
 
 	public PlayerConnection(MinecraftServer minecraftserver, NetworkManager networkmanager, EntityPlayer entityplayer) {
 		this.minecraftServer = minecraftserver;
@@ -114,7 +114,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 	}
 
 	private final org.bukkit.craftbukkit.CraftServer server;
-	private int lastTick = MinecraftServer.currentTick;
+	private final int lastTick = MinecraftServer.currentTick;
 	private int lastDropTick = MinecraftServer.currentTick;
 	private int dropCount = MinecraftServer.currentTick;
 	private static final int SURVIVAL_PLACE_DISTANCE_SQUARED = 6 * 6;
@@ -130,7 +130,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 	private boolean hasMoved; // Spigot
 
 	public CraftPlayer getPlayer() {
-		return (this.player == null) ? null : (CraftPlayer) this.player.getBukkitEntity();
+		return (this.player == null) ? null : this.player.getBukkitEntity();
 	}
 
 	private final static HashSet<Integer> invalidItems = new HashSet<Integer>(
@@ -164,7 +164,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 		} else {
 			this.minecraftServer.methodProfiler.a("keepAlive");
 			if ((long) this.e - this.k > 40L) {
-				this.k = (long) this.e;
+				this.k = this.e;
 				this.j = this.d();
 				this.i = (int) this.j;
 				this.sendPacket(new PacketPlayOutKeepAlive(this.i));
@@ -174,7 +174,6 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 
 		// CraftBukkit start
 		for (int spam; (spam = this.chatThrottle) > 0 && !chatSpamField.compareAndSet(this, spam, spam - 1);) {
-			;
 			/*
 			 * Use thread-safe field access instead if (this.chatThrottle > 0) {
 			 * --this.chatThrottle; }
@@ -296,7 +295,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 			public void operationComplete(Future future) throws Exception { // CraftBukkit - fix decompile error
 				PlayerConnection.this.networkManager.close(chatcomponenttext);
 			}
-		}, new GenericFutureListener[0]);
+		});
 		this.a(chatcomponenttext); // CraftBukkit - fire quit instantly
 		this.networkManager.k();
 		// CraftBukkit - Don't wait
@@ -428,7 +427,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 		                    WindSpigot.getInstance().getLagCompensator().registerMovement(player, to); // Nacho
 							this.player.playerConnection.sendPacket(new PacketPlayOutPosition(from.getX(), from.getY(),
 									from.getZ(), from.getYaw(), from.getPitch(),
-									Collections.<PacketPlayOutPosition.EnumPlayerTeleportFlags>emptySet()));
+									Collections.emptySet()));
 							return;
 						}
 
@@ -974,7 +973,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 				&& (enumdirection == EnumDirection.UP
 						|| blockposition.getY() >= this.minecraftServer.getMaxBuildHeight())) {
 			ChatMessage chatmessage = new ChatMessage("build.tooHigh",
-					new Object[] { Integer.valueOf(this.minecraftServer.getMaxBuildHeight()) });
+					this.minecraftServer.getMaxBuildHeight());
 
 			chatmessage.getChatModifier().setColor(EnumChatFormat.RED);
 			this.player.playerConnection.sendPacket(new PacketPlayOutChat(chatmessage));
@@ -1071,7 +1070,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 
 			if (entity != null) {
 				this.player.setSpectatorTarget(this.player);
-				this.player.mount((Entity) null);
+				this.player.mount(null);
 
 				/*
 				 * CraftBukkit start - replace with bukkit handling for multi-world if
@@ -1310,7 +1309,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 				// Spigot end
 			} else if (this.player.getChatFlags() == EntityHuman.EnumChatVisibility.SYSTEM) { // Re-add "Command Only"
 																								// flag check
-				ChatMessage chatmessage = new ChatMessage("chat.cannotSend", new Object[0]);
+				ChatMessage chatmessage = new ChatMessage("chat.cannotSend");
 
 				chatmessage.getChatModifier().setColor(EnumChatFormat.RED);
 				this.sendPacket(new PacketPlayOutChat(chatmessage));
@@ -1319,7 +1318,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 				// CraftBukkit end - the below is for reference. :)
 			} else {
 				ChatMessage chatmessage1 = new ChatMessage("chat.type.text",
-						new Object[] { this.player.getScoreboardDisplayName(), s });
+						this.player.getScoreboardDisplayName(), s);
 
 				this.minecraftServer.getPlayerList().sendMessage(chatmessage1, false);
 			}
@@ -2266,7 +2265,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 
 			if (flag1 && flag2 && flag3) {
 				if (itemstack == null) {
-					this.player.defaultContainer.setItem(packetplayinsetcreativeslot.a(), (ItemStack) null);
+					this.player.defaultContainer.setItem(packetplayinsetcreativeslot.a(), null);
 				} else {
 					this.player.defaultContainer.setItem(packetplayinsetcreativeslot.a(), itemstack);
 				}
@@ -2396,18 +2395,15 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 			return;
 		}
 		// CraftBukkit end
-		ArrayList arraylist = Lists.newArrayList();
-		Iterator iterator = this.minecraftServer
-				.tabCompleteCommand(this.player, packetplayintabcomplete.a(), packetplayintabcomplete.b()).iterator();
+		ArrayList<Object> arraylist = Lists.newArrayList();
 
-		while (iterator.hasNext()) {
-			String s = (String) iterator.next();
-
+		for (String s : this.minecraftServer
+				.tabCompleteCommand(this.player, packetplayintabcomplete.a(), packetplayintabcomplete.b())) {
 			arraylist.add(s);
 		}
 
 		this.player.playerConnection
-				.sendPacket(new PacketPlayOutTabComplete((String[]) arraylist.toArray(new String[arraylist.size()])));
+				.sendPacket(new PacketPlayOutTabComplete((String[]) arraylist.toArray(new String[0])));
 	}
 
 	@Override
@@ -2471,17 +2467,14 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 							CraftEventFactory.handleEditBookEvent(player, itemstack1); // CraftBukkit
 						}
 
-						return;
 					}
 				} catch (Exception exception) {
-					PlayerConnection.c.error("Couldn\'t handle book info", exception);
+					PlayerConnection.c.error("Couldn't handle book info", exception);
 					this.disconnect("Invalid book data!"); // CraftBukkit
-					return;
 				} finally {
 					serializer.release();
 				}
 
-				return;
 			} else if ("MC|BSign".equals(packetplayincustompayload.a())) {
 				if (this.lastBookTick + 20 > MinecraftServer.currentTick) {
 					disconnect("Book edited too quickly!");
@@ -2512,17 +2505,14 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 							// CraftBukkit end
 						}
 
-						return;
 					}
 				} catch (Exception exception1) {
-					PlayerConnection.c.error("Couldn\'t sign book", exception1);
+					PlayerConnection.c.error("Couldn't sign book", exception1);
 					this.disconnect("Invalid book data!"); // CraftBukkit
-					return;
 				} finally {
 					serializer.release();
 				}
 
-				return;
 			} else if ("MC|TrSel".equals(packetplayincustompayload.a())) {
 				try {
 					int i = packetplayincustompayload.b().readInt();
@@ -2579,16 +2569,16 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 							}
 
 							commandblocklistenerabstract.h();
-							this.player.sendMessage(new ChatMessage("advMode.setCommand.success", new Object[] { s }));
+							this.player.sendMessage(new ChatMessage("advMode.setCommand.success", s));
 						}
 					} catch (Exception exception3) {
-						PlayerConnection.c.error("Couldn\'t set command block", exception3);
+						PlayerConnection.c.error("Couldn't set command block", exception3);
 						this.disconnect("Invalid CommandBlock data!"); // CraftBukkit
 					} finally {
 						serializer.release();
 					}
 				} else {
-					this.player.sendMessage(new ChatMessage("advMode.notAllowed", new Object[0]));
+					this.player.sendMessage(new ChatMessage("advMode.notAllowed"));
 				}
 			} else if ("MC|Beacon".equals(packetplayincustompayload.a())) {
 				if (this.player.activeContainer instanceof ContainerBeacon) {
@@ -2608,7 +2598,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 							iinventory.update();
 						}
 					} catch (Exception exception4) {
-						PlayerConnection.c.error("Couldn\'t set beacon", exception4);
+						PlayerConnection.c.error("Couldn't set beacon", exception4);
 						this.disconnect("Invalid beacon data!"); // CraftBukkit
 					}
 				}
@@ -2684,21 +2674,18 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 				PlayerConnection.SyntheticClass_1.c[PacketPlayInClientCommand.EnumClientCommand.PERFORM_RESPAWN
 						.ordinal()] = 1;
 			} catch (NoSuchFieldError nosuchfielderror) {
-				;
 			}
 
 			try {
 				PlayerConnection.SyntheticClass_1.c[PacketPlayInClientCommand.EnumClientCommand.REQUEST_STATS
 						.ordinal()] = 2;
 			} catch (NoSuchFieldError nosuchfielderror1) {
-				;
 			}
 
 			try {
 				PlayerConnection.SyntheticClass_1.c[PacketPlayInClientCommand.EnumClientCommand.OPEN_INVENTORY_ACHIEVEMENT
 						.ordinal()] = 3;
 			} catch (NoSuchFieldError nosuchfielderror2) {
-				;
 			}
 
 			b = new int[PacketPlayInEntityAction.EnumPlayerAction.values().length];
@@ -2707,49 +2694,42 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 				PlayerConnection.SyntheticClass_1.b[PacketPlayInEntityAction.EnumPlayerAction.START_SNEAKING
 						.ordinal()] = 1;
 			} catch (NoSuchFieldError nosuchfielderror3) {
-				;
 			}
 
 			try {
 				PlayerConnection.SyntheticClass_1.b[PacketPlayInEntityAction.EnumPlayerAction.STOP_SNEAKING
 						.ordinal()] = 2;
 			} catch (NoSuchFieldError nosuchfielderror4) {
-				;
 			}
 
 			try {
 				PlayerConnection.SyntheticClass_1.b[PacketPlayInEntityAction.EnumPlayerAction.START_SPRINTING
 						.ordinal()] = 3;
 			} catch (NoSuchFieldError nosuchfielderror5) {
-				;
 			}
 
 			try {
 				PlayerConnection.SyntheticClass_1.b[PacketPlayInEntityAction.EnumPlayerAction.STOP_SPRINTING
 						.ordinal()] = 4;
 			} catch (NoSuchFieldError nosuchfielderror6) {
-				;
 			}
 
 			try {
 				PlayerConnection.SyntheticClass_1.b[PacketPlayInEntityAction.EnumPlayerAction.STOP_SLEEPING
 						.ordinal()] = 5;
 			} catch (NoSuchFieldError nosuchfielderror7) {
-				;
 			}
 
 			try {
 				PlayerConnection.SyntheticClass_1.b[PacketPlayInEntityAction.EnumPlayerAction.RIDING_JUMP
 						.ordinal()] = 6;
 			} catch (NoSuchFieldError nosuchfielderror8) {
-				;
 			}
 
 			try {
 				PlayerConnection.SyntheticClass_1.b[PacketPlayInEntityAction.EnumPlayerAction.OPEN_INVENTORY
 						.ordinal()] = 7;
 			} catch (NoSuchFieldError nosuchfielderror9) {
-				;
 			}
 
 			a = new int[PacketPlayInBlockDig.EnumPlayerDigType.values().length];
@@ -2757,42 +2737,36 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 			try {
 				PlayerConnection.SyntheticClass_1.a[PacketPlayInBlockDig.EnumPlayerDigType.DROP_ITEM.ordinal()] = 1;
 			} catch (NoSuchFieldError nosuchfielderror10) {
-				;
 			}
 
 			try {
 				PlayerConnection.SyntheticClass_1.a[PacketPlayInBlockDig.EnumPlayerDigType.DROP_ALL_ITEMS
 						.ordinal()] = 2;
 			} catch (NoSuchFieldError nosuchfielderror11) {
-				;
 			}
 
 			try {
 				PlayerConnection.SyntheticClass_1.a[PacketPlayInBlockDig.EnumPlayerDigType.RELEASE_USE_ITEM
 						.ordinal()] = 3;
 			} catch (NoSuchFieldError nosuchfielderror12) {
-				;
 			}
 
 			try {
 				PlayerConnection.SyntheticClass_1.a[PacketPlayInBlockDig.EnumPlayerDigType.START_DESTROY_BLOCK
 						.ordinal()] = 4;
 			} catch (NoSuchFieldError nosuchfielderror13) {
-				;
 			}
 
 			try {
 				PlayerConnection.SyntheticClass_1.a[PacketPlayInBlockDig.EnumPlayerDigType.ABORT_DESTROY_BLOCK
 						.ordinal()] = 5;
 			} catch (NoSuchFieldError nosuchfielderror14) {
-				;
 			}
 
 			try {
 				PlayerConnection.SyntheticClass_1.a[PacketPlayInBlockDig.EnumPlayerDigType.STOP_DESTROY_BLOCK
 						.ordinal()] = 6;
 			} catch (NoSuchFieldError nosuchfielderror15) {
-				;
 			}
 
 		}

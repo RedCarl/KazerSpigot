@@ -102,8 +102,7 @@ public class EntityMinecartCommandBlock extends EntityMinecartAbstract {
 			try {
 				this.a.b(IChatBaseComponent.ChatSerializer.a(this.getDataWatcher().getString(24)));
 			} catch (Throwable throwable) {
-				;
-			}
+            }
 		} else if (i == 23) {
 			this.a.setCommand(this.getDataWatcher().getString(23));
 		}

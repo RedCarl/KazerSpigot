@@ -11,7 +11,7 @@ import org.bukkit.material.MaterialData;
  * Represents a shaped (ie normal) crafting recipe.
  */
 public class ShapedRecipe implements Recipe {
-	private ItemStack output;
+	private final ItemStack output;
 	private String[] rows;
 	private Map<Character, ItemStack> ingredients = new HashMap<Character, ItemStack>();
 
@@ -51,9 +51,7 @@ public class ShapedRecipe implements Recipe {
 					row.length());
 		}
 		this.rows = new String[shape.length];
-		for (int i = 0; i < shape.length; i++) {
-			this.rows[i] = shape[i];
-		}
+		System.arraycopy(shape, 0, this.rows, 0, shape.length);
 
 		// Remove character mappings for characters that no longer exist in the shape
 		HashMap<Character, ItemStack> newIngredients = new HashMap<Character, ItemStack>();

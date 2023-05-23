@@ -13,9 +13,9 @@ import java.util.Queue;
 import net.minecraft.server.Packet;
 
 public class Spigot404Write {
-    private static Queue<PacketQueue> packetsQueue = Queues.newConcurrentLinkedQueue();
-    private static Tasks tasks = new Tasks();
-    private Channel channel;
+    private static final Queue<PacketQueue> packetsQueue = Queues.newConcurrentLinkedQueue();
+    private static final Tasks tasks = new Tasks();
+    private final Channel channel;
 
     public Spigot404Write(Channel channel) {
         this.channel = channel;
@@ -52,8 +52,8 @@ public class Spigot404Write {
     }
 
     private static class PacketQueue {
-        private Packet<?> item;
-        private GenericFutureListener<? extends Future<? super Void>>[] listener;
+        private final Packet<?> item;
+        private final GenericFutureListener<? extends Future<? super Void>>[] listener;
 
         private PacketQueue(Packet<?> item, GenericFutureListener<? extends Future<? super Void>>[] listener) {
             this.item = item;

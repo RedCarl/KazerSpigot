@@ -1,5 +1,6 @@
 package org.bukkit.craftbukkit.scoreboard;
 
+import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.lang.Validate;
@@ -189,7 +190,6 @@ final class CraftTeam extends CraftScoreboardComponent implements Team {
 
 	@Override
 	public boolean hasEntry(String entry) throws IllegalArgumentException, IllegalStateException {
-		Validate.notNull("Entry cannot be null");
 
 		CraftScoreboard scoreboard = checkState();
 
@@ -258,7 +258,7 @@ final class CraftTeam extends CraftScoreboardComponent implements Team {
 			return false;
 		}
 		final CraftTeam other = (CraftTeam) obj;
-		return !(this.team != other.team && (this.team == null || !this.team.equals(other.team)));
+		return !(!Objects.equals(this.team, other.team));
 	}
 
 }

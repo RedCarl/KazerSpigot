@@ -1,5 +1,6 @@
 package net.minecraft.server;
 
+import java.util.Arrays;
 import java.util.List;
 
 // CraftBukkit start
@@ -179,9 +180,8 @@ public class TileEntityChest extends TileEntityContainer implements IInventory {
 		if (this.world == null) {
 			return true; // CraftBukkit
 		}
-		return this.world.getTileEntity(this.position) != this ? false
-				: entityhuman.e(this.position.getX() + 0.5D, this.position.getY() + 0.5D,
-						this.position.getZ() + 0.5D) <= 64.0D;
+		return this.world.getTileEntity(this.position) == this && entityhuman.e(this.position.getX() + 0.5D, this.position.getY() + 0.5D,
+				this.position.getZ() + 0.5D) <= 64.0D;
 	}
 
 	@Override
@@ -485,9 +485,7 @@ public class TileEntityChest extends TileEntityContainer implements IInventory {
 
 	@Override
 	public void l() {
-		for (int i = 0; i < this.items.length; ++i) {
-			this.items[i] = null;
-		}
+		Arrays.fill(this.items, null);
 
 	}
 
@@ -507,25 +505,21 @@ public class TileEntityChest extends TileEntityContainer implements IInventory {
 			try {
 				TileEntityChest.SyntheticClass_1.a[EnumDirection.NORTH.ordinal()] = 1;
 			} catch (NoSuchFieldError nosuchfielderror) {
-				;
 			}
 
 			try {
 				TileEntityChest.SyntheticClass_1.a[EnumDirection.SOUTH.ordinal()] = 2;
 			} catch (NoSuchFieldError nosuchfielderror1) {
-				;
 			}
 
 			try {
 				TileEntityChest.SyntheticClass_1.a[EnumDirection.EAST.ordinal()] = 3;
 			} catch (NoSuchFieldError nosuchfielderror2) {
-				;
 			}
 
 			try {
 				TileEntityChest.SyntheticClass_1.a[EnumDirection.WEST.ordinal()] = 4;
 			} catch (NoSuchFieldError nosuchfielderror3) {
-				;
 			}
 
 		}

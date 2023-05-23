@@ -11,7 +11,7 @@ public class BlockPortal extends BlockHalfTransparent {
 
 	public static final BlockStateEnum<EnumDirection.EnumAxis> AXIS = BlockStateEnum.of("axis",
 			EnumDirection.EnumAxis.class,
-			new EnumDirection.EnumAxis[] { EnumDirection.EnumAxis.X, EnumDirection.EnumAxis.Z });
+			EnumDirection.EnumAxis.X, EnumDirection.EnumAxis.Z);
 
 	public BlockPortal() {
 		super(Material.PORTAL, false);
@@ -31,7 +31,6 @@ public class BlockPortal extends BlockHalfTransparent {
 
 			for (blockposition1 = blockposition; !World.a(world, blockposition1)
 					&& blockposition1.getY() > 0; blockposition1 = blockposition1.down()) {
-				;
 			}
 
 			if (i > 0 && !world.getType(blockposition1.up()).getBlock().isOccluding()) {
@@ -151,13 +150,13 @@ public class BlockPortal extends BlockHalfTransparent {
 
 	@Override
 	protected BlockStateList getStateList() {
-		return new BlockStateList(this, new IBlockState[] { BlockPortal.AXIS });
+		return new BlockStateList(this, BlockPortal.AXIS);
 	}
 
 	public ShapeDetector.ShapeDetectorCollection f(World world, BlockPosition blockposition) {
 		EnumDirection.EnumAxis enumdirection_enumaxis = EnumDirection.EnumAxis.Z;
 		BlockPortal.Shape blockportal_shape = new BlockPortal.Shape(world, blockposition, EnumDirection.EnumAxis.X);
-		LoadingCache loadingcache = ShapeDetector.a(world, true);
+		LoadingCache<BlockPosition, ShapeDetectorBlock> loadingcache = ShapeDetector.a(world, true);
 
 		if (!blockportal_shape.d()) {
 			enumdirection_enumaxis = EnumDirection.EnumAxis.X;
@@ -248,7 +247,6 @@ public class BlockPortal extends BlockHalfTransparent {
 			for (BlockPosition blockposition1 = blockposition; blockposition.getY() > blockposition1.getY() - 21
 					&& blockposition.getY() > 0
 					&& this.a(world.getType(blockposition.down()).getBlock()); blockposition = blockposition.down()) {
-				;
 			}
 
 			int i = this.a(blockposition, this.d) - 1;

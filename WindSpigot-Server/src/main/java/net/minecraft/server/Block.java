@@ -526,18 +526,15 @@ public class Block {
 	}
 
 	private boolean a(Vec3D vec3d) {
-		return vec3d == null ? false
-				: vec3d.b >= this.minY && vec3d.b <= this.maxY && vec3d.c >= this.minZ && vec3d.c <= this.maxZ;
+		return vec3d != null && vec3d.b >= this.minY && vec3d.b <= this.maxY && vec3d.c >= this.minZ && vec3d.c <= this.maxZ;
 	}
 
 	private boolean b(Vec3D vec3d) {
-		return vec3d == null ? false
-				: vec3d.a >= this.minX && vec3d.a <= this.maxX && vec3d.c >= this.minZ && vec3d.c <= this.maxZ;
+		return vec3d != null && vec3d.a >= this.minX && vec3d.a <= this.maxX && vec3d.c >= this.minZ && vec3d.c <= this.maxZ;
 	}
 
 	private boolean c(Vec3D vec3d) {
-		return vec3d == null ? false
-				: vec3d.a >= this.minX && vec3d.a <= this.maxX && vec3d.b >= this.minY && vec3d.b <= this.maxY;
+		return vec3d != null && vec3d.a >= this.minX && vec3d.a <= this.maxX && vec3d.b >= this.minY && vec3d.b <= this.maxY;
 	}
 
 	public void wasExploded(World world, BlockPosition blockposition, Explosion explosion) {
@@ -739,7 +736,7 @@ public class Block {
 	}
 
 	public static boolean a(Block block, Block block1) {
-		return block != null && block1 != null ? (block == block1 ? true : block.b(block1)) : false;
+		return block != null && block1 != null && (block == block1 || block.b(block1));
 	}
 
 	public boolean isComplexRedstone() {
@@ -751,7 +748,7 @@ public class Block {
 	}
 
 	protected BlockStateList getStateList() {
-		return new BlockStateList(this, new IBlockState[0]);
+		return new BlockStateList(this);
 	}
 
 	public BlockStateList P() {
@@ -1057,7 +1054,7 @@ public class Block {
 		a(196, "acacia_door", (new BlockDoor(Material.WOOD)).c(3.0F).a(Block.f).c("doorAcacia").K());
 		a(197, "dark_oak_door", (new BlockDoor(Material.WOOD)).c(3.0F).a(Block.f).c("doorDarkOak").K());
 		Block.REGISTRY.a();
-		Iterator iterator = Block.REGISTRY.iterator();
+		Iterator<Block> iterator = Block.REGISTRY.iterator();
 
 		Block block13;
 
@@ -1085,10 +1082,8 @@ public class Block {
 
 		while (iterator.hasNext()) {
 			block13 = (Block) iterator.next();
-			Iterator iterator1 = block13.P().a().iterator();
 
-			while (iterator1.hasNext()) {
-				IBlockData iblockdata = (IBlockData) iterator1.next();
+			for (IBlockData iblockdata : block13.P().a()) {
 				int i = Block.REGISTRY.b(block13) << 4 | block13.toLegacyData(iblockdata);
 				// TacoSpigot start
 

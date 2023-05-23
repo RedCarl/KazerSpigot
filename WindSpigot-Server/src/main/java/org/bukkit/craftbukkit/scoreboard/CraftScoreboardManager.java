@@ -88,9 +88,7 @@ public final class CraftScoreboardManager implements ScoreboardManager {
 		}
 
 		// Old team tracking
-		Iterator<?> iterator = oldboard.getTeams().iterator();
-		while (iterator.hasNext()) {
-			ScoreboardTeam scoreboardteam = (ScoreboardTeam) iterator.next();
+		for (ScoreboardTeam scoreboardteam : oldboard.getTeams()) {
 			entityplayer.playerConnection.sendPacket(new PacketPlayOutScoreboardTeam(scoreboardteam, 1));
 		}
 
@@ -108,7 +106,7 @@ public final class CraftScoreboardManager implements ScoreboardManager {
 			Collection<ScoreboardScore> collection) {
 		for (CraftScoreboard scoreboard : scoreboards) {
 			Scoreboard board = scoreboard.board;
-			for (ScoreboardObjective objective : (Iterable<ScoreboardObjective>) board
+			for (ScoreboardObjective objective : board
 					.getObjectivesForCriteria(criteria)) {
 				collection.add(board.getPlayerScoreForObjective(name, objective));
 			}

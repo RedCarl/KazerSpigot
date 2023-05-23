@@ -131,7 +131,7 @@ public class CraftInventoryPlayer extends CraftInventory
 
 	@Override
 	public ItemStack getBoots() {
-		return getItem(getSize() + 0);
+		return getItem(getSize());
 	}
 
 	@Override
@@ -151,7 +151,7 @@ public class CraftInventoryPlayer extends CraftInventory
 
 	@Override
 	public void setBoots(ItemStack boots) {
-		setItem(getSize() + 0, boots);
+		setItem(getSize(), boots);
 	}
 
 	@Override

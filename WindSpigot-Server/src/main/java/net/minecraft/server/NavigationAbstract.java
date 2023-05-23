@@ -57,7 +57,7 @@ public abstract class NavigationAbstract {
     public PathEntity doPathSearch(ChunkCache chunkcache, int x, int y, int z) {
         if (this.b()) {
             float f = this.i();
-            return this.j.a((IBlockAccess) chunkcache, (Entity) this.b, new BlockPosition(x, y, z), f);
+            return this.j.a(chunkcache, this.b, new BlockPosition(x, y, z), f);
         }
         return null;
     }
@@ -81,7 +81,7 @@ public abstract class NavigationAbstract {
 	}
 	
 	public PathEntity a(int d0, int d1, int d2) {
-		return this.a(new BlockPosition(d0, (int) d1, d2)); 
+		return this.a(new BlockPosition(d0, d1, d2));
 	}
 
 	public PathEntity a(BlockPosition blockposition) {
@@ -200,7 +200,7 @@ public abstract class NavigationAbstract {
 				if (vec3d != null) {
 					AxisAlignedBB axisalignedbb = (new AxisAlignedBB(vec3d.a, vec3d.b, vec3d.c, vec3d.a, vec3d.b,
 							vec3d.c)).grow(0.5D, 0.5D, 0.5D);
-					List list = this.c.getCubes(this.b, axisalignedbb.a(0.0D, -1.0D, 0.0D));
+					List<AxisAlignedBB> list = this.c.getCubes(this.b, axisalignedbb.a(0.0D, -1.0D, 0.0D));
 					double d0 = -1.0D;
 
 					axisalignedbb = axisalignedbb.c(0.0D, 1.0D, 0.0D);

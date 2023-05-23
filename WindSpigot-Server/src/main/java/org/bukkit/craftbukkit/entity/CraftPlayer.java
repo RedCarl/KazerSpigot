@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -1329,7 +1330,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
 
 			for (String channel : listening) {
 				try {
-					stream.write(channel.getBytes("UTF8"));
+					stream.write(channel.getBytes(StandardCharsets.UTF_8));
 					stream.write((byte) 0);
 				} catch (IOException ex) {
 					Logger.getLogger(CraftPlayer.class.getName()).log(Level.SEVERE,
@@ -1535,7 +1536,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
 
 	public void updateScaledHealth() {
 		AttributeMapServer attributemapserver = (AttributeMapServer) getHandle().getAttributeMap();
-		Set set = attributemapserver.getAttributes();
+		Set<AttributeInstance> set = attributemapserver.getAttributes();
 
 		injectScaledMaxHealth(set, true);
 

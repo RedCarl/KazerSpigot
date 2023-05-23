@@ -87,7 +87,7 @@ public class TimingHistory {
 			this.minuteReports = MINUTE_REPORTS.toArray(new MinuteReport[MINUTE_REPORTS.size() + 1]);
 			this.minuteReports[this.minuteReports.length - 1] = new MinuteReport();
 		} else {
-			this.minuteReports = MINUTE_REPORTS.toArray(new MinuteReport[MINUTE_REPORTS.size()]);
+			this.minuteReports = MINUTE_REPORTS.toArray(new MinuteReport[0]);
 		}
 		long ticks = 0;
 		for (MinuteReport mp : this.minuteReports) {
@@ -209,7 +209,7 @@ public class TimingHistory {
 		final long activatedEntity;
 
 		TicksRecord() {
-			timed = timedTicks - (TimingsManager.MINUTE_REPORTS.size() * 1200);
+			timed = timedTicks - (TimingsManager.MINUTE_REPORTS.size() * 1200L);
 			player = playerTicks;
 			entity = entityTicks;
 			tileEntity = tileEntityTicks;
@@ -227,7 +227,7 @@ public class TimingHistory {
 			for (Player player : onlinePlayers) {
 				totalPing += player.spigot().getPing();
 			}
-			avg = onlinePlayers.isEmpty() ? 0 : totalPing / onlinePlayers.size();
+			avg = onlinePlayers.isEmpty() ? 0 : (double) totalPing / onlinePlayers.size();
 		}
 	}
 

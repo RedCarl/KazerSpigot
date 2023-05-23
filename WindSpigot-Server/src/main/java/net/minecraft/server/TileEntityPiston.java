@@ -12,7 +12,7 @@ public class TileEntityPiston extends TileEntity implements IUpdatePlayerListBox
 	private boolean g;
 	private float i;
 	private float j;
-	private List<Entity> k = Lists.newArrayList();
+	private final List<Entity> k = Lists.newArrayList();
 
 	public TileEntityPiston() {
 	}
@@ -59,27 +59,24 @@ public class TileEntityPiston extends TileEntity implements IUpdatePlayerListBox
 		AxisAlignedBB axisalignedbb = Blocks.PISTON_EXTENSION.a(this.world, this.position, this.a, f, this.f);
 
 		if (axisalignedbb != null) {
-			List list = this.world.getEntities((Entity) null, axisalignedbb);
+			List<Entity> list = this.world.getEntities(null, axisalignedbb);
 
 			if (!list.isEmpty()) {
 				this.k.addAll(list);
-				Iterator iterator = this.k.iterator();
 
-				while (iterator.hasNext()) {
-					Entity entity = (Entity) iterator.next();
-
+				for (Entity entity : this.k) {
 					if (this.a.getBlock() == Blocks.SLIME && this.g) {
-						switch (TileEntityPiston.SyntheticClass_1.a[this.f.k().ordinal()]) {
-						case 1:
-							entity.motX = this.f.getAdjacentX();
-							break;
+						switch (SyntheticClass_1.a[this.f.k().ordinal()]) {
+							case 1:
+								entity.motX = this.f.getAdjacentX();
+								break;
 
-						case 2:
-							entity.motY = this.f.getAdjacentY();
-							break;
+							case 2:
+								entity.motY = this.f.getAdjacentY();
+								break;
 
-						case 3:
-							entity.motZ = this.f.getAdjacentZ();
+							case 3:
+								entity.motZ = this.f.getAdjacentZ();
 						}
 					} else {
 						entity.move(f1 * this.f.getAdjacentX(), f1 * this.f.getAdjacentY(), f1 * this.f.getAdjacentZ());
@@ -160,19 +157,16 @@ public class TileEntityPiston extends TileEntity implements IUpdatePlayerListBox
 			try {
 				TileEntityPiston.SyntheticClass_1.a[EnumDirection.EnumAxis.X.ordinal()] = 1;
 			} catch (NoSuchFieldError nosuchfielderror) {
-				;
 			}
 
 			try {
 				TileEntityPiston.SyntheticClass_1.a[EnumDirection.EnumAxis.Y.ordinal()] = 2;
 			} catch (NoSuchFieldError nosuchfielderror1) {
-				;
 			}
 
 			try {
 				TileEntityPiston.SyntheticClass_1.a[EnumDirection.EnumAxis.Z.ordinal()] = 3;
 			} catch (NoSuchFieldError nosuchfielderror2) {
-				;
 			}
 
 		}

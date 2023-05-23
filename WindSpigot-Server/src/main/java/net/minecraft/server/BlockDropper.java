@@ -25,7 +25,7 @@ public class BlockDropper extends BlockDispenser {
 	@Override
 	public void dispense(World world, BlockPosition blockposition) {
 		SourceBlock sourceblock = new SourceBlock(world, blockposition);
-		TileEntityDispenser tileentitydispenser = (TileEntityDispenser) sourceblock.getTileEntity();
+		TileEntityDispenser tileentitydispenser = sourceblock.getTileEntity();
 
 		if (tileentitydispenser != null) {
 			int i = tileentitydispenser.m();

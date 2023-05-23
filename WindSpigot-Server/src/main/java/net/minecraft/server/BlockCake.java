@@ -8,14 +8,14 @@ public class BlockCake extends Block {
 
 	protected BlockCake() {
 		super(Material.CAKE);
-		this.j(this.blockStateList.getBlockData().set(BlockCake.BITES, Integer.valueOf(0)));
+		this.j(this.blockStateList.getBlockData().set(BlockCake.BITES, 0));
 		this.a(true);
 	}
 
 	@Override
 	public void updateShape(IBlockAccess iblockaccess, BlockPosition blockposition) {
 		float f = 0.0625F;
-		float f1 = (1 + iblockaccess.getType(blockposition).get(BlockCake.BITES).intValue() * 2) / 16.0F;
+		float f1 = (1 + iblockaccess.getType(blockposition).get(BlockCake.BITES) * 2) / 16.0F;
 		float f2 = 0.5F;
 
 		this.a(f1, 0.0F, f, 1.0F - f, f2, 1.0F - f);
@@ -32,7 +32,7 @@ public class BlockCake extends Block {
 	@Override
 	public AxisAlignedBB a(World world, BlockPosition blockposition, IBlockData iblockdata) {
 		float f = 0.0625F;
-		float f1 = (1 + iblockdata.get(BlockCake.BITES).intValue() * 2) / 16.0F;
+		float f1 = (1 + iblockdata.get(BlockCake.BITES) * 2) / 16.0F;
 		float f2 = 0.5F;
 
 		return new AxisAlignedBB(blockposition.getX() + f1, blockposition.getY(), blockposition.getZ() + f,
@@ -79,10 +79,10 @@ public class BlockCake extends Block {
 					new PacketPlayOutUpdateHealth(((EntityPlayer) entityhuman).getBukkitEntity().getScaledHealth(),
 							entityhuman.getFoodData().foodLevel, entityhuman.getFoodData().saturationLevel));
 			// CraftBukkit end
-			int i = iblockdata.get(BlockCake.BITES).intValue();
+			int i = iblockdata.get(BlockCake.BITES);
 
 			if (i < 6) {
-				world.setTypeAndData(blockposition, iblockdata.set(BlockCake.BITES, Integer.valueOf(i + 1)), 3);
+				world.setTypeAndData(blockposition, iblockdata.set(BlockCake.BITES, i + 1), 3);
 			} else {
 				world.setAir(blockposition);
 			}
@@ -92,7 +92,7 @@ public class BlockCake extends Block {
 
 	@Override
 	public boolean canPlace(World world, BlockPosition blockposition) {
-		return super.canPlace(world, blockposition) ? this.e(world, blockposition) : false;
+		return super.canPlace(world, blockposition) && this.e(world, blockposition);
 	}
 
 	@Override
@@ -119,22 +119,22 @@ public class BlockCake extends Block {
 
 	@Override
 	public IBlockData fromLegacyData(int i) {
-		return this.getBlockData().set(BlockCake.BITES, Integer.valueOf(i));
+		return this.getBlockData().set(BlockCake.BITES, i);
 	}
 
 	@Override
 	public int toLegacyData(IBlockData iblockdata) {
-		return iblockdata.get(BlockCake.BITES).intValue();
+		return iblockdata.get(BlockCake.BITES);
 	}
 
 	@Override
 	protected BlockStateList getStateList() {
-		return new BlockStateList(this, new IBlockState[] { BlockCake.BITES });
+		return new BlockStateList(this, BlockCake.BITES);
 	}
 
 	@Override
 	public int l(World world, BlockPosition blockposition) {
-		return (7 - world.getType(blockposition).get(BlockCake.BITES).intValue()) * 2;
+		return (7 - world.getType(blockposition).get(BlockCake.BITES)) * 2;
 	}
 
 	@Override

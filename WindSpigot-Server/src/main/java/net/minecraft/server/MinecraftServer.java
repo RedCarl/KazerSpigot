@@ -126,7 +126,7 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 	protected final Queue<FutureTask<?>> j = new java.util.concurrent.ConcurrentLinkedQueue<FutureTask<?>>(); // Spigot,
 																												// PAIL:
 																												// Rename
-	private Thread serverThread;
+	private final Thread serverThread;
 	private long ab = az();
 
 	// CraftBukkit start
@@ -396,7 +396,7 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 			}
 
 			worlds.add(world);
-			getPlayerList().setPlayerFileData(worlds.toArray(new WorldServer[worlds.size()]));
+			getPlayerList().setPlayerFileData(worlds.toArray(new WorldServer[0]));
 		}
 
 		// CraftBukkit end
@@ -486,18 +486,17 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 			int i = aworldserver.length;
 
 			// CraftBukkit start
-			for (int j = 0; j < worlds.size(); ++j) {
-				WorldServer worldserver = worlds.get(j);
+			for (WorldServer worldserver : worlds) {
 				// CraftBukkit end
 
 				if (worldserver != null) {
 					if (!flag) {
-						MinecraftServer.LOGGER.info("Saving chunks for level \'" + worldserver.getWorldData().getName()
-								+ "\'/" + worldserver.worldProvider.getName());
+						MinecraftServer.LOGGER.info("Saving chunks for level '" + worldserver.getWorldData().getName()
+								+ "'/" + worldserver.worldProvider.getName());
 					}
 
 					try {
-						worldserver.save(true, (IProgressUpdate) null);
+						worldserver.save(true, null);
 						worldserver.saveLevel(); // CraftBukkit
 					} catch (ExceptionWorldConflict exceptionworldconflict) {
 						MinecraftServer.LOGGER.warn(exceptionworldconflict.getMessage());
@@ -596,7 +595,7 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 	private static final long MAX_CATCHUP_BUFFER = TICK_TIME * TPS * 60L;
 	// WindSpigot start - backport modern tick loop
 	private long lastTick = 0;
-	private long catchupTime = 0;
+	private final long catchupTime = 0;
 	// WindSpigot end
 	private static final int SAMPLE_INTERVAL = 20;
 	public final RollingAverage tps1 = new RollingAverage(60);
@@ -643,7 +642,7 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 	        return total.divide(dec(time), 30, java.math.RoundingMode.HALF_UP).doubleValue();
 	    }
 	}
-	private static final java.math.BigDecimal TPS_BASE = new java.math.BigDecimal(1E9).multiply(new java.math.BigDecimal(SAMPLE_INTERVAL));
+	private static final java.math.BigDecimal TPS_BASE = new java.math.BigDecimal("1E9").multiply(new java.math.BigDecimal(SAMPLE_INTERVAL));
 	// Paper End
 
 	private AffinityLock lock = null;
@@ -902,14 +901,14 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 			try {
 				BufferedImage bufferedimage = ImageIO.read(file);
 
-				Validate.validState(bufferedimage.getWidth() == 64, "Must be 64 pixels wide", new Object[0]);
-				Validate.validState(bufferedimage.getHeight() == 64, "Must be 64 pixels high", new Object[0]);
+				Validate.validState(bufferedimage.getWidth() == 64, "Must be 64 pixels wide");
+				Validate.validState(bufferedimage.getHeight() == 64, "Must be 64 pixels high");
 				ImageIO.write(bufferedimage, "PNG", new ByteBufOutputStream(bytebuf));
 				/* ByteBuf */ bytebuf1 = Base64.encode(bytebuf); // Paper - cleanup favicon bytebuf
 
 				serverping.setFavicon("data:image/png;base64," + bytebuf1.toString(Charsets.UTF_8));
 			} catch (Exception exception) {
-				MinecraftServer.LOGGER.error("Couldn\'t load server icon", exception);
+				MinecraftServer.LOGGER.error("Couldn't load server icon", exception);
 			} finally {
 				bytebuf.release();
 				// Paper start - cleanup favicon bytebuf
@@ -1645,8 +1644,7 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 		int i = aworldserver.length;
 
 		// CraftBukkit start
-		for (int j = 0; j < worlds.size(); ++j) {
-			WorldServer worldserver = worlds.get(j);
+		for (WorldServer worldserver : worlds) {
 			// CraftBukkit end
 
 			if (worldserver != null) {
@@ -1677,8 +1675,8 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 	public <V> ListenableFuture<V> a(Callable<V> callable) {
 		Validate.notNull(callable);
 		if (!this.isMainThread()) { // CraftBukkit && !this.isStopped()) {
-			ListenableFutureTask listenablefuturetask = ListenableFutureTask.create(callable);
-			Queue queue = this.j;
+			ListenableFutureTask<V> listenablefuturetask = ListenableFutureTask.create(callable);
+			Queue<FutureTask<?>> queue = this.j;
 
 			// Spigot start
 			this.j.add(listenablefuturetask);

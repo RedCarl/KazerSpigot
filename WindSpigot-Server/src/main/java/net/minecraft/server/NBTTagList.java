@@ -33,8 +33,8 @@ public class NBTTagList extends NBTBase {
 		dataoutput.writeByte(this.type);
 		dataoutput.writeInt(this.list.size());
 
-		for (int i = 0; i < this.list.size(); ++i) {
-			this.list.get(i).write(dataoutput);
+		for (NBTBase nbtBase : this.list) {
+			nbtBase.write(dataoutput);
 		}
 
 	}
@@ -47,7 +47,7 @@ public class NBTTagList extends NBTBase {
 		} else {
 			this.type = datainput.readByte();
 			int j = datainput.readInt();
-			nbtreadlimiter.a(j * 8); // CraftBukkit
+			nbtreadlimiter.a(j * 8L); // CraftBukkit
 
 			if (this.type == 0 && j > 0) {
 				throw new RuntimeException("Missing type on ListTag");
@@ -178,7 +178,7 @@ public class NBTTagList extends NBTBase {
 	}
 
 	public NBTBase g(int i) {
-		return i >= 0 && i < this.list.size() ? (NBTBase) this.list.get(i) : new NBTTagEnd();
+		return i >= 0 && i < this.list.size() ? this.list.get(i) : new NBTTagEnd();
 	}
 
 	public int size() {
@@ -190,10 +190,8 @@ public class NBTTagList extends NBTBase {
 		NBTTagList nbttaglist = new NBTTagList();
 
 		nbttaglist.type = this.type;
-		Iterator iterator = this.list.iterator();
 
-		while (iterator.hasNext()) {
-			NBTBase nbtbase = (NBTBase) iterator.next();
+		for (NBTBase nbtbase : this.list) {
 			NBTBase nbtbase1 = nbtbase.clone();
 
 			nbttaglist.list.add(nbtbase1);

@@ -1,6 +1,7 @@
 package org.bukkit.craftbukkit.inventory;
 
 import java.util.Map;
+import java.util.Objects;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
@@ -59,12 +60,10 @@ class CraftMetaMap extends CraftMetaItem implements MapMeta {
 
 	@Override
 	boolean applicableTo(Material type) {
-		switch (type) {
-		case MAP:
+		if (Objects.requireNonNull(type) == Material.MAP) {
 			return true;
-		default:
-			return false;
 		}
+		return false;
 	}
 
 	@Override

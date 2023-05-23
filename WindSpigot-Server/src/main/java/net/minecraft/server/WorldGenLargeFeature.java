@@ -11,11 +11,11 @@ import com.google.common.collect.Lists;
 
 public class WorldGenLargeFeature extends StructureGenerator {
 
-	private static final List<BiomeBase> d = Arrays.asList(new BiomeBase[] { BiomeBase.DESERT, BiomeBase.DESERT_HILLS,
-			BiomeBase.JUNGLE, BiomeBase.JUNGLE_HILLS, BiomeBase.SWAMPLAND });
-	private List<BiomeBase.BiomeMeta> f;
+	private static final List<BiomeBase> d = Arrays.asList(BiomeBase.DESERT, BiomeBase.DESERT_HILLS,
+			BiomeBase.JUNGLE, BiomeBase.JUNGLE_HILLS, BiomeBase.SWAMPLAND);
+	private final List<BiomeBase.BiomeMeta> f;
 	private int g;
-	private int h;
+	private final int h;
 
 	public WorldGenLargeFeature() {
 		this.f = Lists.newArrayList();
@@ -26,12 +26,11 @@ public class WorldGenLargeFeature extends StructureGenerator {
 
 	public WorldGenLargeFeature(Map<String, String> map) {
 		this();
-		Iterator iterator = map.entrySet().iterator();
 
-		while (iterator.hasNext()) {
-			Entry entry = (Entry) iterator.next();
+		for (Entry<String, String> stringStringEntry : map.entrySet()) {
+			Entry entry = (Entry) stringStringEntry;
 
-			if ("distance".equals((String) entry.getKey())) {
+			if ("distance".equals(entry.getKey())) {
 				this.g = MathHelper.a((String) entry.getValue(), this.g, this.h + 1);
 			}
 		}
@@ -71,11 +70,7 @@ public class WorldGenLargeFeature extends StructureGenerator {
 				return false;
 			}
 
-			Iterator iterator = WorldGenLargeFeature.d.iterator();
-
-			while (iterator.hasNext()) {
-				BiomeBase biomebase1 = (BiomeBase) iterator.next();
-
+			for (BiomeBase biomebase1 : WorldGenLargeFeature.d) {
 				if (biomebase == biomebase1) {
 					return true;
 				}
@@ -93,7 +88,7 @@ public class WorldGenLargeFeature extends StructureGenerator {
 	public boolean a(BlockPosition blockposition) {
 		StructureStart structurestart = this.c(blockposition);
 
-		if (structurestart != null && structurestart instanceof WorldGenLargeFeature.WorldGenLargeFeatureStart
+		if (structurestart instanceof WorldGenLargeFeatureStart
 				&& !structurestart.a.isEmpty()) {
 			StructurePiece structurepiece = structurestart.a.getFirst();
 

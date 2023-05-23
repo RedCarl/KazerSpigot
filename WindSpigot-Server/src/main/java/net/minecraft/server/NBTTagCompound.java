@@ -24,10 +24,8 @@ public class NBTTagCompound extends NBTBase {
 
 	@Override
 	void write(DataOutput var1) throws IOException {
-		Iterator var2 = this.map.keySet().iterator();
 
-		while (var2.hasNext()) {
-			String var3 = (String) var2.next();
+		for (String var3 : this.map.keySet()) {
 			NBTBase var4 = this.map.get(var3);
 			a(var3, var4, var1);
 		}
@@ -46,7 +44,7 @@ public class NBTTagCompound extends NBTBase {
 			byte var4;
 			while ((var4 = a(var1, var3)) != 0) {
 				String var5 = b(var1, var3);
-				var3.a(224 + 16 * var5.length());
+				var3.a(224 + 16L * var5.length());
 				NBTBase var6 = a(var4, var5, var1, var2 + 1, var3);
 				if (this.map.put(var5, var6) != null) {
 					var3.a(288L);
@@ -242,7 +240,7 @@ public class NBTTagCompound extends NBTBase {
 		StringBuilder var1 = new StringBuilder("{");
 
 		Entry var3;
-		for (Iterator var2 = this.map.entrySet().iterator(); var2.hasNext(); var1.append((String) var3.getKey())
+		for (Iterator<Entry<String, NBTBase>> var2 = this.map.entrySet().iterator(); var2.hasNext(); var1.append((String) var3.getKey())
 				.append(':').append(var3.getValue())) {
 			var3 = (Entry) var2.next();
 			if (var1.length() != 1) {
@@ -339,10 +337,8 @@ public class NBTTagCompound extends NBTBase {
 	}
 
 	public void a(NBTTagCompound var1) {
-		Iterator var2 = var1.map.keySet().iterator();
 
-		while (var2.hasNext()) {
-			String var3 = (String) var2.next();
+		for (String var3 : var1.map.keySet()) {
 			NBTBase var4 = var1.map.get(var3);
 			if (var4.getTypeId() == 10) {
 				if (this.hasKeyOfType(var3, 10)) {

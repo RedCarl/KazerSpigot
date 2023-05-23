@@ -1,6 +1,7 @@
 package org.bukkit.craftbukkit.inventory;
 
 import java.util.Map;
+import java.util.Objects;
 
 // PaperSpigot start
 // PaperSpigot end
@@ -105,12 +106,10 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
 
 	@Override
 	boolean applicableTo(Material type) {
-		switch (type) {
-		case SKULL_ITEM:
+		if (Objects.requireNonNull(type) == Material.SKULL_ITEM) {
 			return true;
-		default:
-			return false;
 		}
+		return false;
 	}
 
 	@Override

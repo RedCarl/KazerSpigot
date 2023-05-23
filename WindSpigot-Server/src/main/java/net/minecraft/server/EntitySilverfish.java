@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class EntitySilverfish extends EntityMonster {
 
-	private EntitySilverfish.PathfinderGoalSilverfishWakeOthers a;
+	private final EntitySilverfish.PathfinderGoalSilverfishWakeOthers a;
 
 	public EntitySilverfish(World world) {
 		super(world);
@@ -13,7 +13,7 @@ public class EntitySilverfish extends EntityMonster {
 		this.goalSelector.a(3, this.a = new EntitySilverfish.PathfinderGoalSilverfishWakeOthers(this));
 		this.goalSelector.a(4, new PathfinderGoalMeleeAttack(this, EntityHuman.class, 1.0D, false));
 		this.goalSelector.a(5, new EntitySilverfish.PathfinderGoalSilverfishHideInBlock(this));
-		this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, true, new Class[0]));
+		this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, true));
 		this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget(this, EntityHuman.class, true));
 	}
 
@@ -150,7 +150,7 @@ public class EntitySilverfish extends EntityMonster {
 
 		@Override
 		public boolean b() {
-			return this.c ? false : super.b();
+			return !this.c && super.b();
 		}
 
 		@Override
@@ -185,7 +185,7 @@ public class EntitySilverfish extends EntityMonster {
 
 	static class PathfinderGoalSilverfishWakeOthers extends PathfinderGoal {
 
-		private EntitySilverfish silverfish;
+		private final EntitySilverfish silverfish;
 		private int b;
 
 		public PathfinderGoalSilverfishWakeOthers(EntitySilverfish entitysilverfish) {
@@ -212,9 +212,9 @@ public class EntitySilverfish extends EntityMonster {
 				Random random = this.silverfish.bc();
 				BlockPosition blockposition = new BlockPosition(this.silverfish);
 
-				for (int i = 0; i <= 5 && i >= -5; i = i <= 0 ? 1 - i : 0 - i) {
-					for (int j = 0; j <= 10 && j >= -10; j = j <= 0 ? 1 - j : 0 - j) {
-						for (int k = 0; k <= 10 && k >= -10; k = k <= 0 ? 1 - k : 0 - k) {
+				for (int i = 0; i <= 5 && i >= -5; i = i <= 0 ? 1 - i : -i) {
+					for (int j = 0; j <= 10 && j >= -10; j = j <= 0 ? 1 - j : -j) {
+						for (int k = 0; k <= 10 && k >= -10; k = k <= 0 ? 1 - k : -k) {
 							BlockPosition blockposition1 = blockposition.a(j, i, k);
 							IBlockData iblockdata = world.getType(blockposition1);
 

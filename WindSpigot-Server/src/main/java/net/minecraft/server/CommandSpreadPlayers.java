@@ -35,7 +35,7 @@ public class CommandSpreadPlayers extends CommandAbstract {
 	@Override
 	public void execute(ICommandListener icommandlistener, String[] astring) throws CommandException {
 		if (astring.length < 6) {
-			throw new ExceptionUsage("commands.spreadplayers.usage", new Object[0]);
+			throw new ExceptionUsage("commands.spreadplayers.usage");
 		} else {
 			byte b0 = 0;
 			BlockPosition blockposition = icommandlistener.getChunkCoordinates();
@@ -52,7 +52,7 @@ public class CommandSpreadPlayers extends CommandAbstract {
 				String s = astring[i++];
 
 				if (PlayerSelector.isPattern(s)) {
-					List list = PlayerSelector.getPlayers(icommandlistener, s, Entity.class);
+					List<Entity> list = PlayerSelector.getPlayers(icommandlistener, s, Entity.class);
 
 					if (list.size() == 0) {
 						throw new ExceptionEntityNotFound();
@@ -76,8 +76,8 @@ public class CommandSpreadPlayers extends CommandAbstract {
 			} else {
 				icommandlistener
 						.sendMessage(new ChatMessage("commands.spreadplayers.spreading." + (flag ? "teams" : "players"),
-								new Object[] { Integer.valueOf(arraylist.size()), Double.valueOf(d4),
-										Double.valueOf(d1), Double.valueOf(d2), Double.valueOf(d3) }));
+								arraylist.size(), d4,
+								d1, d2, d3));
 				this.a(icommandlistener, arraylist, new CommandSpreadPlayers.Location2D(d1, d2), d3, d4,
 						((Entity) arraylist.get(0)).world, flag);
 			}
@@ -99,27 +99,24 @@ public class CommandSpreadPlayers extends CommandAbstract {
 		double d6 = this.a(list, world, acommandspreadplayers_location2d, flag);
 
 		a(icommandlistener, this, "commands.spreadplayers.success." + (flag ? "teams" : "players"),
-				new Object[] { Integer.valueOf(acommandspreadplayers_location2d.length),
-						Double.valueOf(commandspreadplayers_location2d.a),
-						Double.valueOf(commandspreadplayers_location2d.b) });
+				acommandspreadplayers_location2d.length,
+				commandspreadplayers_location2d.a,
+				commandspreadplayers_location2d.b);
 		if (acommandspreadplayers_location2d.length > 1) {
 			icommandlistener.sendMessage(new ChatMessage("commands.spreadplayers.info." + (flag ? "teams" : "players"),
-					new Object[] { String.format("%.2f", new Object[] { Double.valueOf(d6) }), Integer.valueOf(i) }));
+					String.format("%.2f", d6), i));
 		}
 
 	}
 
 	private int b(List<Entity> list) {
-		HashSet hashset = Sets.newHashSet();
-		Iterator iterator = list.iterator();
+		HashSet<Object> hashset = Sets.newHashSet();
 
-		while (iterator.hasNext()) {
-			Entity entity = (Entity) iterator.next();
-
+		for (Entity entity : list) {
 			if (entity instanceof EntityHuman) {
 				hashset.add(((EntityHuman) entity).getScoreboardTeam());
 			} else {
-				hashset.add((Object) null);
+				hashset.add(null);
 			}
 		}
 
@@ -199,10 +196,10 @@ public class CommandSpreadPlayers extends CommandAbstract {
 
 		if (i >= 10000) {
 			throw new CommandException("commands.spreadplayers.failure." + (flag ? "teams" : "players"),
-					new Object[] { Integer.valueOf(acommandspreadplayers_location2d.length),
-							Double.valueOf(commandspreadplayers_location2d.a),
-							Double.valueOf(commandspreadplayers_location2d.b),
-							String.format("%.2f", new Object[] { Double.valueOf(d5) }) });
+					acommandspreadplayers_location2d.length,
+					commandspreadplayers_location2d.a,
+					commandspreadplayers_location2d.b,
+					String.format("%.2f", d5));
 		} else {
 			return i;
 		}
@@ -212,11 +209,10 @@ public class CommandSpreadPlayers extends CommandAbstract {
 			boolean flag) {
 		double d0 = 0.0D;
 		int i = 0;
-		HashMap hashmap = Maps.newHashMap();
+		HashMap<Object, Object> hashmap = Maps.newHashMap();
 
-		for (int j = 0; j < list.size(); ++j) {
-			Entity entity = list.get(j);
-			CommandSpreadPlayers.Location2D commandspreadplayers_location2d;
+		for (Entity entity : list) {
+			Location2D commandspreadplayers_location2d;
 
 			if (flag) {
 				ScoreboardTeamBase scoreboardteambase = entity instanceof EntityHuman
@@ -227,7 +223,7 @@ public class CommandSpreadPlayers extends CommandAbstract {
 					hashmap.put(scoreboardteambase, acommandspreadplayers_location2d[i++]);
 				}
 
-				commandspreadplayers_location2d = (CommandSpreadPlayers.Location2D) hashmap.get(scoreboardteambase);
+				commandspreadplayers_location2d = (Location2D) hashmap.get(scoreboardteambase);
 			} else {
 				commandspreadplayers_location2d = acommandspreadplayers_location2d[i++];
 			}
@@ -237,9 +233,9 @@ public class CommandSpreadPlayers extends CommandAbstract {
 					MathHelper.floor(commandspreadplayers_location2d.b) + 0.5D);
 			double d1 = Double.MAX_VALUE;
 
-			for (int k = 0; k < acommandspreadplayers_location2d.length; ++k) {
-				if (commandspreadplayers_location2d != acommandspreadplayers_location2d[k]) {
-					double d2 = commandspreadplayers_location2d.a(acommandspreadplayers_location2d[k]);
+			for (Location2D location2D : acommandspreadplayers_location2d) {
+				if (commandspreadplayers_location2d != location2D) {
+					double d2 = commandspreadplayers_location2d.a(location2D);
 
 					d1 = Math.min(d2, d1);
 				}

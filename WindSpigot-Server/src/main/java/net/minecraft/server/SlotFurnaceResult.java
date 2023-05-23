@@ -7,7 +7,7 @@ import org.bukkit.event.inventory.FurnaceExtractEvent;
 
 public class SlotFurnaceResult extends Slot {
 
-	private EntityHuman a;
+	private final EntityHuman a;
 	private int b;
 
 	public SlotFurnaceResult(EntityHuman entityhuman, IInventory iinventory, int i, int j, int k) {

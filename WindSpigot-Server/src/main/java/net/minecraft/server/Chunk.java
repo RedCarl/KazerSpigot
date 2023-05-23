@@ -17,7 +17,6 @@ import org.bukkit.Bukkit; // CraftBukkit
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists; // CraftBukkit
-import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
 
 public class Chunk {
@@ -49,7 +48,7 @@ public class Chunk {
 	private int t;
 	private long u;
 	private int v;
-	private ConcurrentLinkedQueue<BlockPosition> w;
+	private final ConcurrentLinkedQueue<BlockPosition> w;
 	protected gnu.trove.map.hash.TObjectIntHashMap<Class> entityCount = new gnu.trove.map.hash.TObjectIntHashMap<>(); // Spigot
 	// PaperSpigot start - Asynchronous light updates
 	public AtomicInteger pendingLightUpdates = new AtomicInteger();
@@ -113,9 +112,9 @@ public class Chunk {
 		case 1:
 			final int mask =
 					// x z offset x z offset x z offset
-					(0x1 << (1 * 5 + 1 + 12)) | (0x1 << (0 * 5 + 1 + 12)) | (0x1 << (-1 * 5 + 1 + 12))
-							| (0x1 << (1 * 5 + 0 + 12)) | (0x1 << (0 * 5 + 0 + 12)) | (0x1 << (-1 * 5 + 0 + 12))
-							| (0x1 << (1 * 5 + -1 + 12)) | (0x1 << (0 * 5 + -1 + 12)) | (0x1 << (-1 * 5 + -1 + 12));
+					(0x1 << (5 + 1 + 12)) | (0x1 << (1 + 12)) | (0x1 << (-1 * 5 + 1 + 12))
+							| (0x1 << (5 + 12)) | (0x1 << (12)) | (0x1 << (-1 * 5 + 12))
+							| (0x1 << (5 - 1 + 12)) | (0x1 << (-1 + 12)) | (0x1 << (-1 * 5 - 1 + 12));
 			return (this.neighbors & mask) == mask;
 		default:
 			throw new UnsupportedOperationException(String.valueOf(radius));
@@ -432,11 +431,8 @@ public class Chunk {
 			}
 
 			if (!this.world.worldProvider.o()) {
-				Iterator iterator = EnumDirection.EnumDirectionLimit.HORIZONTAL.iterator();
 
-				while (iterator.hasNext()) {
-					EnumDirection enumdirection = (EnumDirection) iterator.next();
-
+				for (EnumDirection enumdirection : EnumDirection.EnumDirectionLimit.HORIZONTAL) {
 					this.a(j1 + enumdirection.getAdjacentX(), k1 + enumdirection.getAdjacentZ(), i2, j2);
 				}
 
@@ -1001,7 +997,7 @@ public class Chunk {
 		for (TileEntity tileentity : this.tileEntities.values()) {
 			// Spigot Start
 			if (tileentity instanceof IInventory) {
-				for (org.bukkit.entity.HumanEntity h : Lists.<org.bukkit.entity.HumanEntity>newArrayList(
+				for (org.bukkit.entity.HumanEntity h : Lists.newArrayList(
 						((IInventory) tileentity).getViewers())) {
 					if (h instanceof org.bukkit.craftbukkit.entity.CraftHumanEntity) {
 						((org.bukkit.craftbukkit.entity.CraftHumanEntity) h).getHandle().closeInventory();
@@ -1019,7 +1015,7 @@ public class Chunk {
 				Entity entity = iter.next();
 				// Spigot Start
 				if (entity instanceof IInventory) {
-					for (org.bukkit.entity.HumanEntity h : Lists.<org.bukkit.entity.HumanEntity>newArrayList(
+					for (org.bukkit.entity.HumanEntity h : Lists.newArrayList(
 							((IInventory) entity).getViewers())) {
 						if (h instanceof org.bukkit.craftbukkit.entity.CraftHumanEntity) {
 							((org.bukkit.craftbukkit.entity.CraftHumanEntity) h).getHandle().closeInventory();
@@ -1142,8 +1138,8 @@ public class Chunk {
 						Entity[] entitybody = entityCheck.aB();
 
 						if (entitybody != null) {
-							for (int l = 0; l < entitybody.length; ++l) {
-								entityCheck = entitybody[l];
+							for (Entity value : entitybody) {
+								entityCheck = value;
 								if (entityCheck != entity && entityCheck.getBoundingBox().b(axisalignedbb)
 										&& (predicate == null || predicate.apply(entityCheck))) {
 									list.add(entityCheck);
@@ -1180,14 +1176,12 @@ public class Chunk {
 				continue; // PaperSpigot - Don't check a chunk if it doesn't have the type we are looking
 			}
 			// for
-			Iterator iterator = this.entitySlices[k].iterator(); // Spigot
+			// Spigot
 
-			while (iterator.hasNext()) {
-				Entity entity = (Entity) iterator.next();
-
+			for (Entity entity : this.entitySlices[k]) {
 				if (oclass.isInstance(entity) && entity.getBoundingBox().b(axisalignedbb)
 						&& (predicate == null || predicate.apply((T) entity))) { // CraftBukkit - fix decompile error //
-																					// Spigot
+					// Spigot
 					list.add((T) entity); // Fix decompile error
 				}
 			}
@@ -1200,7 +1194,7 @@ public class Chunk {
 			if (this.r && this.world.getTime() != this.lastSaved || this.q) {
 				return true;
 			}
-		} else if (this.r && this.world.getTime() >= this.lastSaved + MinecraftServer.getServer().autosavePeriod * 4) { // Spigot
+		} else if (this.r && this.world.getTime() >= this.lastSaved + MinecraftServer.getServer().autosavePeriod * 4L) { // Spigot
 																														// -
 																														// Only
 																														// save
@@ -1220,8 +1214,8 @@ public class Chunk {
 	}
 
 	public Random a(long i) {
-		return new FastRandom(this.world.getSeed() + this.locX * this.locX * 4987142 + this.locX * 5947611
-				+ this.locZ * this.locZ * 4392871L + this.locZ * 389711 ^ i);
+		return new FastRandom(this.world.getSeed() + (long) this.locX * this.locX * 4987142 + this.locX * 5947611L
+				+ this.locZ * this.locZ * 4392871L + this.locZ * 389711L ^ i);
 	}
 
 	public boolean isEmpty() {
@@ -1401,9 +1395,7 @@ public class Chunk {
 			Chunk.c.warn("Could not set level chunk sections, array length is " + achunksection.length + " instead of "
 					+ this.sections.length);
 		} else {
-			for (int i = 0; i < this.sections.length; ++i) {
-				this.sections[i] = achunksection[i];
-			}
+			System.arraycopy(achunksection, 0, this.sections, 0, this.sections.length);
 
 		}
 	}
@@ -1450,9 +1442,7 @@ public class Chunk {
 			Chunk.c.warn("Could not set level chunk biomes, array length is " + abyte.length + " instead of "
 					+ this.e.length);
 		} else {
-			for (int i = 0; i < this.e.length; ++i) {
-				this.e[i] = abyte[i];
-			}
+			System.arraycopy(abyte, 0, this.e, 0, this.e.length);
 
 		}
 	}
@@ -1482,8 +1472,7 @@ public class Chunk {
 					EnumDirection[] aenumdirection = EnumDirection.values();
 					int j1 = aenumdirection.length;
 
-					for (int k1 = 0; k1 < j1; ++k1) {
-						EnumDirection enumdirection = aenumdirection[k1];
+					for (EnumDirection enumdirection : aenumdirection) {
 						BlockPosition blockposition2 = blockposition1.shift(enumdirection);
 
 						if (this.world.getType(blockposition2).getBlock().r() > 0) {
@@ -1532,9 +1521,7 @@ public class Chunk {
 	}
 
 	private void y() {
-		for (int i = 0; i < this.g.length; ++i) {
-			this.g[i] = true;
-		}
+		Arrays.fill(this.g, true);
 
 		this.h(false);
 	}
@@ -1617,9 +1604,7 @@ public class Chunk {
 			Chunk.c.warn("Could not set level chunk heightmap, array length is " + aint.length + " instead of "
 					+ this.heightMap.length);
 		} else {
-			for (int i = 0; i < this.heightMap.length; ++i) {
-				this.heightMap[i] = aint[i];
-			}
+			System.arraycopy(aint, 0, this.heightMap, 0, this.heightMap.length);
 
 		}
 	}
@@ -1672,11 +1657,11 @@ public class Chunk {
 		this.u = i;
 	}
 
-	public static enum EnumTileEntityState {
+	public enum EnumTileEntityState {
 
 		IMMEDIATE, QUEUED, CHECK;
 
-		private EnumTileEntityState() {
+		EnumTileEntityState() {
 		}
 	}
 	

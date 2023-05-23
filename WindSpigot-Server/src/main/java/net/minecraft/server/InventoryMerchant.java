@@ -1,6 +1,7 @@
 package net.minecraft.server;
 
 // CraftBukkit start
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.craftbukkit.entity.CraftHumanEntity;
@@ -11,7 +12,7 @@ import org.bukkit.entity.HumanEntity;
 public class InventoryMerchant implements IInventory {
 
 	private final IMerchant merchant;
-	private ItemStack[] itemsInSlots = new ItemStack[3];
+	private final ItemStack[] itemsInSlots = new ItemStack[3];
 	private final EntityHuman player;
 	private MerchantRecipe recipe;
 	private int e;
@@ -142,7 +143,7 @@ public class InventoryMerchant implements IInventory {
 	@Override
 	public IChatBaseComponent getScoreboardDisplayName() {
 		return this.hasCustomName() ? new ChatComponentText(this.getName())
-				: new ChatMessage(this.getName(), new Object[0]);
+				: new ChatMessage(this.getName());
 	}
 
 	@Override
@@ -184,7 +185,7 @@ public class InventoryMerchant implements IInventory {
 		}
 
 		if (itemstack == null) {
-			this.setItem(2, (ItemStack) null);
+			this.setItem(2, null);
 		} else {
 			MerchantRecipeList merchantrecipelist = this.merchant.getOffers(this.player);
 
@@ -200,10 +201,10 @@ public class InventoryMerchant implements IInventory {
 						this.recipe = merchantrecipe;
 						this.setItem(2, merchantrecipe.getBuyItem3().cloneItemStack());
 					} else {
-						this.setItem(2, (ItemStack) null);
+						this.setItem(2, null);
 					}
 				} else {
-					this.setItem(2, (ItemStack) null);
+					this.setItem(2, null);
 				}
 			}
 		}
@@ -236,9 +237,7 @@ public class InventoryMerchant implements IInventory {
 
 	@Override
 	public void l() {
-		for (int i = 0; i < this.itemsInSlots.length; ++i) {
-			this.itemsInSlots[i] = null;
-		}
+		Arrays.fill(this.itemsInSlots, null);
 
 	}
 }

@@ -56,7 +56,7 @@ public class EntityEnderPearl extends EntityProjectile {
 							&& (block == Blocks.FENCE_GATE || block == Blocks.SPRUCE_FENCE_GATE
 									|| block == Blocks.BIRCH_FENCE_GATE || block == Blocks.JUNGLE_FENCE_GATE
 									|| block == Blocks.DARK_OAK_FENCE_GATE || block == Blocks.ACACIA_FENCE_GATE)
-							&& blockData.get(BlockFenceGate.OPEN).booleanValue()
+							&& blockData.get(BlockFenceGate.OPEN)
 					|| WindSpigotConfig.pearlPassthroughSlab && (block == Blocks.STONE_SLAB
 							|| block == Blocks.WOODEN_SLAB || block == Blocks.STONE_SLAB2);
 
@@ -126,7 +126,7 @@ public class EntityEnderPearl extends EntityProjectile {
 						}
 
 						if (entityliving.au()) {
-							entityliving.mount((Entity) null);
+							entityliving.mount(null);
 						}
 
 						entityplayer.playerConnection.teleport(teleEvent.getTo());
@@ -152,7 +152,7 @@ public class EntityEnderPearl extends EntityProjectile {
 	public void t_() {
 		EntityLiving entityliving = this.getShooter();
 
-		if (entityliving != null && entityliving instanceof EntityHuman && !entityliving.isAlive()) {
+		if (entityliving instanceof EntityHuman && !entityliving.isAlive()) {
 			this.die();
 		} else {
 			super.t_();

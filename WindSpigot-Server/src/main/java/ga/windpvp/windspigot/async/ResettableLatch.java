@@ -4,7 +4,7 @@ import javafixes.concurrency.ReusableCountLatch;
 
 public class ResettableLatch extends ReusableCountLatch {
 
-	private int initValue;
+	private final int initValue;
 
 	public ResettableLatch() {
 		this(0);

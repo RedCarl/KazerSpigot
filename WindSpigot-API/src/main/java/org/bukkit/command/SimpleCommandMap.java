@@ -247,7 +247,7 @@ public class SimpleCommandMap implements CommandMap {
 			return null;
 		}
 
-		String argLine = cmdLine.substring(spaceIndex + 1, cmdLine.length());
+		String argLine = cmdLine.substring(spaceIndex + 1);
 		String[] args = PATTERN_ON_SPACE.split(argLine, -1);
 
 		try {
@@ -302,7 +302,7 @@ public class SimpleCommandMap implements CommandMap {
 			// We register these as commands so they have absolute priority.
 			if (targets.size() > 0) {
 				knownCommands.put(alias.toLowerCase(),
-						new FormattedCommandAlias(alias.toLowerCase(), targets.toArray(new String[targets.size()])));
+						new FormattedCommandAlias(alias.toLowerCase(), targets.toArray(new String[0])));
 			} else {
 				knownCommands.remove(alias.toLowerCase());
 			}

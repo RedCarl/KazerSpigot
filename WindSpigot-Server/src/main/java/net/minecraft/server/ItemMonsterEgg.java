@@ -9,7 +9,7 @@ public class ItemMonsterEgg extends Item {
 
 	@Override
 	public String a(ItemStack itemstack) {
-		StringBuilder s = new StringBuilder(("" + LocaleI18n.get(this.getName() + ".name")).trim());
+		StringBuilder s = new StringBuilder((LocaleI18n.get(this.getName() + ".name")).trim());
 		String s1 = EntityTypes.b(itemstack.getData());
 
 		if (s1 != null) {
@@ -97,7 +97,7 @@ public class ItemMonsterEgg extends Item {
 
 						if (entity != null) {
 							if (entity instanceof EntityLiving && itemstack.hasName()) {
-								((EntityInsentient) entity).setCustomName(itemstack.getName());
+								entity.setCustomName(itemstack.getName());
 							}
 
 							if (!entityhuman.abilities.canInstantlyBuild) {
@@ -122,7 +122,7 @@ public class ItemMonsterEgg extends Item {
 	public static Entity spawnCreature(World world, int i, double d0, double d1, double d2,
 			org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason spawnReason) {
 		// CraftBukkit end
-		if (!EntityTypes.eggInfo.containsKey(Integer.valueOf(i))) {
+		if (!EntityTypes.eggInfo.containsKey(i)) {
 			return null;
 		} else {
 			Entity entity = null;
@@ -135,7 +135,7 @@ public class ItemMonsterEgg extends Item {
 					entity.setPositionRotation(d0, d1, d2, MathHelper.g(world.random.nextFloat() * 360.0F), 0.0F);
 					entityinsentient.aK = entityinsentient.yaw;
 					entityinsentient.aI = entityinsentient.yaw;
-					entityinsentient.prepare(world.E(new BlockPosition(entityinsentient)), (GroupDataEntity) null);
+					entityinsentient.prepare(world.E(new BlockPosition(entityinsentient)), null);
 					// CraftBukkit start - don't return an entity when CreatureSpawnEvent is
 					// canceled
 					if (!world.addEntity(entity, spawnReason)) {

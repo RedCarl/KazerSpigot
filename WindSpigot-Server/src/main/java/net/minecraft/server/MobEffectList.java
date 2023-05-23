@@ -192,13 +192,13 @@ public class MobEffectList {
 
 		if (this.id == MobEffectList.REGENERATION.id) {
 			k = 50 >> j;
-			return k > 0 ? i % k == 0 : true;
+			return k == 0 || i % k == 0;
 		} else if (this.id == MobEffectList.POISON.id) {
 			k = 25 >> j;
-			return k > 0 ? i % k == 0 : true;
+			return k == 0 || i % k == 0;
 		} else if (this.id == MobEffectList.WITHER.id) {
 			k = 40 >> j;
-			return k > 0 ? i % k == 0 : true;
+			return k == 0 || i % k == 0;
 		} else {
 			return this.id == MobEffectList.HUNGER.id;
 		}
@@ -238,10 +238,9 @@ public class MobEffectList {
 	}
 
 	public void a(EntityLiving entityliving, AttributeMapBase attributemapbase, int i) {
-		Iterator iterator = this.J.entrySet().iterator();
 
-		while (iterator.hasNext()) {
-			Entry entry = (Entry) iterator.next();
+		for (Entry<IAttribute, AttributeModifier> iAttributeAttributeModifierEntry : this.J.entrySet()) {
+			Entry entry = (Entry) iAttributeAttributeModifierEntry;
 			AttributeInstance attributeinstance = attributemapbase.a((IAttribute) entry.getKey());
 
 			if (attributeinstance != null) {
@@ -252,10 +251,9 @@ public class MobEffectList {
 	}
 
 	public void b(EntityLiving entityliving, AttributeMapBase attributemapbase, int i) {
-		Iterator iterator = this.J.entrySet().iterator();
 
-		while (iterator.hasNext()) {
-			Entry entry = (Entry) iterator.next();
+		for (Entry<IAttribute, AttributeModifier> iAttributeAttributeModifierEntry : this.J.entrySet()) {
+			Entry entry = (Entry) iAttributeAttributeModifierEntry;
 			AttributeInstance attributeinstance = attributemapbase.a((IAttribute) entry.getKey());
 
 			if (attributeinstance != null) {

@@ -14,7 +14,7 @@ public class EntitySpider extends EntityMonster {
 		this.goalSelector.a(5, new PathfinderGoalRandomStroll(this, 0.8D));
 		this.goalSelector.a(6, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 8.0F));
 		this.goalSelector.a(6, new PathfinderGoalRandomLookaround(this));
-		this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, false, new Class[0]));
+		this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, false));
 		this.targetSelector.a(2, new EntitySpider.PathfinderGoalSpiderNearestAttackableTarget(this, EntityHuman.class));
 		this.targetSelector.a(3,
 				new EntitySpider.PathfinderGoalSpiderNearestAttackableTarget(this, EntityIronGolem.class));
@@ -33,7 +33,7 @@ public class EntitySpider extends EntityMonster {
 	@Override
 	protected void h() {
 		super.h();
-		this.datawatcher.a(16, new Byte((byte) 0));
+		this.datawatcher.a(16, (byte) 0);
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class EntitySpider extends EntityMonster {
 
 	@Override
 	public boolean d(MobEffect mobeffect) {
-		return mobeffect.getEffectId() == MobEffectList.POISON.id ? false : super.d(mobeffect);
+		return mobeffect.getEffectId() != MobEffectList.POISON.id && super.d(mobeffect);
 	}
 
 	public boolean n() {
@@ -118,7 +118,7 @@ public class EntitySpider extends EntityMonster {
 			b0 &= -2;
 		}
 
-		this.datawatcher.watch(16, Byte.valueOf(b0));
+		this.datawatcher.watch(16, b0);
 	}
 
 	@Override
@@ -129,7 +129,7 @@ public class EntitySpider extends EntityMonster {
 			EntitySkeleton entityskeleton = new EntitySkeleton(this.world);
 
 			entityskeleton.setPositionRotation(this.locX, this.locY, this.locZ, this.yaw, 0.0F);
-			entityskeleton.prepare(difficultydamagescaler, (GroupDataEntity) null);
+			entityskeleton.prepare(difficultydamagescaler, null);
 			this.world.addEntity(entityskeleton, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.JOCKEY); // CraftBukkit
 																													// -
 																													// add
@@ -172,7 +172,7 @@ public class EntitySpider extends EntityMonster {
 		public boolean a() {
 			float f = this.e.c(1.0F);
 
-			return f >= 0.5F ? false : super.a();
+			return !(f >= 0.5F) && super.a();
 		}
 	}
 
@@ -187,7 +187,7 @@ public class EntitySpider extends EntityMonster {
 			float f = this.b.c(1.0F);
 
 			if (f >= 0.5F && this.b.bc().nextInt(100) == 0) {
-				this.b.setGoalTarget((EntityLiving) null);
+				this.b.setGoalTarget(null);
 				return false;
 			} else {
 				return super.b();
@@ -212,9 +212,9 @@ public class EntitySpider extends EntityMonster {
 
 			if (i <= 1) {
 				this.a = MobEffectList.FASTER_MOVEMENT.id;
-			} else if (i <= 2) {
+			} else if (i == 2) {
 				this.a = MobEffectList.INCREASE_DAMAGE.id;
-			} else if (i <= 3) {
+			} else if (i == 3) {
 				this.a = MobEffectList.REGENERATION.id;
 			} else if (i <= 4) {
 				this.a = MobEffectList.INVISIBILITY.id;

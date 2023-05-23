@@ -3,12 +3,12 @@ package net.minecraft.server;
 import java.util.Random;
 
 public class PathfinderGoalFleeSun extends PathfinderGoal {
-	private EntityCreature a;
+	private final EntityCreature a;
 	private double b;
 	private double c;
 	private double d;
-	private double e;
-	private World f;
+	private final double e;
+	private final World f;
 
 	public PathfinderGoalFleeSun(EntityCreature var1, double var2) {
 		this.a = var1;
@@ -52,7 +52,7 @@ public class PathfinderGoalFleeSun extends PathfinderGoal {
 		for (int var3 = 0; var3 < 10; ++var3) {
 			BlockPosition var4 = var2.a(var1.nextInt(20) - 10, var1.nextInt(6) - 3, var1.nextInt(20) - 10);
 			if (!this.f.i(var4) && this.a.a(var4) < 0.0F) {
-				return new Vec3D((double) var4.getX(), (double) var4.getY(), (double) var4.getZ());
+				return new Vec3D(var4.getX(), var4.getY(), var4.getZ());
 			}
 		}
 

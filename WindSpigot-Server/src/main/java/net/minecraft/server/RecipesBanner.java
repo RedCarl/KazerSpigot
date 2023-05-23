@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import java.util.Collections;
+
 public class RecipesBanner {
 
 	public RecipesBanner() {
@@ -9,17 +11,15 @@ public class RecipesBanner {
 		EnumColor[] aenumcolor = EnumColor.values();
 		int i = aenumcolor.length;
 
-		for (int j = 0; j < i; ++j) {
-			EnumColor enumcolor = aenumcolor[j];
-
+		for (EnumColor enumcolor : aenumcolor) {
 			craftingmanager.registerShapedRecipe(new ItemStack(Items.BANNER, 1, enumcolor.getInvColorIndex()),
-					new Object[] { "###", "###", " | ", Character.valueOf('#'),
-							new ItemStack(Blocks.WOOL, 1, enumcolor.getColorIndex()), Character.valueOf('|'),
-							Items.STICK });
+					"###", "###", " | ", '#',
+					new ItemStack(Blocks.WOOL, 1, enumcolor.getColorIndex()), '|',
+					Items.STICK);
 		}
 
-		craftingmanager.a(new RecipesBanner.DuplicateRecipe((RecipesBanner.SyntheticClass_1) null));
-		craftingmanager.a(new RecipesBanner.AddRecipe((RecipesBanner.SyntheticClass_1) null));
+		craftingmanager.a(new RecipesBanner.DuplicateRecipe(null));
+		craftingmanager.a(new RecipesBanner.AddRecipe(null));
 	}
 
 	static class SyntheticClass_1 {
@@ -29,7 +29,7 @@ public class RecipesBanner {
 
 		// CraftBukkit start - Delegate to new parent class with bogus info
 		private AddRecipe() {
-			super(new ItemStack(Items.BANNER, 0, 0), java.util.Arrays.asList(new ItemStack(Items.BANNER)));
+			super(new ItemStack(Items.BANNER, 0, 0), Collections.singletonList(new ItemStack(Items.BANNER)));
 		}
 		// CraftBukkit end
 
@@ -141,9 +141,7 @@ public class RecipesBanner {
 					.values();
 			int i = atileentitybanner_enumbannerpatterntype.length;
 
-			for (int j = 0; j < i; ++j) {
-				TileEntityBanner.EnumBannerPatternType tileentitybanner_enumbannerpatterntype = atileentitybanner_enumbannerpatterntype[j];
-
+			for (TileEntityBanner.EnumBannerPatternType tileentitybanner_enumbannerpatterntype : atileentitybanner_enumbannerpatterntype) {
 				if (tileentitybanner_enumbannerpatterntype.d()) {
 					boolean flag = true;
 					int k;
@@ -231,7 +229,7 @@ public class RecipesBanner {
 
 		// CraftBukkit start - Delegate to new parent class with bogus info
 		private DuplicateRecipe() {
-			super(new ItemStack(Items.BANNER, 0, 0), java.util.Arrays.asList(new ItemStack(Items.DYE, 0, 5)));
+			super(new ItemStack(Items.BANNER, 0, 0), Collections.singletonList(new ItemStack(Items.DYE, 0, 5)));
 		}
 		// CraftBukkit end
 

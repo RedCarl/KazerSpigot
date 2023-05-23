@@ -1,11 +1,9 @@
 package net.minecraft.server;
 
-import com.google.common.base.Predicate;
-
 public class EntityOcelot extends EntityTameableAnimal {
 
 	private PathfinderGoalAvoidTarget<EntityHuman> bo;
-	private PathfinderGoalTempt bp;
+	private final PathfinderGoalTempt bp;
 	public boolean spawnBonus = true; // Spigot
 
 	public EntityOcelot(World world) {
@@ -23,13 +21,13 @@ public class EntityOcelot extends EntityTameableAnimal {
 		this.goalSelector.a(10, new PathfinderGoalRandomStroll(this, 0.8D));
 		this.goalSelector.a(11, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 10.0F));
 		this.targetSelector.a(1,
-				new PathfinderGoalRandomTargetNonTamed(this, EntityChicken.class, false, (Predicate) null));
+				new PathfinderGoalRandomTargetNonTamed(this, EntityChicken.class, false, null));
 	}
 
 	@Override
 	protected void h() {
 		super.h();
-		this.datawatcher.a(18, Byte.valueOf((byte) 0));
+		this.datawatcher.a(18, (byte) 0);
 	}
 
 	@Override
@@ -140,7 +138,7 @@ public class EntityOcelot extends EntityTameableAnimal {
 			}
 
 			if (itemstack.count <= 0) {
-				entityhuman.inventory.setItem(entityhuman.inventory.itemInHandIndex, (ItemStack) null);
+				entityhuman.inventory.setItem(entityhuman.inventory.itemInHandIndex, null);
 			}
 
 			if (!this.world.isClientSide) {
@@ -193,7 +191,7 @@ public class EntityOcelot extends EntityTameableAnimal {
 		} else {
 			EntityOcelot entityocelot = (EntityOcelot) entityanimal;
 
-			return !entityocelot.isTamed() ? false : this.isInLove() && entityocelot.isInLove();
+			return entityocelot.isTamed() && this.isInLove() && entityocelot.isInLove();
 		}
 	}
 
@@ -202,7 +200,7 @@ public class EntityOcelot extends EntityTameableAnimal {
 	}
 
 	public void setCatType(int i) {
-		this.datawatcher.watch(18, Byte.valueOf((byte) i));
+		this.datawatcher.watch(18, (byte) i);
 	}
 
 	@Override
@@ -222,9 +220,7 @@ public class EntityOcelot extends EntityTameableAnimal {
 
 			Block block = this.world.getType(blockposition.down()).getBlock();
 
-			if (block == Blocks.GRASS || block.getMaterial() == Material.LEAVES) {
-				return true;
-			}
+			return block == Blocks.GRASS || block.getMaterial() == Material.LEAVES;
 		}
 
 		return false;

@@ -23,7 +23,7 @@ public class BlockTNT extends Block {
 	@Override
 	public void doPhysics(World world, BlockPosition blockposition, IBlockData iblockdata, Block block) {
 		if (world.isBlockIndirectlyPowered(blockposition)) {
-			this.postBreak(world, blockposition, iblockdata.set(BlockTNT.EXPLODE, Boolean.valueOf(true)));
+			this.postBreak(world, blockposition, iblockdata.set(BlockTNT.EXPLODE, Boolean.TRUE));
 			world.setAir(blockposition);
 		}
 
@@ -58,7 +58,7 @@ public class BlockTNT extends Block {
 
 	public void a(World world, BlockPosition blockposition, IBlockData iblockdata, EntityLiving entityliving) {
 		if (!world.isClientSide) {
-			if (iblockdata.get(BlockTNT.EXPLODE).booleanValue()) {
+			if (iblockdata.get(BlockTNT.EXPLODE)) {
 				org.bukkit.Location loc = new org.bukkit.Location(world.getWorld(), blockposition.getX(),
 						blockposition.getY(), blockposition.getZ()); // PaperSpigot
 				// PaperSpigot start - Fix cannons
@@ -128,16 +128,16 @@ public class BlockTNT extends Block {
 
 	@Override
 	public IBlockData fromLegacyData(int i) {
-		return this.getBlockData().set(BlockTNT.EXPLODE, Boolean.valueOf((i & 1) > 0));
+		return this.getBlockData().set(BlockTNT.EXPLODE, (i & 1) > 0);
 	}
 
 	@Override
 	public int toLegacyData(IBlockData iblockdata) {
-		return iblockdata.get(BlockTNT.EXPLODE).booleanValue() ? 1 : 0;
+		return iblockdata.get(BlockTNT.EXPLODE) ? 1 : 0;
 	}
 
 	@Override
 	protected BlockStateList getStateList() {
-		return new BlockStateList(this, new IBlockState[] { BlockTNT.EXPLODE });
+		return new BlockStateList(this, BlockTNT.EXPLODE);
 	}
 }

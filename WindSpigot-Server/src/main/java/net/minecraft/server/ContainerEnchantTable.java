@@ -30,14 +30,14 @@ public class ContainerEnchantTable extends Container {
 		}
 	};
 	private World world;
-	private BlockPosition position;
-	private Random k = new FastRandom();
+	private final BlockPosition position;
+	private final Random k = new FastRandom();
 	public int f;
 	public int[] costs = new int[3];
 	public int[] h = new int[] { -1, -1, -1 };
 	// CraftBukkit start
 	private CraftInventoryView bukkitEntity = null;
-	private Player player;
+	private final Player player;
 	// CraftBukkit end
 
 	public ContainerEnchantTable(PlayerInventory playerinventory, World world, BlockPosition blockposition) {
@@ -96,9 +96,7 @@ public class ContainerEnchantTable extends Container {
 	public void b() {
 		super.b();
 
-		for (int i = 0; i < this.listeners.size(); ++i) {
-			ICrafting icrafting = this.listeners.get(i);
-
+		for (ICrafting icrafting : this.listeners) {
 			icrafting.setContainerData(this, 0, this.costs[0]);
 			icrafting.setContainerData(this, 1, this.costs[1]);
 			icrafting.setContainerData(this, 2, this.costs[2]);
@@ -189,7 +187,7 @@ public class ContainerEnchantTable extends Container {
 
 					for (j = 0; j < 3; ++j) {
 						if (this.costs[j] > 0) {
-							List list = this.a(itemstack, j, this.costs[j]);
+							List<WeightedRandomEnchant> list = this.a(itemstack, j, this.costs[j]);
 
 							if (list != null && !list.isEmpty()) {
 								WeightedRandomEnchant weightedrandomenchant = (WeightedRandomEnchant) list
@@ -224,10 +222,10 @@ public class ContainerEnchantTable extends Container {
 				&& (entityhuman.expLevel >= j && entityhuman.expLevel >= this.costs[i]
 						|| entityhuman.abilities.canInstantlyBuild)) {
 			if (!this.world.isClientSide) {
-				List list = this.a(itemstack, i, this.costs[i]);
+				List<WeightedRandomEnchant> list = this.a(itemstack, i, this.costs[i]);
 				// CraftBukkit start - Provide an empty enchantment list
 				if (list == null) {
-					list = new java.util.ArrayList<WeightedRandomEnchant>();
+					list = new java.util.ArrayList<>();
 				}
 				// CraftBukkit end
 				boolean flag = itemstack.getItem() == Items.BOOK;
@@ -285,7 +283,7 @@ public class ContainerEnchantTable extends Container {
 					if (!entityhuman.abilities.canInstantlyBuild) {
 						itemstack1.count -= j;
 						if (itemstack1.count <= 0) {
-							this.enchantSlots.setItem(1, (ItemStack) null);
+							this.enchantSlots.setItem(1, null);
 						}
 					}
 
@@ -304,7 +302,7 @@ public class ContainerEnchantTable extends Container {
 
 	private List<WeightedRandomEnchant> a(ItemStack itemstack, int i, int j) {
 		this.k.setSeed(this.f + i);
-		List list = EnchantmentManager.b(this.k, itemstack, j);
+		List<WeightedRandomEnchant> list = EnchantmentManager.b(this.k, itemstack, j);
 
 		if (itemstack.getItem() == Items.BOOK && list != null && list.size() > 1) {
 			list.remove(this.k.nextInt(list.size()));
@@ -339,9 +337,8 @@ public class ContainerEnchantTable extends Container {
 		if (!this.checkReachable) {
 			return true; // CraftBukkit
 		}
-		return this.world.getType(this.position).getBlock() != Blocks.ENCHANTING_TABLE ? false
-				: entityhuman.e(this.position.getX() + 0.5D, this.position.getY() + 0.5D,
-						this.position.getZ() + 0.5D) <= 64.0D;
+		return this.world.getType(this.position).getBlock() == Blocks.ENCHANTING_TABLE && entityhuman.e(this.position.getX() + 0.5D, this.position.getY() + 0.5D,
+				this.position.getZ() + 0.5D) <= 64.0D;
 	}
 
 	@Override
@@ -385,7 +382,7 @@ public class ContainerEnchantTable extends Container {
 			}
 
 			if (itemstack1.count == 0) {
-				slot.set((ItemStack) null);
+				slot.set(null);
 			} else {
 				slot.f();
 			}

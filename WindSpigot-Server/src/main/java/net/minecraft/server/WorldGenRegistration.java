@@ -22,13 +22,11 @@ public class WorldGenRegistration {
 			try {
 				WorldGenRegistration.SyntheticClass_1.a[EnumDirection.NORTH.ordinal()] = 1;
 			} catch (NoSuchFieldError nosuchfielderror) {
-				;
 			}
 
 			try {
 				WorldGenRegistration.SyntheticClass_1.a[EnumDirection.SOUTH.ordinal()] = 2;
 			} catch (NoSuchFieldError nosuchfielderror1) {
-				;
 			}
 
 		}
@@ -135,7 +133,7 @@ public class WorldGenRegistration {
 						EntityWitch entitywitch = new EntityWitch(world);
 
 						entitywitch.setPositionRotation(i1 + 0.5D, j1, k1 + 0.5D, 0.0F, 0.0F);
-						entitywitch.prepare(world.E(new BlockPosition(i1, j1, k1)), (GroupDataEntity) null);
+						entitywitch.prepare(world.E(new BlockPosition(i1, j1, k1)), null);
 						world.addEntity(entitywitch, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.CHUNK_GEN); // CraftBukkit
 																														// -
 																														// add
@@ -155,7 +153,7 @@ public class WorldGenRegistration {
 		private boolean g;
 		private boolean h;
 		private static final List<StructurePieceTreasure> i = Lists
-				.newArrayList(new StructurePieceTreasure[] { new StructurePieceTreasure(Items.DIAMOND, 0, 1, 3, 3),
+				.newArrayList(new StructurePieceTreasure(Items.DIAMOND, 0, 1, 3, 3),
 						new StructurePieceTreasure(Items.IRON_INGOT, 0, 1, 5, 10),
 						new StructurePieceTreasure(Items.GOLD_INGOT, 0, 2, 7, 15),
 						new StructurePieceTreasure(Items.EMERALD, 0, 1, 3, 2),
@@ -164,11 +162,11 @@ public class WorldGenRegistration {
 						new StructurePieceTreasure(Items.SADDLE, 0, 1, 1, 3),
 						new StructurePieceTreasure(Items.IRON_HORSE_ARMOR, 0, 1, 1, 1),
 						new StructurePieceTreasure(Items.GOLDEN_HORSE_ARMOR, 0, 1, 1, 1),
-						new StructurePieceTreasure(Items.DIAMOND_HORSE_ARMOR, 0, 1, 1, 1) });
+						new StructurePieceTreasure(Items.DIAMOND_HORSE_ARMOR, 0, 1, 1, 1));
 		private static final List<StructurePieceTreasure> j = Lists
-				.newArrayList(new StructurePieceTreasure[] { new StructurePieceTreasure(Items.ARROW, 0, 2, 7, 30) });
-		private static WorldGenRegistration.WorldGenJungleTemple.WorldGenJungleTemple$WorldGenJungleTemplePiece k = new WorldGenRegistration.WorldGenJungleTemple.WorldGenJungleTemple$WorldGenJungleTemplePiece(
-				(WorldGenRegistration.SyntheticClass_1) null);
+				.newArrayList(new StructurePieceTreasure(Items.ARROW, 0, 2, 7, 30));
+		private static final WorldGenRegistration.WorldGenJungleTemple.WorldGenJungleTemple$WorldGenJungleTemplePiece k = new WorldGenRegistration.WorldGenJungleTemple.WorldGenJungleTemple$WorldGenJungleTemplePiece(
+				null);
 
 		public WorldGenJungleTemple() {
 		}
@@ -317,9 +315,9 @@ public class WorldGenRegistration {
 				this.a(world, Blocks.STONE_STAIRS.fromLegacyData(l), 7, 4, 5, structureboundingbox);
 
 				for (i1 = 0; i1 < 4; ++i1) {
-					this.a(world, Blocks.STONE_STAIRS.fromLegacyData(j), 5, 0 - i1, 6 + i1, structureboundingbox);
-					this.a(world, Blocks.STONE_STAIRS.fromLegacyData(j), 6, 0 - i1, 6 + i1, structureboundingbox);
-					this.a(world, structureboundingbox, 5, 0 - i1, 7 + i1, 6, 0 - i1, 9 + i1);
+					this.a(world, Blocks.STONE_STAIRS.fromLegacyData(j), 5, -i1, 6 + i1, structureboundingbox);
+					this.a(world, Blocks.STONE_STAIRS.fromLegacyData(j), 6, -i1, 6 + i1, structureboundingbox);
+					this.a(world, structureboundingbox, 5, -i1, 7 + i1, 6, -i1, 9 + i1);
 				}
 
 				this.a(world, structureboundingbox, 1, -3, 12, 10, -1, 13);
@@ -348,9 +346,9 @@ public class WorldGenRegistration {
 						.set(BlockTripwireHook.ATTACHED, true), 1, -3, 8, structureboundingbox);
 				this.a(world, Blocks.TRIPWIRE_HOOK.fromLegacyData(this.a(Blocks.TRIPWIRE_HOOK, EnumDirection.WEST.b()))
 						.set(BlockTripwireHook.ATTACHED, true), 4, -3, 8, structureboundingbox);
-				this.a(world, Blocks.TRIPWIRE.getBlockData().set(BlockTripwire.ATTACHED, Boolean.valueOf(true)), 2, -3,
+				this.a(world, Blocks.TRIPWIRE.getBlockData().set(BlockTripwire.ATTACHED, Boolean.TRUE), 2, -3,
 						8, structureboundingbox);
-				this.a(world, Blocks.TRIPWIRE.getBlockData().set(BlockTripwire.ATTACHED, Boolean.valueOf(true)), 3, -3,
+				this.a(world, Blocks.TRIPWIRE.getBlockData().set(BlockTripwire.ATTACHED, Boolean.TRUE), 3, -3,
 						8, structureboundingbox);
 				this.a(world, Blocks.REDSTONE_WIRE.getBlockData(), 5, -3, 7, structureboundingbox);
 				this.a(world, Blocks.REDSTONE_WIRE.getBlockData(), 5, -3, 6, structureboundingbox);
@@ -371,11 +369,11 @@ public class WorldGenRegistration {
 						.set(BlockTripwireHook.ATTACHED, true), 7, -3, 1, structureboundingbox);
 				this.a(world, Blocks.TRIPWIRE_HOOK.fromLegacyData(this.a(Blocks.TRIPWIRE_HOOK, EnumDirection.SOUTH.b()))
 						.set(BlockTripwireHook.ATTACHED, true), 7, -3, 5, structureboundingbox);
-				this.a(world, Blocks.TRIPWIRE.getBlockData().set(BlockTripwire.ATTACHED, Boolean.valueOf(true)), 7, -3,
+				this.a(world, Blocks.TRIPWIRE.getBlockData().set(BlockTripwire.ATTACHED, Boolean.TRUE), 7, -3,
 						2, structureboundingbox);
-				this.a(world, Blocks.TRIPWIRE.getBlockData().set(BlockTripwire.ATTACHED, Boolean.valueOf(true)), 7, -3,
+				this.a(world, Blocks.TRIPWIRE.getBlockData().set(BlockTripwire.ATTACHED, Boolean.TRUE), 7, -3,
 						3, structureboundingbox);
-				this.a(world, Blocks.TRIPWIRE.getBlockData().set(BlockTripwire.ATTACHED, Boolean.valueOf(true)), 7, -3,
+				this.a(world, Blocks.TRIPWIRE.getBlockData().set(BlockTripwire.ATTACHED, Boolean.TRUE), 7, -3,
 						4, structureboundingbox);
 				this.a(world, Blocks.REDSTONE_WIRE.getBlockData(), 8, -3, 6, structureboundingbox);
 				this.a(world, Blocks.REDSTONE_WIRE.getBlockData(), 9, -3, 6, structureboundingbox);
@@ -392,7 +390,7 @@ public class WorldGenRegistration {
 				if (!this.e) {
 					this.e = this.a(world, structureboundingbox, random, 8, -3, 3,
 							StructurePieceTreasure.a(WorldGenRegistration.WorldGenJungleTemple.i,
-									new StructurePieceTreasure[] { Items.ENCHANTED_BOOK.b(random) }),
+									Items.ENCHANTED_BOOK.b(random)),
 							2 + random.nextInt(5));
 				}
 
@@ -444,7 +442,7 @@ public class WorldGenRegistration {
 				if (!this.f) {
 					this.f = this.a(world, structureboundingbox, random, 9, -3, 10,
 							StructurePieceTreasure.a(WorldGenRegistration.WorldGenJungleTemple.i,
-									new StructurePieceTreasure[] { Items.ENCHANTED_BOOK.b(random) }),
+									Items.ENCHANTED_BOOK.b(random)),
 							2 + random.nextInt(5));
 				}
 
@@ -476,9 +474,9 @@ public class WorldGenRegistration {
 
 	public static class WorldGenPyramidPiece extends WorldGenRegistration.WorldGenScatteredPiece {
 
-		private boolean[] e = new boolean[4];
+		private final boolean[] e = new boolean[4];
 		private static final List<StructurePieceTreasure> f = Lists
-				.newArrayList(new StructurePieceTreasure[] { new StructurePieceTreasure(Items.DIAMOND, 0, 1, 3, 3),
+				.newArrayList(new StructurePieceTreasure(Items.DIAMOND, 0, 1, 3, 3),
 						new StructurePieceTreasure(Items.IRON_INGOT, 0, 1, 5, 10),
 						new StructurePieceTreasure(Items.GOLD_INGOT, 0, 2, 7, 15),
 						new StructurePieceTreasure(Items.EMERALD, 0, 1, 3, 2),
@@ -487,7 +485,7 @@ public class WorldGenRegistration {
 						new StructurePieceTreasure(Items.SADDLE, 0, 1, 1, 3),
 						new StructurePieceTreasure(Items.IRON_HORSE_ARMOR, 0, 1, 1, 1),
 						new StructurePieceTreasure(Items.GOLDEN_HORSE_ARMOR, 0, 1, 1, 1),
-						new StructurePieceTreasure(Items.DIAMOND_HORSE_ARMOR, 0, 1, 1, 1) });
+						new StructurePieceTreasure(Items.DIAMOND_HORSE_ARMOR, 0, 1, 1, 1));
 
 		public WorldGenPyramidPiece() {
 		}
@@ -798,18 +796,15 @@ public class WorldGenRegistration {
 					13, structureboundingbox);
 			this.a(world, Blocks.SANDSTONE.fromLegacyData(BlockSandStone.EnumSandstoneVariant.SMOOTH.a()), 10, -11, 13,
 					structureboundingbox);
-			Iterator iterator = EnumDirection.EnumDirectionLimit.HORIZONTAL.iterator();
 
-			while (iterator.hasNext()) {
-				EnumDirection enumdirection = (EnumDirection) iterator.next();
-
+			for (EnumDirection enumdirection : EnumDirection.EnumDirectionLimit.HORIZONTAL) {
 				if (!this.e[enumdirection.b()]) {
 					int l1 = enumdirection.getAdjacentX() * 2;
 					int i2 = enumdirection.getAdjacentZ() * 2;
 
 					this.e[enumdirection.b()] = this.a(world, structureboundingbox, random, 10 + l1, -11, 10 + i2,
-							StructurePieceTreasure.a(WorldGenRegistration.WorldGenPyramidPiece.f,
-									new StructurePieceTreasure[] { Items.ENCHANTED_BOOK.b(random) }),
+							StructurePieceTreasure.a(WorldGenPyramidPiece.f,
+									Items.ENCHANTED_BOOK.b(random)),
 							2 + random.nextInt(5));
 				}
 			}

@@ -83,7 +83,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
 		@Target(ElementType.FIELD)
 		@interface Specific {
 			enum To {
-				BUKKIT, NBT,;
+				BUKKIT, NBT,
 			}
 
 			To value();
@@ -145,9 +145,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
 
 			try {
 				return constructor.newInstance(map);
-			} catch (final InstantiationException e) {
-				throw new AssertionError(e);
-			} catch (final IllegalAccessException e) {
+			} catch (final InstantiationException | IllegalAccessException e) {
 				throw new AssertionError(e);
 			} catch (final InvocationTargetException e) {
 				throw e.getCause();
@@ -665,7 +663,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
 
 	@Override
 	public Map<Enchantment, Integer> getEnchants() {
-		return hasEnchants() ? ImmutableMap.copyOf(enchantments) : ImmutableMap.<Enchantment, Integer>of();
+		return hasEnchants() ? ImmutableMap.copyOf(enchantments) : ImmutableMap.of();
 	}
 
 	@Override

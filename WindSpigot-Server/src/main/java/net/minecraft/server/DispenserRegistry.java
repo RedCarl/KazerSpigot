@@ -2,7 +2,6 @@ package net.minecraft.server;
 
 import java.io.PrintStream;
 import java.util.Random;
-import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -131,7 +130,7 @@ public class DispenserRegistry {
 						org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.DISPENSE_EGG);
 
 				if (entity instanceof EntityLiving && itemstack.hasName()) {
-					((EntityInsentient) entity).setCustomName(itemstack.getName());
+					entity.setCustomName(itemstack.getName());
 				}
 
 				// itemstack.a(1); // Handled during event processing
@@ -235,7 +234,7 @@ public class DispenserRegistry {
 				EntitySmallFireball entitysmallfireball = new EntitySmallFireball(world, d0, d1, d2,
 						event.getVelocity().getX(), event.getVelocity().getY(), event.getVelocity().getZ());
 				entitysmallfireball.projectileSource = new org.bukkit.craftbukkit.projectiles.CraftBlockProjectileSource(
-						(TileEntityDispenser) isourceblock.getTileEntity());
+						isourceblock.getTileEntity());
 
 				world.addEntity(entitysmallfireball);
 				// itemstack.a(1); // Handled during event processing
@@ -391,11 +390,11 @@ public class DispenserRegistry {
 				Item item;
 
 				if (Material.WATER.equals(material) && block instanceof BlockFluids
-						&& iblockdata.get(BlockFluids.LEVEL).intValue() == 0) {
+						&& iblockdata.get(BlockFluids.LEVEL) == 0) {
 					item = Items.WATER_BUCKET;
 				} else {
 					if (!Material.LAVA.equals(material) || !(block instanceof BlockFluids)
-							|| iblockdata.get(BlockFluids.LEVEL).intValue() != 0) {
+							|| iblockdata.get(BlockFluids.LEVEL) != 0) {
 						return super.b(isourceblock, itemstack);
 					}
 
@@ -488,7 +487,7 @@ public class DispenserRegistry {
 					// CraftBukkit end
 				} else if (world.getType(blockposition).getBlock() == Blocks.TNT) {
 					Blocks.TNT.postBreak(world, blockposition,
-							Blocks.TNT.getBlockData().set(BlockTNT.EXPLODE, Boolean.valueOf(true)));
+							Blocks.TNT.getBlockData().set(BlockTNT.EXPLODE, Boolean.TRUE));
 					world.setAir(blockposition);
 				} else {
 					this.b = false;
@@ -612,7 +611,7 @@ public class DispenserRegistry {
 
 				EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(block.getLocation(), world,
 						event.getVelocity().getX(), event.getVelocity().getY(), event.getVelocity().getZ(),
-						(EntityLiving) null); // PaperSpigot
+						null); // PaperSpigot
 				// CraftBukkit end
 
 				world.addEntity(entitytntprimed);
@@ -651,7 +650,7 @@ public class DispenserRegistry {
 										String s = nbttagcompound.getString("SkullOwner");
 
 										if (!UtilColor.b(s)) {
-											gameprofile = new GameProfile((UUID) null, s);
+											gameprofile = new GameProfile(null, s);
 										}
 									}
 								}

@@ -1,6 +1,7 @@
 package net.minecraft.server;
 
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -21,16 +22,16 @@ public abstract class EntityInsentient extends EntityLiving {
 
 	public int a_;
 	protected int b_;
-	private ControllerLook lookController;
+	private final ControllerLook lookController;
 	protected ControllerMove moveController;
 	protected ControllerJump g;
-	private EntityAIBodyControl b;
+	private final EntityAIBodyControl b;
 	protected NavigationAbstract navigation;
 	public PathfinderGoalSelector goalSelector;
 	public PathfinderGoalSelector targetSelector;
 	private WeakReference<EntityLiving> goalTarget; // KigPaper - wrap in WeakReference
-	private EntitySenses bk;
-	private ItemStack[] equipment = new ItemStack[5];
+	private final EntitySenses bk;
+	private final ItemStack[] equipment = new ItemStack[5];
 	public float[] dropChances = new float[5];
 	public boolean canPickUpLoot;
 	public boolean persistent;
@@ -55,9 +56,7 @@ public abstract class EntityInsentient extends EntityLiving {
 		this.navigation = this.b(world);
 		this.bk = new EntitySenses(this);
 
-		for (int i = 0; i < this.dropChances.length; ++i) {
-			this.dropChances[i] = 0.085F;
-		}
+		Arrays.fill(this.dropChances, 0.085F);
 
 		// CraftBukkit start - default persistance to type's persistance value
 		this.persistent = !isTypeNotPersistent();
@@ -290,10 +289,10 @@ public abstract class EntityInsentient extends EntityLiving {
 
 		NBTTagCompound nbttagcompound1;
 
-		for (int i = 0; i < this.equipment.length; ++i) {
+		for (ItemStack itemStack : this.equipment) {
 			nbttagcompound1 = new NBTTagCompound();
-			if (this.equipment[i] != null) {
-				this.equipment[i].save(nbttagcompound1);
+			if (itemStack != null) {
+				itemStack.save(nbttagcompound1);
 			}
 
 			nbttaglist.add(nbttagcompound1);
@@ -302,8 +301,8 @@ public abstract class EntityInsentient extends EntityLiving {
 		nbttagcompound.set("Equipment", nbttaglist);
 		NBTTagList nbttaglist1 = new NBTTagList();
 
-		for (int j = 0; j < this.dropChances.length; ++j) {
-			nbttaglist1.add(new NBTTagFloat(this.dropChances[j]));
+		for (float dropChance : this.dropChances) {
+			nbttaglist1.add(new NBTTagFloat(dropChance));
 		}
 
 		nbttagcompound.set("DropChances", nbttaglist1);
@@ -390,12 +389,9 @@ public abstract class EntityInsentient extends EntityLiving {
 		super.m();
 		this.world.methodProfiler.a("looting");
 		if (!this.world.isClientSide && this.bY() && !this.aP && this.world.getGameRules().getBoolean("mobGriefing")) {
-			List list = this.world.a(EntityItem.class, this.getBoundingBox().grow(1.0D, 0.0D, 1.0D));
-			Iterator iterator = list.iterator();
+			List<EntityItem> list = this.world.a(EntityItem.class, this.getBoundingBox().grow(1.0D, 0.0D, 1.0D));
 
-			while (iterator.hasNext()) {
-				EntityItem entityitem = (EntityItem) iterator.next();
-
+			for (EntityItem entityitem : list) {
 				if (!entityitem.dead && entityitem.getItemStack() != null && !entityitem.s()) {
 					this.a(entityitem);
 				}
@@ -900,7 +896,7 @@ public abstract class EntityInsentient extends EntityLiving {
 				}
 			}
 
-			return this.a(entityhuman) ? true : super.e(entityhuman);
+			return this.a(entityhuman) || super.e(entityhuman);
 		}
 	}
 
@@ -938,7 +934,7 @@ public abstract class EntityInsentient extends EntityLiving {
 
 			if (!this.world.isClientSide && flag && this.world instanceof WorldServer) {
 				((WorldServer) this.world).getTracker().a(this,
-						(new PacketPlayOutAttachEntity(1, this, (Entity) null)));
+						(new PacketPlayOutAttachEntity(1, this, null)));
 			}
 		}
 
@@ -969,12 +965,9 @@ public abstract class EntityInsentient extends EntityLiving {
 		if (this.bo && this.bq != null) {
 			if (this.bq.hasKeyOfType("UUIDMost", 4) && this.bq.hasKeyOfType("UUIDLeast", 4)) {
 				UUID uuid = new UUID(this.bq.getLong("UUIDMost"), this.bq.getLong("UUIDLeast"));
-				List list = this.world.a(EntityLiving.class, this.getBoundingBox().grow(10.0D, 10.0D, 10.0D));
-				Iterator iterator = list.iterator();
+				List<EntityLiving> list = this.world.a(EntityLiving.class, this.getBoundingBox().grow(10.0D, 10.0D, 10.0D));
 
-				while (iterator.hasNext()) {
-					EntityLiving entityliving = (EntityLiving) iterator.next();
-
+				for (EntityLiving entityliving : list) {
 					if (entityliving.getUniqueID().equals(uuid)) {
 						this.bp = entityliving;
 						break;
@@ -1028,18 +1021,18 @@ public abstract class EntityInsentient extends EntityLiving {
 	}
 
 	public void k(boolean flag) {
-		this.datawatcher.watch(15, Byte.valueOf((byte) (flag ? 1 : 0)));
+		this.datawatcher.watch(15, (byte) (flag ? 1 : 0));
 	}
 
 	public boolean ce() {
 		return this.datawatcher.getByte(15) != 0;
 	}
 
-	public static enum EnumEntityPositionType {
+	public enum EnumEntityPositionType {
 
 		ON_GROUND, IN_AIR, IN_WATER;
 
-		private EnumEntityPositionType() {
+		EnumEntityPositionType() {
 		}
 	}
 }

@@ -108,7 +108,7 @@ public class TileEntityBrewingStand extends TileEntityContainer implements IUpda
 				}
 
 				for (int i = 0; i < BlockBrewingStand.HAS_BOTTLE.length; ++i) {
-					iblockdata = iblockdata.set(BlockBrewingStand.HAS_BOTTLE[i], Boolean.valueOf(aboolean[i]));
+					iblockdata = iblockdata.set(BlockBrewingStand.HAS_BOTTLE[i], aboolean[i]);
 				}
 
 				this.world.setTypeAndData(this.position, iblockdata, 2);
@@ -136,8 +136,8 @@ public class TileEntityBrewingStand extends TileEntityContainer implements IUpda
 							break;
 						}
 
-						List list = Items.POTION.e(j);
-						List list1 = Items.POTION.e(k);
+						List<MobEffect> list = Items.POTION.e(j);
+						List<MobEffect> list1 = Items.POTION.e(k);
 
 						if ((j <= 0 || list != list1) && (list == null || !list.equals(list1) && list1 != null)
 								&& j != k) {
@@ -174,8 +174,8 @@ public class TileEntityBrewingStand extends TileEntityContainer implements IUpda
 				if (this.items[i] != null && this.items[i].getItem() == Items.POTION) {
 					int j = this.items[i].getData();
 					int k = this.c(j, itemstack);
-					List list = Items.POTION.e(j);
-					List list1 = Items.POTION.e(k);
+					List<MobEffect> list = Items.POTION.e(j);
+					List<MobEffect> list1 = Items.POTION.e(k);
 
 					if ((j <= 0 || list != list1) && (list == null || !list.equals(list1) && list1 != null)) {
 						if (j != k) {
@@ -294,9 +294,8 @@ public class TileEntityBrewingStand extends TileEntityContainer implements IUpda
 
 	@Override
 	public boolean a(EntityHuman entityhuman) {
-		return this.world.getTileEntity(this.position) != this ? false
-				: entityhuman.e(this.position.getX() + 0.5D, this.position.getY() + 0.5D,
-						this.position.getZ() + 0.5D) <= 64.0D;
+		return this.world.getTileEntity(this.position) == this && entityhuman.e(this.position.getX() + 0.5D, this.position.getY() + 0.5D,
+				this.position.getZ() + 0.5D) <= 64.0D;
 	}
 
 	@Override
@@ -352,22 +351,16 @@ public class TileEntityBrewingStand extends TileEntityContainer implements IUpda
 
 	@Override
 	public int getProperty(int i) {
-		switch (i) {
-		case 0:
+		if (i == 0) {
 			return this.brewTime;
-
-		default:
-			return 0;
 		}
+		return 0;
 	}
 
 	@Override
 	public void b(int i, int j) {
-		switch (i) {
-		case 0:
+		if (i == 0) {
 			this.brewTime = j;
-
-		default:
 		}
 	}
 
@@ -378,9 +371,7 @@ public class TileEntityBrewingStand extends TileEntityContainer implements IUpda
 
 	@Override
 	public void l() {
-		for (int i = 0; i < this.items.length; ++i) {
-			this.items[i] = null;
-		}
+		Arrays.fill(this.items, null);
 
 	}
 }
