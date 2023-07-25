@@ -1,11 +1,6 @@
 package dev.cobblesword.nachospigot.knockback;
 
 public interface KnockbackProfile {
-
-	void save();
-
-	void save(boolean projectiles);
-
 	String getName();
 
 	void setName(String name);
@@ -18,13 +13,9 @@ public interface KnockbackProfile {
 
 	void setVertical(double vertical);
 
-	double getVerticalMin();
+	double getVerticalLimit();
 
-	void setVerticalMin(double verticalMin);
-
-	double getVerticalMax();
-
-	void setVerticalMax(double verticalMax);
+	void setVerticalLimit(double verticalLimit);
 
 	double getExtraHorizontal();
 
@@ -42,10 +33,6 @@ public interface KnockbackProfile {
 
 	void setFrictionVertical(double frictionVertical);
 
-	boolean isStopSprint();
-
-	void setStopSprint(boolean stopSprint);
-
 	double getRodHorizontal();
 
 	void setRodHorizontal(double rodHorizontal);
@@ -54,6 +41,10 @@ public interface KnockbackProfile {
 
 	void setRodVertical(double rodVertical);
 
+	double getRodSpeed();
+
+	void setRodSpeed(double rodSpeed);
+
 	double getArrowHorizontal();
 
 	void setArrowHorizontal(double arrowHorizontal);
@@ -61,6 +52,10 @@ public interface KnockbackProfile {
 	double getArrowVertical();
 
 	void setArrowVertical(double arrowVertical);
+
+	double getSlowdown();
+
+	void setSlowdown(double slowdown);
 
 	double getPearlHorizontal();
 
@@ -85,22 +80,70 @@ public interface KnockbackProfile {
 	double getEggVertical();
 
 	void setEggVertical(double eggVertical);
-	
-	double getWTapExtraHorizontal();
-	
-	void setWTapExtraHorizontal(double wTapHorizontal);
-	
-	double getWTapExtraVertical();
-	
-	void setWTapExtraVertical(double wTapVertical);
-	
-	double getAddHorizontal();
-	
-	void setAddHorizontal(double addHorizontal);
-	
-	double getAddVertical();
-	
-	void setAddVertical(double addVertical);
+
+	float getPotionFall();
+
+	void setPotionFall(float potionFall);
+
+	float getPotionMultiplier();
+
+	void setPotionMultiplier(float potionMultiplier);
+
+	float getPotionOffset();
+
+	void setPotionOffset(float potionOffset);
+
+	double getPotionPlayerSpeed();
+
+	void setPotionPlayerSpeed(double potionPlayerSpeed);
+
+	double getPotionDistanceRadius();
+
+	void setPotionDistanceRadius(double potionDistanceRadius);
+
+	boolean isSmoothPotting();
+
+	void setSmoothPotting(boolean smoothPotting);
+
+	double getSprintFrictionHorizontal();
+
+	void setSprintFrictionHorizontal(double sprintFrictionHorizontal);
+
+	double getSprintFrictionVertical();
+
+	void setSprintFrictionVertical(double sprintFrictionVertical);
+
+	double getSprintVerticalLimit();
+
+	void setSprintVerticalLimit(double sprintVerticalLimit);
+
+	double getSprintHorizontal();
+
+	void setSprintHorizontal(double sprintHorizontal);
+
+	double getSprintVertical();
+
+	void setSprintVertical(double sprintVertical);
+
+	double getSprintExtraHorizontal();
+
+	void setSprintExtraHorizontal(double sprintExtraHorizontal);
+
+	double getSprintExtraVertical();
+
+	void setSprintExtraVertical(double sprintExtraVertical);
+
+	boolean isStopSprint();
+
+	void setStopSprint(boolean stopSprint);
+
+	boolean isDoubleDamage();
+
+	void setDoubleDamage(boolean doubleDamage);
+
+	void save();
+
+	void save(boolean projectiles);
 
 	String[] getKnockbackValues();
 

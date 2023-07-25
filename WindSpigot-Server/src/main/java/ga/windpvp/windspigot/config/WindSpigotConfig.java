@@ -113,7 +113,6 @@ public class WindSpigotConfig {
 		c.addComment("config-version", "Configuration version, do NOT modify this!");
 
 		c.addComment("settings.async", "Configuration for asynchronous things.");
-		c.addComment("settings.pearl-passthrough", "Configuration for ender pearls passing through certain blocks. (Credits to FlamePaper)");
 		c.addComment("settings.command", "Configuration for WindSpigot's commands");
 		c.addComment("settings.max-tick-time", "Configuration for maximum entity tick time");
 		c.addComment("settings.async.entity-tracking.enable", "Enables asynchronous entity tracking");
@@ -123,6 +122,7 @@ public class WindSpigotConfig {
 		c.addComment("settings.command.mob-ai", "Enables the command \"/mobai\" which toggles mob ai. Users require the permission windspigot.command.mobai");
 		c.addComment("settings.limited-mob-spawns", "Disables mob spawning if TPS is lower than the specified threshold.");	
 		c.addComment("settings.limited-mob-spawns-threshold", "Threshold to disable mob spawning. This does not apply if limited mob spawns is not enabled. This option accepts decimals.");
+		c.addComment("settings.pearl-passthrough", "Configuration for ender pearls passing through certain blocks. (Credits to FlamePaper)");
 		c.addComment("settings.pearl-passthrough.fence-gate", "Allows pearls to pass through fences.");
 		c.addComment("settings.pearl-passthrough.tripwire", "Allows pearls to pass through tripwires.");
 		c.addComment("settings.pearl-passthrough.slab", "Allows pearls to pass through slabs.");
@@ -133,9 +133,9 @@ public class WindSpigotConfig {
 		c.addComment("settings.command.ping.enable", "Enables the command \"/ping <player>\" which shows player ping. Users require the permission windspigot.command.ping");
 		c.addComment("settings.command.ping.self-ping-msg", "The message displayed for the /ping command");
 		c.addComment("settings.command.ping.other-ping-msg", "The message displayed for the /ping <player> command");
-		c.addComment("settings.statistics", "Enables WindSpigot statistics. This allows developers to see how many WindSpigot servers are running. \nThis has no performance impact and is completely anonymous, but you can opt out of this if you want.");
+//		c.addComment("settings.statistics", "Enables WindSpigot statistics. This allows developers to see how many WindSpigot servers are running. \nThis has no performance impact and is completely anonymous, but you can opt out of this if you want.");
 		c.addComment("settings.hit-delay", "This sets the delay between player attacks, 20 is the default. Setting this to 0 allows for no hit delay.");
-		c.addComment("settings.potion-speed-offset", "This sets the speed offset of splash potions, 0 is the default speed. Setting this higher makes potions splash faster. \nThis config option accepts decimals.");
+//		c.addComment("settings.potion-speed-offset", "This sets the speed offset of splash potions, 0 is the default speed. Setting this higher makes potions splash faster. \nThis config option accepts decimals.");
 		c.addComment("settings.show-player-ips", "Disabling this will prevent display of player ips in the console.");
 		c.addComment("settings.modern-keep-alive", "This enables keep alive handling from modern Minecraft. This may break some plugins.");
 		c.addComment("settings.async.path-searches.enabled", "Enables async path searching for entities.");
@@ -166,7 +166,7 @@ public class WindSpigotConfig {
 		c.addComment("settings.spawners.spawn-range", "Maximum area in which entities spawn");
 		c.addComment("settings.spawners.max-nearby-entities", "Maximum number of nearby entities to avoid new spawns (Any value lower than 1 will disable this check)");
 		c.addComment("settings.spawners.required-player-range", "Area in which the player is required to spawn entities");
-		c.addComment("settings.fishing-rod-multiplier", "The speed multiplier of fishing rod projectiles.");
+//		c.addComment("settings.fishing-rod-multiplier", "The speed multiplier of fishing rod projectiles.");
 		
 		// NachoSpigot stuff
 		c.addComment("settings.save-empty-scoreboard-teams", "Toggles whether or not the server should save empty scoreboard teams");
@@ -192,7 +192,7 @@ public class WindSpigotConfig {
 		c.addComment("settings.fix-eat-while-running", "Fixes the eating while running bug.");
 		c.addComment("settings.hide-projectiles-from-hidden-players", "Hides projectiles from hidden players.");
 		c.addComment("settings.lag-compensated-potions", "Enables lag compesation for thrown potions.");
-		c.addComment("settings.smooth-potting", "Makes potion throwing smoother.");
+//		c.addComment("settings.smooth-potting", "Makes potion throwing smoother.");
 		c.addComment("settings.anti-enderpearl-glitch", "Blocks enderpearl glitching.");
 		c.addComment("settings.disable-block-fall-animation", "Disables the fall animation for blocks.");
 		c.addComment("settings.disable-infinisleeper-thread-usage", "Disable infinisleeper thread usage, only enable this if you know what are you doing.");
@@ -327,11 +327,11 @@ public class WindSpigotConfig {
 		pingOtherCmdString = getString("settings.command.ping.other-ping-msg", "&3%player%'s &bping: &3%ping%");
 	}
 	
-	public static boolean statistics;
-	
-	private static void statistics() {
-		statistics = getBoolean("settings.statistics", true);
-	}
+//	public static boolean statistics;
+//
+//	private static void statistics() {
+//		statistics = getBoolean("settings.statistics", true);
+//	}
 	
 	public static int hitDelay;
 	
@@ -339,11 +339,11 @@ public class WindSpigotConfig {
 		hitDelay = getInt("settings.hit-delay", 20);
 	}
 	
-	public static double potionSpeed;
-	
-	private static void potionSpeed() {
-		potionSpeed = getDouble("settings.potion-speed-offset", 0);
-	}
+//	public static double potionSpeed;
+//
+//	private static void potionSpeed() {
+//		potionSpeed = getDouble("settings.potion-speed-offset", 0);
+//	}
 	
 	public static boolean showPlayerIps;
 	
@@ -480,11 +480,11 @@ public class WindSpigotConfig {
 		creativeBypass = getBoolean("settings.max-reach.creative-bypass", true);
 	}
 	
-	public static double fishingRodMultiplier;
-	
-	private static void fishingRodMultiplier() {
-		fishingRodMultiplier = getDouble("settings.fishing-rod-multiplier", 1);
-	}
+//	public static double fishingRodMultiplier;
+//
+//	private static void fishingRodMultiplier() {
+//		fishingRodMultiplier = getDouble("settings.fishing-rod-multiplier", 1);
+//	}
 	
 	
 	// Below are NachoSpigot config options
@@ -606,11 +606,11 @@ public class WindSpigotConfig {
 		lagCompensatedPotions = getBoolean("settings.lag-compensated-potions", true);
 	}
 
-	public static boolean smoothPotting;
-
-	private static void smoothPotting() {
-		smoothPotting = getBoolean("settings.smooth-potting", true);
-	}
+//	public static boolean smoothPotting;
+//
+//	private static void smoothPotting() {
+//		smoothPotting = getBoolean("settings.smooth-potting", true);
+//	}
 
 	public static boolean antiEnderPearlGlitch;
 

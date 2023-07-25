@@ -3,9 +3,12 @@ package net.minecraft.server;
 import java.util.List;
 import java.util.Objects;
 
+import dev.cobblesword.nachospigot.knockback.KnockbackProfile;
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Arrow;
 // TacoSpigot end
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
@@ -14,6 +17,8 @@ import ga.windpvp.windspigot.cache.Constants;
 // CraftBukkit end
 // TacoSpigot start
 import net.techcable.tacospigot.event.entity.ArrowCollideEvent;
+import org.bukkit.event.player.PlayerVelocityEvent;
+import org.bukkit.util.Vector;
 
 public class EntityArrow extends Entity implements IProjectile {
 
@@ -301,14 +306,37 @@ public class EntityArrow extends Entity implements IProjectile {
 								entityliving.o(entityliving.bv() + 1);
 							}
 
-							if (this.knockbackStrength > 0) {
-								f3 = MathHelper.sqrt(this.motX * this.motX + this.motZ * this.motZ);
-								if (f3 > 0.0F) {
-									movingobjectposition.entity.g(
-											this.motX * this.knockbackStrength * 0.6000000238418579D / f3, 0.1D,
-											this.motZ * this.knockbackStrength * 0.6000000238418579D / f3);
+							// KazerSpigot start
+							if (movingobjectposition.entity.getBukkitEntity().getType() == EntityType.PLAYER) {
+								EntityPlayer hit = ((CraftPlayer)movingobjectposition.entity.getBukkitEntity()).getHandle();
+								if (this.shooter != null && this.shooter != hit && this.shooter instanceof EntityPlayer) {
+									((EntityPlayer)this.shooter).playerConnection.sendPacket(new PacketPlayOutGameStateChange(6, 0.0f));
 								}
+
+								KnockbackProfile kb2 = hit.getKnockback();
+								Vector v = new Vector(this.motX, this.motY, this.motZ).normalize();
+								double velX = v.getX() / 1.6 * kb2.getArrowHorizontal();
+								double velY = 0.36 * kb2.getArrowVertical();
+								double velZ = v.getZ() / 1.6 * kb2.getArrowHorizontal();
+								if (this.knockbackStrength > 0) {
+									velX *= (double)this.knockbackStrength * (double)0.6f + 1.0;
+									velY *= 1.0;
+									velZ *= (double)this.knockbackStrength * (double)0.6f + 1.0;
+								}
+
+								PlayerVelocityEvent playerVelocityEvent = new PlayerVelocityEvent(hit.getBukkitEntity(), new Vector(velX, velY, velZ));
+								Bukkit.getPluginManager().callEvent(playerVelocityEvent);
+								if (!playerVelocityEvent.isCancelled()) {
+									hit.playerConnection.sendPacket(new PacketPlayOutEntityVelocity(hit.getId(), velX, velY, velZ));
+									hit.velocityChanged = false;
+									hit.motX = velX;
+									hit.motY = velY;
+									hit.motZ = velZ;
+								}
+							} else if (this.knockbackStrength > 0 && (f3 = MathHelper.sqrt(this.motX * this.motX + this.motZ * this.motZ)) > 0.0f) {
+								movingobjectposition.entity.g(this.motX * (double)this.knockbackStrength * (double)0.6f / (double)f3, 0.1, this.motZ * (double)this.knockbackStrength * (double)0.6f / (double)f3);
 							}
+							// KazerSpigot end
 
 							if (this.shooter instanceof EntityLiving) {
 								EnchantmentManager.a(entityliving, this.shooter);

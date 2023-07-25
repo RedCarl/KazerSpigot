@@ -6,6 +6,7 @@ import com.eatthepath.uuid.FastUUID;
 
 import ga.windpvp.windspigot.cache.Constants;
 import ga.windpvp.windspigot.config.WindSpigotConfig;
+import org.bukkit.entity.LivingEntity;
 
 public abstract class EntityProjectile extends Entity implements IProjectile {
 
@@ -32,22 +33,18 @@ public abstract class EntityProjectile extends Entity implements IProjectile {
 	public EntityProjectile(World world, EntityLiving entityliving) {
 		super(world);
 		this.shooter = entityliving;
-		this.projectileSource = (org.bukkit.entity.LivingEntity) entityliving.getBukkitEntity(); // CraftBukkit
-		this.setSize(0.25F, 0.25F);
-		this.setPositionRotation(entityliving.locX, entityliving.locY + entityliving.getHeadHeight(), entityliving.locZ,
-				entityliving.yaw, entityliving.pitch);
-		this.locX -= MathHelper.cos(this.yaw / 180.0F * 3.1415927F) * 0.16F;
-		this.locY -= 0.10000000149011612D;
-		this.locZ -= MathHelper.sin(this.yaw / 180.0F * 3.1415927F) * 0.16F;
+		this.projectileSource = (LivingEntity) entityliving.getBukkitEntity();
+		this.setSize(0.25f, 0.25f);
+		this.setPositionRotation(entityliving.locX, entityliving.locY + (double)entityliving.getHeadHeight(), entityliving.locZ, entityliving.yaw, entityliving.pitch);
+		this.locX -= (double)MathHelper.cos(this.yaw / 180.0f * (float)Math.PI) * (this instanceof EntityPotion && this.shooter instanceof EntityHuman ? ((EntityHuman)this.shooter).getKnockback().getPotionDistanceRadius() : (double)0.16f);
+		this.locY -= 0.1f;
+		this.locZ -= (double)MathHelper.sin(this.yaw / 180.0f * (float)Math.PI) * (this instanceof EntityPotion && this.shooter instanceof EntityHuman ? ((EntityHuman)this.shooter).getKnockback().getPotionDistanceRadius() : (double)0.16f);
 		this.setPosition(this.locX, this.locY, this.locZ);
-		float f = 0.4F;
-
-		this.motX = -MathHelper.sin(this.yaw / 180.0F * 3.1415927F) * MathHelper.cos(this.pitch / 180.0F * 3.1415927F)
-				* f;
-		this.motZ = MathHelper.cos(this.yaw / 180.0F * 3.1415927F) * MathHelper.cos(this.pitch / 180.0F * 3.1415927F)
-				* f;
-		this.motY = -MathHelper.sin((this.pitch + this.l()) / 180.0F * 3.1415927F) * f;
-		this.shoot(this.motX, this.motY, this.motZ, this.j(), 1.0F);
+		float f = 0.4f;
+		this.motX = -MathHelper.sin(this.yaw / 180.0f * (float)Math.PI) * MathHelper.cos(this.pitch / 180.0f * (float)Math.PI) * f;
+		this.motZ = MathHelper.cos(this.yaw / 180.0f * (float)Math.PI) * MathHelper.cos(this.pitch / 180.0f * (float)Math.PI) * f;
+		this.motY = -MathHelper.sin((this.pitch + this.l()) / 180.0f * (float)Math.PI) * f;
+		this.shoot(this.motX, this.motY, this.motZ, this.j(), 1.0f);
 	}
 
 	public EntityProjectile(World world, double d0, double d1, double d2) {
@@ -137,28 +134,35 @@ public abstract class EntityProjectile extends Entity implements IProjectile {
 			double d0 = 0.0D;
 			EntityLiving entityliving = this.getShooter();
 
-			for (Entity entity1 : list) {
-				if (entity1.ad() && (entity1 != entityliving || this.ar >= 5)) {
-					float f = 0.3F;
-					AxisAlignedBB axisalignedbb = entity1.getBoundingBox().grow(f, f, f);
-					MovingObjectPosition movingobjectposition1 = axisalignedbb.a(vec3d, vec3d1);
+			for (Entity value : list) {
+				double d1;
+				if (!value.ad()) {
+					continue;
+				}
 
-					// IonSpigot start - Smooth Potting
-					if (this instanceof EntityPotion && WindSpigotConfig.smoothPotting && movingobjectposition1 == null
-							&& getBoundingBox().b(entity1.getBoundingBox())) {
-						movingobjectposition1 = new MovingObjectPosition(entity1);
-					}
-					// IonSpigot end
-
-					if (movingobjectposition1 != null) {
-						double d1 = vec3d.distanceSquared(movingobjectposition1.pos);
-
-						if (d1 < d0 || d0 == 0.0D) {
-							entity = entity1;
-							d0 = d1;
-						}
+				// KazerSpigot start
+				if (value == entityliving) {
+					if (this.ar < (this instanceof EntityPotion ? (entityliving instanceof EntityHuman ? ((EntityHuman) entityliving).getKnockback().getPotionPlayerSpeed() : 5) : 5)) {
+						continue;
 					}
 				}
+				// KazerSpigot end
+
+				double f = 0.3f;
+				AxisAlignedBB axisalignedbb = value.getBoundingBox().grow(f, f, f);
+				MovingObjectPosition movingobjectposition1 = axisalignedbb.a(vec3d, vec3d1);
+
+				// KazerSpigot start
+				if (this instanceof EntityPotion && entityliving instanceof EntityHuman && ((EntityHuman) entityliving).getKnockback().isSmoothPotting() && movingobjectposition1 == null && this.getBoundingBox().b(value.getBoundingBox())) {
+					movingobjectposition1 = new MovingObjectPosition(value);
+				}
+				// KazerSpigot end
+
+				if (movingobjectposition1 == null || !((d1 = vec3d.distanceSquared(movingobjectposition1.pos)) < d0) && d0 != 0.0) {
+					continue;
+				}
+				entity = value;
+				d0 = d1;
 			}
 
 			if (entity != null) {

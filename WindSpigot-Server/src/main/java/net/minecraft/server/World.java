@@ -838,7 +838,9 @@ public abstract class World implements IBlockAccess {
 			Chunk chunk = this.getChunkAtWorldCoords(blockposition);
 
 			return chunk.getLightSubtracted(blockposition, this.I) >= level;
-		} else return blockposition.getY() >= 0;
+		} else {
+			return blockposition.getY() >= 0;
+		}
 	}
 
 	public int getLightLevel(BlockPosition blockposition) {
@@ -1390,17 +1392,17 @@ public abstract class World implements IBlockAccess {
 			}
 			// WindSpigot end
 			
-			// WindSpigot start - configurable potion speeds
-			if (entity instanceof EntityPotion) {
-				// Subtract the speed from the y value of the velocity, the potion will drop faster and will therefore splash faster
-				entity.motY -= WindSpigotConfig.potionSpeed;	
-				
-				// Mark velocity as changed only if potion speed is not default
-				if (!(WindSpigotConfig.potionSpeed == 0)) {
-					entity.velocityChanged = true;
-				}
-			}
-			// WindSpigot end
+//			// WindSpigot start - configurable potion speeds
+//			if (entity instanceof EntityPotion) {
+//				// Subtract the speed from the y value of the velocity, the potion will drop faster and will therefore splash faster
+//				entity.motY -= WindSpigotConfig.potionSpeed;
+//
+//				// Mark velocity as changed only if potion speed is not default
+//				if (!(WindSpigotConfig.potionSpeed == 0)) {
+//					entity.velocityChanged = true;
+//				}
+//			}
+//			// WindSpigot end
 			return true;
 		}
 	}

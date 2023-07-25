@@ -4,10 +4,9 @@ import java.util.Arrays;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-
-import dev.cobblesword.nachospigot.CC;
 
 //[Nacho-0021] Add setMaxPlayers within Bukkit.getServer() and SetMaxSlot Command
 public class SetMaxSlotCommand extends Command {
@@ -19,12 +18,14 @@ public class SetMaxSlotCommand extends Command {
 		setPermission("windspigot.command.sms");
 	}
 
+	@Override
 	public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-		if (!testPermission(sender))
+		if (!testPermission(sender)) {
 			return true;
+		}
 		if (args.length != 1) {
 			sender.sendMessage(
-					CC.gray + "There are currently " + CC.white + Bukkit.getMaxPlayers() + CC.gray + " slots!");
+					Color.GRAY + "There are currently " + Color.WHITE + Bukkit.getMaxPlayers() + Color.GRAY + " slots!");
 			sender.sendMessage(
 					ChatColor.RED + "Please use '/sms [amount]' to set the number of max slots for the server");
 			return false;

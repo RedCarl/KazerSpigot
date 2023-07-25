@@ -73,8 +73,6 @@ public class WindSpigot {
 			PingCommand pingCommand = new PingCommand("ping");
 			commandMap.register(pingCommand.getName(), "", pingCommand);
 		}
-	
-		
 		
 		// NachoSpigot commands
 		// TODO: add configuration for all of these
@@ -88,42 +86,9 @@ public class WindSpigot {
 		commandMap.register(knockbackCommand.getName(), "ns", knockbackCommand);
 	}
 
-	private void initStatistics() {
-		if (WindSpigotConfig.statistics && !statisticsEnabled) {
-			Runnable statisticsRunnable = (() -> {
-				client = new StatisticsClient();
-				try {
-					statisticsEnabled = true;
-
-					if (!client.isConnected) {
-						// Connect to the statistics server and notify that there is a new server
-						client.start("150.230.35.78", 500);
-						client.sendMessage("new server");
-
-						while (true) {
-							// Keep alive, this tells the statistics server that this server
-							// is still online
-							client.sendMessage("keep alive packet");
-
-							// Online players, this tells the statistics server how many players
-							// are on
-							client.sendMessage("player count packet " + Bukkit.getOnlinePlayers().size());
-
-							// Statistics are sent every 40 secs.
-							TimeUnit.SECONDS.sleep(40);
-						}
-
-					}
-				} catch (Exception ignored) {}
-			});
-			AsyncUtil.run(statisticsRunnable, statisticsExecutor);
-		}
-	}
-
 	private void init() {
 		initCmds();
-		initStatistics();
-		
+
 		// We do not want to initialize this again after a reload
 		if (WindSpigotConfig.asyncPathSearches && SearchHandler.getInstance() == null) {
 			new SearchHandler();
@@ -154,8 +119,9 @@ public class WindSpigot {
     }
     
 	public static void debug(String msg) {
-		if (WindSpigotConfig.debugMode)
+		if (WindSpigotConfig.debugMode) {
 			DEBUG_LOGGER.info(msg);
+		}
 	}
 	
 	public void registerPacketListener(PacketListener packetListener) {

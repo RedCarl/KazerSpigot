@@ -4,6 +4,8 @@ import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.Proxy;
 import java.security.KeyPair;
 import java.text.SimpleDateFormat;
@@ -588,6 +590,7 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 	private long lastTick = 0;
 	// WindSpigot end
 	private static final int SAMPLE_INTERVAL = 20;
+	public double currentTPS = 20D;
 	public final RollingAverage tps1 = new RollingAverage(60);
 	public final RollingAverage tps5 = new RollingAverage(60 * 5);
 	public final RollingAverage tps15 = new RollingAverage(60 * 15);
@@ -692,7 +695,9 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
                     if (i > 5000L && this.nextTickTime - this.lastOverloadWarning >= 30000L && ticks > 500) { // CraftBukkit // WindSpigot - prevent display of overload on first 500 ticks
                         long j = i / 50L;
                         if (this.server.getWarnOnOverload()) // CraftBukkit
-                            MinecraftServer.LOGGER.warn("Can't keep up! Is the server overloaded? Running {}ms or {} ticks behind", i, j);
+						{
+							MinecraftServer.LOGGER.warn("Can't keep up! Is the server overloaded? Running {}ms or {} ticks behind", i, j);
+						}
                         this.nextTickTime += j * 50L;
                         this.lastOverloadWarning = this.nextTickTime;
                     }
@@ -700,8 +705,9 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
                     if (++MinecraftServer.currentTick % MinecraftServer.SAMPLE_INTERVAL == 0) {
 						final long diff = curTime - tickSection;
 						//double currentTps = 1E9 / diff * SAMPLE_INTERVAL;
-						java.math.BigDecimal currentTps = TPS_BASE.divide(new java.math.BigDecimal(diff), 30, java.math.RoundingMode.HALF_UP);
+						BigDecimal currentTps = TPS_BASE.divide(new BigDecimal(diff), 30, RoundingMode.HALF_UP);
 
+						currentTPS = currentTps.doubleValue();
 						tps1.add(currentTps, diff);
 						tps5.add(currentTps, diff);
 						tps15.add(currentTps, diff);
@@ -811,7 +817,9 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 	// WindSpigot start - backport modern tick loop
     private boolean haveTime() {
         // CraftBukkit start
-        if (isOversleep) return canOversleep();// Paper - because of our changes, this logic is broken
+        if (isOversleep) {
+			return canOversleep();// Paper - because of our changes, this logic is broken
+		}
         return this.forceTicks || this.runningTask() || getMillis() < (this.mayHaveDelayedTasks ? this.delayedTasksMaxNextTickTime : this.nextTickTime);
     }
     // Paper start

@@ -53,11 +53,11 @@ public class CommandDispatcher extends CommandHandler implements ICommandDispatc
 			this.a(new CommandSaveAll());
 			this.a(new CommandSaveOff());
 			this.a(new CommandSaveOn());
-			this.a(new CommandBanIp());
-			this.a(new CommandPardonIP());
-			this.a(new CommandBan());
-			this.a(new CommandBanList());
-			this.a(new CommandPardon());
+//			this.a(new CommandBanIp());
+//			this.a(new CommandPardonIP());
+//			this.a(new CommandBan());
+//			this.a(new CommandBanList());
+//			this.a(new CommandPardon());
 			this.a(new CommandKick());
 			this.a(new CommandList());
 			this.a(new CommandWhitelist());

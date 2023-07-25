@@ -166,6 +166,7 @@ public interface Entity extends Metadatable, CommandSender {
 	 *
 	 * @return Server instance running this Entity
 	 */
+	@Override
     Server getServer();
 
 	/**
@@ -214,7 +215,7 @@ public interface Entity extends Metadatable, CommandSender {
 
 	/**
 	 * Does nothing.
-	 * 
+	 *
 	 * @deprecated This is never used and only leads to memory leaks.
 	 */
 	@Deprecated // KigPaper - deprecate
@@ -222,7 +223,7 @@ public interface Entity extends Metadatable, CommandSender {
 
 	/**
 	 * Always returns null.
-	 * 
+	 *
 	 * @deprecated This is never used and only leads to memory leaks.
 	 */
 	@Deprecated // KigPaper - deprecate

@@ -31,386 +31,534 @@ public class KnockbackCommand extends Command {
 		Player player = (Player) sender;
 
 		switch (args.length) {
-		case 2: {
-			switch (args[0].toLowerCase()) {
-			case "create": {
-				if (!isProfileName(args[1])) {
-					CraftKnockbackProfile profile = new CraftKnockbackProfile(args[1]);
-					KnockbackConfig.getKbProfiles().add(profile);
-					profile.save();
-					knockbackCommandMain(player);
-					player.sendMessage("§aThe profile §e" + args[1] + " §ahas been created.");
-					return true;
-				} else {
-					player.sendMessage("§cA knockback profile with that name already exists.");
+			case 2: {
+				switch (args[0].toLowerCase()) {
+					case "create": {
+						if (!isProfileName(args[1])) {
+							CraftKnockbackProfile profile = new CraftKnockbackProfile(args[1]);
+							KnockbackConfig.getKbProfiles().add(profile);
+							profile.save();
+							knockbackCommandMain(player);
+							player.sendMessage("§aThe profile §e" + args[1] + " §ahas been created.");
+							return true;
+						} else {
+							player.sendMessage("§cA knockback profile with that name already exists.");
+						}
+						break;
+					}
+					case "delete": {
+						if (KnockbackConfig.getCurrentKb().getName().equalsIgnoreCase(args[1])) {
+							knockbackCommandMain(player);
+							player.sendMessage("§cYou cannot delete the profile that is being used.");
+							return false;
+						}
+						if (KnockbackConfig.getKbProfiles().removeIf(profile -> profile.getName().equalsIgnoreCase(args[1]))) {
+							KnockbackConfig.set("knockback.profiles." + args[1], null);
+							knockbackCommandMain(player);
+							player.sendMessage("§aThe profile §e" + args[1] + " §ahas been removed.");
+							return true;
+						} else {
+							player.sendMessage("§cThis profile doesn't exist.");
+						}
+						break;
+					}
+					case "load": {
+						KnockbackProfile profile = KnockbackConfig.getKbProfileByName(args[1]);
+						if (profile != null) {
+							if (KnockbackConfig.getCurrentKb().getName().equalsIgnoreCase(args[1])) {
+								player.sendMessage("§cThis profile is loaded.");
+								return false;
+							}
+							KnockbackConfig.setCurrentKb(profile);
+							KnockbackConfig.set("knockback.current", profile.getName());
+							KnockbackConfig.save();
+							knockbackCommandMain(player);
+							player.sendMessage("§aThe profile §e" + args[1] + " §ahas been loaded.");
+							return true;
+						} else {
+							player.sendMessage("§cThis profile doesn't exist.");
+						}
+						break;
+					}
+					case "view": {
+						KnockbackProfile profile = KnockbackConfig.getKbProfileByName(args[1]);
+						if (profile != null) {
+							knockbackCommandView(player, profile);
+							return true;
+						}
+						player.sendMessage("§cThis profile doesn't exist.");
+						break;
+					}
+					case "projectile": {
+						KnockbackProfile profile = KnockbackConfig.getKbProfileByName(args[1]);
+						if (profile != null) {
+							knockbackCommandViewProjectiles(player, profile);
+							return true;
+						}
+						player.sendMessage("§cThis profile doesn't exist.");
+						break;
+					}
+					default: {
+						knockbackCommandMain(player);
+					}
 				}
 				break;
 			}
-			case "delete": {
-				if (KnockbackConfig.getCurrentKb().getName().equalsIgnoreCase(args[1])) {
-					knockbackCommandMain(player);
-					player.sendMessage("§cYou cannot delete the profile that is being used.");
-					return false;
-				}
-				if (KnockbackConfig.getKbProfiles().removeIf(profile -> profile.getName().equalsIgnoreCase(args[1]))) {
-					KnockbackConfig.set("knockback.profiles." + args[1], null);
-					knockbackCommandMain(player);
-					player.sendMessage("§aThe profile §e" + args[1] + " §ahas been removed.");
-					return true;
-				} else {
-					player.sendMessage("§cThis profile doesn't exist.");
-				}
-				break;
-			}
-			case "load": {
-				KnockbackProfile profile = KnockbackConfig.getKbProfileByName(args[1]);
-				if (profile != null) {
-					if (KnockbackConfig.getCurrentKb().getName().equalsIgnoreCase(args[1])) {
-						player.sendMessage("§cThis profile is loaded.");
+			case 3: {
+				if (args[0].equalsIgnoreCase("set")) {
+					KnockbackProfile profile = KnockbackConfig.getKbProfileByName(args[1]);
+					if (profile == null) {
+						sender.sendMessage("§cA profile with that name could not be found.");
 						return false;
 					}
-					KnockbackConfig.setCurrentKb(profile);
-					KnockbackConfig.set("knockback.current", profile.getName());
-					KnockbackConfig.save();
-					knockbackCommandMain(player);
-					player.sendMessage("§aThe profile §e" + args[1] + " §ahas been loaded.");
-					return true;
-				} else {
-					player.sendMessage("§cThis profile doesn't exist.");
+					Player target = Bukkit.getPlayer(args[2]);
+					if (target == null) {
+						sender.sendMessage("§cThat player is not online.");
+						return false;
+					}
+					target.setKnockbackProfile(profile);
 				}
 				break;
 			}
-			case "view": {
-				KnockbackProfile profile = KnockbackConfig.getKbProfileByName(args[1]);
-				if (profile != null) {
-					knockbackCommandView(player, profile);
-					return true;
+			case 4: {
+				if ("edit".equalsIgnoreCase(args[0])) {
+					KnockbackProfile profile = KnockbackConfig.getKbProfileByName(args[1].toLowerCase());
+					if (profile == null) {
+						player.sendMessage("§cThis profile doesn't exist.");
+						return false;
+					}
+					switch (args[2].toLowerCase()) {
+						case "horizontal": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setHorizontal(value);
+							profile.save();
+							knockbackCommandView(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+						case "vertical": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setVertical(value);
+							profile.save();
+							knockbackCommandView(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+						case "vertical-limit": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setVerticalLimit(value);
+							profile.save();
+							knockbackCommandView(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+						case "extra-horizontal": {
+							if (!NumberUtils.isNumber(args[3])) {
+								sender.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setExtraHorizontal(value);
+							profile.save();
+							knockbackCommandView(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+						case "extra-vertical": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setExtraVertical(value);
+							profile.save();
+							knockbackCommandView(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+						case "friction-horizontal": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setFrictionHorizontal(value);
+							profile.save();
+							knockbackCommandView(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+						case "friction-vertical": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setFrictionVertical(value);
+							profile.save();
+							knockbackCommandView(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+
+						case "sprint-friction-horizontal": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setSprintFrictionHorizontal(value);
+							profile.save();
+							knockbackCommandView(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+						case "sprint-friction-vertical": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setSprintFrictionVertical(value);
+							profile.save();
+							knockbackCommandView(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+						case "sprint-vertical-limit": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setSprintVerticalLimit(value);
+							profile.save();
+							knockbackCommandView(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+						case "sprint-horizontal": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setSprintHorizontal(value);
+							profile.save();
+							knockbackCommandView(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+						case "sprint-vertical": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setSprintVertical(value);
+							profile.save();
+							knockbackCommandView(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+						case "sprint-extra-horizontal": {
+							if (!NumberUtils.isNumber(args[3])) {
+								sender.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setSprintExtraHorizontal(value);
+							profile.save();
+							knockbackCommandView(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+						case "sprint-extra-vertical": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setSprintExtraVertical(value);
+							profile.save();
+							knockbackCommandView(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+						case "stop-sprint": {
+							if ("true".equalsIgnoreCase(args[3]) || "false".equalsIgnoreCase(args[3])) {
+								profile.setStopSprint(Boolean.parseBoolean(args[3]));
+								profile.save();
+								knockbackCommandView(player, profile);
+								player.sendMessage("§aValue edited and saved.");
+								return true;
+							} else {
+								player.sendMessage("§4" + args[3] + " §cis not a boolean.");
+							}
+							break;
+						}
+
+						case "slowdown": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setSlowdown(value);
+							profile.save();
+							knockbackCommandView(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+
+						case "rod-horizontal": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setRodHorizontal(value);
+							profile.save(true);
+							knockbackCommandViewProjectiles(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+						case "rod-vertical": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setRodVertical(value);
+							profile.save(true);
+							knockbackCommandViewProjectiles(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+						case "rod-speed": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setRodSpeed(value);
+							profile.save(true);
+							knockbackCommandViewProjectiles(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+						case "double-damage": {
+							if ("true".equalsIgnoreCase(args[3]) || "false".equalsIgnoreCase(args[3])) {
+								profile.setDoubleDamage(Boolean.parseBoolean(args[3]));
+								profile.save(true);
+								knockbackCommandViewProjectiles(player, profile);
+								player.sendMessage("§aValue edited and saved.");
+								return true;
+							} else {
+								player.sendMessage("§4" + args[3] + " §cis not a boolean.");
+							}
+							break;
+						}
+
+						case "arrow-horizontal": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setArrowHorizontal(value);
+							profile.save(true);
+							knockbackCommandViewProjectiles(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+						case "arrow-vertical": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setArrowVertical(value);
+							profile.save(true);
+							knockbackCommandViewProjectiles(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+
+						case "pearl-horizontal": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setPearlHorizontal(value);
+							profile.save(true);
+							knockbackCommandViewProjectiles(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+
+						case "pearl-vertical": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setPearlVertical(value);
+							profile.save(true);
+							knockbackCommandViewProjectiles(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+
+						case "snowball-horizontal": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setSnowballHorizontal(value);
+							profile.save(true);
+							knockbackCommandViewProjectiles(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+
+						case "snowball-vertical": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setSnowballVertical(value);
+							profile.save(true);
+							knockbackCommandViewProjectiles(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+
+						case "egg-horizontal": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setEggHorizontal(value);
+							profile.save(true);
+							knockbackCommandViewProjectiles(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+
+						case "egg-vertical": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setEggVertical(value);
+							profile.save(true);
+							knockbackCommandViewProjectiles(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+
+						case "potion-fall": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							float value = Float.parseFloat(args[3]);
+							profile.setPotionFall(value);
+							profile.save(true);
+							knockbackCommandViewProjectiles(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+
+						case "potion-multiplier": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							float value = Float.parseFloat(args[3]);
+							profile.setPotionMultiplier(value);
+							profile.save(true);
+							knockbackCommandViewProjectiles(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+
+						case "potion-offset": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							float value = Float.parseFloat(args[3]);
+							profile.setPotionOffset(value);
+							profile.save(true);
+							knockbackCommandViewProjectiles(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+
+						case "potion-player-speed": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setPotionPlayerSpeed(value);
+							profile.save(true);
+							knockbackCommandViewProjectiles(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+
+						case "potion-distance-radius": {
+							if (!NumberUtils.isNumber(args[3])) {
+								player.sendMessage("§4" + args[3] + " §c is not a number.");
+								return false;
+							}
+							double value = Double.parseDouble(args[3]);
+							profile.setPotionDistanceRadius(value);
+							profile.save(true);
+							knockbackCommandViewProjectiles(player, profile);
+							player.sendMessage("§aValue edited and saved.");
+							break;
+						}
+
+						case "smooth-potting": {
+							if ("true".equalsIgnoreCase(args[3]) || "false".equalsIgnoreCase(args[3])) {
+								profile.setSmoothPotting(Boolean.parseBoolean(args[3]));
+								profile.save(true);
+								knockbackCommandViewProjectiles(player, profile);
+								player.sendMessage("§aValue edited and saved.");
+								return true;
+							} else {
+								player.sendMessage("§4" + args[3] + " §cis not a boolean.");
+							}
+							break;
+						}
+					}
 				}
-				player.sendMessage("§cThis profile doesn't exist.");
-				break;
-			}
-			case "projectile": {
-				KnockbackProfile profile = KnockbackConfig.getKbProfileByName(args[1]);
-				if (profile != null) {
-					knockbackCommandViewProjectiles(player, profile);
-					return true;
-				}
-				player.sendMessage("§cThis profile doesn't exist.");
 				break;
 			}
 			default: {
 				knockbackCommandMain(player);
 			}
-			}
-			break;
-		}
-		case 3: {
-			if (args[0].equalsIgnoreCase("set")) {
-				KnockbackProfile profile = KnockbackConfig.getKbProfileByName(args[1]);
-				if (profile == null) {
-					sender.sendMessage("§cA profile with that name could not be found.");
-					return false;
-				}
-				Player target = Bukkit.getPlayer(args[2]);
-				if (target == null) {
-					sender.sendMessage("§cThat player is not online.");
-					return false;
-				}
-				target.setKnockbackProfile(profile);
-			}
-			break;
-		}
-		case 4: {
-			if ("edit".equalsIgnoreCase(args[0])) {
-				KnockbackProfile profile = KnockbackConfig.getKbProfileByName(args[1].toLowerCase());
-				if (profile == null) {
-					player.sendMessage("§cThis profile doesn't exist.");
-					return false;
-				}
-				switch (args[2].toLowerCase()) {
-				case "friction-horizontal": {
-					if (!NumberUtils.isNumber(args[3])) {
-						player.sendMessage("§4" + args[3] + " §c is not a number.");
-						return false;
-					}
-					double value = Double.parseDouble(args[3]);
-					profile.setFrictionHorizontal(value);
-					profile.save();
-					knockbackCommandView(player, profile);
-					player.sendMessage("§aValue edited and saved.");
-					break;
-				}
-				case "friction-vertical": {
-					if (!NumberUtils.isNumber(args[3])) {
-						player.sendMessage("§4" + args[3] + " §c is not a number.");
-						return false;
-					}
-					double value = Double.parseDouble(args[3]);
-					profile.setFrictionVertical(value);
-					profile.save();
-					knockbackCommandView(player, profile);
-					player.sendMessage("§aValue edited and saved.");
-					break;
-				}
-				case "horizontal": {
-					if (!NumberUtils.isNumber(args[3])) {
-						player.sendMessage("§4" + args[3] + " §c is not a number.");
-						return false;
-					}
-					double value = Double.parseDouble(args[3]);
-					profile.setHorizontal(value);
-					profile.save();
-					knockbackCommandView(player, profile);
-					player.sendMessage("§aValue edited and saved.");
-					break;
-				}
-				case "vertical": {
-					if (!NumberUtils.isNumber(args[3])) {
-						player.sendMessage("§4" + args[3] + " §c is not a number.");
-						return false;
-					}
-					double value = Double.parseDouble(args[3]);
-					profile.setVertical(value);
-					profile.save();
-					knockbackCommandView(player, profile);
-					player.sendMessage("§aValue edited and saved.");
-					break;
-				}
-				case "extra-horizontal": {
-					if (!NumberUtils.isNumber(args[3])) {
-						sender.sendMessage("§4" + args[3] + " §c is not a number.");
-						return false;
-					}
-					double value = Double.parseDouble(args[3]);
-					profile.setExtraHorizontal(value);
-					profile.save();
-					knockbackCommandView(player, profile);
-					player.sendMessage("§aValue edited and saved.");
-					break;
-				}
-				case "extra-vertical": {
-					if (!NumberUtils.isNumber(args[3])) {
-						player.sendMessage("§4" + args[3] + " §c is not a number.");
-						return false;
-					}
-					double value = Double.parseDouble(args[3]);
-					profile.setExtraVertical(value);
-					profile.save();
-					knockbackCommandView(player, profile);
-					player.sendMessage("§aValue edited and saved.");
-					break;
-				}
-				case "vertical-max": {
-					if (!NumberUtils.isNumber(args[3])) {
-						player.sendMessage("§4" + args[3] + " §c is not a number.");
-						return false;
-					}
-					double value = Double.parseDouble(args[3]);
-					profile.setVerticalMax(value);
-					profile.save();
-					knockbackCommandView(player, profile);
-					player.sendMessage("§aValue edited and saved.");
-					break;
-				}
-				case "vertical-min": {
-					if (!NumberUtils.isNumber(args[3])) {
-						player.sendMessage("§4" + args[3] + " §c is not a number.");
-						return false;
-					}
-					double value = Double.parseDouble(args[3]);
-					profile.setVerticalMin(value);
-					profile.save();
-					knockbackCommandView(player, profile);
-					player.sendMessage("§aValue edited and saved.");
-					break;
-				}
-				case "stop-sprint": {
-					if ("true".equalsIgnoreCase(args[3]) || "false".equalsIgnoreCase(args[3])) {
-						profile.setStopSprint(Boolean.parseBoolean(args[3]));
-						profile.save();
-						knockbackCommandView(player, profile);
-						player.sendMessage("§aValue edited and saved.");
-						return true;
-					} else {
-						player.sendMessage("§4" + args[3] + " §cis not a boolean.");
-					}
-					break;
-				}
-				case "rod-horizontal": {
-					if (!NumberUtils.isNumber(args[3])) {
-						player.sendMessage("§4" + args[3] + " §c is not a number.");
-						return false;
-					}
-					double value = Double.parseDouble(args[3]);
-					profile.setRodHorizontal(value);
-                    profile.save(true);
-					knockbackCommandViewProjectiles(player, profile);
-					player.sendMessage("§aValue edited and saved.");
-					break;
-				}
-				case "rod-vertical": {
-					if (!NumberUtils.isNumber(args[3])) {
-						player.sendMessage("§4" + args[3] + " §c is not a number.");
-						return false;
-					}
-					double value = Double.parseDouble(args[3]);
-					profile.setRodVertical(value);
-                    profile.save(true);
-					knockbackCommandViewProjectiles(player, profile);
-					player.sendMessage("§aValue edited and saved.");
-					break;
-				}
-				case "arrow-horizontal": {
-					if (!NumberUtils.isNumber(args[3])) {
-						player.sendMessage("§4" + args[3] + " §c is not a number.");
-						return false;
-					}
-					double value = Double.parseDouble(args[3]);
-					profile.setArrowHorizontal(value);
-                    profile.save(true);
-					knockbackCommandViewProjectiles(player, profile);
-					player.sendMessage("§aValue edited and saved.");
-					break;
-				}
-				case "arrow-vertical": {
-					if (!NumberUtils.isNumber(args[3])) {
-						player.sendMessage("§4" + args[3] + " §c is not a number.");
-						return false;
-					}
-					double value = Double.parseDouble(args[3]);
-					profile.setArrowVertical(value);
-                    profile.save(true);
-					knockbackCommandViewProjectiles(player, profile);
-					player.sendMessage("§aValue edited and saved.");
-					break;
-				}
-				case "pearl-horizontal": {
-					if (!NumberUtils.isNumber(args[3])) {
-						player.sendMessage("§4" + args[3] + " §c is not a number.");
-						return false;
-					}
-					double value = Double.parseDouble(args[3]);
-					profile.setPearlHorizontal(value);
-                    profile.save(true);
-					knockbackCommandViewProjectiles(player, profile);
-					player.sendMessage("§aValue edited and saved.");
-					break;
-				}
-				case "pearl-vertical": {
-					if (!NumberUtils.isNumber(args[3])) {
-						player.sendMessage("§4" + args[3] + " §c is not a number.");
-						return false;
-					}
-					double value = Double.parseDouble(args[3]);
-					profile.setPearlVertical(value);
-                    profile.save(true);
-					knockbackCommandViewProjectiles(player, profile);
-					player.sendMessage("§aValue edited and saved.");
-					break;
-				}
-				case "snowball-horizontal": {
-					if (!NumberUtils.isNumber(args[3])) {
-						player.sendMessage("§4" + args[3] + " §c is not a number.");
-						return false;
-					}
-					double value = Double.parseDouble(args[3]);
-					profile.setSnowballHorizontal(value);
-                    profile.save(true);
-					knockbackCommandViewProjectiles(player, profile);
-					player.sendMessage("§aValue edited and saved.");
-					break;
-				}
-				case "snowball-vertical": {
-					if (!NumberUtils.isNumber(args[3])) {
-						player.sendMessage("§4" + args[3] + " §c is not a number.");
-						return false;
-					}
-					double value = Double.parseDouble(args[3]);
-					profile.setSnowballVertical(value);
-                    profile.save(true);
-					knockbackCommandViewProjectiles(player, profile);
-					player.sendMessage("§aValue edited and saved.");
-					break;
-				}
-				case "egg-horizontal": {
-					if (!NumberUtils.isNumber(args[3])) {
-						player.sendMessage("§4" + args[3] + " §c is not a number.");
-						return false;
-					}
-					double value = Double.parseDouble(args[3]);
-					profile.setEggHorizontal(value);
-                    profile.save(true);
-					knockbackCommandViewProjectiles(player, profile);
-					player.sendMessage("§aValue edited and saved.");
-					break;
-				}
-				case "egg-vertical": {
-					if (!NumberUtils.isNumber(args[3])) {
-						player.sendMessage("§4" + args[3] + " §c is not a number.");
-						return false;
-					}
-					double value = Double.parseDouble(args[3]);
-					profile.setEggVertical(value);
-                    profile.save(true);
-					knockbackCommandViewProjectiles(player, profile);
-					player.sendMessage("§aValue edited and saved.");
-					break;
-				}
-				case "wtap-extra-horizontal": {
-					if (!NumberUtils.isNumber(args[3])) {
-						player.sendMessage("§4" + args[3] + " §c is not a number.");
-						return false;
-					}
-					double value = Double.parseDouble(args[3]);
-					profile.setWTapExtraHorizontal(value);
-				
-					knockbackCommandView(player, profile);
-					player.sendMessage("§aValue edited and saved.");
-					break;
-				}
-				case "wtap-extra-vertical": {
-					if (!NumberUtils.isNumber(args[3])) {
-						player.sendMessage("§4" + args[3] + " §c is not a number.");
-						return false;
-					}
-					double value = Double.parseDouble(args[3]);
-					profile.setWTapExtraVertical(value);
-					
-					knockbackCommandView(player, profile);
-					player.sendMessage("§aValue edited and saved.");
-					break;
-				}
-				case "add-horizontal": {
-					if (!NumberUtils.isNumber(args[3])) {
-						player.sendMessage("§4" + args[3] + " §c is not a number.");
-						return false;
-					}
-					double value = Double.parseDouble(args[3]);
-					profile.setAddHorizontal(value);
-					
-					knockbackCommandView(player, profile);
-					player.sendMessage("§aValue edited and saved.");
-					break;
-				}
-				case "add-vertical": {
-					if (!NumberUtils.isNumber(args[3])) {
-						player.sendMessage("§4" + args[3] + " §c is not a number.");
-						return false;
-					}
-					double value = Double.parseDouble(args[3]);
-					profile.setAddVertical(value);
-					
-					knockbackCommandView(player, profile);
-					player.sendMessage("§aValue edited and saved.");
-					break;
-				}
-				}
-			}
-			break;
-		}
-		default: {
-			knockbackCommandMain(player);
-		}
 		}
 		return false;
 	}

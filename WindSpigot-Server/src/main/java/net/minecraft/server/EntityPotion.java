@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import ga.windpvp.windspigot.knockback.KnockbackConfig;
 import org.bukkit.craftbukkit.entity.CraftLivingEntity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 // CraftBukkit end
 
@@ -40,19 +42,31 @@ public class EntityPotion extends EntityProjectile {
 		this.item = itemstack;
 	}
 
+	// KazerSpigot
 	@Override
 	protected float m() {
-		return 0.05F;
+		if (this.shooter==null){
+			return 0;
+		}
+		return (this.shooter.bukkitEntity.getType() == EntityType.PLAYER) ? (((EntityHuman)this.shooter).getKnockback()).getPotionFall() : (KnockbackConfig.getCurrentKb()).getPotionFall();
 	}
 
+	// KazerSpigot
 	@Override
 	protected float j() {
-		return 0.5F;
+		if (this.shooter==null){
+			return 0;
+		}
+		return (this.shooter.bukkitEntity.getType() == EntityType.PLAYER) ? (((EntityHuman)this.shooter).getKnockback()).getPotionMultiplier() : (KnockbackConfig.getCurrentKb()).getPotionMultiplier();
 	}
 
+	// KazerSpigot
 	@Override
 	protected float l() {
-		return -20.0F;
+		if (this.shooter==null){
+			return 0;
+		}
+		return (this.shooter.bukkitEntity.getType() == EntityType.PLAYER) ? (((EntityHuman)this.shooter).getKnockback()).getPotionOffset() : (KnockbackConfig.getCurrentKb()).getPotionOffset();
 	}
 
 	public void setPotionValue(int i) {

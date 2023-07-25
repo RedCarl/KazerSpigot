@@ -4,85 +4,208 @@ import dev.cobblesword.nachospigot.knockback.KnockbackProfile;
 
 public class CraftKnockbackProfile implements KnockbackProfile {
 
+	/**
+	 * Knockback名称
+	 */
 	private String name;
+
+	/**
+	 * 保存路径
+	 */
 	private final String saveProfilePath;
 
-	private double horizontal = 0.4D;
-	private double vertical = 0.4D;
-	private double verticalMin = -1.0D;
-	private double verticalMax = 0.4D;
+	/**
+	 * 基础设置
+	 */
+	private double horizontal = 0.55D;
+	private double vertical = 0.36D;
+	private double verticalLimit = 0.36D;
 	private double extraHorizontal = 0.5D;
 	private double extraVertical = 0.1D;
 	private double frictionHorizontal = 2.0D;
 	private double frictionVertical = 2.0D;
+	private double slowdown = 0.6D;
 
+	/**
+	 * 疾跑参数
+	 */
+	private double sprintFrictionHorizontal = 50.0D;
+	private double sprintFrictionVertical = 50.0D;
+	private double sprintVerticalLimit = 0.36D;
+	private double sprintHorizontal = 0.55D;
+	private double sprintVertical = 0.36D;
+	private double sprintExtraHorizontal = 0.256D;
+	private double sprintExtraVertical = 0.0D;
 	private boolean stopSprint = true;
 
+	/**
+	 * 鱼竿
+	 */
 	private double rodHorizontal = 0.4D;
 	private double rodVertical = 0.4D;
+	private double rodSpeed = 1.02D;
+	private boolean doubleDamage = false;
+
+	/**
+	 * 箭矢
+	 */
 	private double arrowHorizontal = 0.4D;
 	private double arrowVertical = 0.4D;
+
+	/**
+	 * 珍珠
+	 */
 	private double pearlHorizontal = 0.4D;
 	private double pearlVertical = 0.4D;
+
+	/**
+	 * 雪球
+	 */
 	private double snowballHorizontal = 0.4D;
 	private double snowballVertical = 0.4D;
+
+	/**
+	 * 鸡蛋
+	 */
 	private double eggHorizontal = 0.4D;
 	private double eggVertical = 0.4D;
-	
-	private double wTapHorizontal = 0.5;
-	private double wTapVertical = 0.1;
-	
-	private double addHorizontal = 0;
-	private double addVertical = 0;
+
+	/**
+	 * 药水
+	 */
+	private float potionFall = 0.06F;
+	private float potionMultiplier = 0.5F;
+	private float potionOffset = -20.0F;
+	private double potionPlayerSpeed = 4D;
+	private double potionDistanceRadius = 0.1D;
+	private boolean smoothPotting = true;
 
 	public CraftKnockbackProfile(String name) {
 		this.name = name;
 		this.saveProfilePath = "knockback.profiles." + this.name;
 	}
 
-	@Override
-	public void save() {
-		save(false);
-	}
-	
 	private void set(String savePath, Object value) {
 		KnockbackConfig.set(saveProfilePath + savePath, value);
 	}
 
 	@Override
+	public void save() {
+		save(false);
+	}
+
+	@Override
 	public void save(boolean projectiles) {
 
-		set(".stop-sprint", this.stopSprint);
-		set(".friction-horizontal", this.frictionHorizontal);
-		set(".friction-vertical", this.frictionVertical);
 		set(".horizontal", this.horizontal);
 		set(".vertical", this.vertical);
-		set(".vertical-max", this.verticalMax);
-		set(".vertical-min", this.verticalMin);
+		set(".vertical-limit", this.verticalLimit);
 		set(".extra-horizontal", this.extraHorizontal);
 		set(".extra-vertical", this.extraVertical);
-		
-		set(".wtap-extra-horizontal", this.wTapHorizontal);
-		set(".wtap-extra-vertical", this.wTapVertical);
-		
-		set(".add-horizontal", this.addHorizontal);
-		set(".add-vertical", this.addVertical);
-		
+		set(".friction-horizontal", this.frictionHorizontal);
+		set(".friction-vertical", this.frictionVertical);
+
+		set(".sprint-friction-horizontal", this.sprintFrictionHorizontal);
+		set(".sprint-friction-vertical", this.sprintFrictionVertical);
+		set(".sprint-vertical-limit", this.sprintVerticalLimit);
+		set(".sprint-horizontal", this.sprintHorizontal);
+		set(".sprint-vertical", this.sprintVertical);
+		set(".sprint-extra-horizontal", this.sprintExtraHorizontal);
+		set(".sprint-extra-vertical", this.sprintExtraVertical);
+		set(".stop-sprint", this.stopSprint);
+
+		set(".slowdown", this.slowdown);
+
 		if (projectiles) {
+
 			set(".projectiles.rod.horizontal", this.rodHorizontal);
 			set(".projectiles.rod.vertical", this.rodVertical);
+			set(".projectiles.rod.speed", this.rodSpeed);
+			set(".projectiles.rod.double-damage", this.doubleDamage);
+
 			set(".projectiles.arrow.horizontal", this.arrowHorizontal);
 			set(".projectiles.arrow.vertical", this.arrowVertical);
+
 			set(".projectiles.pearl.horizontal", this.pearlHorizontal);
 			set(".projectiles.pearl.vertical", this.pearlVertical);
+
 			set(".projectiles.snowball.horizontal", this.snowballHorizontal);
 			set(".projectiles.snowball.vertical", this.snowballVertical);
+
 			set(".projectiles.egg.horizontal", this.eggHorizontal);
 			set(".projectiles.egg.vertical", this.eggVertical);
+
+			set(".projectiles.potion.fall", this.potionFall);
+			set(".projectiles.potion.multiplier", this.potionMultiplier);
+			set(".projectiles.potion.offset", this.potionOffset);
+			set(".projectiles.potion.player-speed", this.potionPlayerSpeed);
+			set(".projectiles.potion.distance-radius", this.potionDistanceRadius);
+			set(".projectiles.potion.smooth-potting", this.smoothPotting);
+
 		}
 
 		KnockbackConfig.save();
+
 	}
+
+	@Override
+	public String[] getKnockbackValues() {
+
+		return new String[] {
+
+				"Horizontal§7: " + this.horizontal,
+				"Vertical§7: " + this.vertical,
+				"Vertical-Limit§7: " + this.verticalLimit,
+				"Extra-Horizontal§7: " + this.extraHorizontal,
+				"Extra-Vertical§7: " + this.extraVertical,
+				"Friction-Horizontal§7: " + this.frictionHorizontal,
+				"Friction-Vertical§7: " + this.frictionVertical,
+
+				"Sprint-Friction-Horizontal§7: " + this.sprintFrictionHorizontal,
+				"Sprint-Friction-Vertical§7: " + this.sprintFrictionVertical,
+				"Sprint-Vertical-Limit§7: " + this.sprintVerticalLimit,
+				"Sprint-Horizontal§7: " + this.sprintHorizontal,
+				"Sprint-Vertical§7: " + this.sprintVertical,
+				"Sprint-Extra-Horizontal§7: " + this.sprintExtraHorizontal,
+				"Sprint-Extra-Vertical§7: " + this.sprintExtraVertical,
+				"Stop-Sprint§7: " + this.stopSprint,
+
+				"Slowdown§7: " + this.slowdown,
+
+		};
+	}
+
+	@Override
+	public String[] getProjectilesValues() {
+		return new String[] {
+
+				"Rod-Horizontal§7: " + this.rodHorizontal,
+				"Rod-Vertical§7: " + this.rodVertical,
+				"Rod-Speed§7: " + this.rodSpeed,
+				"Double-Damage§7: " + this.doubleDamage,
+
+				"Arrow-Horizontal§7: " + this.arrowHorizontal,
+				"Arrow-Vertical§7: " + this.arrowVertical,
+
+				"Pearl-Horizontal§7: " + this.pearlHorizontal,
+				"Pearl-Vertical§7: " + this.pearlVertical,
+
+				"Snowball-Horizontal§7: " + this.snowballHorizontal,
+				"Snowball-Vertical§7: " + this.snowballVertical,
+
+				"Egg-Horizontal§7: " + this.eggHorizontal,
+				"Egg-Vertical§7: " + this.eggVertical,
+
+				"Potion-Fall§7: " + this.potionFall,
+				"Potion-Multiplier§7: " + this.potionMultiplier,
+				"Potion-Offset§7: " + this.potionOffset,
+				"Potion-Player-Speed§7: " + this.potionPlayerSpeed,
+				"Potion-Distance-Radius§7: " + this.potionDistanceRadius,
+				"Smooth-Potting§7: " + this.smoothPotting
+
+		};
+	}
+
 
 	@Override
 	public String getName() {
@@ -115,23 +238,13 @@ public class CraftKnockbackProfile implements KnockbackProfile {
 	}
 
 	@Override
-	public double getVerticalMin() {
-		return verticalMin;
+	public double getVerticalLimit() {
+		return verticalLimit;
 	}
 
 	@Override
-	public void setVerticalMin(double verticalMin) {
-		this.verticalMin = verticalMin;
-	}
-
-	@Override
-	public double getVerticalMax() {
-		return verticalMax;
-	}
-
-	@Override
-	public void setVerticalMax(double verticalMax) {
-		this.verticalMax = verticalMax;
+	public void setVerticalLimit(double verticalLimit) {
+		this.verticalLimit = verticalLimit;
 	}
 
 	@Override
@@ -175,16 +288,6 @@ public class CraftKnockbackProfile implements KnockbackProfile {
 	}
 
 	@Override
-	public boolean isStopSprint() {
-		return stopSprint;
-	}
-
-	@Override
-	public void setStopSprint(boolean stopSprint) {
-		this.stopSprint = stopSprint;
-	}
-
-	@Override
 	public double getRodHorizontal() {
 		return rodHorizontal;
 	}
@@ -205,6 +308,16 @@ public class CraftKnockbackProfile implements KnockbackProfile {
 	}
 
 	@Override
+	public double getRodSpeed() {
+		return rodSpeed;
+	}
+
+	@Override
+	public void setRodSpeed(double rodSpeed) {
+		this.rodSpeed = rodSpeed;
+	}
+
+	@Override
 	public double getArrowHorizontal() {
 		return arrowHorizontal;
 	}
@@ -222,6 +335,16 @@ public class CraftKnockbackProfile implements KnockbackProfile {
 	@Override
 	public void setArrowVertical(double arrowVertical) {
 		this.arrowVertical = arrowVertical;
+	}
+
+	@Override
+	public double getSlowdown() {
+		return slowdown;
+	}
+
+	@Override
+	public void setSlowdown(double slowdown) {
+		this.slowdown = slowdown;
 	}
 
 	@Override
@@ -285,62 +408,152 @@ public class CraftKnockbackProfile implements KnockbackProfile {
 	}
 
 	@Override
-	public String[] getKnockbackValues() {
-		return new String[] { "Horizontal§7: " + this.horizontal, "Vertical§7: " + this.vertical,
-				"Vertical-Max§7: " + this.verticalMax, "Vertical-Min§7: " + this.verticalMin,
-				"Extra-Horizontal§7: " + this.extraHorizontal, "Extra-Vertical§7: " + this.extraVertical,
-				"Friction-Horizontal§7: " + this.frictionHorizontal, "Friction-Vertical§7: " + this.frictionVertical,
-				"Stop-Sprint§7: " + this.stopSprint, "Wtap-Extra-Horizontal§7: " + this.wTapHorizontal,
-				"Wtap-Extra-Vertical§7: " + this.wTapVertical, "Add-Horizontal§7: " + this.addHorizontal,
-				"Add-Vertical§7: " + this.addVertical };
+	public float getPotionFall() {
+		return potionFall;
 	}
 
 	@Override
-	public String[] getProjectilesValues() {
-		return new String[] { "Rod-Horizontal§7: " + this.rodHorizontal, "Rod-Vertical§7: " + this.rodVertical,
-				"Arrow-Horizontal§7: " + this.arrowHorizontal, "Arrow-Vertical§7: " + this.arrowVertical,
-				"Pearl-Horizontal§7: " + this.pearlHorizontal, "Pearl-Vertical§7: " + this.pearlVertical,
-				"Snowball-Horizontal§7: " + this.snowballHorizontal, "Snowball-Vertical§7: " + this.snowballVertical,
-				"Egg-Horizontal§7: " + this.eggHorizontal, "Egg-Vertical§7: " + this.eggVertical, };
+	public void setPotionFall(float potionFall) {
+		this.potionFall = potionFall;
 	}
 
 	@Override
-	public double getWTapExtraHorizontal() {
-		return wTapHorizontal;
+	public float getPotionMultiplier() {
+		return potionMultiplier;
 	}
 
 	@Override
-	public void setWTapExtraHorizontal(double wtapHorizontal) {
-		this.wTapHorizontal = wtapHorizontal;
+	public void setPotionMultiplier(float potionMultiplier) {
+		this.potionMultiplier = potionMultiplier;
 	}
 
 	@Override
-	public double getWTapExtraVertical() {
-		return wTapVertical;
+	public float getPotionOffset() {
+		return potionOffset;
 	}
 
 	@Override
-	public void setWTapExtraVertical(double wTapVertical) {
-		this.wTapVertical = wTapVertical;
+	public void setPotionOffset(float potionOffset) {
+		this.potionOffset = potionOffset;
 	}
 
 	@Override
-	public double getAddHorizontal() {
-		return addHorizontal;
+	public double getPotionPlayerSpeed() {
+		return potionPlayerSpeed;
 	}
 
 	@Override
-	public void setAddHorizontal(double addHorizontal) {
-		this.addHorizontal = addHorizontal;
+	public void setPotionPlayerSpeed(double potionPlayerSpeed) {
+		this.potionPlayerSpeed = potionPlayerSpeed;
 	}
 
 	@Override
-	public double getAddVertical() {
-		return addVertical;
+	public double getPotionDistanceRadius() {
+		return potionDistanceRadius;
 	}
 
 	@Override
-	public void setAddVertical(double addVertical) {
-		this.addVertical = addVertical;
+	public void setPotionDistanceRadius(double potionDistanceRadius) {
+		this.potionDistanceRadius = potionDistanceRadius;
+	}
+
+	@Override
+	public boolean isSmoothPotting() {
+		return smoothPotting;
+	}
+
+	@Override
+	public void setSmoothPotting(boolean smoothPotting) {
+		this.smoothPotting = smoothPotting;
+	}
+
+	@Override
+	public double getSprintFrictionHorizontal() {
+		return sprintFrictionHorizontal;
+	}
+
+	@Override
+	public void setSprintFrictionHorizontal(double sprintFrictionHorizontal) {
+		this.sprintFrictionHorizontal = sprintFrictionHorizontal;
+	}
+
+	@Override
+	public double getSprintFrictionVertical() {
+		return sprintFrictionVertical;
+	}
+
+	@Override
+	public void setSprintFrictionVertical(double sprintFrictionVertical) {
+		this.sprintFrictionVertical = sprintFrictionVertical;
+	}
+
+	@Override
+	public double getSprintVerticalLimit() {
+		return sprintVerticalLimit;
+	}
+
+	@Override
+	public void setSprintVerticalLimit(double sprintVerticalLimit) {
+		this.sprintVerticalLimit = sprintVerticalLimit;
+	}
+
+	@Override
+	public double getSprintHorizontal() {
+		return sprintHorizontal;
+	}
+
+	@Override
+	public void setSprintHorizontal(double sprintHorizontal) {
+		this.sprintHorizontal = sprintHorizontal;
+	}
+
+	@Override
+	public double getSprintVertical() {
+		return sprintVertical;
+	}
+
+	@Override
+	public void setSprintVertical(double sprintVertical) {
+		this.sprintVertical = sprintVertical;
+	}
+
+	@Override
+	public double getSprintExtraHorizontal() {
+		return sprintExtraHorizontal;
+	}
+
+	@Override
+	public void setSprintExtraHorizontal(double sprintExtraHorizontal) {
+		this.sprintExtraHorizontal = sprintExtraHorizontal;
+	}
+
+	@Override
+	public double getSprintExtraVertical() {
+		return sprintExtraVertical;
+	}
+
+	@Override
+	public void setSprintExtraVertical(double sprintExtraVertical) {
+		this.sprintExtraVertical = sprintExtraVertical;
+	}
+
+	@Override
+	public boolean isStopSprint() {
+		return stopSprint;
+	}
+
+	@Override
+	public void setStopSprint(boolean stopSprint) {
+		this.stopSprint = stopSprint;
+	}
+
+	@Override
+	public boolean isDoubleDamage() {
+		return doubleDamage;
+	}
+
+	@Override
+	public void setDoubleDamage(boolean doubleDamage) {
+		this.doubleDamage = doubleDamage;
 	}
 }

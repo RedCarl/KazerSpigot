@@ -16,21 +16,15 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import gg.kazer.event.SendTitleEvent;
+import net.minecraft.server.*;
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.Validate;
+import org.bukkit.*;
 import org.bukkit.Achievement;
-import org.bukkit.BanList;
-import org.bukkit.Effect;
-import org.bukkit.GameMode;
-import org.bukkit.Instrument;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Note;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.Sound;
 import org.bukkit.Statistic;
 import org.bukkit.Statistic.Type;
-import org.bukkit.WeatherType;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
 import org.bukkit.conversations.Conversation;
@@ -76,47 +70,7 @@ import ga.windpvp.windspigot.cache.Constants;
 import ga.windpvp.windspigot.config.WindSpigotConfig;
 import io.netty.buffer.Unpooled;
 import net.md_5.bungee.api.chat.BaseComponent;
-import net.minecraft.server.AttributeInstance;
-import net.minecraft.server.AttributeMapServer;
-import net.minecraft.server.AttributeModifiable;
-import net.minecraft.server.AttributeRanged;
-import net.minecraft.server.BlockPosition;
-import net.minecraft.server.ChatComponentText;
-import net.minecraft.server.Container;
-import net.minecraft.server.Entity;
-import net.minecraft.server.EntityArrow;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.EntityPlayer;
-import net.minecraft.server.EntityProjectile;
-import net.minecraft.server.EntityTracker;
-import net.minecraft.server.EntityTrackerEntry;
-import net.minecraft.server.IAttribute;
-import net.minecraft.server.IChatBaseComponent;
-import net.minecraft.server.MapIcon;
-import net.minecraft.server.MathHelper;
-import net.minecraft.server.MobEffectList;
-import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.Packet;
-import net.minecraft.server.PacketDataSerializer;
-import net.minecraft.server.PacketPlayOutBlockChange;
-import net.minecraft.server.PacketPlayOutChat;
-import net.minecraft.server.PacketPlayOutCustomPayload;
-import net.minecraft.server.PacketPlayOutGameStateChange;
-import net.minecraft.server.PacketPlayOutMap;
-import net.minecraft.server.PacketPlayOutNamedSoundEffect;
-import net.minecraft.server.PacketPlayOutPlayerInfo;
-import net.minecraft.server.PacketPlayOutPlayerListHeaderFooter;
-import net.minecraft.server.PacketPlayOutSpawnPosition;
-import net.minecraft.server.PacketPlayOutTitle;
 import net.minecraft.server.PacketPlayOutTitle.EnumTitleAction;
-import net.minecraft.server.PacketPlayOutUpdateAttributes;
-import net.minecraft.server.PacketPlayOutUpdateHealth;
-import net.minecraft.server.PacketPlayOutUpdateSign;
-import net.minecraft.server.PacketPlayOutWorldEvent;
-import net.minecraft.server.PacketPlayOutWorldParticles;
-import net.minecraft.server.PlayerConnection;
-import net.minecraft.server.WorldServer;
-import net.minecraft.server.WorldSettings;
 
 @DelegateDeserialization(CraftOfflinePlayer.class)
 public class CraftPlayer extends CraftHumanEntity implements Player {
@@ -1584,17 +1538,23 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
 
 	@Override
 	public void sendTitle(String title, String subtitle) {
-		if (title != null) {
-			PacketPlayOutTitle packetTitle = new PacketPlayOutTitle(EnumTitleAction.TITLE,
-					CraftChatMessage.fromString(title)[0]);
-			getHandle().playerConnection.sendPacket(packetTitle);
-		}
+		// KazerSpigot start
+		SendTitleEvent sendTitleEvent = new SendTitleEvent(getPlayer(),title,subtitle);
+		Bukkit.getPluginManager().callEvent(sendTitleEvent);
+		if (!sendTitleEvent.isCancelled()) {
+			if (title != null) {
+				PacketPlayOutTitle packetTitle = new PacketPlayOutTitle(EnumTitleAction.TITLE,
+						CraftChatMessage.fromString(title)[0]);
+				getHandle().playerConnection.sendPacket(packetTitle);
+			}
 
-		if (subtitle != null) {
-			PacketPlayOutTitle packetSubtitle = new PacketPlayOutTitle(EnumTitleAction.SUBTITLE,
-					CraftChatMessage.fromString(subtitle)[0]);
-			getHandle().playerConnection.sendPacket(packetSubtitle);
+			if (subtitle != null) {
+				PacketPlayOutTitle packetSubtitle = new PacketPlayOutTitle(EnumTitleAction.SUBTITLE,
+						CraftChatMessage.fromString(subtitle)[0]);
+				getHandle().playerConnection.sendPacket(packetSubtitle);
+			}
 		}
+		// KazerSpigot end
 	}
 
 	@Override
@@ -1837,6 +1797,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
 	}
 	
 	// WindSpigot start - more visible ping getting method
+	@Override
 	public int getPing() {
 		return this.spigot().getPing();
 	}

@@ -98,8 +98,9 @@ public class TimingsCommand extends BukkitCommand {
 					fileTimings.println("    Total time " + totalTime + " (" + totalTime / 1000000000 + "s)");
 				}
 				sender.sendMessage("Timings written to " + timings.getPath());
-				if (separate)
+				if (separate) {
 					sender.sendMessage("Names written to " + names.getPath());
+				}
 			} catch (IOException e) {
 			} finally {
 				if (fileTimings != null) {

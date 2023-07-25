@@ -1,29 +1,21 @@
 package net.minecraft.server;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
-
+import com.google.common.base.Charsets;
+import com.google.common.collect.Lists;
+import com.mojang.authlib.GameProfile;
+import dev.cobblesword.nachospigot.knockback.KnockbackProfile;
+import ga.windpvp.windspigot.knockback.KnockbackConfig;
 import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 import org.bukkit.craftbukkit.entity.CraftItem;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
-import org.bukkit.event.player.PlayerBedEnterEvent;
-import org.bukkit.event.player.PlayerBedLeaveEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.event.player.PlayerVelocityEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.util.Vector;
-// CraftBukkit end
 
-import com.google.common.base.Charsets;
-import com.google.common.collect.Lists;
-import com.mojang.authlib.GameProfile;
-
-import dev.cobblesword.nachospigot.knockback.KnockbackProfile;
-import ga.windpvp.windspigot.knockback.KnockbackConfig;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
 public abstract class EntityHuman extends EntityLiving {
 
@@ -55,7 +47,7 @@ public abstract class EntityHuman extends EntityLiving {
 	public int expTotal;
 	public float exp;
 	private int f;
-	private ItemStack g;
+	public ItemStack g;
 	private int h;
 	protected float bE = 0.1F;
 	protected float bF = 0.02F;
@@ -76,8 +68,54 @@ public abstract class EntityHuman extends EntityLiving {
 	}
 	// CraftBukkit end
 
+	// KazerSpigot start
+
+	private KnockbackProfile knockbackProfile;
+	public boolean shouldDealSprintKnockBack;
+
+	public boolean shouldDealNoResetKnockBack;
+
+	public boolean dealtNoResetKnockBack;
+
+	public boolean pinDaoKnockBack;
+
+	public boolean shouldDealComboKnockBack;
+
+	public boolean shouldDealYLimitKnockBack;
+
+	public boolean shouldDamageSlowDown;
+
+	public boolean shouldDealNoSprintSpeed;
+
+	public boolean dealNoSprintSpeed;
+
+	public int slowDown;
+
+	public long lastDealSprintKnockBack;
+
+	public boolean shouldDealStopComboKnockBack;
+	// KazerSpigot end
+
 	public EntityHuman(World world, GameProfile gameprofile) {
 		super(world);
+
+		// Kazer
+		this.knockbackProfile = KnockbackConfig.getCurrentKb();
+		this.shouldDealSprintKnockBack = false;
+		this.shouldDealNoResetKnockBack = false;
+		this.dealtNoResetKnockBack = false;
+		this.pinDaoKnockBack = true;
+		this.shouldDealComboKnockBack = false;
+		this.shouldDealYLimitKnockBack = false;
+		this.shouldDamageSlowDown = false;
+		this.shouldDealNoSprintSpeed = false;
+		this.dealNoSprintSpeed = false;
+		this.slowDown = 0;
+		this.lastDealSprintKnockBack = System.currentTimeMillis();
+		this.shouldDealStopComboKnockBack = false;
+		// Kazer
+
+
 		this.uniqueID = a(gameprofile);
 		this.bH = gameprofile;
 		this.defaultContainer = new ContainerPlayer(this.inventory, !world.isClientSide, this);
@@ -1005,6 +1043,13 @@ public abstract class EntityHuman extends EntityLiving {
 	public double am() {
 		return -0.35D;
 	}
+	public KnockbackProfile getKnockback() {
+		return this.knockbackProfile;
+	}
+
+	public void setKnockback(KnockbackProfile knockBackProfile) {
+		this.knockbackProfile = knockBackProfile;
+	}
 
 	public void attack(Entity entity) {
 		if (entity.aD()) {
@@ -1055,32 +1100,38 @@ public abstract class EntityHuman extends EntityLiving {
 					boolean flag2 = entity.damageEntity(DamageSource.playerAttack(this), f);
 
 					if (flag2) {
-						if (i > 0) {
-							KnockbackProfile profile = (entity.getKnockbackProfile() == null)
-									? KnockbackConfig.getCurrentKb()
-									: entity.getKnockbackProfile();
-							
-							// WindSpigot start - more configurable knockback
-							if (this.isExtraKnockback()) {
-								entity.g(
-										(-MathHelper.sin((float) (this.yaw * Math.PI / 180.0D)) * i
-												* profile.getWTapExtraHorizontal()),
-										profile.getWTapExtraVertical(), (MathHelper.cos((float) (this.yaw * Math.PI / 180.0D))
-												* i * profile.getWTapExtraHorizontal()));
-							} else {
-								entity.g(
-										(-MathHelper.sin((float) (this.yaw * Math.PI / 180.0D)) * i
-												* profile.getExtraHorizontal()),
-										profile.getExtraVertical(), (MathHelper.cos((float) (this.yaw * Math.PI / 180.0D))
-												* i * profile.getExtraHorizontal()));
-							}
-							// WindSpigot end
-							this.motX *= 0.6D;
-							this.motZ *= 0.6D;
-							if (profile.isStopSprint()) {
-								this.setExtraKnockback(false); // Nacho - Prevent desync player sprinting
-							}
+						KnockbackProfile profile = this.knockbackProfile;
+
+//						// WindSpigot start - more configurable knockback
+//						if (this.isExtraKnockback()) {
+//							entity.g(
+//									(-MathHelper.sin((float) (this.yaw * Math.PI / 180.0D)) * i
+//											* profile.getWTapExtraHorizontal()),
+//									profile.getWTapExtraVertical(), (MathHelper.cos((float) (this.yaw * Math.PI / 180.0D))
+//											* i * profile.getWTapExtraHorizontal()));
+//						} else {
+//							entity.g(
+//									(-MathHelper.sin((float) (this.yaw * Math.PI / 180.0D)) * i
+//											* profile.getExtraHorizontal()),
+//									profile.getExtraVertical(), (MathHelper.cos((float) (this.yaw * Math.PI / 180.0D))
+//											* i * profile.getExtraHorizontal()));
+//						}
+//						// WindSpigot end
+
+						// KazerSpigot start
+						entity.g(
+								-MathHelper.sin(this.yaw * 3.1415927F / 180.0F) * (profile.isStopSprint() ? (this.shouldDealSprintKnockBack ? profile.getSprintExtraHorizontal() : profile.getExtraHorizontal()) : profile.getEggHorizontal()),
+								profile.isStopSprint() ? (this.shouldDealSprintKnockBack ? profile.getSprintExtraVertical() : profile.getExtraVertical()) : profile.getExtraVertical(),
+								MathHelper.cos(this.yaw * 3.1415927F / 180.0F) * (profile.isStopSprint() ? (this.shouldDealSprintKnockBack ? profile.getSprintExtraHorizontal() : profile.getExtraHorizontal()) : profile.getExtraHorizontal())
+						);
+						if (this.shouldDealSprintKnockBack) {
+							this.shouldDealSprintKnockBack = false;
+							this.lastDealSprintKnockBack = System.currentTimeMillis();
 						}
+						this.motX *= profile.getSlowdown();
+						this.motZ *= profile.getSlowdown();
+						setSprinting(false);
+						// KazerSpigot end
 
 						if (entity instanceof EntityPlayer && entity.velocityChanged) {
 							Player player = (Player) entity.getBukkitEntity();

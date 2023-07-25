@@ -16,8 +16,7 @@ import com.google.common.collect.ImmutableList;
 
 @Deprecated
 public class GameModeCommand extends VanillaCommand {
-	private static final List<String> GAMEMODE_NAMES = ImmutableList.of("adventure", "creative", "survival",
-			"spectator");
+	private static final List<String> GAMEMODE_NAMES = ImmutableList.of("adventure", "creative", "survival", "spectator", "0" ,"1" ,"2" ,"3");
 
 	public GameModeCommand() {
 		super("gamemode");
@@ -28,8 +27,9 @@ public class GameModeCommand extends VanillaCommand {
 
 	@Override
 	public boolean execute(CommandSender sender, String currentAlias, String[] args) {
-		if (!testPermission(sender))
+		if (!testPermission(sender)) {
 			return true;
+		}
 		if (args.length == 0) {
 			sender.sendMessage(ChatColor.RED + "Usage: " + usageMessage);
 			return false;
