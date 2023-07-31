@@ -31,20 +31,12 @@ import xyz.sculas.nacho.anticrash.AntiCrash;
 import xyz.sculas.nacho.async.AsyncExplosions;
 
 public class WindSpigot {
-
-	private StatisticsClient client;
 	
 	public static final Logger LOGGER = LogManager.getLogger();
 	private static final Logger DEBUG_LOGGER = LogManager.getLogger();
 	private static WindSpigot INSTANCE;
 	
 	private CombatThread knockbackThread;
-	
-	private final Executor statisticsExecutor = Executors
-			.newSingleThreadExecutor(new ThreadFactoryBuilder().setNameFormat("WindSpigot Statistics Thread")
-			.build());
-	
-	private volatile boolean statisticsEnabled = false;
 	
 	private LagCompensator lagCompensator;
 	
@@ -104,10 +96,6 @@ public class WindSpigot {
 		if (WindSpigotConfig.enableAntiCrash) {
 			registerPacketListener(new AntiCrash());
 		}
-	}
-
-	public StatisticsClient getClient() {
-		return this.client;
 	}
 	
 	public CombatThread getKnockbackThread() {

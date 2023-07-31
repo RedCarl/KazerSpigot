@@ -133,9 +133,7 @@ public class WindSpigotConfig {
 		c.addComment("settings.command.ping.enable", "Enables the command \"/ping <player>\" which shows player ping. Users require the permission windspigot.command.ping");
 		c.addComment("settings.command.ping.self-ping-msg", "The message displayed for the /ping command");
 		c.addComment("settings.command.ping.other-ping-msg", "The message displayed for the /ping <player> command");
-//		c.addComment("settings.statistics", "Enables WindSpigot statistics. This allows developers to see how many WindSpigot servers are running. \nThis has no performance impact and is completely anonymous, but you can opt out of this if you want.");
 		c.addComment("settings.hit-delay", "This sets the delay between player attacks, 20 is the default. Setting this to 0 allows for no hit delay.");
-//		c.addComment("settings.potion-speed-offset", "This sets the speed offset of splash potions, 0 is the default speed. Setting this higher makes potions splash faster. \nThis config option accepts decimals.");
 		c.addComment("settings.show-player-ips", "Disabling this will prevent display of player ips in the console.");
 		c.addComment("settings.modern-keep-alive", "This enables keep alive handling from modern Minecraft. This may break some plugins.");
 		c.addComment("settings.async.path-searches.enabled", "Enables async path searching for entities.");
@@ -166,8 +164,7 @@ public class WindSpigotConfig {
 		c.addComment("settings.spawners.spawn-range", "Maximum area in which entities spawn");
 		c.addComment("settings.spawners.max-nearby-entities", "Maximum number of nearby entities to avoid new spawns (Any value lower than 1 will disable this check)");
 		c.addComment("settings.spawners.required-player-range", "Area in which the player is required to spawn entities");
-//		c.addComment("settings.fishing-rod-multiplier", "The speed multiplier of fishing rod projectiles.");
-		
+
 		// NachoSpigot stuff
 		c.addComment("settings.save-empty-scoreboard-teams", "Toggles whether or not the server should save empty scoreboard teams");
 		c.addComment("settings.command.version", "Enables the /version command");
@@ -192,7 +189,6 @@ public class WindSpigotConfig {
 		c.addComment("settings.fix-eat-while-running", "Fixes the eating while running bug.");
 		c.addComment("settings.hide-projectiles-from-hidden-players", "Hides projectiles from hidden players.");
 		c.addComment("settings.lag-compensated-potions", "Enables lag compesation for thrown potions.");
-//		c.addComment("settings.smooth-potting", "Makes potion throwing smoother.");
 		c.addComment("settings.anti-enderpearl-glitch", "Blocks enderpearl glitching.");
 		c.addComment("settings.disable-block-fall-animation", "Disables the fall animation for blocks.");
 		c.addComment("settings.disable-infinisleeper-thread-usage", "Disable infinisleeper thread usage, only enable this if you know what are you doing.");

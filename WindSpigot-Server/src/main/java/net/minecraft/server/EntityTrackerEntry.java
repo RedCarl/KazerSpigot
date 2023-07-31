@@ -1,23 +1,19 @@
 package net.minecraft.server;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Consumer;
-
+import ga.windpvp.windspigot.config.WindSpigotConfig;
+import it.unimi.dsi.fastutil.objects.Reference2BooleanOpenHashMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.CraftServer;
-// CraftBukkit start
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerVelocityEvent;
-// CraftBukkit end
 
-import ga.windpvp.windspigot.config.WindSpigotConfig;
-import it.unimi.dsi.fastutil.objects.Reference2BooleanOpenHashMap;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Consumer;
 
 // WindSpigot - sendPacket methods have been replaced with the queuePacket method
 public class EntityTrackerEntry {

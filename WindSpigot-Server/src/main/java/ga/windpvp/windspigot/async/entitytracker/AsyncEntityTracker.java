@@ -28,7 +28,9 @@ public class AsyncEntityTracker extends EntityTracker {
 			
 			AsyncUtil.run(() -> {
 				for (int index = finalOffset; index < c.size(); index += WindSpigotConfig.trackingThreads) {
-					c.get(index).update();
+					if (c.get(index) != null){
+						c.get(index).update();
+					}
 				}
 				worldServer.ticker.getLatch().decrement();
 

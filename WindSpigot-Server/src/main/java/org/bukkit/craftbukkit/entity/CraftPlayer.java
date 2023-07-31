@@ -253,9 +253,16 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
 	@Override
 	public void sendTitle(Title title) {
 		Preconditions.checkNotNull(title, "Title is null");
-		setTitleTimes(title.getFadeIn(), title.getStay(), title.getFadeOut());
-		setSubtitle(title.getSubtitle() == null ? new BaseComponent[0] : title.getSubtitle());
-		showTitle(title.getTitle());
+
+		// KazerSpigot start
+		SendTitleEvent sendTitleEvent = new SendTitleEvent(getPlayer(),title);
+		Bukkit.getPluginManager().callEvent(sendTitleEvent);
+		if (!sendTitleEvent.isCancelled()) {
+			setTitleTimes(title.getFadeIn(), title.getStay(), title.getFadeOut());
+			setSubtitle(title.getSubtitle() == null ? new BaseComponent[0] : title.getSubtitle());
+			showTitle(title.getTitle());
+		}
+		// KazerSpigot end
 	}
 
 	@Override
@@ -1552,6 +1559,8 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
 				PacketPlayOutTitle packetSubtitle = new PacketPlayOutTitle(EnumTitleAction.SUBTITLE,
 						CraftChatMessage.fromString(subtitle)[0]);
 				getHandle().playerConnection.sendPacket(packetSubtitle);
+
+
 			}
 		}
 		// KazerSpigot end

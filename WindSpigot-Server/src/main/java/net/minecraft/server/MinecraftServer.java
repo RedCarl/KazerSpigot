@@ -766,28 +766,6 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 				lock.release();
 				MinecraftServer.LOGGER.info("Released CPU " + lock.cpuId() + " from server usage.");
 			}
-			// WindSpigot end
-			// WindSpigot start - stop statistics connection
-			Thread statisticsThread = null;
-			if (disableStatistics) {
-				StatisticsClient client = this.getWindSpigot().getClient();
-				if (client != null && client.isConnected) {
-					Runnable runnable = (() -> {
-						try {
-							// Signal that there is one less server
-							client.sendMessage("removed server");
-							// This tells the server to stop listening for messages from this client
-							client.sendMessage(".");
-							client.stop();
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					});
-					statisticsThread = new Thread(runnable);
-					statisticsThread.start();
-				}
-			}
-			// WindSpigot end
 			try {
 				org.spigotmc.WatchdogThread.doStop();
 				this.isStopped = true;
@@ -802,13 +780,6 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 				}
 				// CraftBukkit end
 				this.z();
-			}
-			// WindSpigot - wait for statistics to finish stopping
-			try {
-				if (this.getWindSpigot().getClient().isConnected) {
-					Objects.requireNonNull(statisticsThread).join(1500);
-				}
-			} catch (Throwable ignored) {
 			}
 		}
 
